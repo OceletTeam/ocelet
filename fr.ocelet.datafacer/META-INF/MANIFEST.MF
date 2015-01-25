@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: fr.ocelet.datafacer
+Bundle-SymbolicName: fr.ocelet.datafacer
+Bundle-Version: 1.1.0.xt27
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: fr.ocelet.runtime;bundle-version="1.1.0",
+ fr.ocelet.libs;bundle-version="1.1.0"
+Export-Package: fr.ocelet.datafacer,
+ fr.ocelet.datafacer.ocltypes

@@ -1,0 +1,146 @@
+grammar fr.ocelet.lang.Ocelet with org.eclipse.xtext.xbase.Xbase
+
+import "http://www.eclipse.org/xtext/xbase/Xbase"
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as types
+
+generate ocelet "http://www.ocelet.fr/lang/Ocelet"
+
+Model:
+	('package' name=Fqn)?
+	(modelns += ModEln)*;
+	
+ModEln:
+	Entity|Relation|Scenario|Strucdef|Datafacer|Metadata|Agregdef;
+
+// ------ Metadata ------
+Metadata:
+ {Metadata}
+ 'metadata' '{'
+     ('description' desc = STRING)?
+     ('webpage' webp = STRING)?
+     (paramdefs += Parameter)*
+	'}'
+;
+
+Parameter : 'parameter' ptype =JvmTypeReference name=ID '{'
+	(paramparts += Parampart)*
+  '}'
+;
+
+Parampart : Paramunit | Paramdefa | Paramin | Paramax | Paradesc | Paraopt;
+
+Paramunit :'unit' parunit = STRING;
+Paramdefa :'default' pardefa = (Number | STRING | 'null' | 'false' | 'true');
+Paramin : 'min' parmin=Number;
+Paramax : 'max' parmax=Number;
+Paradesc: 'description' pardesc = STRING;
+Paraopt : 'optionnal' paropt = STRING;
+
+	
+// ------ Entity ------
+
+Entity:
+	'entity' name=ID '{'
+	(entelns += EntityElements)*
+	'}'
+;
+
+EntityElements: PropertyDef|ServiceDef|ConstructorDef;
+
+PropertyDef:
+	'property' type=JvmTypeReference name=ID
+;
+
+ServiceDef:
+	'service' (type=JvmTypeReference)? name=ID '('(params+=FullJvmFormalParameter(',' params+=FullJvmFormalParameter)*)?')'
+     body=XBlockExpression
+;
+
+ConstructorDef:
+	'init' name=ID '('(params+=FullJvmFormalParameter(',' params+=FullJvmFormalParameter)*)?')'
+     body=XBlockExpression
+;
+
+// ------ Relation ------
+
+Relation:
+	'relation' name=ID '<' roles += Role ',' roles+= Role (',' roles+= Role)* '>' '{'
+//	('type' graphtype =Fqn )?
+	(relelns += RelElements)*
+	'}'
+;
+
+Role : type=[Entity] name=ID;
+
+RelElements : RelPropertyDef|InteractionDef|Filterdef;
+
+RelPropertyDef:
+	'property' type=JvmTypeReference name=ID
+	;
+
+InteractionDef:
+	'interaction' name=ID '('(params+=FullJvmFormalParameter(',' params+=FullJvmFormalParameter)*)?')'
+     body=XBlockExpression
+     ('agg' '{' (comitexpressions += Comitexpr)* '}')?
+;
+
+Comitexpr:
+    rol=[Role] '.' prop=ID (usepreval?='+<<'|'<<') agrfunc= JvmTypeReference
+;
+
+Filterdef :
+ 'filter' name=ID '('(params+=FullJvmFormalParameter(',' params+=FullJvmFormalParameter)*)?')'
+ body = XBlockExpression;
+ 
+ // ------ Structures ------
+Strucdef:
+	'structure' name=ID ('<' typeArgument = Fqn '>')? ('extends' superType = Fqn)?	
+	 '{'
+	   (strucelns += StrucEln)*
+	'}';
+
+StrucEln : StrucVarDef | StrucFuncDef;
+
+StrucVarDef:
+	type=JvmTypeReference name=ValidID ';'?;
+	
+StrucFuncDef :
+	 'function'	(type=JvmTypeReference)? name=ID
+	 '('(params+=FullJvmFormalParameter(',' params+=FullJvmFormalParameter)*)?')'
+     body=XBlockExpression
+;
+
+// ------ Datafacer ------
+
+Datafacer :
+	'datafacer' name =ID '{'
+	   ('store'|'data') storetype = ValidID
+	        '(' (arguments+=XExpression (',' arguments+=XExpression)*)? ')'
+	    (matchbox += Match)*
+	'}'
+;
+
+Match : 'match' mtype=[Matchtype] '{'
+	   (matchprops += Mdef)*
+	  '}'
+;
+
+Matchtype :	Entity | Strucdef ;
+
+Mdef : prop = ID ':' colname=STRING; 
+
+
+//------ Agregation functions ------
+
+Agregdef : 'aggreg' type=JvmTypeReference name=ID
+	body=XBlockExpression
+;
+
+//------ Scenario ------
+
+Scenario:
+	'scenario' name=ID  sccode=XBlockExpression
+;
+
+
+Fqn: ID('.'ID)*;	

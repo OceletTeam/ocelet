@@ -1,0 +1,9 @@
+# General git ignore rules
+bin/
+.metadata/
+*~
+.antlr*
+worklog.*
+worknotes.*
+doc/gfx/
+

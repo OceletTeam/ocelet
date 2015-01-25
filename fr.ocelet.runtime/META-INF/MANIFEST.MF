@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: fr.ocelet.runtime
+Bundle-SymbolicName: fr.ocelet.runtime
+Bundle-Version: 1.1.0.xt27
+Bundle-Vendor: UMR TETIS - Cirad
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: fr.ocelet.runtime,
+ fr.ocelet.runtime.entity,
+ fr.ocelet.runtime.geom,
+ fr.ocelet.runtime.geom.ocltypes,
+ fr.ocelet.runtime.model,
+ fr.ocelet.runtime.ocltypes,
+ fr.ocelet.runtime.relation,
+ fr.ocelet.runtime.relation.aggregops,
+ fr.ocelet.runtime.relation.impl,
+ fr.ocelet.runtime.styling,
+ fr.ocelet.runtime.util
+Require-Bundle: fr.ocelet.libs;bundle-version="1.1.0"

@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: fr.ocelet
+Bundle-Vendor: UMR TETIS - CIRAD
+Bundle-Version: 1.1.0.xt27
+Bundle-SymbolicName: fr.ocelet; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext;visibility:=reexport,
+ org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,
+ org.eclipse.xtext.generator;resolution:=optional,
+ org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional,
+ org.eclipse.emf.codegen.ecore;resolution:=optional,
+ org.eclipse.emf.mwe.utils;resolution:=optional,
+ org.eclipse.emf.mwe2.launch;resolution:=optional,
+ org.eclipse.xtext.util,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.common,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types,
+ org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: fr.ocelet.lang,
+ fr.ocelet.lang.services,
+ fr.ocelet.lang.ocelet,
+ fr.ocelet.lang.ocelet.impl,
+ fr.ocelet.lang.ocelet.util,
+ fr.ocelet.lang.serializer,
+ fr.ocelet.lang.parser.antlr,
+ fr.ocelet.lang.parser.antlr.internal,
+ fr.ocelet.lang.validation,
+ fr.ocelet.lang.formatting,
+ fr.ocelet.lang.jvmmodel

@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: fr.ocelet.ui
+Bundle-Vendor: UMR TETIS - CIRAD
+Bundle-Version: 1.1.0.xt27
+Bundle-SymbolicName: fr.ocelet.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: fr.ocelet;visibility:=reexport,
+ org.eclipse.xtext.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.xbase.ui,
+ org.eclipse.ui,
+ org.eclipse.xtext.builder,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.common.types.ui,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.compare
+Import-Package: org.apache.log4j
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package: fr.ocelet.lang.ui.quickfix,
+ fr.ocelet.lang.ui.contentassist,
+ fr.ocelet.lang.ui.contentassist.antlr,
+ fr.ocelet.lang.ui.internal
+Bundle-Activator: fr.ocelet.lang.ui.internal.OceletActivator
