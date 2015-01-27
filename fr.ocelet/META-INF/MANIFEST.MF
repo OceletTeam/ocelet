@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: fr.ocelet
 Bundle-Vendor: UMR TETIS - CIRAD
 Bundle-Version: 1.1.0.xt27
-Bundle-SymbolicName: fr.ocelet; singleton:=true
+Bundle-SymbolicName: fr.ocelet;singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  org.eclipse.xtext.xbase;resolution:=optional;visibility:=reexport,
