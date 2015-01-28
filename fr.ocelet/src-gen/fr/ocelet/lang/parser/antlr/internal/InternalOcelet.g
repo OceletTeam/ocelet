@@ -636,9 +636,9 @@ ruleParamin returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(	otherlv_0='min' 
+(	otherlv_0='minvalue' 
     {
-    	newLeafNode(otherlv_0, grammarAccess.getParaminAccess().getMinKeyword_0());
+    	newLeafNode(otherlv_0, grammarAccess.getParaminAccess().getMinvalueKeyword_0());
     }
 (
 (
@@ -679,9 +679,9 @@ ruleParamax returns [EObject current=null]
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(	otherlv_0='max' 
+(	otherlv_0='maxvalue' 
     {
-    	newLeafNode(otherlv_0, grammarAccess.getParamaxAccess().getMaxKeyword_0());
+    	newLeafNode(otherlv_0, grammarAccess.getParamaxAccess().getMaxvalueKeyword_0());
     }
 (
 (

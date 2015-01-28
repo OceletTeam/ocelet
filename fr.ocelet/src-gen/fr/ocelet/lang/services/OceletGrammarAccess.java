@@ -319,19 +319,19 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	public class ParaminElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Paramin");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cMinKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cMinvalueKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cParminAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cParminNumberParserRuleCall_1_0 = (RuleCall)cParminAssignment_1.eContents().get(0);
 		
 		//Paramin:
-		//	"min" parmin=Number;
+		//	"minvalue" parmin=Number;
 		public ParserRule getRule() { return rule; }
 
-		//"min" parmin=Number
+		//"minvalue" parmin=Number
 		public Group getGroup() { return cGroup; }
 
-		//"min"
-		public Keyword getMinKeyword_0() { return cMinKeyword_0; }
+		//"minvalue"
+		public Keyword getMinvalueKeyword_0() { return cMinvalueKeyword_0; }
 
 		//parmin=Number
 		public Assignment getParminAssignment_1() { return cParminAssignment_1; }
@@ -343,19 +343,19 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	public class ParamaxElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Paramax");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cMaxKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cMaxvalueKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cParmaxAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cParmaxNumberParserRuleCall_1_0 = (RuleCall)cParmaxAssignment_1.eContents().get(0);
 		
 		//Paramax:
-		//	"max" parmax=Number;
+		//	"maxvalue" parmax=Number;
 		public ParserRule getRule() { return rule; }
 
-		//"max" parmax=Number
+		//"maxvalue" parmax=Number
 		public Group getGroup() { return cGroup; }
 
-		//"max"
-		public Keyword getMaxKeyword_0() { return cMaxKeyword_0; }
+		//"maxvalue"
+		public Keyword getMaxvalueKeyword_0() { return cMaxvalueKeyword_0; }
 
 		//parmax=Number
 		public Assignment getParmaxAssignment_1() { return cParmaxAssignment_1; }
@@ -1737,7 +1737,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Paramin:
-	//	"min" parmin=Number;
+	//	"minvalue" parmin=Number;
 	public ParaminElements getParaminAccess() {
 		return pParamin;
 	}
@@ -1747,7 +1747,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Paramax:
-	//	"max" parmax=Number;
+	//	"maxvalue" parmax=Number;
 	public ParamaxElements getParamaxAccess() {
 		return pParamax;
 	}

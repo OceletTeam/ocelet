@@ -22,7 +22,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalOceletParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'package'", "'metadata'", "'{'", "'description'", "'webpage'", "'}'", "'parameter'", "'unit'", "'default'", "'null'", "'false'", "'true'", "'min'", "'max'", "'optionnal'", "'entity'", "'property'", "'service'", "'('", "','", "')'", "'init'", "'relation'", "'<'", "'>'", "'interaction'", "'agg'", "'.'", "'+<<'", "'<<'", "'filter'", "'structure'", "'extends'", "';'", "'function'", "'datafacer'", "'store'", "'data'", "'match'", "':'", "'aggreg'", "'scenario'", "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'as'", "'++'", "'--'", "'::'", "'?.'", "'#'", "'['", "']'", "'|'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'var'", "'val'", "'static'", "'import'", "'extension'", "'super'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'package'", "'metadata'", "'{'", "'description'", "'webpage'", "'}'", "'parameter'", "'unit'", "'default'", "'null'", "'false'", "'true'", "'minvalue'", "'maxvalue'", "'optionnal'", "'entity'", "'property'", "'service'", "'('", "','", "')'", "'init'", "'relation'", "'<'", "'>'", "'interaction'", "'agg'", "'.'", "'+<<'", "'<<'", "'filter'", "'structure'", "'extends'", "';'", "'function'", "'datafacer'", "'store'", "'data'", "'match'", "':'", "'aggreg'", "'scenario'", "'='", "'+='", "'-='", "'*='", "'/='", "'%='", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'as'", "'++'", "'--'", "'::'", "'?.'", "'#'", "'['", "']'", "'|'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'var'", "'val'", "'static'", "'import'", "'extension'", "'super'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
     };
     public static final int RULE_ID=5;
     public static final int T__29=29;
@@ -1826,7 +1826,7 @@ public class InternalOceletParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleParamin"
-    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:635:1: ruleParamin returns [EObject current=null] : (otherlv_0= 'min' ( (lv_parmin_1_0= ruleNumber ) ) ) ;
+    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:635:1: ruleParamin returns [EObject current=null] : (otherlv_0= 'minvalue' ( (lv_parmin_1_0= ruleNumber ) ) ) ;
     public final EObject ruleParamin() throws RecognitionException {
         EObject current = null;
 
@@ -1837,16 +1837,16 @@ public class InternalOceletParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:638:28: ( (otherlv_0= 'min' ( (lv_parmin_1_0= ruleNumber ) ) ) )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:639:1: (otherlv_0= 'min' ( (lv_parmin_1_0= ruleNumber ) ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:638:28: ( (otherlv_0= 'minvalue' ( (lv_parmin_1_0= ruleNumber ) ) ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:639:1: (otherlv_0= 'minvalue' ( (lv_parmin_1_0= ruleNumber ) ) )
             {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:639:1: (otherlv_0= 'min' ( (lv_parmin_1_0= ruleNumber ) ) )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:639:3: otherlv_0= 'min' ( (lv_parmin_1_0= ruleNumber ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:639:1: (otherlv_0= 'minvalue' ( (lv_parmin_1_0= ruleNumber ) ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:639:3: otherlv_0= 'minvalue' ( (lv_parmin_1_0= ruleNumber ) )
             {
             otherlv_0=(Token)match(input,25,FOLLOW_25_in_ruleParamin1437); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-                  	newLeafNode(otherlv_0, grammarAccess.getParaminAccess().getMinKeyword_0());
+                  	newLeafNode(otherlv_0, grammarAccess.getParaminAccess().getMinvalueKeyword_0());
                   
             }
             // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:643:1: ( (lv_parmin_1_0= ruleNumber ) )
@@ -1947,7 +1947,7 @@ public class InternalOceletParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleParamax"
-    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:678:1: ruleParamax returns [EObject current=null] : (otherlv_0= 'max' ( (lv_parmax_1_0= ruleNumber ) ) ) ;
+    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:678:1: ruleParamax returns [EObject current=null] : (otherlv_0= 'maxvalue' ( (lv_parmax_1_0= ruleNumber ) ) ) ;
     public final EObject ruleParamax() throws RecognitionException {
         EObject current = null;
 
@@ -1958,16 +1958,16 @@ public class InternalOceletParser extends AbstractInternalAntlrParser {
          enterRule(); 
             
         try {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:681:28: ( (otherlv_0= 'max' ( (lv_parmax_1_0= ruleNumber ) ) ) )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:682:1: (otherlv_0= 'max' ( (lv_parmax_1_0= ruleNumber ) ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:681:28: ( (otherlv_0= 'maxvalue' ( (lv_parmax_1_0= ruleNumber ) ) ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:682:1: (otherlv_0= 'maxvalue' ( (lv_parmax_1_0= ruleNumber ) ) )
             {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:682:1: (otherlv_0= 'max' ( (lv_parmax_1_0= ruleNumber ) ) )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:682:3: otherlv_0= 'max' ( (lv_parmax_1_0= ruleNumber ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:682:1: (otherlv_0= 'maxvalue' ( (lv_parmax_1_0= ruleNumber ) ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:682:3: otherlv_0= 'maxvalue' ( (lv_parmax_1_0= ruleNumber ) )
             {
             otherlv_0=(Token)match(input,26,FOLLOW_26_in_ruleParamax1541); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-                  	newLeafNode(otherlv_0, grammarAccess.getParamaxAccess().getMaxKeyword_0());
+                  	newLeafNode(otherlv_0, grammarAccess.getParamaxAccess().getMaxvalueKeyword_0());
                   
             }
             // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:686:1: ( (lv_parmax_1_0= ruleNumber ) )

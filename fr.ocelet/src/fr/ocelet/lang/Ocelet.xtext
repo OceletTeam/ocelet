@@ -31,8 +31,8 @@ Parampart : Paramunit | Paramdefa | Paramin | Paramax | Paradesc | Paraopt;
 
 Paramunit :'unit' parunit = STRING;
 Paramdefa :'default' pardefa = (Number | STRING | 'null' | 'false' | 'true');
-Paramin : 'min' parmin=Number;
-Paramax : 'max' parmax=Number;
+Paramin : 'minvalue' parmin=Number;
+Paramax : 'maxvalue' parmax=Number;
 Paradesc: 'description' pardesc = STRING;
 Paraopt : 'optionnal' paropt = STRING;
 

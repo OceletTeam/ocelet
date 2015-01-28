@@ -5393,11 +5393,11 @@ rule__Paramin__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getParaminAccess().getMinKeyword_0()); }
+{ before(grammarAccess.getParaminAccess().getMinvalueKeyword_0()); }
 
-	'min' 
+	'minvalue' 
 
-{ after(grammarAccess.getParaminAccess().getMinKeyword_0()); }
+{ after(grammarAccess.getParaminAccess().getMinvalueKeyword_0()); }
 )
 
 ;
@@ -5456,11 +5456,11 @@ rule__Paramax__Group__0__Impl
     }
 :
 (
-{ before(grammarAccess.getParamaxAccess().getMaxKeyword_0()); }
+{ before(grammarAccess.getParamaxAccess().getMaxvalueKeyword_0()); }
 
-	'max' 
+	'maxvalue' 
 
-{ after(grammarAccess.getParamaxAccess().getMaxKeyword_0()); }
+{ after(grammarAccess.getParamaxAccess().getMaxvalueKeyword_0()); }
 )
 
 ;

@@ -67,9 +67,9 @@
 'instanceof'=68
 'interaction'=38
 'match'=51
-'max'=26
+'maxvalue'=26
 'metadata'=14
-'min'=25
+'minvalue'=25
 'new'=104
 'null'=22
 'optionnal'=27

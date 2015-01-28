@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalOceletParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'null'", "'false'", "'true'", "'<<'", "'store'", "'data'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'package'", "'metadata'", "'{'", "'}'", "'description'", "'webpage'", "'parameter'", "'unit'", "'default'", "'min'", "'max'", "'optionnal'", "'entity'", "'property'", "'service'", "'('", "')'", "','", "'init'", "'relation'", "'interaction'", "'agg'", "'filter'", "'structure'", "';'", "'function'", "'datafacer'", "'match'", "':'", "'aggreg'", "'scenario'", "'instanceof'", "'as'", "'#'", "'['", "']'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'+<<'", "'::'", "'?.'", "'|'", "'var'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'null'", "'false'", "'true'", "'<<'", "'store'", "'data'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'.'", "'val'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'package'", "'metadata'", "'{'", "'}'", "'description'", "'webpage'", "'parameter'", "'unit'", "'default'", "'minvalue'", "'maxvalue'", "'optionnal'", "'entity'", "'property'", "'service'", "'('", "')'", "','", "'init'", "'relation'", "'interaction'", "'agg'", "'filter'", "'structure'", "';'", "'function'", "'datafacer'", "'match'", "':'", "'aggreg'", "'scenario'", "'instanceof'", "'as'", "'#'", "'['", "']'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'+<<'", "'::'", "'?.'", "'|'", "'var'"
     };
     public static final int RULE_ID=4;
     public static final int T__29=29;
@@ -17376,24 +17376,24 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Paramin__Group__0__Impl"
-    // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5390:1: rule__Paramin__Group__0__Impl : ( 'min' ) ;
+    // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5390:1: rule__Paramin__Group__0__Impl : ( 'minvalue' ) ;
     public final void rule__Paramin__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5394:1: ( ( 'min' ) )
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5395:1: ( 'min' )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5394:1: ( ( 'minvalue' ) )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5395:1: ( 'minvalue' )
             {
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5395:1: ( 'min' )
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5396:1: 'min'
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5395:1: ( 'minvalue' )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5396:1: 'minvalue'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getParaminAccess().getMinKeyword_0()); 
+               before(grammarAccess.getParaminAccess().getMinvalueKeyword_0()); 
             }
             match(input,65,FOLLOW_65_in_rule__Paramin__Group__0__Impl11642); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getParaminAccess().getMinKeyword_0()); 
+               after(grammarAccess.getParaminAccess().getMinvalueKeyword_0()); 
             }
 
             }
@@ -17539,24 +17539,24 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Paramax__Group__0__Impl"
-    // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5453:1: rule__Paramax__Group__0__Impl : ( 'max' ) ;
+    // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5453:1: rule__Paramax__Group__0__Impl : ( 'maxvalue' ) ;
     public final void rule__Paramax__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5457:1: ( ( 'max' ) )
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5458:1: ( 'max' )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5457:1: ( ( 'maxvalue' ) )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5458:1: ( 'maxvalue' )
             {
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5458:1: ( 'max' )
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5459:1: 'max'
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5458:1: ( 'maxvalue' )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:5459:1: 'maxvalue'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getParamaxAccess().getMaxKeyword_0()); 
+               before(grammarAccess.getParamaxAccess().getMaxvalueKeyword_0()); 
             }
             match(input,66,FOLLOW_66_in_rule__Paramax__Group__0__Impl11765); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getParamaxAccess().getMaxKeyword_0()); 
+               after(grammarAccess.getParamaxAccess().getMaxvalueKeyword_0()); 
             }
 
             }
