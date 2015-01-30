@@ -59,7 +59,7 @@
    </plugins>
 
    <features>
-      <feature id="fr.ocelet.rcplugins.feature" version="1.1.0.xt27"/>
+      <feature id="fr.ocelet.platform.feature" version="1.1.0.xt27"/>
       <feature id="org.eclipse.xtext.xbase"/>
       <feature id="org.eclipse.emf.ecore"/>
       <feature id="org.eclipse.e4.rcp"/>
