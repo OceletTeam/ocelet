@@ -1,0 +1,28 @@
+gyr:linear-gradient(to right,
+    rgb(22, 240, 22) 0%,
+    rgb(233, 245, 14) 50%,
+    rgb(247, 10, 10) 100%);
+    
+dem:linear-gradient(0deg,
+  rgb(  0,132, 53)   0.0%,
+  rgb( 51,204,  0)  12.5%,
+  rgb(244,240,113)  25.0%,
+  rgb(244,189, 69)  50.0%,
+  rgb(153,100, 43)  75.0%,
+  rgb(255,255,255) 100.0%
+  );
+
+bgyr:linear-gradient(0deg,
+  rgb(  0,  0,255)   0%,
+  rgb(  0,255,255)  33%,
+  rgb(255,255,  0)  66%,
+  rgb(255,  0,  0) 100%
+  );
+  
+sepia:linear-gradient(to right,
+  rgb(250, 250, 247) 0%,
+  rgb(201, 164, 0) 100%);
+  
+gray:linear-gradient(to right,
+  rgb(255, 255, 255) 0%,
+  rgb(128, 128, 128) 100%);

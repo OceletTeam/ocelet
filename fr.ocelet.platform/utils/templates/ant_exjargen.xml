@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<project name="ocelet_jargen" default="genjar" basedir="../../..">
+
+  <property name="model" value="_MODELNAME_"/>
+  <property name="mainclass" value="_MAINCLASS_"/>
+  <property name="classes.dir" location="workspace/${model}/bin/"/>
+  <property name="destfile" location="_DESTFILE_"/>
+  <property name="plugins.dir" location="plugins" />
+
+  <target name="genjar">
+	<jar basedir="${classes.dir}" destfile="${destfile}">
+	  <zipgroupfileset dir="${classes.dir}" includes="*.class" />
+_JARFILES_
+      <manifest>
+        <attribute name="Class-Path" value="_CPATH_"/>
+        <attribute name="Main-Class" value="${mainclass}"/>
+      </manifest>
+	</jar>
+  </target>
+</project>

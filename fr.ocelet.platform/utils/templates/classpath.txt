@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="oclt"/>
+	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="../../plugins/org.eclipse.xtext.xbase.lib_2.3.1.v201208210947.jar"/>
+	<classpathentry kind="lib" path="../../plugins/com.google.guava_10.0.1.v201203051515.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.runtime_0.9.0.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.datafacer_0.9.0.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.geolibs_0.9.0.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.jaxblibs_0.9.0.jar"/>
+</classpath>

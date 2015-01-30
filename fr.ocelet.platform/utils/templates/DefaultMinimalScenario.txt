@@ -1,0 +1,5 @@
+scenario _MODELNAME_ {
+
+  println("Model _MODELNAME_ ready to run")
+
+}
