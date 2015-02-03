@@ -23,3 +23,4 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.launching;bundle-version="3.7.101",
  org.eclipse.debug.ui;bundle-version="3.10.1",
  org.eclipse.jdt.debug.ui;bundle-version="3.6.300"
+Bundle-Activator: fr.ocelet.platform.Activator

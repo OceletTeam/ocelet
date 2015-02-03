@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="main"
+            visible="true">
+         <run
+               class="fr.ocelet.platform.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="fr.ocelet.platform.Perspective"
+            id="fr.ocelet.platform.perspective"
+            name="RCP Perspective">
+      </perspective>
+   </extension>
+
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="fr.ocelet.platform.application"
+            name="Ocelet Modelling Platform">
+         <property
+               name="windowImages"
+               value="icons/window/alt_window_16_32bit.gif,icons/window/alt_window_32_32bit.gif,icons/window/alt_window_48_32bit.gif,icons/window/alt_window_64_32bit.gif,icons/window/alt_window_128_32bit.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="Ocelet Modelling Platform - www.ocelet.fr">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="71918D">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="15,245,425,14">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="17,224,445,20">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="appName"
+               value="Ocelet Modelling Platform">
+         </property>
+         <property
+               name="applicationXMI"
+               value="fr.ocelet.platform/Application.e4xmi">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonFilter
+            activeByDefault="true"
+            class="fr.ocelet.platform.filters.ExtJarFilter"
+            description="Hide jar dependencies libraries"
+            id="fr.ocelet.platform.filters.ExtJarFilter"
+            name="Jar dependencies">
+      </commonFilter>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+         <includes>
+            <contentExtension
+                  pattern="fr.ocelet.platform.filters.ExtJarFilter">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+
+</plugin>
