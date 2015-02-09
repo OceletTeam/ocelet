@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_gpj1oOeDEeGyx_y68o3Zcw" elementId="fr.ocelet.platform.application">
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_kJFwMOeGEeGyx_y68o3Zcw" elementId="fr.ocelet.platform.trimmedwindow.main" label="Ocelet Modelling Platform" x="-1" y="-1" width="1024" height="768">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_kJFwMOeGEeGyx_y68o3Zcw" elementId="fr.ocelet.platform.trimmedwindow.main" selectedElement="_GZWu4OecEeGyx_y68o3Zcw" label="Ocelet Modelling Platform" x="-1" y="-1" width="1024" height="768">
     <children xsi:type="advanced:PerspectiveStack" xmi:id="_GZWu4OecEeGyx_y68o3Zcw" elementId="fr.ocelet.platform.perspectivestack.ocltps" selectedElement="_JgZ_YOecEeGyx_y68o3Zcw">
       <children xsi:type="advanced:Perspective" xmi:id="_JgZ_YOecEeGyx_y68o3Zcw" elementId="fr.ocelet.platform.perspective.ocltpers" label="Ocelet modelling perspective">
         <children xsi:type="basic:PartSashContainer" xmi:id="_iQfYYOedEeGyx_y68o3Zcw" elementId="fr.ocelet.platform.partsashcontainer.psch" horizontal="true">
@@ -127,10 +127,11 @@
   <commands xmi:id="_ngGt8HU6EeO1mKqlJIc0bw" elementId="fr.ocelet.platform.command.importmodel" commandName="Import Model"/>
   <commands xmi:id="_qHiF8JfmEeOh77VegXmSBw" elementId="fr.ocelet.platform.command.aboutcmd" commandName="About OMP"/>
   <commands xmi:id="_-zywwM7oEeO1htPftDfeQg" elementId="fr.ocelet.platform.cmd.jargen" commandName="Jargen" description="Exports the model as an executable jar file"/>
+  <addons xmi:id="_yvvDcKzbEeSxvcdepn8wYA" elementId="fr.ocelet.platform.addon.0" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.HandlerProcessingAddon"/>
+  <addons xmi:id="_gpj1pueDEeGyx_y68o3Zcw" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
   <addons xmi:id="_gpj1oeeDEeGyx_y68o3Zcw" elementId="org.eclipse.e4.core.commands.service" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_gpj1oueDEeGyx_y68o3Zcw" elementId="org.eclipse.e4.ui.contexts.service" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_gpj1o-eDEeGyx_y68o3Zcw" elementId="org.eclipse.e4.ui.bindings.service" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
   <addons xmi:id="_gpj1pOeDEeGyx_y68o3Zcw" elementId="org.eclipse.e4.ui.workbench.commands.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.CommandProcessingAddon"/>
   <addons xmi:id="_gpj1peeDEeGyx_y68o3Zcw" elementId="org.eclipse.e4.ui.workbench.contexts.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench/org.eclipse.e4.ui.internal.workbench.addons.ContextProcessingAddon"/>
-  <addons xmi:id="_gpj1pueDEeGyx_y68o3Zcw" elementId="org.eclipse.e4.ui.workbench.bindings.model" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.swt/org.eclipse.e4.ui.workbench.swt.util.BindingProcessingAddon"/>
 </application:Application>

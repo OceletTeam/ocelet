@@ -2,7 +2,7 @@ package fr.ocelet.platform;
 
 public class PlatformSettings {
 
-	public final static String version = "1.0";
+	public final static String version = "1.1";
 
 	public final static int NORMAL = 0;
 	public final static int VERBOSE = 1;
