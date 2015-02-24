@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="fr.ocelet.p3x.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="%perspective.name"
+            class="fr.ocelet.p3x.Perspective"
+            id="fr.ocelet.p3x.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="fr.ocelet.p3x.oceletviews"
+            name="oceletviews">
+      </category>
+      <view
+            category="fr.ocelet.p3x.oceletviews"
+            class="org.eclipse.ui.navigator.CommonNavigator"
+            fastViewWidthRatio="0.15"
+            id="fr.ocelet.p3x.views.navigator"
+            name="Projects"
+            restorable="true">
+      </view>
+   </extension>
+    <extension point="org.eclipse.ui.editors">
+   </extension>   
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="File">
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         id="product_e3"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="fr.ocelet.p3x.application"
+            name="Ocelet Modelling Platform">
+         <property
+               name="windowImages"
+               value="icons/window/alt_window_16_32bit.gif,icons/window/alt_window_32_32bit.gif,icons/window/alt_window_48_32bit.gif,icons/window/alt_window_64_32bit.gif,icons/window/alt_window_128_32bit.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="Ocelet Modelling Platform - www.ocelet.fr">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="71918D">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="15,245,425,14">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="17,224,445,20">
+         </property>
+         <property
+               name="appName"
+               value="Ocelet Modelling Platform">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+      </product>
+   </extension>
+
+</plugin>

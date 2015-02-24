@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: P3x
+Bundle-SymbolicName: fr.ocelet.p3x;singleton:=true
+Bundle-Version: 1.1.0.lx27
+Bundle-Vendor: UMR TETIS - Cirad
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.console;bundle-version="3.5.300",
+ org.eclipse.ui.navigator;bundle-version="3.5.401"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
