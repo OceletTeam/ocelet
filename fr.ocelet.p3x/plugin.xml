@@ -3,7 +3,7 @@
 <plugin>
 
    <extension
-         id="application"
+         id="fr.ocelet.p3x.application"
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
@@ -21,18 +21,26 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="fr.ocelet.p3x.oceletviews"
-            name="oceletviews">
-      </category>
       <view
-            category="fr.ocelet.p3x.oceletviews"
             class="org.eclipse.ui.navigator.CommonNavigator"
             fastViewWidthRatio="0.15"
-            id="fr.ocelet.p3x.views.navigator"
+            id="fr.ocelet.p3x.views.Navigator"
             name="Projects"
             restorable="true">
       </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="fr.ocelet.p3x.cmdcat"
+            name="OceletCmd">
+      </category>
+      <command
+            categoryId="fr.ocelet.p3x.cmdcat"
+            defaultHandler="fr.ocelet.p3x.handlers.NewProject"
+            id="fr.ocelet.p3x.newocltproject"
+            name="New Ocelet Project">
+      </command>
    </extension>
     <extension point="org.eclipse.ui.editors">
    </extension>   
@@ -43,7 +51,14 @@
          <menu
                label="File">
             <command
+                  commandId="fr.ocelet.p3x.newocltproject"
+                  icon="icons/square16/gif/new_proj.gif"
+                  label="New Ocelet project"
+                  style="push">
+            </command>
+            <command
                   commandId="org.eclipse.ui.file.exit"
+                  icon="icons/square16/png/exit.png"
                   label="Exit">
             </command>
          </menu>
@@ -85,5 +100,161 @@
          </property>
       </product>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="org.eclipse.jdt.internal.ui.browsing.ProjectAndSourceFolderContentProvider"
+            icon="icons/square16/gif/file_proj.gif"
+            id="fr.ocelet.p3x.ocltnav"
+            name="%navigatorContent.name">
+         <enablement>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+               </adapt>
+               <instanceof
+                     value="org.eclipse.core.resources.IResource">
+               </instanceof>
+            </or>
+         </enablement>
+         <actionProvider
+               class="org.eclipse.ui.internal.navigator.resources.actions.EditActionProvider">
+         </actionProvider>
+         <actionProvider
+               class="org.eclipse.ui.internal.navigator.resources.actions.PropertiesActionProvider">
+         </actionProvider>
+         <actionProvider
+               class="org.eclipse.ui.internal.navigator.resources.actions.RefactorActionProvider">
+         </actionProvider>
+      </navigatorContent>
+      <commonFilter
+            activeByDefault="false"
+            description="%commonFilter.description"
+            id="fr.ocelet.p3x.views.Navigator.commonFilter.onlyJavaOclt"
+            name="%commonFilter.name.0"
+            visibleInUI="true">
+         <filterExpression>
+            <not>
+               <or>
+                  <instanceof
+                        value="org.eclipse.core.resources.IProject">
+                  </instanceof>
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFile">
+                     </instanceof>
+                     <test
+                           property="org.eclipse.core.resources.name"
+                           value="*.oclt">
+                     </test>
+                  </and>
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFolder">
+                     </instanceof>
+                     <test
+                           property="org.eclipse.core.resources.name"
+                           value="oclt">
+                     </test>
+                  </and>
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFolder">
+                     </instanceof>
+                     <test
+                           property="org.eclipse.core.resources.name"
+                           value="datafacer">
+                     </test>
+                  </and>
+                  <and>
+                     <instanceof
+                           value="org.eclipse.core.resources.IFolder">
+                     </instanceof>
+                     <test
+                           property="org.eclipse.core.resources.name"
+                           value="output">
+                     </test>
+                  </and>
+               </or>
+            </not>
+         </filterExpression>
+      </commonFilter>
+   </extension>
+<extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewer
+            viewerId="fr.ocelet.p3x.views.Navigator">
+         <popupMenu
+               allowsPlatformContributions="true"
+               id="org.eclipse.ui.navigator.PopupMenu">
+            <insertionPoint
+                  name="group.new">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.edit">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.reorganize">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.open">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.openWith">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.search">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.build">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.port">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.properties" separator="true">
+            </insertionPoint>
+            
+            
+         </popupMenu>
+      </viewer>
+      <viewerContentBinding
+            viewerId="fr.ocelet.p3x.views.Navigator">
+          <includes>
+       	     <contentExtension pattern="org.eclipse.ui.navigator.resourceContent" />		       	      
+	         <contentExtension pattern="org.eclipse.ui.navigator.resources.filters.*"/>
+          </includes>
+      </viewerContentBinding>
+      <viewerActionBinding
+            viewerId="fr.ocelet.p3x.views.Navigator">
+         <includes>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.filters.*">
+            </contentExtension>
+            <contentExtension
+                  pattern="fr.ocelet.p3x.navigator.linkHelper">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.workingSets">
+            </contentExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.EditActions">
+            </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.OpenActions">
+            </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.actions.RefactorActionProvider">
+            </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.*Actions">
+            </actionExtension>
+         </includes>
+      </viewerActionBinding>
+      <dragAssistant
+            class="org.eclipse.ui.navigator.resources.ResourceDragAdapterAssistant"
+            viewerId="fr.ocelet.p3x.views.Navigator">
+      </dragAssistant>
+   </extension>
 </plugin>

@@ -24,7 +24,7 @@ public class Perspective implements IPerspectiveFactory {
         layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");
 
         // Add "show views".
-        layout.addShowViewShortcut("fr.ocelet.p3x.views.navigator");
+        layout.addShowViewShortcut("fr.ocelet.p3x.views.Navigator");
         layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
         layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
 //        layout.addShowViewShortcut("fr.ocelet.p3x.views.Problems");
@@ -43,13 +43,13 @@ public class Perspective implements IPerspectiveFactory {
 		IFolderLayout right = layout.createFolder("right", IPageLayout.RIGHT,
 				0.75f, editorArea);
 
-		left.addView("fr.ocelet.p3x.views.navigator");
+		left.addView("fr.ocelet.p3x.views.Navigator");
 		right.addView(IPageLayout.ID_OUTLINE);
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 //		bottom.addView("fr.ocelet.p3x.views.Problems");
 
 		// set static views:
-		layout.getViewLayout("fr.ocelet.p3x.views.navigator")
+		layout.getViewLayout("fr.ocelet.p3x.views.Navigator")
 				.setCloseable(false);
 		layout.getViewLayout(IPageLayout.ID_OUTLINE).setCloseable(false);
 		layout.getViewLayout(IConsoleConstants.ID_CONSOLE_VIEW).setCloseable(

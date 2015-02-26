@@ -10,7 +10,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author Pascal Degenne - Initial contribution
  *
  */
-@SuppressWarnings("restriction")
+
 public class ExtJarFilter extends LibraryFilter {
 
 	@Override
