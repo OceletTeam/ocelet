@@ -20,7 +20,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void preWindowOpen() {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setInitialSize(new Point(1024, 768));
-		configurer.setShowCoolBar(false);
+		configurer.setShowCoolBar(true);
 		configurer.setShowStatusLine(false);
 		configurer.setShowProgressIndicator(true);
 		configurer.setTitle("Ocelet Modelling Platform");

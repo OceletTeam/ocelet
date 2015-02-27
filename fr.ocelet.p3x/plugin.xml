@@ -41,6 +41,45 @@
             id="fr.ocelet.p3x.newocltproject"
             name="New Ocelet Project">
       </command>
+      <command
+            defaultHandler="fr.ocelet.p3x.handlers.RunSim"
+            id="fr.ocelet.p3x.runsim"
+            name="Run Simulation">
+      </command>
+      <command
+            categoryId="fr.ocelet.p3x.cmdcat"
+            defaultHandler="fr.ocelet.p3x.handlers.ImportModel"
+            id="fr.ocelet.p3x.import"
+            name="Import Ocelet Project">
+      </command>
+      <command
+            defaultHandler="fr.ocelet.p3x.handlers.ExJarGen"
+            id="fr.ocelet.p3x.exjar"
+            name="Export to jar">
+      </command>
+      <command
+            categoryId="fr.ocelet.p3x.cmdcat"
+            defaultHandler="fr.ocelet.p3x.handlers.SaveModel"
+            id="fr.ocelet.p3x.savemodel"
+            name="Save Model">
+      </command>
+      <command
+            categoryId="fr.ocelet.p3x.cmdcat"
+            defaultHandler="fr.ocelet.p3x.handlers.ShowGradients"
+            id="fr.ocelet.p3x.gradients"
+            name="Show Gradients">
+      </command>
+      <command
+            categoryId="fr.ocelet.p3x.cmdcat"
+            defaultHandler="fr.ocelet.p3x.handlers.ShowColorDialog"
+            id="fr.ocelet.p3x.color"
+            name="Color Dialog">
+      </command>
+      <command
+            defaultHandler="fr.ocelet.p3x.handlers.ShowAboutOmp"
+            id="fr.ocelet.p3x.about"
+            name="About dialog">
+      </command>
    </extension>
     <extension point="org.eclipse.ui.editors">
    </extension>   
@@ -57,11 +96,120 @@
                   style="push">
             </command>
             <command
+                  commandId="fr.ocelet.p3x.import"
+                  icon="icons/square16/png/import_project.png"
+                  label="Import Ocelet Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.p3x.exjar"
+                  label="Export to jar"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.p3x.file_sep"
+                  visible="true">
+            </separator>
+            <command
                   commandId="org.eclipse.ui.file.exit"
                   icon="icons/square16/png/exit.png"
                   label="Exit">
             </command>
          </menu>
+         <menu
+               label="Model">
+            <command
+                  commandId="fr.ocelet.p3x.runsim"
+                  icon="icons/square16/png/execute.png"
+                  label="Run simulation"
+                  style="push"
+                  tooltip="Run the simulation of the selected model">
+            </command>
+            <command
+                  commandId="fr.ocelet.p3x.savemodel"
+                  icon="icons/square16/png/save_model.png"
+                  label="Save Model"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Colors">
+            <command
+                  commandId="fr.ocelet.p3x.gradients"
+                  icon="icons/square16/png/grads.png"
+                  label="Show Gradients"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.p3x.color"
+                  icon="icons/square16/png/cols.png"
+                  label="Color chooser"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="About">
+            <command
+                  commandId="fr.ocelet.p3x.about"
+                  label="Ocelet Modelling Platform"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="fr.ocelet.p3x.octoolbar">
+            <command
+                  commandId="fr.ocelet.p3x.newocltproject"
+                  icon="icons/square16/gif/new_proj.gif"
+                  label="New Ocelet Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.p3x.import"
+                  icon="icons/square16/png/import_project.png"
+                  label="Import Ocelet Project"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.p3x.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="fr.ocelet.p3x.savemodel"
+                  icon="icons/square16/gif/save_model.gif"
+                  label="Save the project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.p3x.runsim"
+                  icon="icons/square16/png/execute.png"
+                  label="Run simulation"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.p3x.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="fr.ocelet.p3x.gradients"
+                  icon="icons/square16/png/grads.png"
+                  label="Show gradients"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.p3x.color"
+                  icon="icons/square16/png/cols.png"
+                  label="Color chooser"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.p3x.separator3"
+                  visible="true">
+            </separator>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension
