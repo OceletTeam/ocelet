@@ -81,13 +81,14 @@
             name="About dialog">
       </command>
    </extension>
-    <extension point="org.eclipse.ui.editors">
-   </extension>   
+    <!---extension point="org.eclipse.ui.editors">
+   </extension-->   
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
+               id="aoclt.filemenu"
                label="File">
             <command
                   commandId="fr.ocelet.p3x.newocltproject"
