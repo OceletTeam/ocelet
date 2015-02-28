@@ -39,7 +39,6 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		iwp.hideActionSet("org.eclipse.ui.externaltools.ExternalToolsSet");
 		iwp.hideActionSet("org.eclipse.ui.edit.text.actionSet.annotationNavigation");
 		iwp.hideActionSet("org.eclipse.ui.edit.text.actionSet.navigation");
-//		iwp.hideActionSet("org.eclipse.jdt.ui.text.java.actionSet.presentation");
 		iwp.hideActionSet("org.eclipse.jdt.ui.edit.text.java.toggleMarkOccurrences");
 	}
 }
