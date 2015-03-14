@@ -3,11 +3,67 @@
 */
 package fr.ocelet.lang.ui.outline
 
+import fr.ocelet.lang.ocelet.Agregdef;
+import fr.ocelet.lang.ocelet.ConstructorDef;
+import fr.ocelet.lang.ocelet.Datafacer;
+import fr.ocelet.lang.ocelet.Filterdef;
+import fr.ocelet.lang.ocelet.InteractionDef;
+import fr.ocelet.lang.ocelet.Parameter;
+import fr.ocelet.lang.ocelet.PropertyDef;
+import fr.ocelet.lang.ocelet.RelPropertyDef;
+import fr.ocelet.lang.ocelet.Scenario;
+import fr.ocelet.lang.ocelet.ServiceDef;
+import fr.ocelet.lang.ocelet.StrucVarDef;
+
+import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
+
 /**
  * Customization of the default outline structure.
  *
  * see http://www.eclipse.org/Xtext/documentation.html#outline
  */
-class OceletOutlineTreeProvider extends org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider {
+class OceletOutlineTreeProvider extends DefaultOutlineTreeProvider {
+	def _isLeaf(ServiceDef sd) {
+		return true;
+	}
+
+	def _isLeaf(ConstructorDef sd) {
+		return true;
+	}
+
+	def _isLeaf(PropertyDef pdef) {
+		return true;
+	}
+
+	def _isLeaf(StrucVarDef svdef) {
+		return true;
+	}
+
+	def _isLeaf(Scenario scn) {
+		return true;
+	}
+
+	def _isLeaf(Datafacer dat) {
+		return true;
+	}
+
+	def _isLeaf(RelPropertyDef rpd) {
+		return true;
+	}
+
+	def _isLeaf(InteractionDef idef) {
+		return true;
+	}
+
+	def _isLeaf(Parameter idef) {
+		return true;
+	}
+
+	def _isLeaf(Agregdef adef) {
+		return true;
+	}
 	
+	def _isLeaf(Filterdef fdef) {
+		return true;
+	}
 }

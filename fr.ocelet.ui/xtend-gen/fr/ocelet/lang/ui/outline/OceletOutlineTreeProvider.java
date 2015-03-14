@@ -3,6 +3,17 @@
  */
 package fr.ocelet.lang.ui.outline;
 
+import fr.ocelet.lang.ocelet.Agregdef;
+import fr.ocelet.lang.ocelet.ConstructorDef;
+import fr.ocelet.lang.ocelet.Datafacer;
+import fr.ocelet.lang.ocelet.Filterdef;
+import fr.ocelet.lang.ocelet.InteractionDef;
+import fr.ocelet.lang.ocelet.Parameter;
+import fr.ocelet.lang.ocelet.PropertyDef;
+import fr.ocelet.lang.ocelet.RelPropertyDef;
+import fr.ocelet.lang.ocelet.Scenario;
+import fr.ocelet.lang.ocelet.ServiceDef;
+import fr.ocelet.lang.ocelet.StrucVarDef;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
 
 /**
@@ -12,4 +23,47 @@ import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
  */
 @SuppressWarnings("all")
 public class OceletOutlineTreeProvider extends DefaultOutlineTreeProvider {
+  public boolean _isLeaf(final ServiceDef sd) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final ConstructorDef sd) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final PropertyDef pdef) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final StrucVarDef svdef) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final Scenario scn) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final Datafacer dat) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final RelPropertyDef rpd) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final InteractionDef idef) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final Parameter idef) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final Agregdef adef) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final Filterdef fdef) {
+    return true;
+  }
 }
