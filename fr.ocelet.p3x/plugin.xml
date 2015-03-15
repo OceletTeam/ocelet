@@ -104,6 +104,7 @@
             </command>
             <command
                   commandId="fr.ocelet.p3x.exjar"
+                  icon="icons/square16/gif/exportjar_wiz.gif"
                   label="Export to jar"
                   style="push">
             </command>
@@ -121,7 +122,7 @@
                label="Model">
             <command
                   commandId="fr.ocelet.p3x.runsim"
-                  icon="icons/square16/png/execute.png"
+                  icon="icons/square16/gif/launch.gif"
                   label="Run simulation"
                   style="push"
                   tooltip="Run the simulation of the selected model">
@@ -186,7 +187,7 @@
             </command>
             <command
                   commandId="fr.ocelet.p3x.runsim"
-                  icon="icons/square16/png/execute.png"
+                  icon="icons/square16/gif/launch.gif"
                   label="Run simulation"
                   style="push">
             </command>
@@ -278,55 +279,17 @@
          </actionProvider>
       </navigatorContent>
       <commonFilter
-            activeByDefault="false"
+            activeByDefault="true"
             description="%commonFilter.description"
-            id="fr.ocelet.p3x.views.Navigator.commonFilter.onlyJavaOclt"
-            name="%commonFilter.name.0"
+            id="fr.ocelet.p3x.views.navigator.filter"
+            name="project_explorer_filter"
             visibleInUI="true">
          <filterExpression>
-            <not>
-               <or>
-                  <instanceof
-                        value="org.eclipse.core.resources.IProject">
-                  </instanceof>
-                  <and>
-                     <instanceof
-                           value="org.eclipse.core.resources.IFile">
-                     </instanceof>
-                     <test
-                           property="org.eclipse.core.resources.name"
-                           value="*.oclt">
-                     </test>
-                  </and>
-                  <and>
-                     <instanceof
-                           value="org.eclipse.core.resources.IFolder">
-                     </instanceof>
-                     <test
-                           property="org.eclipse.core.resources.name"
-                           value="oclt">
-                     </test>
-                  </and>
-                  <and>
-                     <instanceof
-                           value="org.eclipse.core.resources.IFolder">
-                     </instanceof>
-                     <test
-                           property="org.eclipse.core.resources.name"
-                           value="datafacer">
-                     </test>
-                  </and>
-                  <and>
-                     <instanceof
-                           value="org.eclipse.core.resources.IFolder">
-                     </instanceof>
-                     <test
-                           property="org.eclipse.core.resources.name"
-                           value="output">
-                     </test>
-                  </and>
-               </or>
-            </not>
+            <and>
+                <adapt type="org.eclipse.core.resources.IFolder">
+                    <test property="org.eclipse.core.resources.name" value="bin"/>
+                </adapt>
+            </and>
          </filterExpression>
       </commonFilter>
    </extension>
@@ -364,8 +327,6 @@
             <insertionPoint
                   name="group.properties" separator="true">
             </insertionPoint>
-            
-            
          </popupMenu>
       </viewer>
       <viewerContentBinding
@@ -373,6 +334,9 @@
           <includes>
        	     <contentExtension pattern="org.eclipse.ui.navigator.resourceContent" />		       	      
 	         <contentExtension pattern="org.eclipse.ui.navigator.resources.filters.*"/>
+          <contentExtension
+                pattern="fr.ocelet.p3x.views.navigator.filter">
+          </contentExtension>
           </includes>
       </viewerContentBinding>
       <viewerActionBinding

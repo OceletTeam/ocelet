@@ -5,25 +5,26 @@
 package fr.ocelet.lang.ui.labeling
 
 import com.google.inject.Inject
+import fr.ocelet.lang.ocelet.Agregdef
+import fr.ocelet.lang.ocelet.ConstructorDef
+import fr.ocelet.lang.ocelet.Datafacer
+import fr.ocelet.lang.ocelet.Entity
+import fr.ocelet.lang.ocelet.Filterdef
+import fr.ocelet.lang.ocelet.InteractionDef
+import fr.ocelet.lang.ocelet.Metadata
+import fr.ocelet.lang.ocelet.Model
+import fr.ocelet.lang.ocelet.Parameter
+import fr.ocelet.lang.ocelet.PropertyDef
+import fr.ocelet.lang.ocelet.RelPropertyDef
+import fr.ocelet.lang.ocelet.Relation
+import fr.ocelet.lang.ocelet.Role
+import fr.ocelet.lang.ocelet.Scenario
+import fr.ocelet.lang.ocelet.ServiceDef
+import fr.ocelet.lang.ocelet.StrucVarDef
+import fr.ocelet.lang.ocelet.Strucdef
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
+import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
 
-import fr.ocelet.lang.ocelet.Agregdef;
-import fr.ocelet.lang.ocelet.ConstructorDef;
-import fr.ocelet.lang.ocelet.Datafacer;
-import fr.ocelet.lang.ocelet.Entity;
-import fr.ocelet.lang.ocelet.Filterdef;
-//import fr.ocelet.lang.ocelet.Initdecl;
-import fr.ocelet.lang.ocelet.InteractionDef;
-import fr.ocelet.lang.ocelet.Metadata;
-import fr.ocelet.lang.ocelet.Model;
-import fr.ocelet.lang.ocelet.Parameter;
-import fr.ocelet.lang.ocelet.PropertyDef;
-import fr.ocelet.lang.ocelet.RelPropertyDef;
-import fr.ocelet.lang.ocelet.Relation;
-import fr.ocelet.lang.ocelet.Role;
-import fr.ocelet.lang.ocelet.Scenario;
-import fr.ocelet.lang.ocelet.ServiceDef;
-import fr.ocelet.lang.ocelet.StrucVarDef;
-import fr.ocelet.lang.ocelet.Strucdef;
 //import fr.ocelet.lang.ocelet.VarDeclaration;
 //import fr.ocelet.lang.ocelet.VarInit;
 
@@ -34,10 +35,10 @@ import fr.ocelet.lang.ocelet.Strucdef;
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#labelProvider
  */
-class OceletLabelProvider extends org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider {
+class OceletLabelProvider extends XbaseLabelProvider {
 
 	@Inject
-	new(org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider delegate) {
+	new(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
 	}
 
@@ -90,12 +91,16 @@ override protected doGetText(Object eln){
 private def String relText(Relation rel){
 	val StringBuffer r = new StringBuffer();
 		r.append(rel.name + "<");
+		try{
 		var int i = 0;
 		for (Role rol : rel.getRoles()) {
 			if (i > 0)
 				r.append(",");
 			i = i + 1;
 			r.append(rol.getType().getName());
+		}
+		} catch (NullPointerException npe){
+			// Do no crash if there is no Role defined yet
 		}
 		r.append(">");
 		return r.toString();

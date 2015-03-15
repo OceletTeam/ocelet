@@ -26,6 +26,7 @@ import fr.ocelet.lang.ocelet.Strucdef;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider;
 
 /**
@@ -280,17 +281,25 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     String _name = rel.getName();
     String _plus = (_name + "<");
     r.append(_plus);
-    int i = 0;
-    EList<Role> _roles = rel.getRoles();
-    for (final Role rol : _roles) {
-      {
-        if ((i > 0)) {
-          r.append(",");
+    try {
+      int i = 0;
+      EList<Role> _roles = rel.getRoles();
+      for (final Role rol : _roles) {
+        {
+          if ((i > 0)) {
+            r.append(",");
+          }
+          i = (i + 1);
+          Entity _type = rol.getType();
+          String _name_1 = _type.getName();
+          r.append(_name_1);
         }
-        i = (i + 1);
-        Entity _type = rol.getType();
-        String _name_1 = _type.getName();
-        r.append(_name_1);
+      }
+    } catch (final Throwable _t) {
+      if (_t instanceof NullPointerException) {
+        final NullPointerException npe = (NullPointerException)_t;
+      } else {
+        throw Exceptions.sneakyThrow(_t);
       }
     }
     r.append(">");
