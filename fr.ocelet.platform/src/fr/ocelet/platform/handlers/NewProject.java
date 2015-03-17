@@ -1,7 +1,8 @@
 package fr.ocelet.platform.handlers;
 
-import org.eclipse.e4.core.di.annotations.CanExecute;
-import org.eclipse.e4.core.di.annotations.Execute;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -10,13 +11,12 @@ import org.eclipse.ui.PlatformUI;
 import fr.ocelet.platform.wizards.NewProjectWizard;
 import fr.ocelet.platform.wizards.models.ProjectModel;
 
-@SuppressWarnings({ "restriction" })
-public class NewProject {
+public class NewProject extends AbstractHandler {
 
 	NewProjectWizard npw;
 
-	@Execute
-	public void execute() {
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 		npw = new NewProjectWizard();
@@ -29,11 +29,7 @@ public class NewProject {
 			if (pm != null)
 				pm.createModel();
 		}
-	}
-
-	@CanExecute
-	public boolean canExecute() {
-		return true;
+	  return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package fr.ocelet.platform.handlers;
 
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -10,20 +12,16 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
-import org.eclipse.e4.core.di.annotations.CanExecute;
-import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 import fr.ocelet.platform.PlatformSettings;
 
-@SuppressWarnings("restriction")
 public class RunSim extends ModelCmdHandler {
 
-	@Execute
-	public void execute(IWorkbench workbench) {
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		IProject selectedProject = getSelectedProject();
 
@@ -33,7 +31,7 @@ public class RunSim extends ModelCmdHandler {
 					.openWarning(PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getShell(), "Warning",
 							"Please select an element of the project you want to simulate.");
-			return;
+			return null;
 		}
 
 
@@ -50,7 +48,7 @@ public class RunSim extends ModelCmdHandler {
 					.getActiveWorkbenchWindow().getShell(), "Warning",
 					"Java entry function (main) not found in the \"src\" folder of \""
 							+ selectedProject.getName() + "\".\n");
-			return;
+			return null;
 		}
 
 		// Generate a launch configuration file
@@ -114,11 +112,7 @@ public class RunSim extends ModelCmdHandler {
 			if (PlatformSettings.msgLevel >= PlatformSettings.DEBUG)
 				e.printStackTrace();
 		}
-	}
-
-	@CanExecute
-	public boolean canExecute() {
-		return true;
+		return null;
 	}
 
 }

@@ -1,25 +1,18 @@
 package fr.ocelet.platform.handlers;
 
-import org.eclipse.e4.core.di.annotations.CanExecute;
-import org.eclipse.e4.core.di.annotations.Execute;
-import org.eclipse.ui.IWorkbench;
+import org.eclipse.core.commands.AbstractHandler;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.ui.handlers.HandlerUtil;
 
-import fr.ocelet.platform.wizards.NewProjectWizard;
+public class ExitOmp extends AbstractHandler {
 
-@SuppressWarnings("restriction")
-public class ExitOmp {
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-	NewProjectWizard npw;
+		HandlerUtil.getActiveWorkbenchWindow(event).close();
 
-	@Execute
-	public void execute(IWorkbench workbench) {
-      workbench.close();
+		return null;
 	}
-
-	@CanExecute
-	public boolean canExecute() {
-		return true;
-	}
-
 
 }

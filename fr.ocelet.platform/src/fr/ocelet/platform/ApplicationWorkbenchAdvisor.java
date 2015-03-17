@@ -2,7 +2,6 @@ package fr.ocelet.platform;
 
 import java.net.URL;
 
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
@@ -12,12 +11,11 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
 import org.osgi.framework.Bundle;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-	private static final String PERSPECTIVE_ID = "fr.ocelet.platform.perspective"; //$NON-NLS-1$
+	private static final String PERSPECTIVE_ID = "fr.ocelet.platform.perspective";
 
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
 			IWorkbenchWindowConfigurer configurer) {
@@ -28,18 +26,18 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		return PERSPECTIVE_ID;
 	}
 
-	public IAdaptable getDefaultPageInput() {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		return workspace.getRoot();
+	public IAdaptable getDefaultPageInput() 
+	{
+		return ResourcesPlugin.getWorkspace().getRoot();
 	}
-
-	@Override
-	public void initialize(IWorkbenchConfigurer configurer) {
+	
+	public void initialize(IWorkbenchConfigurer configurer) 
+	{
 		super.initialize(configurer);
 
 		// inserted: register workbench adapters
 		IDE.registerAdapters();
-
+		
 		final String ICONS_PATH = "icons/square16/gif/";
 		final String ICONS_WIZARD_PATH = "icons/wizard/";
 

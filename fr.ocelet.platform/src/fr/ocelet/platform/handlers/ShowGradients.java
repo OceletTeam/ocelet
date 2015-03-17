@@ -2,22 +2,23 @@ package fr.ocelet.platform.handlers;
 
 import java.io.IOException;
 
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.e4.core.di.annotations.CanExecute;
-import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import fr.ocelet.platform.dialogs.ShowGradientsDialog;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.styling.Gradient;
 
-@SuppressWarnings("restriction")
 public class ShowGradients extends ModelCmdHandler {
 
-	@Execute
-	public void execute(Shell shell) {
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 		IProject selectedProject = getSelectedProject();
 		if (selectedProject != null)
 			try {
@@ -38,12 +39,8 @@ public class ShowGradients extends ModelCmdHandler {
 								"The gradient definition file (config/gradients.ocg) was not found for this project.");
 			}
 		else
-			MessageDialog.openWarning(shell, "No gradient definition", "Please select an Ocelet project.");
+			MessageDialog.openWarning(shell, "No gradient definition",
+					"Please select an Ocelet project.");
+		return null;
 	}
-
-	@CanExecute
-	public boolean canExecute() {
-		return true;
-	}
-
 }

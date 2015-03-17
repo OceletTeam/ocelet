@@ -10,8 +10,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.core.commands.AbstractHandler;
 
-public abstract class ModelCmdHandler {
+public abstract class ModelCmdHandler extends AbstractHandler{
 
 	protected IProject getSelectedProject() {
 		IProject selectedProject = null;

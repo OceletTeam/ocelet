@@ -12,15 +12,15 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.e4.core.di.annotations.Execute;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
@@ -29,8 +29,8 @@ import org.osgi.framework.Bundle;
 
 public class ExJarGen extends ModelCmdHandler {
 
-	@Execute
-	public void execute(IWorkbench workbench) {
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		IProject selectedProject = getSelectedProject();
 
@@ -40,7 +40,7 @@ public class ExJarGen extends ModelCmdHandler {
 					.openWarning(PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getShell(), "Warning",
 							"Please select an element of the project you want to export.");
-			return;
+			return null;
 		}
 
 		// Generating the ant file from a template
@@ -99,8 +99,8 @@ public class ExJarGen extends ModelCmdHandler {
 
 			// Defines ant console logger
 			DefaultLogger consoleLogger = new DefaultLogger();
-			MessageConsole capiBuildConsole = new MessageConsole("Generating "+modelName.toLowerCase()+ ".jar",
-					null);
+			MessageConsole capiBuildConsole = new MessageConsole("Generating "
+					+ modelName.toLowerCase() + ".jar", null);
 			ConsolePlugin.getDefault().getConsoleManager()
 					.addConsoles(new IConsole[] { capiBuildConsole });
 			PrintStream printStream = new PrintStream(
@@ -125,6 +125,7 @@ public class ExJarGen extends ModelCmdHandler {
 		} catch (CoreException cex) {
 			cex.printStackTrace();
 		}
+		return null;
 	}
 
 }

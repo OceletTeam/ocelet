@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+
    <extension
-         id="application"
+         id="fr.ocelet.platform.application"
          point="org.eclipse.core.runtime.applications">
-      <application
-            cardinality="singleton-global"
-            thread="main"
-            visible="true">
+      <application>
          <run
                class="fr.ocelet.platform.Application">
          </run>
@@ -16,14 +14,208 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
+            name="%perspective.name"
             class="fr.ocelet.platform.Perspective"
-            id="fr.ocelet.platform.perspective"
-            name="RCP Perspective">
+            id="fr.ocelet.platform.perspective">
       </perspective>
    </extension>
-
    <extension
-         id="product"
+         point="org.eclipse.ui.views">
+      <view
+            class="org.eclipse.ui.navigator.CommonNavigator"
+            fastViewWidthRatio="0.15"
+            id="fr.ocelet.platform.views.Navigator"
+            name="Projects"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="fr.ocelet.platform.cmdcat"
+            name="OceletCmd">
+      </category>
+      <command
+            categoryId="fr.ocelet.platform.cmdcat"
+            defaultHandler="fr.ocelet.platform.handlers.NewProject"
+            id="fr.ocelet.platform.newocltproject"
+            name="New Ocelet Project">
+      </command>
+      <command
+            defaultHandler="fr.ocelet.platform.handlers.RunSim"
+            id="fr.ocelet.platform.runsim"
+            name="Run Simulation">
+      </command>
+      <command
+            categoryId="fr.ocelet.platform.cmdcat"
+            defaultHandler="fr.ocelet.platform.handlers.ImportModel"
+            id="fr.ocelet.platform.import"
+            name="Import Ocelet Project">
+      </command>
+      <command
+            defaultHandler="fr.ocelet.platform.handlers.ExJarGen"
+            id="fr.ocelet.platform.exjar"
+            name="Export to jar">
+      </command>
+      <command
+            categoryId="fr.ocelet.platform.cmdcat"
+            defaultHandler="fr.ocelet.platform.handlers.SaveModel"
+            id="fr.ocelet.platform.savemodel"
+            name="Save Model">
+      </command>
+      <command
+            categoryId="fr.ocelet.platform.cmdcat"
+            defaultHandler="fr.ocelet.platform.handlers.ShowGradients"
+            id="fr.ocelet.platform.gradients"
+            name="Show Gradients">
+      </command>
+      <command
+            categoryId="fr.ocelet.platform.cmdcat"
+            defaultHandler="fr.ocelet.platform.handlers.ShowColorDialog"
+            id="fr.ocelet.platform.color"
+            name="Color Dialog">
+      </command>
+      <command
+            defaultHandler="fr.ocelet.platform.handlers.ShowAboutOmp"
+            id="fr.ocelet.platform.about"
+            name="About dialog">
+      </command>
+   </extension>
+    <!---extension point="org.eclipse.ui.editors">
+   </extension-->   
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="aoclt.filemenu"
+               label="File">
+            <command
+                  commandId="fr.ocelet.platform.newocltproject"
+                  icon="icons/square16/gif/new_proj.gif"
+                  label="New Ocelet project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.import"
+                  icon="icons/square16/png/import_project.png"
+                  label="Import Ocelet Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.exjar"
+                  icon="icons/square16/gif/exportjar_wiz.gif"
+                  label="Export to jar"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.platform.file_sep"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  icon="icons/square16/png/exit.png"
+                  label="Exit">
+            </command>
+         </menu>
+         <menu
+               label="Model">
+            <command
+                  commandId="fr.ocelet.platform.runsim"
+                  icon="icons/square16/gif/launch.gif"
+                  label="Run simulation"
+                  style="push"
+                  tooltip="Run the simulation of the selected model">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.savemodel"
+                  icon="icons/square16/png/save_model.png"
+                  label="Save Model"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Colors">
+            <command
+                  commandId="fr.ocelet.platform.gradients"
+                  icon="icons/square16/png/grads.png"
+                  label="Show Gradients"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.color"
+                  icon="icons/square16/png/cols.png"
+                  label="Color chooser"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="About">
+            <command
+                  commandId="fr.ocelet.platform.about"
+                  label="Ocelet Modelling Platform"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="fr.ocelet.platform.octoolbar">
+            <command
+                  commandId="fr.ocelet.platform.newocltproject"
+                  icon="icons/square16/gif/new_proj.gif"
+                  label="New Ocelet Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.import"
+                  icon="icons/square16/png/import_project.png"
+                  label="Import Ocelet Project"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.platform.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="fr.ocelet.platform.savemodel"
+                  icon="icons/square16/gif/save_model.gif"
+                  label="Save the project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.runsim"
+                  icon="icons/square16/gif/launch.gif"
+                  label="Run simulation"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.platform.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="fr.ocelet.platform.gradients"
+                  icon="icons/square16/png/grads.png"
+                  label="Show gradients"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.color"
+                  icon="icons/square16/png/cols.png"
+                  label="Color chooser"
+                  style="push">
+            </command>
+            <separator
+                  name="fr.ocelet.platform.separator3"
+                  visible="true">
+            </separator>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         id="product_e3"
          point="org.eclipse.core.runtime.products">
       <product
             application="fr.ocelet.platform.application"
@@ -49,39 +241,169 @@
                value="17,224,445,20">
          </property>
          <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
-         </property>
-         <property
                name="appName"
                value="Ocelet Modelling Platform">
          </property>
          <property
-               name="applicationXMI"
-               value="fr.ocelet.platform/Application.e4xmi">
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>
    <extension
          point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="org.eclipse.jdt.internal.ui.browsing.ProjectAndSourceFolderContentProvider"
+            icon="icons/square16/gif/file_proj.gif"
+            id="fr.ocelet.platform.ocltnav"
+            name="%navigatorContent.name">
+         <enablement>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IProject">
+               </adapt>
+               <instanceof
+                     value="org.eclipse.core.resources.IResource">
+               </instanceof>
+            </or>
+         </enablement>
+         <actionProvider
+               class="org.eclipse.ui.internal.navigator.resources.actions.EditActionProvider">
+         </actionProvider>
+         <actionProvider
+               class="org.eclipse.ui.internal.navigator.resources.actions.PropertiesActionProvider">
+         </actionProvider>
+         <actionProvider
+               class="org.eclipse.ui.internal.navigator.resources.actions.RefactorActionProvider">
+         </actionProvider>
+      </navigatorContent>
       <commonFilter
             activeByDefault="true"
-            class="fr.ocelet.platform.filters.ExtJarFilter"
-            description="Hide jar dependencies libraries"
-            id="fr.ocelet.platform.filters.ExtJarFilter"
-            name="Jar dependencies">
+            description="%commonFilter.description"
+            id="fr.ocelet.platform.views.navigator.filter"
+            name="project_explorer_filter"
+            visibleInUI="true">
+         <filterExpression>
+            <and>
+                <adapt type="org.eclipse.core.resources.IFolder">
+                    <test property="org.eclipse.core.resources.name" value="bin"/>
+                </adapt>
+            </and>
+         </filterExpression>
       </commonFilter>
    </extension>
-   <extension
+<extension
          point="org.eclipse.ui.navigator.viewer">
+      <viewer
+            viewerId="fr.ocelet.platform.views.Navigator">
+         <popupMenu
+               allowsPlatformContributions="true"
+               id="org.eclipse.ui.navigator.PopupMenu">
+            <insertionPoint
+                  name="group.new">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.edit">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.reorganize">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.open">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.openWith">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.search">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.build">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.port">
+            </insertionPoint>
+            <insertionPoint
+                  name="group.properties" separator="true">
+            </insertionPoint>
+         </popupMenu>
+      </viewer>
       <viewerContentBinding
-            viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+            viewerId="fr.ocelet.platform.views.Navigator">
+          <includes>
+       	     <contentExtension pattern="org.eclipse.ui.navigator.resourceContent" />		       	      
+	         <contentExtension pattern="org.eclipse.ui.navigator.resources.filters.*"/>
+          <contentExtension
+                pattern="fr.ocelet.platform.views.navigator.filter">
+          </contentExtension>
+          </includes>
+      </viewerContentBinding>
+      <viewerActionBinding
+            viewerId="fr.ocelet.platform.views.Navigator">
          <includes>
             <contentExtension
-                  pattern="fr.ocelet.platform.filters.ExtJarFilter">
+                  pattern="org.eclipse.ui.navigator.resources.filters.*">
             </contentExtension>
+            <contentExtension
+                  pattern="fr.ocelet.platform.navigator.linkHelper">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.workingSets">
+            </contentExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.EditActions">
+            </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.OpenActions">
+            </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.actions.RefactorActionProvider">
+            </actionExtension>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.*Actions">
+            </actionExtension>
          </includes>
-      </viewerContentBinding>
+      </viewerActionBinding>
+      <dragAssistant
+            class="org.eclipse.ui.navigator.resources.ResourceDragAdapterAssistant"
+            viewerId="fr.ocelet.platform.views.Navigator">
+      </dragAssistant>
    </extension>
-
+<extension
+      id="product"
+      point="org.eclipse.core.runtime.products">
+   <product
+         application="fr.ocelet.platform.application"
+         name="Ocelet Modelling Platform">
+      <property
+            name="windowImages"
+            value="icons/window/alt_window_16_32bit.gif,icons/window/alt_window_32_32bit.gif,icons/window/alt_window_48_32bit.gif,icons/window/alt_window_64_32bit.gif,icons/window/alt_window_128_32bit.gif">
+      </property>
+      <property
+            name="aboutText"
+            value="Ocelet Modelling Platform - www.ocelet.fr">
+      </property>
+      <property
+            name="startupForegroundColor"
+            value="71918D">
+      </property>
+      <property
+            name="startupProgressRect"
+            value="15,245,425,14">
+      </property>
+      <property
+            name="startupMessageRect"
+            value="17,224,445,20">
+      </property>
+      <property
+            name="appName"
+            value="Ocelet Modelling Platform">
+      </property>
+      <property
+            name="preferenceCustomization"
+            value="plugin_customization.ini">
+      </property>
+   </product>
+</extension>
 </plugin>
