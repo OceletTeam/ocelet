@@ -15,13 +15,12 @@ import fr.ocelet.lang.ocelet.Metadata;
 import fr.ocelet.lang.ocelet.Model;
 import fr.ocelet.lang.ocelet.OceletPackage;
 import fr.ocelet.lang.ocelet.Paradesc;
-import fr.ocelet.lang.ocelet.Paramax;
 import fr.ocelet.lang.ocelet.Paramdefa;
 import fr.ocelet.lang.ocelet.Parameter;
-import fr.ocelet.lang.ocelet.Paramin;
 import fr.ocelet.lang.ocelet.Paramunit;
 import fr.ocelet.lang.ocelet.Paraopt;
 import fr.ocelet.lang.ocelet.PropertyDef;
+import fr.ocelet.lang.ocelet.Rangevals;
 import fr.ocelet.lang.ocelet.RelPropertyDef;
 import fr.ocelet.lang.ocelet.Relation;
 import fr.ocelet.lang.ocelet.Role;
@@ -177,13 +176,6 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 					return; 
 				}
 				else break;
-			case OceletPackage.PARAMAX:
-				if(context == grammarAccess.getParamaxRule() ||
-				   context == grammarAccess.getParampartRule()) {
-					sequence_Paramax(context, (Paramax) semanticObject); 
-					return; 
-				}
-				else break;
 			case OceletPackage.PARAMDEFA:
 				if(context == grammarAccess.getParamdefaRule() ||
 				   context == grammarAccess.getParampartRule()) {
@@ -194,13 +186,6 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 			case OceletPackage.PARAMETER:
 				if(context == grammarAccess.getParameterRule()) {
 					sequence_Parameter(context, (Parameter) semanticObject); 
-					return; 
-				}
-				else break;
-			case OceletPackage.PARAMIN:
-				if(context == grammarAccess.getParaminRule() ||
-				   context == grammarAccess.getParampartRule()) {
-					sequence_Paramin(context, (Paramin) semanticObject); 
 					return; 
 				}
 				else break;
@@ -222,6 +207,13 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 				if(context == grammarAccess.getEntityElementsRule() ||
 				   context == grammarAccess.getPropertyDefRule()) {
 					sequence_PropertyDef(context, (PropertyDef) semanticObject); 
+					return; 
+				}
+				else break;
+			case OceletPackage.RANGEVALS:
+				if(context == grammarAccess.getParampartRule() ||
+				   context == grammarAccess.getRangevalsRule()) {
+					sequence_Rangevals(context, (Rangevals) semanticObject); 
 					return; 
 				}
 				else break;
@@ -1532,22 +1524,6 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     parmax=Number
-	 */
-	protected void sequence_Paramax(EObject context, Paramax semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, OceletPackage.Literals.PARAMAX__PARMAX) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, OceletPackage.Literals.PARAMAX__PARMAX));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getParamaxAccess().getParmaxNumberParserRuleCall_1_0(), semanticObject.getParmax());
-		feeder.finish();
-	}
-	
-	
-	/**
-	 * Constraint:
 	 *     (pardefa=Number | pardefa=STRING | pardefa='null' | pardefa='false' | pardefa='true')
 	 */
 	protected void sequence_Paramdefa(EObject context, Paramdefa semanticObject) {
@@ -1561,22 +1537,6 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	 */
 	protected void sequence_Parameter(EObject context, Parameter semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Constraint:
-	 *     parmin=Number
-	 */
-	protected void sequence_Paramin(EObject context, Paramin semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, OceletPackage.Literals.PARAMIN__PARMIN) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, OceletPackage.Literals.PARAMIN__PARMIN));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getParaminAccess().getParminNumberParserRuleCall_1_0(), semanticObject.getParmin());
-		feeder.finish();
 	}
 	
 	
@@ -1627,6 +1587,25 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
 		feeder.accept(grammarAccess.getPropertyDefAccess().getTypeJvmTypeReferenceParserRuleCall_1_0(), semanticObject.getType());
 		feeder.accept(grammarAccess.getPropertyDefAccess().getNameIDTerminalRuleCall_2_0(), semanticObject.getName());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (parmin=Number parmax=Number)
+	 */
+	protected void sequence_Rangevals(EObject context, Rangevals semanticObject) {
+		if(errorAcceptor != null) {
+			if(transientValues.isValueTransient(semanticObject, OceletPackage.Literals.RANGEVALS__PARMIN) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, OceletPackage.Literals.RANGEVALS__PARMIN));
+			if(transientValues.isValueTransient(semanticObject, OceletPackage.Literals.RANGEVALS__PARMAX) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, OceletPackage.Literals.RANGEVALS__PARMAX));
+		}
+		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
+		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
+		feeder.accept(grammarAccess.getRangevalsAccess().getParminNumberParserRuleCall_1_0(), semanticObject.getParmin());
+		feeder.accept(grammarAccess.getRangevalsAccess().getParmaxNumberParserRuleCall_3_0(), semanticObject.getParmax());
 		feeder.finish();
 	}
 	

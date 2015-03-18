@@ -86,22 +86,13 @@ public interface OceletFactory extends EFactory
   Paramdefa createParamdefa();
 
   /**
-   * Returns a new object of class '<em>Paramin</em>'.
+   * Returns a new object of class '<em>Rangevals</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Paramin</em>'.
+   * @return a new object of class '<em>Rangevals</em>'.
    * @generated
    */
-  Paramin createParamin();
-
-  /**
-   * Returns a new object of class '<em>Paramax</em>'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return a new object of class '<em>Paramax</em>'.
-   * @generated
-   */
-  Paramax createParamax();
+  Rangevals createRangevals();
 
   /**
    * Returns a new object of class '<em>Paradesc</em>'.

@@ -19,14 +19,13 @@ import fr.ocelet.lang.ocelet.Model;
 import fr.ocelet.lang.ocelet.OceletFactory;
 import fr.ocelet.lang.ocelet.OceletPackage;
 import fr.ocelet.lang.ocelet.Paradesc;
-import fr.ocelet.lang.ocelet.Paramax;
 import fr.ocelet.lang.ocelet.Paramdefa;
 import fr.ocelet.lang.ocelet.Parameter;
-import fr.ocelet.lang.ocelet.Paramin;
 import fr.ocelet.lang.ocelet.Parampart;
 import fr.ocelet.lang.ocelet.Paramunit;
 import fr.ocelet.lang.ocelet.Paraopt;
 import fr.ocelet.lang.ocelet.PropertyDef;
+import fr.ocelet.lang.ocelet.Rangevals;
 import fr.ocelet.lang.ocelet.RelElements;
 import fr.ocelet.lang.ocelet.RelPropertyDef;
 import fr.ocelet.lang.ocelet.Relation;
@@ -111,14 +110,7 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass paraminEClass = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EClass paramaxEClass = null;
+  private EClass rangevalsEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -529,9 +521,9 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getParamin()
+  public EClass getRangevals()
   {
-    return paraminEClass;
+    return rangevalsEClass;
   }
 
   /**
@@ -539,9 +531,9 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getParamin_Parmin()
+  public EAttribute getRangevals_Parmin()
   {
-    return (EAttribute)paraminEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)rangevalsEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -549,19 +541,9 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getParamax()
+  public EAttribute getRangevals_Parmax()
   {
-    return paramaxEClass;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getParamax_Parmax()
-  {
-    return (EAttribute)paramaxEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)rangevalsEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -1338,11 +1320,9 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
     paramdefaEClass = createEClass(PARAMDEFA);
     createEAttribute(paramdefaEClass, PARAMDEFA__PARDEFA);
 
-    paraminEClass = createEClass(PARAMIN);
-    createEAttribute(paraminEClass, PARAMIN__PARMIN);
-
-    paramaxEClass = createEClass(PARAMAX);
-    createEAttribute(paramaxEClass, PARAMAX__PARMAX);
+    rangevalsEClass = createEClass(RANGEVALS);
+    createEAttribute(rangevalsEClass, RANGEVALS__PARMIN);
+    createEAttribute(rangevalsEClass, RANGEVALS__PARMAX);
 
     paradescEClass = createEClass(PARADESC);
     createEAttribute(paradescEClass, PARADESC__PARDESC);
@@ -1477,8 +1457,7 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
     metadataEClass.getESuperTypes().add(this.getModEln());
     paramunitEClass.getESuperTypes().add(this.getParampart());
     paramdefaEClass.getESuperTypes().add(this.getParampart());
-    paraminEClass.getESuperTypes().add(this.getParampart());
-    paramaxEClass.getESuperTypes().add(this.getParampart());
+    rangevalsEClass.getESuperTypes().add(this.getParampart());
     paradescEClass.getESuperTypes().add(this.getParampart());
     paraoptEClass.getESuperTypes().add(this.getParampart());
     entityEClass.getESuperTypes().add(this.getModEln());
@@ -1523,11 +1502,9 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
     initEClass(paramdefaEClass, Paramdefa.class, "Paramdefa", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getParamdefa_Pardefa(), ecorePackage.getEString(), "pardefa", null, 0, 1, Paramdefa.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(paraminEClass, Paramin.class, "Paramin", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getParamin_Parmin(), ecorePackage.getEString(), "parmin", null, 0, 1, Paramin.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-    initEClass(paramaxEClass, Paramax.class, "Paramax", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getParamax_Parmax(), ecorePackage.getEString(), "parmax", null, 0, 1, Paramax.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(rangevalsEClass, Rangevals.class, "Rangevals", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getRangevals_Parmin(), ecorePackage.getEString(), "parmin", null, 0, 1, Rangevals.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getRangevals_Parmax(), ecorePackage.getEString(), "parmax", null, 0, 1, Rangevals.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(paradescEClass, Paradesc.class, "Paradesc", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getParadesc_Pardesc(), ecorePackage.getEString(), "pardesc", null, 0, 1, Paradesc.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

@@ -27,12 +27,11 @@ Parameter : 'parameter' ptype =JvmTypeReference name=ID '{'
   '}'
 ;
 
-Parampart : Paramunit | Paramdefa | Paramin | Paramax | Paradesc | Paraopt;
+Parampart : Paramunit | Paramdefa | Rangevals | Paradesc | Paraopt;
 
 Paramunit :'unit' parunit = STRING;
 Paramdefa :'default' pardefa = (Number | STRING | 'null' | 'false' | 'true');
-Paramin : 'minvalue' parmin=Number;
-Paramax : 'maxvalue' parmax=Number;
+Rangevals : 'range' parmin=Number '..' parmax=Number;
 Paradesc: 'description' pardesc = STRING;
 Paraopt : 'optionnal' paropt = STRING;
 

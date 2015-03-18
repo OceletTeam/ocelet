@@ -124,19 +124,11 @@ public class OceletSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case OceletPackage.PARAMIN:
+      case OceletPackage.RANGEVALS:
       {
-        Paramin paramin = (Paramin)theEObject;
-        T result = caseParamin(paramin);
-        if (result == null) result = caseParampart(paramin);
-        if (result == null) result = defaultCase(theEObject);
-        return result;
-      }
-      case OceletPackage.PARAMAX:
-      {
-        Paramax paramax = (Paramax)theEObject;
-        T result = caseParamax(paramax);
-        if (result == null) result = caseParampart(paramax);
+        Rangevals rangevals = (Rangevals)theEObject;
+        T result = caseRangevals(rangevals);
+        if (result == null) result = caseParampart(rangevals);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -443,33 +435,17 @@ public class OceletSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Paramin</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Rangevals</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Paramin</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Rangevals</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseParamin(Paramin object)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the result of interpreting the object as an instance of '<em>Paramax</em>'.
-   * <!-- begin-user-doc -->
-   * This implementation returns null;
-   * returning a non-null result will terminate the switch.
-   * <!-- end-user-doc -->
-   * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Paramax</em>'.
-   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-   * @generated
-   */
-  public T caseParamax(Paramax object)
+  public T caseRangevals(Rangevals object)
   {
     return null;
   }

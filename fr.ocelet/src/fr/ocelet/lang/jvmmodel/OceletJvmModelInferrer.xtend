@@ -10,8 +10,7 @@ import java.util.List
 import fr.ocelet.lang.ocelet.Metadata
 import fr.ocelet.lang.ocelet.Paradesc
 import fr.ocelet.lang.ocelet.Paramdefa
-import fr.ocelet.lang.ocelet.Paramax
-import fr.ocelet.lang.ocelet.Paramin
+import fr.ocelet.lang.ocelet.Rangevals
 import fr.ocelet.lang.ocelet.Paramunit
 import fr.ocelet.lang.ocelet.Paraopt
 import org.eclipse.emf.ecore.resource.Resource
@@ -54,8 +53,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			switch(ppart) {
           			  Paramunit : {pst.setUnit(ppart.parunit)}
           			  Paramdefa : {pst.setDefvalue(ppart.pardefa)}
-          			  Paramin : {pst.setMin(ppart.parmin)}
-          			  Paramax : {pst.setMax(ppart.parmax)}
+          			  Rangevals : {pst.setMin(ppart.parmin); pst.setMax(ppart.parmax)}
           			  Paradesc : {pst.setDescription(ppart.pardesc)}
           			  Paraopt : {pst.setOptionnal((ppart.paropt.compareToIgnoreCase("true") == 0))}
           			}

@@ -3,7 +3,7 @@
 package fr.ocelet.lang.ocelet.impl;
 
 import fr.ocelet.lang.ocelet.OceletPackage;
-import fr.ocelet.lang.ocelet.Paramax;
+import fr.ocelet.lang.ocelet.Rangevals;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -13,19 +13,40 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Paramax</b></em>'.
+ * An implementation of the model object '<em><b>Rangevals</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link fr.ocelet.lang.ocelet.impl.ParamaxImpl#getParmax <em>Parmax</em>}</li>
+ *   <li>{@link fr.ocelet.lang.ocelet.impl.RangevalsImpl#getParmin <em>Parmin</em>}</li>
+ *   <li>{@link fr.ocelet.lang.ocelet.impl.RangevalsImpl#getParmax <em>Parmax</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ParamaxImpl extends ParampartImpl implements Paramax
+public class RangevalsImpl extends ParampartImpl implements Rangevals
 {
+  /**
+   * The default value of the '{@link #getParmin() <em>Parmin</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParmin()
+   * @generated
+   * @ordered
+   */
+  protected static final String PARMIN_EDEFAULT = null;
+
+  /**
+   * The cached value of the '{@link #getParmin() <em>Parmin</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #getParmin()
+   * @generated
+   * @ordered
+   */
+  protected String parmin = PARMIN_EDEFAULT;
+
   /**
    * The default value of the '{@link #getParmax() <em>Parmax</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -51,7 +72,7 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
    * <!-- end-user-doc -->
    * @generated
    */
-  protected ParamaxImpl()
+  protected RangevalsImpl()
   {
     super();
   }
@@ -64,7 +85,30 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
   @Override
   protected EClass eStaticClass()
   {
-    return OceletPackage.Literals.PARAMAX;
+    return OceletPackage.Literals.RANGEVALS;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String getParmin()
+  {
+    return parmin;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setParmin(String newParmin)
+  {
+    String oldParmin = parmin;
+    parmin = newParmin;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, OceletPackage.RANGEVALS__PARMIN, oldParmin, parmin));
   }
 
   /**
@@ -87,7 +131,7 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
     String oldParmax = parmax;
     parmax = newParmax;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, OceletPackage.PARAMAX__PARMAX, oldParmax, parmax));
+      eNotify(new ENotificationImpl(this, Notification.SET, OceletPackage.RANGEVALS__PARMAX, oldParmax, parmax));
   }
 
   /**
@@ -100,7 +144,9 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
   {
     switch (featureID)
     {
-      case OceletPackage.PARAMAX__PARMAX:
+      case OceletPackage.RANGEVALS__PARMIN:
+        return getParmin();
+      case OceletPackage.RANGEVALS__PARMAX:
         return getParmax();
     }
     return super.eGet(featureID, resolve, coreType);
@@ -116,7 +162,10 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
   {
     switch (featureID)
     {
-      case OceletPackage.PARAMAX__PARMAX:
+      case OceletPackage.RANGEVALS__PARMIN:
+        setParmin((String)newValue);
+        return;
+      case OceletPackage.RANGEVALS__PARMAX:
         setParmax((String)newValue);
         return;
     }
@@ -133,7 +182,10 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
   {
     switch (featureID)
     {
-      case OceletPackage.PARAMAX__PARMAX:
+      case OceletPackage.RANGEVALS__PARMIN:
+        setParmin(PARMIN_EDEFAULT);
+        return;
+      case OceletPackage.RANGEVALS__PARMAX:
         setParmax(PARMAX_EDEFAULT);
         return;
     }
@@ -150,7 +202,9 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
   {
     switch (featureID)
     {
-      case OceletPackage.PARAMAX__PARMAX:
+      case OceletPackage.RANGEVALS__PARMIN:
+        return PARMIN_EDEFAULT == null ? parmin != null : !PARMIN_EDEFAULT.equals(parmin);
+      case OceletPackage.RANGEVALS__PARMAX:
         return PARMAX_EDEFAULT == null ? parmax != null : !PARMAX_EDEFAULT.equals(parmax);
     }
     return super.eIsSet(featureID);
@@ -167,10 +221,12 @@ public class ParamaxImpl extends ParampartImpl implements Paramax
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (parmax: ");
+    result.append(" (parmin: ");
+    result.append(parmin);
+    result.append(", parmax: ");
     result.append(parmax);
     result.append(')');
     return result.toString();
   }
 
-} //ParamaxImpl
+} //RangevalsImpl

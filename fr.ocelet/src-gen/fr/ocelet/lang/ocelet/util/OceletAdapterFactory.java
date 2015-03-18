@@ -110,14 +110,9 @@ public class OceletAdapterFactory extends AdapterFactoryImpl
         return createParamdefaAdapter();
       }
       @Override
-      public Adapter caseParamin(Paramin object)
+      public Adapter caseRangevals(Rangevals object)
       {
-        return createParaminAdapter();
-      }
-      @Override
-      public Adapter caseParamax(Paramax object)
-      {
-        return createParamaxAdapter();
+        return createRangevalsAdapter();
       }
       @Override
       public Adapter caseParadesc(Paradesc object)
@@ -367,31 +362,16 @@ public class OceletAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link fr.ocelet.lang.ocelet.Paramin <em>Paramin</em>}'.
+   * Creates a new adapter for an object of class '{@link fr.ocelet.lang.ocelet.Rangevals <em>Rangevals</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see fr.ocelet.lang.ocelet.Paramin
+   * @see fr.ocelet.lang.ocelet.Rangevals
    * @generated
    */
-  public Adapter createParaminAdapter()
-  {
-    return null;
-  }
-
-  /**
-   * Creates a new adapter for an object of class '{@link fr.ocelet.lang.ocelet.Paramax <em>Paramax</em>}'.
-   * <!-- begin-user-doc -->
-   * This default implementation returns null so that we can easily ignore cases;
-   * it's useful to ignore a case when inheritance will catch all the cases anyway.
-   * <!-- end-user-doc -->
-   * @return the new adapter.
-   * @see fr.ocelet.lang.ocelet.Paramax
-   * @generated
-   */
-  public Adapter createParamaxAdapter()
+  public Adapter createRangevalsAdapter()
   {
     return null;
   }

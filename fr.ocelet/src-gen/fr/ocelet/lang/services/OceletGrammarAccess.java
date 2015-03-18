@@ -217,16 +217,15 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final RuleCall cParamunitParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cParamdefaParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cParaminParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cParamaxParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
-		private final RuleCall cParadescParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
-		private final RuleCall cParaoptParserRuleCall_5 = (RuleCall)cAlternatives.eContents().get(5);
+		private final RuleCall cRangevalsParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		private final RuleCall cParadescParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
+		private final RuleCall cParaoptParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
 		//Parampart:
-		//	Paramunit | Paramdefa | Paramin | Paramax | Paradesc | Paraopt;
+		//	Paramunit | Paramdefa | Rangevals | Paradesc | Paraopt;
 		public ParserRule getRule() { return rule; }
 
-		//Paramunit | Paramdefa | Paramin | Paramax | Paradesc | Paraopt
+		//Paramunit | Paramdefa | Rangevals | Paradesc | Paraopt
 		public Alternatives getAlternatives() { return cAlternatives; }
 
 		//Paramunit
@@ -235,17 +234,14 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		//Paramdefa
 		public RuleCall getParamdefaParserRuleCall_1() { return cParamdefaParserRuleCall_1; }
 
-		//Paramin
-		public RuleCall getParaminParserRuleCall_2() { return cParaminParserRuleCall_2; }
-
-		//Paramax
-		public RuleCall getParamaxParserRuleCall_3() { return cParamaxParserRuleCall_3; }
+		//Rangevals
+		public RuleCall getRangevalsParserRuleCall_2() { return cRangevalsParserRuleCall_2; }
 
 		//Paradesc
-		public RuleCall getParadescParserRuleCall_4() { return cParadescParserRuleCall_4; }
+		public RuleCall getParadescParserRuleCall_3() { return cParadescParserRuleCall_3; }
 
 		//Paraopt
-		public RuleCall getParaoptParserRuleCall_5() { return cParaoptParserRuleCall_5; }
+		public RuleCall getParaoptParserRuleCall_4() { return cParaoptParserRuleCall_4; }
 	}
 
 	public class ParamunitElements extends AbstractParserRuleElementFinder {
@@ -316,52 +312,40 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		public Keyword getPardefaTrueKeyword_1_0_4() { return cPardefaTrueKeyword_1_0_4; }
 	}
 
-	public class ParaminElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Paramin");
+	public class RangevalsElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Rangevals");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cMinvalueKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cRangeKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cParminAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cParminNumberParserRuleCall_1_0 = (RuleCall)cParminAssignment_1.eContents().get(0);
+		private final Keyword cFullStopFullStopKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cParmaxAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cParmaxNumberParserRuleCall_3_0 = (RuleCall)cParmaxAssignment_3.eContents().get(0);
 		
-		//Paramin:
-		//	"minvalue" parmin=Number;
+		//Rangevals:
+		//	"range" parmin=Number ".." parmax=Number;
 		public ParserRule getRule() { return rule; }
 
-		//"minvalue" parmin=Number
+		//"range" parmin=Number ".." parmax=Number
 		public Group getGroup() { return cGroup; }
 
-		//"minvalue"
-		public Keyword getMinvalueKeyword_0() { return cMinvalueKeyword_0; }
+		//"range"
+		public Keyword getRangeKeyword_0() { return cRangeKeyword_0; }
 
 		//parmin=Number
 		public Assignment getParminAssignment_1() { return cParminAssignment_1; }
 
 		//Number
 		public RuleCall getParminNumberParserRuleCall_1_0() { return cParminNumberParserRuleCall_1_0; }
-	}
 
-	public class ParamaxElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Paramax");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cMaxvalueKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cParmaxAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cParmaxNumberParserRuleCall_1_0 = (RuleCall)cParmaxAssignment_1.eContents().get(0);
-		
-		//Paramax:
-		//	"maxvalue" parmax=Number;
-		public ParserRule getRule() { return rule; }
-
-		//"maxvalue" parmax=Number
-		public Group getGroup() { return cGroup; }
-
-		//"maxvalue"
-		public Keyword getMaxvalueKeyword_0() { return cMaxvalueKeyword_0; }
+		//".."
+		public Keyword getFullStopFullStopKeyword_2() { return cFullStopFullStopKeyword_2; }
 
 		//parmax=Number
-		public Assignment getParmaxAssignment_1() { return cParmaxAssignment_1; }
+		public Assignment getParmaxAssignment_3() { return cParmaxAssignment_3; }
 
 		//Number
-		public RuleCall getParmaxNumberParserRuleCall_1_0() { return cParmaxNumberParserRuleCall_1_0; }
+		public RuleCall getParmaxNumberParserRuleCall_3_0() { return cParmaxNumberParserRuleCall_3_0; }
 	}
 
 	public class ParadescElements extends AbstractParserRuleElementFinder {
@@ -1565,8 +1549,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	private final ParampartElements pParampart;
 	private final ParamunitElements pParamunit;
 	private final ParamdefaElements pParamdefa;
-	private final ParaminElements pParamin;
-	private final ParamaxElements pParamax;
+	private final RangevalsElements pRangevals;
 	private final ParadescElements pParadesc;
 	private final ParaoptElements pParaopt;
 	private final EntityElements pEntity;
@@ -1609,8 +1592,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		this.pParampart = new ParampartElements();
 		this.pParamunit = new ParamunitElements();
 		this.pParamdefa = new ParamdefaElements();
-		this.pParamin = new ParaminElements();
-		this.pParamax = new ParamaxElements();
+		this.pRangevals = new RangevalsElements();
 		this.pParadesc = new ParadescElements();
 		this.pParaopt = new ParaoptElements();
 		this.pEntity = new EntityElements();
@@ -1707,7 +1689,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Parampart:
-	//	Paramunit | Paramdefa | Paramin | Paramax | Paradesc | Paraopt;
+	//	Paramunit | Paramdefa | Rangevals | Paradesc | Paraopt;
 	public ParampartElements getParampartAccess() {
 		return pParampart;
 	}
@@ -1736,24 +1718,14 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		return getParamdefaAccess().getRule();
 	}
 
-	//Paramin:
-	//	"minvalue" parmin=Number;
-	public ParaminElements getParaminAccess() {
-		return pParamin;
+	//Rangevals:
+	//	"range" parmin=Number ".." parmax=Number;
+	public RangevalsElements getRangevalsAccess() {
+		return pRangevals;
 	}
 	
-	public ParserRule getParaminRule() {
-		return getParaminAccess().getRule();
-	}
-
-	//Paramax:
-	//	"maxvalue" parmax=Number;
-	public ParamaxElements getParamaxAccess() {
-		return pParamax;
-	}
-	
-	public ParserRule getParamaxRule() {
-		return getParamaxAccess().getRule();
+	public ParserRule getRangevalsRule() {
+		return getRangevalsAccess().getRule();
 	}
 
 	//Paradesc:

@@ -29,11 +29,9 @@
     <genClasses ecoreClass="Ocelet.ecore#//Paramdefa">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ocelet.ecore#//Paramdefa/pardefa"/>
     </genClasses>
-    <genClasses ecoreClass="Ocelet.ecore#//Paramin">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ocelet.ecore#//Paramin/parmin"/>
-    </genClasses>
-    <genClasses ecoreClass="Ocelet.ecore#//Paramax">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ocelet.ecore#//Paramax/parmax"/>
+    <genClasses ecoreClass="Ocelet.ecore#//Rangevals">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ocelet.ecore#//Rangevals/parmin"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ocelet.ecore#//Rangevals/parmax"/>
     </genClasses>
     <genClasses ecoreClass="Ocelet.ecore#//Paradesc">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ocelet.ecore#//Paradesc/pardesc"/>

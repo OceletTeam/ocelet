@@ -71,8 +71,7 @@ public class OceletFactoryImpl extends EFactoryImpl implements OceletFactory
       case OceletPackage.PARAMPART: return createParampart();
       case OceletPackage.PARAMUNIT: return createParamunit();
       case OceletPackage.PARAMDEFA: return createParamdefa();
-      case OceletPackage.PARAMIN: return createParamin();
-      case OceletPackage.PARAMAX: return createParamax();
+      case OceletPackage.RANGEVALS: return createRangevals();
       case OceletPackage.PARADESC: return createParadesc();
       case OceletPackage.PARAOPT: return createParaopt();
       case OceletPackage.ENTITY: return createEntity();
@@ -184,21 +183,10 @@ public class OceletFactoryImpl extends EFactoryImpl implements OceletFactory
    * <!-- end-user-doc -->
    * @generated
    */
-  public Paramin createParamin()
+  public Rangevals createRangevals()
   {
-    ParaminImpl paramin = new ParaminImpl();
-    return paramin;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Paramax createParamax()
-  {
-    ParamaxImpl paramax = new ParamaxImpl();
-    return paramax;
+    RangevalsImpl rangevals = new RangevalsImpl();
+    return rangevals;
   }
 
   /**

@@ -27,10 +27,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Paramdefa" eSuperTypes="#//Parampart">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pardefa" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Paramin" eSuperTypes="#//Parampart">
+  <eClassifiers xsi:type="ecore:EClass" name="Rangevals" eSuperTypes="#//Parampart">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="parmin" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Paramax" eSuperTypes="#//Parampart">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="parmax" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Paradesc" eSuperTypes="#//Parampart">

@@ -93,8 +93,7 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getParameterAccess().getGroup(), "rule__Parameter__Group__0");
 					put(grammarAccess.getParamunitAccess().getGroup(), "rule__Paramunit__Group__0");
 					put(grammarAccess.getParamdefaAccess().getGroup(), "rule__Paramdefa__Group__0");
-					put(grammarAccess.getParaminAccess().getGroup(), "rule__Paramin__Group__0");
-					put(grammarAccess.getParamaxAccess().getGroup(), "rule__Paramax__Group__0");
+					put(grammarAccess.getRangevalsAccess().getGroup(), "rule__Rangevals__Group__0");
 					put(grammarAccess.getParadescAccess().getGroup(), "rule__Paradesc__Group__0");
 					put(grammarAccess.getParaoptAccess().getGroup(), "rule__Paraopt__Group__0");
 					put(grammarAccess.getEntityAccess().getGroup(), "rule__Entity__Group__0");
@@ -322,8 +321,8 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getParameterAccess().getParampartsAssignment_4(), "rule__Parameter__ParampartsAssignment_4");
 					put(grammarAccess.getParamunitAccess().getParunitAssignment_1(), "rule__Paramunit__ParunitAssignment_1");
 					put(grammarAccess.getParamdefaAccess().getPardefaAssignment_1(), "rule__Paramdefa__PardefaAssignment_1");
-					put(grammarAccess.getParaminAccess().getParminAssignment_1(), "rule__Paramin__ParminAssignment_1");
-					put(grammarAccess.getParamaxAccess().getParmaxAssignment_1(), "rule__Paramax__ParmaxAssignment_1");
+					put(grammarAccess.getRangevalsAccess().getParminAssignment_1(), "rule__Rangevals__ParminAssignment_1");
+					put(grammarAccess.getRangevalsAccess().getParmaxAssignment_3(), "rule__Rangevals__ParmaxAssignment_3");
 					put(grammarAccess.getParadescAccess().getPardescAssignment_1(), "rule__Paradesc__PardescAssignment_1");
 					put(grammarAccess.getParaoptAccess().getParoptAssignment_1(), "rule__Paraopt__ParoptAssignment_1");
 					put(grammarAccess.getEntityAccess().getNameAssignment_1(), "rule__Entity__NameAssignment_1");

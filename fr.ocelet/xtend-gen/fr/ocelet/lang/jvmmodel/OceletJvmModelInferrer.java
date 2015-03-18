@@ -8,13 +8,12 @@ import fr.ocelet.lang.ocelet.Metadata;
 import fr.ocelet.lang.ocelet.ModEln;
 import fr.ocelet.lang.ocelet.Model;
 import fr.ocelet.lang.ocelet.Paradesc;
-import fr.ocelet.lang.ocelet.Paramax;
 import fr.ocelet.lang.ocelet.Paramdefa;
 import fr.ocelet.lang.ocelet.Parameter;
-import fr.ocelet.lang.ocelet.Paramin;
 import fr.ocelet.lang.ocelet.Parampart;
 import fr.ocelet.lang.ocelet.Paramunit;
 import fr.ocelet.lang.ocelet.Paraopt;
+import fr.ocelet.lang.ocelet.Rangevals;
 import fr.ocelet.lang.ocelet.Scenario;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,16 +115,11 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     }
                   }
                   if (!_matched_1) {
-                    if (ppart instanceof Paramin) {
+                    if (ppart instanceof Rangevals) {
                       _matched_1=true;
-                      String _parmin = ((Paramin)ppart).getParmin();
+                      String _parmin = ((Rangevals)ppart).getParmin();
                       pst.setMin(_parmin);
-                    }
-                  }
-                  if (!_matched_1) {
-                    if (ppart instanceof Paramax) {
-                      _matched_1=true;
-                      String _parmax = ((Paramax)ppart).getParmax();
+                      String _parmax = ((Rangevals)ppart).getParmax();
                       pst.setMax(_parmax);
                     }
                   }

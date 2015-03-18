@@ -438,41 +438,31 @@ ruleParampart returns [EObject current=null]
 
     |
     { 
-        newCompositeNode(grammarAccess.getParampartAccess().getParaminParserRuleCall_2()); 
+        newCompositeNode(grammarAccess.getParampartAccess().getRangevalsParserRuleCall_2()); 
     }
-    this_Paramin_2=ruleParamin
+    this_Rangevals_2=ruleRangevals
     { 
-        $current = $this_Paramin_2.current; 
+        $current = $this_Rangevals_2.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getParampartAccess().getParamaxParserRuleCall_3()); 
+        newCompositeNode(grammarAccess.getParampartAccess().getParadescParserRuleCall_3()); 
     }
-    this_Paramax_3=ruleParamax
+    this_Paradesc_3=ruleParadesc
     { 
-        $current = $this_Paramax_3.current; 
+        $current = $this_Paradesc_3.current; 
         afterParserOrEnumRuleCall();
     }
 
     |
     { 
-        newCompositeNode(grammarAccess.getParampartAccess().getParadescParserRuleCall_4()); 
+        newCompositeNode(grammarAccess.getParampartAccess().getParaoptParserRuleCall_4()); 
     }
-    this_Paradesc_4=ruleParadesc
+    this_Paraopt_4=ruleParaopt
     { 
-        $current = $this_Paradesc_4.current; 
-        afterParserOrEnumRuleCall();
-    }
-
-    |
-    { 
-        newCompositeNode(grammarAccess.getParampartAccess().getParaoptParserRuleCall_5()); 
-    }
-    this_Paraopt_5=ruleParaopt
-    { 
-        $current = $this_Paraopt_5.current; 
+        $current = $this_Paraopt_4.current; 
         afterParserOrEnumRuleCall();
     }
 )
@@ -622,32 +612,32 @@ ruleParamdefa returns [EObject current=null]
 
 
 
-// Entry rule entryRuleParamin
-entryRuleParamin returns [EObject current=null] 
+// Entry rule entryRuleRangevals
+entryRuleRangevals returns [EObject current=null] 
 	:
-	{ newCompositeNode(grammarAccess.getParaminRule()); }
-	 iv_ruleParamin=ruleParamin 
-	 { $current=$iv_ruleParamin.current; } 
+	{ newCompositeNode(grammarAccess.getRangevalsRule()); }
+	 iv_ruleRangevals=ruleRangevals 
+	 { $current=$iv_ruleRangevals.current; } 
 	 EOF 
 ;
 
-// Rule Paramin
-ruleParamin returns [EObject current=null] 
+// Rule Rangevals
+ruleRangevals returns [EObject current=null] 
     @init { enterRule(); 
     }
     @after { leaveRule(); }:
-(	otherlv_0='minvalue' 
+(	otherlv_0='range' 
     {
-    	newLeafNode(otherlv_0, grammarAccess.getParaminAccess().getMinvalueKeyword_0());
+    	newLeafNode(otherlv_0, grammarAccess.getRangevalsAccess().getRangeKeyword_0());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getParaminAccess().getParminNumberParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getRangevalsAccess().getParminNumberParserRuleCall_1_0()); 
 	    }
 		lv_parmin_1_0=ruleNumber		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getParaminRule());
+	            $current = createModelElementForParent(grammarAccess.getRangevalsRule());
 	        }
        		set(
        			$current, 
@@ -658,44 +648,23 @@ ruleParamin returns [EObject current=null]
 	    }
 
 )
-))
-;
-
-
-
-
-
-// Entry rule entryRuleParamax
-entryRuleParamax returns [EObject current=null] 
-	:
-	{ newCompositeNode(grammarAccess.getParamaxRule()); }
-	 iv_ruleParamax=ruleParamax 
-	 { $current=$iv_ruleParamax.current; } 
-	 EOF 
-;
-
-// Rule Paramax
-ruleParamax returns [EObject current=null] 
-    @init { enterRule(); 
-    }
-    @after { leaveRule(); }:
-(	otherlv_0='maxvalue' 
+)	otherlv_2='..' 
     {
-    	newLeafNode(otherlv_0, grammarAccess.getParamaxAccess().getMaxvalueKeyword_0());
+    	newLeafNode(otherlv_2, grammarAccess.getRangevalsAccess().getFullStopFullStopKeyword_2());
     }
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getParamaxAccess().getParmaxNumberParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getRangevalsAccess().getParmaxNumberParserRuleCall_3_0()); 
 	    }
-		lv_parmax_1_0=ruleNumber		{
+		lv_parmax_3_0=ruleNumber		{
 	        if ($current==null) {
-	            $current = createModelElementForParent(grammarAccess.getParamaxRule());
+	            $current = createModelElementForParent(grammarAccess.getRangevalsRule());
 	        }
        		set(
        			$current, 
        			"parmax",
-        		lv_parmax_1_0, 
+        		lv_parmax_3_0, 
         		"Number");
 	        afterParserOrEnumRuleCall();
 	    }

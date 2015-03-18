@@ -280,14 +280,14 @@ public interface OceletPackage extends EPackage
   int PARAMDEFA_FEATURE_COUNT = PARAMPART_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link fr.ocelet.lang.ocelet.impl.ParaminImpl <em>Paramin</em>}' class.
+   * The meta object id for the '{@link fr.ocelet.lang.ocelet.impl.RangevalsImpl <em>Rangevals</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see fr.ocelet.lang.ocelet.impl.ParaminImpl
-   * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getParamin()
+   * @see fr.ocelet.lang.ocelet.impl.RangevalsImpl
+   * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getRangevals()
    * @generated
    */
-  int PARAMIN = 7;
+  int RANGEVALS = 7;
 
   /**
    * The feature id for the '<em><b>Parmin</b></em>' attribute.
@@ -296,26 +296,7 @@ public interface OceletPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARAMIN__PARMIN = PARAMPART_FEATURE_COUNT + 0;
-
-  /**
-   * The number of structural features of the '<em>Paramin</em>' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PARAMIN_FEATURE_COUNT = PARAMPART_FEATURE_COUNT + 1;
-
-  /**
-   * The meta object id for the '{@link fr.ocelet.lang.ocelet.impl.ParamaxImpl <em>Paramax</em>}' class.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see fr.ocelet.lang.ocelet.impl.ParamaxImpl
-   * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getParamax()
-   * @generated
-   */
-  int PARAMAX = 8;
+  int RANGEVALS__PARMIN = PARAMPART_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Parmax</b></em>' attribute.
@@ -324,16 +305,16 @@ public interface OceletPackage extends EPackage
    * @generated
    * @ordered
    */
-  int PARAMAX__PARMAX = PARAMPART_FEATURE_COUNT + 0;
+  int RANGEVALS__PARMAX = PARAMPART_FEATURE_COUNT + 1;
 
   /**
-   * The number of structural features of the '<em>Paramax</em>' class.
+   * The number of structural features of the '<em>Rangevals</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PARAMAX_FEATURE_COUNT = PARAMPART_FEATURE_COUNT + 1;
+  int RANGEVALS_FEATURE_COUNT = PARAMPART_FEATURE_COUNT + 2;
 
   /**
    * The meta object id for the '{@link fr.ocelet.lang.ocelet.impl.ParadescImpl <em>Paradesc</em>}' class.
@@ -343,7 +324,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getParadesc()
    * @generated
    */
-  int PARADESC = 9;
+  int PARADESC = 8;
 
   /**
    * The feature id for the '<em><b>Pardesc</b></em>' attribute.
@@ -371,7 +352,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getParaopt()
    * @generated
    */
-  int PARAOPT = 10;
+  int PARAOPT = 9;
 
   /**
    * The feature id for the '<em><b>Paropt</b></em>' attribute.
@@ -399,7 +380,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getEntity()
    * @generated
    */
-  int ENTITY = 11;
+  int ENTITY = 10;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -436,7 +417,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getEntityElements()
    * @generated
    */
-  int ENTITY_ELEMENTS = 12;
+  int ENTITY_ELEMENTS = 11;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -464,7 +445,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getPropertyDef()
    * @generated
    */
-  int PROPERTY_DEF = 13;
+  int PROPERTY_DEF = 12;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -501,7 +482,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getServiceDef()
    * @generated
    */
-  int SERVICE_DEF = 14;
+  int SERVICE_DEF = 13;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -556,7 +537,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getConstructorDef()
    * @generated
    */
-  int CONSTRUCTOR_DEF = 15;
+  int CONSTRUCTOR_DEF = 14;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -602,7 +583,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getRelation()
    * @generated
    */
-  int RELATION = 16;
+  int RELATION = 15;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -648,7 +629,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getRole()
    * @generated
    */
-  int ROLE = 17;
+  int ROLE = 16;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -685,7 +666,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getRelElements()
    * @generated
    */
-  int REL_ELEMENTS = 18;
+  int REL_ELEMENTS = 17;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -713,7 +694,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getRelPropertyDef()
    * @generated
    */
-  int REL_PROPERTY_DEF = 19;
+  int REL_PROPERTY_DEF = 18;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -750,7 +731,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getInteractionDef()
    * @generated
    */
-  int INTERACTION_DEF = 20;
+  int INTERACTION_DEF = 19;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -805,7 +786,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getComitexpr()
    * @generated
    */
-  int COMITEXPR = 21;
+  int COMITEXPR = 20;
 
   /**
    * The feature id for the '<em><b>Rol</b></em>' reference.
@@ -860,7 +841,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getFilterdef()
    * @generated
    */
-  int FILTERDEF = 22;
+  int FILTERDEF = 21;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -906,7 +887,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getStrucdef()
    * @generated
    */
-  int STRUCDEF = 23;
+  int STRUCDEF = 22;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -961,7 +942,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getStrucEln()
    * @generated
    */
-  int STRUC_ELN = 24;
+  int STRUC_ELN = 23;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -998,7 +979,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getStrucVarDef()
    * @generated
    */
-  int STRUC_VAR_DEF = 25;
+  int STRUC_VAR_DEF = 24;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -1035,7 +1016,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getStrucFuncDef()
    * @generated
    */
-  int STRUC_FUNC_DEF = 26;
+  int STRUC_FUNC_DEF = 25;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -1090,7 +1071,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getDatafacer()
    * @generated
    */
-  int DATAFACER = 27;
+  int DATAFACER = 26;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1145,7 +1126,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getMatch()
    * @generated
    */
-  int MATCH = 28;
+  int MATCH = 27;
 
   /**
    * The feature id for the '<em><b>Mtype</b></em>' reference.
@@ -1182,7 +1163,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getMatchtype()
    * @generated
    */
-  int MATCHTYPE = 29;
+  int MATCHTYPE = 28;
 
   /**
    * The number of structural features of the '<em>Matchtype</em>' class.
@@ -1201,7 +1182,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getMdef()
    * @generated
    */
-  int MDEF = 30;
+  int MDEF = 29;
 
   /**
    * The feature id for the '<em><b>Prop</b></em>' attribute.
@@ -1238,7 +1219,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getAgregdef()
    * @generated
    */
-  int AGREGDEF = 31;
+  int AGREGDEF = 30;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -1284,7 +1265,7 @@ public interface OceletPackage extends EPackage
    * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getScenario()
    * @generated
    */
-  int SCENARIO = 32;
+  int SCENARIO = 31;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1495,46 +1476,36 @@ public interface OceletPackage extends EPackage
   EAttribute getParamdefa_Pardefa();
 
   /**
-   * Returns the meta object for class '{@link fr.ocelet.lang.ocelet.Paramin <em>Paramin</em>}'.
+   * Returns the meta object for class '{@link fr.ocelet.lang.ocelet.Rangevals <em>Rangevals</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Paramin</em>'.
-   * @see fr.ocelet.lang.ocelet.Paramin
+   * @return the meta object for class '<em>Rangevals</em>'.
+   * @see fr.ocelet.lang.ocelet.Rangevals
    * @generated
    */
-  EClass getParamin();
+  EClass getRangevals();
 
   /**
-   * Returns the meta object for the attribute '{@link fr.ocelet.lang.ocelet.Paramin#getParmin <em>Parmin</em>}'.
+   * Returns the meta object for the attribute '{@link fr.ocelet.lang.ocelet.Rangevals#getParmin <em>Parmin</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Parmin</em>'.
-   * @see fr.ocelet.lang.ocelet.Paramin#getParmin()
-   * @see #getParamin()
+   * @see fr.ocelet.lang.ocelet.Rangevals#getParmin()
+   * @see #getRangevals()
    * @generated
    */
-  EAttribute getParamin_Parmin();
+  EAttribute getRangevals_Parmin();
 
   /**
-   * Returns the meta object for class '{@link fr.ocelet.lang.ocelet.Paramax <em>Paramax</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Paramax</em>'.
-   * @see fr.ocelet.lang.ocelet.Paramax
-   * @generated
-   */
-  EClass getParamax();
-
-  /**
-   * Returns the meta object for the attribute '{@link fr.ocelet.lang.ocelet.Paramax#getParmax <em>Parmax</em>}'.
+   * Returns the meta object for the attribute '{@link fr.ocelet.lang.ocelet.Rangevals#getParmax <em>Parmax</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Parmax</em>'.
-   * @see fr.ocelet.lang.ocelet.Paramax#getParmax()
-   * @see #getParamax()
+   * @see fr.ocelet.lang.ocelet.Rangevals#getParmax()
+   * @see #getRangevals()
    * @generated
    */
-  EAttribute getParamax_Parmax();
+  EAttribute getRangevals_Parmax();
 
   /**
    * Returns the meta object for class '{@link fr.ocelet.lang.ocelet.Paradesc <em>Paradesc</em>}'.
@@ -2478,14 +2449,14 @@ public interface OceletPackage extends EPackage
     EAttribute PARAMDEFA__PARDEFA = eINSTANCE.getParamdefa_Pardefa();
 
     /**
-     * The meta object literal for the '{@link fr.ocelet.lang.ocelet.impl.ParaminImpl <em>Paramin</em>}' class.
+     * The meta object literal for the '{@link fr.ocelet.lang.ocelet.impl.RangevalsImpl <em>Rangevals</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see fr.ocelet.lang.ocelet.impl.ParaminImpl
-     * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getParamin()
+     * @see fr.ocelet.lang.ocelet.impl.RangevalsImpl
+     * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getRangevals()
      * @generated
      */
-    EClass PARAMIN = eINSTANCE.getParamin();
+    EClass RANGEVALS = eINSTANCE.getRangevals();
 
     /**
      * The meta object literal for the '<em><b>Parmin</b></em>' attribute feature.
@@ -2493,17 +2464,7 @@ public interface OceletPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute PARAMIN__PARMIN = eINSTANCE.getParamin_Parmin();
-
-    /**
-     * The meta object literal for the '{@link fr.ocelet.lang.ocelet.impl.ParamaxImpl <em>Paramax</em>}' class.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see fr.ocelet.lang.ocelet.impl.ParamaxImpl
-     * @see fr.ocelet.lang.ocelet.impl.OceletPackageImpl#getParamax()
-     * @generated
-     */
-    EClass PARAMAX = eINSTANCE.getParamax();
+    EAttribute RANGEVALS__PARMIN = eINSTANCE.getRangevals_Parmin();
 
     /**
      * The meta object literal for the '<em><b>Parmax</b></em>' attribute feature.
@@ -2511,7 +2472,7 @@ public interface OceletPackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute PARAMAX__PARMAX = eINSTANCE.getParamax_Parmax();
+    EAttribute RANGEVALS__PARMAX = eINSTANCE.getRangevals_Parmax();
 
     /**
      * The meta object literal for the '{@link fr.ocelet.lang.ocelet.impl.ParadescImpl <em>Paradesc</em>}' class.
