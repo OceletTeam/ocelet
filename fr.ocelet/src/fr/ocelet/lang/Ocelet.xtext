@@ -31,10 +31,9 @@ Parampart : Paramunit | Paramdefa | Rangevals | Paradesc | Paraopt;
 
 Paramunit :'unit' parunit = STRING;
 Paramdefa :'default' pardefa = (Number | STRING | 'null' | 'false' | 'true');
-Rangevals : 'range' parmin=Number '..' parmax=Number;
-Paradesc: 'description' pardesc = STRING;
-Paraopt : 'optionnal' paropt = STRING;
-
+Rangevals :'range' parmin=Number '..' parmax=Number;
+Paradesc  :'description' pardesc = STRING;
+Paraopt   :'optionnal' paropt = STRING;
 	
 // ------ Entity ------
 

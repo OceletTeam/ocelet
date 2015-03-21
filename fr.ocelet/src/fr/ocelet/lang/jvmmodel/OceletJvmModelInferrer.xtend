@@ -1,20 +1,27 @@
 package fr.ocelet.lang.jvmmodel
 
 import com.google.inject.Inject
+import fr.ocelet.lang.ocelet.ConstructorDef
+import fr.ocelet.lang.ocelet.Entity
+import fr.ocelet.lang.ocelet.Metadata
+import fr.ocelet.lang.ocelet.Model
+import fr.ocelet.lang.ocelet.Paradesc
+import fr.ocelet.lang.ocelet.Paramdefa
+import fr.ocelet.lang.ocelet.Paramunit
+import fr.ocelet.lang.ocelet.Paraopt
+import fr.ocelet.lang.ocelet.PropertyDef
+import fr.ocelet.lang.ocelet.Rangevals
+import fr.ocelet.lang.ocelet.Scenario
+import fr.ocelet.lang.ocelet.ServiceDef
+import java.util.List
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.common.types.util.Primitives
+import org.eclipse.xtext.common.types.util.TypeReferences
+import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.xbase.compiler.TypeReferenceSerializer
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import org.eclipse.xtext.xbase.compiler.TypeReferenceSerializer;
-import fr.ocelet.lang.ocelet.Model
-import java.util.List
-import fr.ocelet.lang.ocelet.Metadata
-import fr.ocelet.lang.ocelet.Paradesc
-import fr.ocelet.lang.ocelet.Paramdefa
-import fr.ocelet.lang.ocelet.Rangevals
-import fr.ocelet.lang.ocelet.Paramunit
-import fr.ocelet.lang.ocelet.Paraopt
-import org.eclipse.emf.ecore.resource.Resource
-import fr.ocelet.lang.ocelet.Scenario
 
 class OceletJvmModelInferrer extends AbstractModelInferrer {
 
@@ -22,7 +29,12 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 
     // Used in our case to deal with imports in the generated code
     @Inject extension TypeReferenceSerializer
+    @Inject extension IQualifiedNameProvider
+    @Inject TypeReferences typeReferences
     
+    // Used to wrap primtive types to their corresponding java classes when needed.
+    @Inject extension Primitives
+        
    	def dispatch void infer(Model modl, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
    	  val List<Scenario> scens = newArrayList()
    	  val Metadatastuff md = new Metadatastuff();
@@ -60,7 +72,86 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		}
           	  md.params.add(pst)
           	}
-          }            
+          }
+      // ---- Entity --------------------------------------
+          Entity : {
+            // Generation d'une classe par entity
+            acceptor.accept(modl.toClass(meln.fullyQualifiedName)) [
+      		  documentation = meln.documentation
+     		  superTypes += typeRef('fr.ocelet.runtime.entity.AbstractEntity')
+     		  val List<PropertyDef> lpropdefs = <PropertyDef>newArrayList()
+      		  for(enteln:meln.entelns) {
+      		  	switch(enteln) {
+      		  		PropertyDef: {
+                      if (enteln.name != null) {
+      		  			lpropdefs.add(enteln)
+      		  			// Add special setter and getter
+      		  			// We can't use the toSetter and toGetter methods because we do not create a real field.
+      		  			members += enteln.toMethod('set'+enteln.name.toFirstUpper,typeRef(Void::TYPE))[
+      		  				documentation = enteln.documentation
+      		  				val parName = enteln.name
+      		  				parameters += enteln.toParameter(parName, enteln.type)
+      		  				body=[append('''setProperty("«enteln.name»",«parName»);''')]
+      		  			]
+      		  			members += enteln.toMethod('get'+enteln.name.toFirstUpper,enteln.type)[
+      		  				documentation = enteln.documentation
+      		  				body=[append('''return getProperty("«enteln.name»");''')]
+      		  			]
+      		  		  }
+      		  		}
+      		  		ServiceDef: {
+      		  			var rtype = enteln.type
+      		  			if (rtype == null) rtype = typeRef(Void::TYPE)
+      		  			members+= enteln.toMethod(enteln.name, rtype)[
+      		  				documentation = enteln.documentation
+      		  				for (p: enteln.params) {
+      		  					parameters += p.toParameter(p.name, p.parameterType)
+      		  				}
+      		  				body = enteln.body
+      		  			]
+      		  		}
+      		  		ConstructorDef: {
+      		  			members+= enteln.toMethod(enteln.name, typeRef(meln.fullyQualifiedName.toString))[
+      		  				setStatic(true)
+      		  				documentation = enteln.documentation
+      		  				for (p: enteln.params) {
+      		  					parameters += p.toParameter(p.name, p.parameterType)
+      		  				}
+      		  				body =	enteln.body
+      		  			]
+      		  		}
+      		  	}
+      		  }
+      	      // Ajout d'un constructeur avec déclaration de toutes les properties
+      	      members+= meln.toConstructor[
+      	        body = [
+                  append('''super();''')
+                  for( hprop : lpropdefs) {
+                    var hhtype = typeRef('fr.ocelet.runtime.entity.Hproperty',asWrapperTypeIfPrimitive(hprop.type))
+     	            newLine();     	        
+                    append('''defProperty("«hprop.name»",new ''')
+                    hhtype.serialize(hprop,it) // also deals with import if needed
+                    append('''());''')
+                    newLine
+                    val vtyp = asWrapperTypeIfPrimitive(hprop.type)
+                    append('''set«hprop.name.toFirstUpper»(new ''')
+               	    vtyp.serialize(vtyp,it)
+                    if (vtyp.qualifiedName.equals("java.lang.Integer") ||
+                      vtyp.qualifiedName.equals("java.lang.Double") ||
+                      vtyp.qualifiedName.equals("java.lang.Float") ||
+                      vtyp.qualifiedName.equals("java.lang.Long") ||
+                      vtyp.qualifiedName.equals("java.lang.Byte") ||
+                      vtyp.qualifiedName.equals("java.lang.Short")
+                    ) append('''("0")''')
+                    else if (vtyp.qualifiedName.equals("java.lang.Boolean")) append('''(false)''')
+                    else append('''()''')
+                    append(''');''')
+                  }
+                ]
+      	      ]  
+      	    ]
+          }
+                      
             
    	      }          // switch(meln)
 
