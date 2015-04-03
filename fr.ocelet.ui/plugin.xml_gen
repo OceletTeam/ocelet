@@ -280,6 +280,27 @@
 	        <filter name="projectNature" value="org.eclipse.xtext.ui.shared.xtextNature"/>
         </page>
     </extension>
+    <extension point="org.eclipse.ui.menus">
+		<menuContribution locationURI="popup:#TextEditorContext?after=xtext.ui.openDeclaration">
+			<command
+				commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand"
+				id="fr.ocelet.lang.Ocelet.OpenGeneratedCode"
+				style="push">
+					<visibleWhen checkEnabled="false">
+						<reference definitionId="fr.ocelet.lang.Ocelet.Editor.opened" />
+					</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="fr.ocelet.lang.ui.OceletExecutableExtensionFactory:org.eclipse.xtext.ui.generator.trace.OpenGeneratedFileHandler"
+			commandId="org.eclipse.xtext.ui.OpenGeneratedFileCommand">
+				<activeWhen>
+					<reference definitionId="fr.ocelet.lang.Ocelet.Editor.opened" />
+				</activeWhen>
+		</handler>
+	</extension>
 
 	<!-- Quick Outline -->
 	<extension
@@ -456,7 +477,7 @@
    </extension>
    <extension point="org.eclipse.ui.editorActions">
       <editorContribution targetID="fr.ocelet.lang.Ocelet" 
-                          id="fr.ocelet.lang.Ocelet.ide.rulerActions">
+                          id="fr.ocelet.lang.Ocelet.rulerActions">
 	     <action
 	             label="Not Used"
 	             class="fr.ocelet.lang.ui.OceletExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
@@ -467,26 +488,26 @@
    </extension>
    <extension point="org.eclipse.ui.popupMenus">
       <viewerContribution
-         targetID="fr.ocelet.lang.Ocelet.ide.rulerContextMenu"
-         id="fr.ocelet.lang.Ocelet.ide.RulerPopupActions">
+         targetID="fr.ocelet.lang.Ocelet.RulerContext"
+         id="fr.ocelet.lang.Ocelet.RulerPopupActions">
          <action
             label="Toggle Breakpoint"
             class="fr.ocelet.lang.ui.OceletExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
             menubarPath="debug"
-            id="fr.ocelet.lang.Ocelet.ide.rulerContextMenu.toggleBreakpointAction">
+            id="fr.ocelet.lang.Ocelet.rulerContextMenu.toggleBreakpointAction">
          </action>
          <action
             label="Not used"
             class="fr.ocelet.lang.ui.OceletExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
             menubarPath="debug"
-            id="fr.ocelet.lang.Ocelet.ide.rulerContextMenu.enableDisableBreakpointAction">
+            id="fr.ocelet.lang.Ocelet.rulerContextMenu.enableDisableBreakpointAction">
          </action>
          <action
            label="Breakpoint Properties"
            helpContextId="breakpoint_properties_action_context"
            class="fr.ocelet.lang.ui.OceletExecutableExtensionFactory:org.eclipse.jdt.debug.ui.actions.JavaBreakpointPropertiesRulerActionDelegate"
            menubarPath="group.properties"
-           id="fr.ocelet.lang.Ocelet.ide.rulerContextMenu.openBreapointPropertiesAction">
+           id="fr.ocelet.lang.Ocelet.rulerContextMenu.openBreapointPropertiesAction">
          </action>
       </viewerContribution>
    </extension>
@@ -557,6 +578,12 @@
             class="fr.ocelet.lang.ui.OceletExecutableExtensionFactory:org.eclipse.xtext.ui.editor.model.XtextDocumentProvider"
             extensions="oclt">
     </provider>
+  </extension>
+  <extension point="org.eclipse.team.core.fileTypes">
+    <fileTypes
+            extension="oclt"
+            type="text">
+    </fileTypes>
   </extension>
 
 </plugin>

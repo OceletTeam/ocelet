@@ -4,10 +4,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="oclt"/>
 	<classpathentry kind="output" path="bin"/>
-	<classpathentry kind="lib" path="../../plugins/org.eclipse.xtext.xbase.lib_2.7.2.v201409160908.jar"/>
+	<classpathentry kind="lib" path="../../plugins/org.eclipse.xtext.xbase.lib_2.8.1.v201503230617.jar"/>
 	<classpathentry kind="lib" path="../../plugins/com.google.guava.source_15.0.0.v201403281430.jar"/>
-	<classpathentry kind="lib" path="../../plugins/fr.ocelet.datafacer_1.1.0.xt27.jar"/>
-	<classpathentry kind="lib" path="../../plugins/fr.ocelet.runtime_1.1.0.xt27.jar"/>
-	<classpathentry kind="lib" path="../../plugins/fr.ocelet_1.1.0.xt27.jar"/>
-	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.xt27"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.datafacer_1.1.0.lr3x28.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.runtime_1.1.0.lr3x28.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet_1.1.0.lr3x28.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28"/>
 </classpath>

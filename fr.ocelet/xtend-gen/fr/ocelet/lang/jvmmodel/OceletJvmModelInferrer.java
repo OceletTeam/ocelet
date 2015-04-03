@@ -173,6 +173,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
             QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(meln);
             JvmGenericType _class = this._jvmTypesBuilder.toClass(modl, _fullyQualifiedName);
             final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
+              @Override
               public void apply(final JvmGenericType it) {
                 String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(meln);
                 OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
@@ -196,6 +197,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         String _plus = ("set" + _firstUpper);
                         JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
                         final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+                          @Override
                           public void apply(final JvmOperation it) {
                             String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(enteln);
                             OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
@@ -205,6 +207,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(enteln, parName, _type);
                             OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
                             final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                              @Override
                               public void apply(final ITreeAppendable it) {
                                 StringConcatenation _builder = new StringConcatenation();
                                 _builder.append("setProperty(\"");
@@ -227,10 +230,12 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         String _plus_1 = ("get" + _firstUpper_1);
                         JvmTypeReference _type = ((PropertyDef)enteln).getType();
                         final Procedure1<JvmOperation> _function_1 = new Procedure1<JvmOperation>() {
+                          @Override
                           public void apply(final JvmOperation it) {
                             String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(enteln);
                             OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
                             final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                              @Override
                               public void apply(final ITreeAppendable it) {
                                 StringConcatenation _builder = new StringConcatenation();
                                 _builder.append("return getProperty(\"");
@@ -260,6 +265,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       EList<JvmMember> _members = it.getMembers();
                       String _name = ((ServiceDef)enteln).getName();
                       final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+                        @Override
                         public void apply(final JvmOperation it) {
                           String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(enteln);
                           OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
@@ -288,6 +294,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       String _string = _fullyQualifiedName.toString();
                       JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string);
                       final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+                        @Override
                         public void apply(final JvmOperation it) {
                           it.setStatic(true);
                           String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(enteln);
@@ -311,8 +318,10 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 }
                 EList<JvmMember> _members = it.getMembers();
                 final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
+                  @Override
                   public void apply(final JvmConstructor it) {
                     final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                      @Override
                       public void apply(final ITreeAppendable it) {
                         StringConcatenation _builder = new StringConcatenation();
                         _builder.append("super();");
@@ -436,6 +445,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
     if (mainScen) {
       JvmGenericType _class = this._jvmTypesBuilder.toClass(modl, (packg + modlName));
       final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
+        @Override
         public void apply(final JvmGenericType it) {
           String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(modl);
           OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
@@ -444,8 +454,10 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
           OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef);
           EList<JvmMember> _members = it.getMembers();
           final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
+            @Override
             public void apply(final JvmConstructor it) {
               final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                @Override
                 public void apply(final ITreeAppendable it) {
                   StringConcatenation _builder = new StringConcatenation();
                   _builder.append("super(\"");
@@ -676,6 +688,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               EList<JvmMember> _members_1 = it.getMembers();
               JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
               final Procedure1<JvmOperation> _function_1 = new Procedure1<JvmOperation>() {
+                @Override
                 public void apply(final JvmOperation it) {
                   EList<JvmFormalParameter> _parameters = it.getParameters();
                   JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("java.lang.String");
@@ -684,6 +697,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
                   it.setStatic(true);
                   final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                    @Override
                     public void apply(final ITreeAppendable it) {
                       StringConcatenation _builder = new StringConcatenation();
                       _builder.append(modlName, "");
@@ -709,6 +723,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               EList<JvmMember> _members_2 = it.getMembers();
               JvmTypeReference _typeRef_2 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
               final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
+                @Override
                 public void apply(final JvmOperation it) {
                   XExpression _sccode = scen.getSccode();
                   OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _sccode);
@@ -719,6 +734,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               EList<JvmMember> _members_3 = it.getMembers();
               JvmTypeReference _typeRef_3 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
               final Procedure1<JvmOperation> _function_3 = new Procedure1<JvmOperation>() {
+                @Override
                 public void apply(final JvmOperation it) {
                   EList<JvmFormalParameter> _parameters = it.getParameters();
                   JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("java.lang.String");
@@ -727,6 +743,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(modl, "in_params", _typeRef_2);
                   OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
                   final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                    @Override
                     public void apply(final ITreeAppendable it) {
                       boolean _hasParameters = md.hasParameters();
                       if (_hasParameters) {
@@ -783,6 +800,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               String _name_1 = scen.getName();
               JvmTypeReference _typeRef_4 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
               final Procedure1<JvmOperation> _function_4 = new Procedure1<JvmOperation>() {
+                @Override
                 public void apply(final JvmOperation it) {
                   XExpression _sccode = scen.getSccode();
                   OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _sccode);
