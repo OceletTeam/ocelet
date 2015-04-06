@@ -25,11 +25,6 @@ import fr.ocelet.lang.ocelet.Strucdef
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
 
-//import fr.ocelet.lang.ocelet.VarDeclaration;
-//import fr.ocelet.lang.ocelet.VarInit;
-
-//import java.lang.StringBuffer
-
 /**
  * Provides labels for a EObjects.
  * 
@@ -69,22 +64,21 @@ override protected doGetImage(Object eln) {
 
 override protected doGetText(Object eln){
 	switch eln {
-	  Agregdef : eln.name+'() returns '+eln.type.simpleName
-	  ConstructorDef: eln.name+'()'
-	  Entity : eln.name
-	  Filterdef : eln.name+'()'
+	  Agregdef case ((eln.name != null)&&(eln.type != null)) : eln.name+'() returns '+eln.type.simpleName
+	  ConstructorDef case (eln.name != null): eln.name+'()'
+	  Entity case (eln.name != null): eln.name
+	  Filterdef case (eln.name != null): eln.name+'()'
 	  Metadata : 'Metadata'
 	  Model: 'Model'
-	  Parameter : eln.name+ " is " + eln.ptype.simpleName
-	  PropertyDef : eln.name+ " is " + eln.type.simpleName
+	  Parameter case ((eln.name != null)&&(eln.ptype != null)): eln.name+ " is " + eln.ptype.simpleName
+	  PropertyDef case ((eln.name != null)&&(eln.type != null)) : eln.name+ " is " + eln.type.simpleName
 	  Relation : relText(eln)
-	  Scenario : eln.name
-	  ServiceDef case (eln.type != null) : eln.name+'() returns '+eln.type.simpleName
-	  ServiceDef case (eln.type == null) : eln.name+'()'
-	  Strucdef : eln.name
-	  StrucVarDef : eln.name+ " is " + eln.type.simpleName
-	default:
-	  super.doGetText(eln)
+	  Scenario  case (eln.name != null) : eln.name
+	  ServiceDef case ((eln.name != null)&&(eln.type != null)) : eln.name+'() returns '+eln.type.simpleName
+	  ServiceDef case ((eln.name != null)&&(eln.type == null)) : eln.name+'()'
+	  Strucdef  case (eln.name != null) : eln.name
+	  StrucVarDef case ((eln.name != null)&&(eln.type != null)): eln.name+ " is " + eln.type.simpleName
+	default: '...'
 	}
 }
 
@@ -100,7 +94,7 @@ private def String relText(Relation rel){
 			r.append(rol.getType().getName());
 		}
 		} catch (NullPointerException npe){
-			// Do no crash if there is no Role defined yet
+			// Do not crash if there is no Role defined yet
 		}
 		r.append(">");
 		return r.toString();

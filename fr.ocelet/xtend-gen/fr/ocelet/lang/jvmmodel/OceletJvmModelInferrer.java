@@ -28,6 +28,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtend2.lib.StringConcatenationClient;
 import org.eclipse.xtext.common.types.JvmConstructor;
 import org.eclipse.xtext.common.types.JvmField;
 import org.eclipse.xtext.common.types.JvmFormalParameter;
@@ -40,8 +41,6 @@ import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.xbase.XExpression;
-import org.eclipse.xtext.xbase.compiler.TypeReferenceSerializer;
-import org.eclipse.xtext.xbase.compiler.output.ITreeAppendable;
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer;
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor;
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder;
@@ -57,10 +56,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
   @Inject
   @Extension
   private JvmTypesBuilder _jvmTypesBuilder;
-  
-  @Inject
-  @Extension
-  private TypeReferenceSerializer _typeReferenceSerializer;
   
   @Inject
   @Extension
@@ -206,20 +201,18 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             JvmTypeReference _type = ((PropertyDef)enteln).getType();
                             JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(enteln, parName, _type);
                             OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
-                            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                            StringConcatenationClient _client = new StringConcatenationClient() {
                               @Override
-                              public void apply(final ITreeAppendable it) {
-                                StringConcatenation _builder = new StringConcatenation();
+                              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                                 _builder.append("setProperty(\"");
                                 String _name = ((PropertyDef)enteln).getName();
                                 _builder.append(_name, "");
                                 _builder.append("\",");
                                 _builder.append(parName, "");
                                 _builder.append(");");
-                                it.append(_builder);
                               }
                             };
-                            OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+                            OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
                           }
                         };
                         JvmOperation _method = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(enteln, _plus, _typeRef_1, _function);
@@ -234,18 +227,16 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           public void apply(final JvmOperation it) {
                             String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(enteln);
                             OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-                            final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                            StringConcatenationClient _client = new StringConcatenationClient() {
                               @Override
-                              public void apply(final ITreeAppendable it) {
-                                StringConcatenation _builder = new StringConcatenation();
+                              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                                 _builder.append("return getProperty(\"");
                                 String _name = ((PropertyDef)enteln).getName();
                                 _builder.append(_name, "");
                                 _builder.append("\");");
-                                it.append(_builder);
                               }
                             };
-                            OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+                            OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
                           }
                         };
                         JvmOperation _method_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(enteln, _plus_1, _type, _function_1);
@@ -320,106 +311,99 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
                   @Override
                   public void apply(final JvmConstructor it) {
-                    final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                    StringConcatenationClient _client = new StringConcatenationClient() {
                       @Override
-                      public void apply(final ITreeAppendable it) {
-                        StringConcatenation _builder = new StringConcatenation();
+                      protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                         _builder.append("super();");
-                        it.append(_builder);
-                        for (final PropertyDef hprop : lpropdefs) {
-                          {
+                        _builder.newLine();
+                        {
+                          for(final PropertyDef hprop : lpropdefs) {
                             JvmTypeReference _type = hprop.getType();
                             JvmTypeReference _asWrapperTypeIfPrimitive = OceletJvmModelInferrer.this._primitives.asWrapperTypeIfPrimitive(_type);
-                            JvmTypeReference hhtype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.entity.Hproperty", _asWrapperTypeIfPrimitive);
-                            it.newLine();
-                            StringConcatenation _builder_1 = new StringConcatenation();
-                            _builder_1.append("defProperty(\"");
+                            final JvmTypeReference hhtype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.entity.Hproperty", _asWrapperTypeIfPrimitive);
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("defProperty(\"");
                             String _name = hprop.getName();
-                            _builder_1.append(_name, "");
-                            _builder_1.append("\",new ");
-                            it.append(_builder_1);
-                            OceletJvmModelInferrer.this._typeReferenceSerializer.serialize(hhtype, hprop, it);
-                            StringConcatenation _builder_2 = new StringConcatenation();
-                            _builder_2.append("());");
-                            it.append(_builder_2);
-                            it.newLine();
+                            _builder.append(_name, "");
+                            _builder.append("\",new ");
+                            _builder.append(hhtype, "");
+                            _builder.append("());");
+                            _builder.newLineIfNotEmpty();
                             JvmTypeReference _type_1 = hprop.getType();
                             final JvmTypeReference vtyp = OceletJvmModelInferrer.this._primitives.asWrapperTypeIfPrimitive(_type_1);
-                            StringConcatenation _builder_3 = new StringConcatenation();
-                            _builder_3.append("set");
+                            _builder.newLineIfNotEmpty();
+                            _builder.append("set");
                             String _name_1 = hprop.getName();
                             String _firstUpper = StringExtensions.toFirstUpper(_name_1);
-                            _builder_3.append(_firstUpper, "");
-                            _builder_3.append("(new ");
-                            it.append(_builder_3);
-                            OceletJvmModelInferrer.this._typeReferenceSerializer.serialize(vtyp, vtyp, it);
-                            boolean _or = false;
-                            boolean _or_1 = false;
-                            boolean _or_2 = false;
-                            boolean _or_3 = false;
-                            boolean _or_4 = false;
-                            String _qualifiedName = vtyp.getQualifiedName();
-                            boolean _equals = _qualifiedName.equals("java.lang.Integer");
-                            if (_equals) {
-                              _or_4 = true;
-                            } else {
-                              String _qualifiedName_1 = vtyp.getQualifiedName();
-                              boolean _equals_1 = _qualifiedName_1.equals("java.lang.Double");
-                              _or_4 = _equals_1;
-                            }
-                            if (_or_4) {
-                              _or_3 = true;
-                            } else {
-                              String _qualifiedName_2 = vtyp.getQualifiedName();
-                              boolean _equals_2 = _qualifiedName_2.equals("java.lang.Float");
-                              _or_3 = _equals_2;
-                            }
-                            if (_or_3) {
-                              _or_2 = true;
-                            } else {
-                              String _qualifiedName_3 = vtyp.getQualifiedName();
-                              boolean _equals_3 = _qualifiedName_3.equals("java.lang.Long");
-                              _or_2 = _equals_3;
-                            }
-                            if (_or_2) {
-                              _or_1 = true;
-                            } else {
-                              String _qualifiedName_4 = vtyp.getQualifiedName();
-                              boolean _equals_4 = _qualifiedName_4.equals("java.lang.Byte");
-                              _or_1 = _equals_4;
-                            }
-                            if (_or_1) {
-                              _or = true;
-                            } else {
-                              String _qualifiedName_5 = vtyp.getQualifiedName();
-                              boolean _equals_5 = _qualifiedName_5.equals("java.lang.Short");
-                              _or = _equals_5;
-                            }
-                            if (_or) {
-                              StringConcatenation _builder_4 = new StringConcatenation();
-                              _builder_4.append("(\"0\")");
-                              it.append(_builder_4);
-                            } else {
-                              String _qualifiedName_6 = vtyp.getQualifiedName();
-                              boolean _equals_6 = _qualifiedName_6.equals("java.lang.Boolean");
-                              if (_equals_6) {
-                                StringConcatenation _builder_5 = new StringConcatenation();
-                                _builder_5.append("(false)");
-                                it.append(_builder_5);
+                            _builder.append(_firstUpper, "");
+                            _builder.append("(new ");
+                            _builder.append(vtyp, "");
+                            _builder.newLineIfNotEmpty();
+                            {
+                              boolean _or = false;
+                              boolean _or_1 = false;
+                              boolean _or_2 = false;
+                              boolean _or_3 = false;
+                              boolean _or_4 = false;
+                              String _qualifiedName = vtyp.getQualifiedName();
+                              boolean _equals = _qualifiedName.equals("java.lang.Integer");
+                              if (_equals) {
+                                _or_4 = true;
                               } else {
-                                StringConcatenation _builder_6 = new StringConcatenation();
-                                _builder_6.append("()");
-                                it.append(_builder_6);
+                                String _qualifiedName_1 = vtyp.getQualifiedName();
+                                boolean _equals_1 = _qualifiedName_1.equals("java.lang.Double");
+                                _or_4 = _equals_1;
+                              }
+                              if (_or_4) {
+                                _or_3 = true;
+                              } else {
+                                String _qualifiedName_2 = vtyp.getQualifiedName();
+                                boolean _equals_2 = _qualifiedName_2.equals("java.lang.Float");
+                                _or_3 = _equals_2;
+                              }
+                              if (_or_3) {
+                                _or_2 = true;
+                              } else {
+                                String _qualifiedName_3 = vtyp.getQualifiedName();
+                                boolean _equals_3 = _qualifiedName_3.equals("java.lang.Long");
+                                _or_2 = _equals_3;
+                              }
+                              if (_or_2) {
+                                _or_1 = true;
+                              } else {
+                                String _qualifiedName_4 = vtyp.getQualifiedName();
+                                boolean _equals_4 = _qualifiedName_4.equals("java.lang.Byte");
+                                _or_1 = _equals_4;
+                              }
+                              if (_or_1) {
+                                _or = true;
+                              } else {
+                                String _qualifiedName_5 = vtyp.getQualifiedName();
+                                boolean _equals_5 = _qualifiedName_5.equals("java.lang.Short");
+                                _or = _equals_5;
+                              }
+                              if (_or) {
+                                _builder.append("(\"0\"));");
+                                _builder.newLineIfNotEmpty();
+                                _builder.append("                    ");
+                              } else {
+                                String _qualifiedName_6 = vtyp.getQualifiedName();
+                                boolean _equals_6 = _qualifiedName_6.equals("java.lang.Boolean");
+                                if (_equals_6) {
+                                  _builder.append("(false));");
+                                  _builder.newLineIfNotEmpty();
+                                  _builder.append("                    ");
+                                } else {
+                                  _builder.append("());");
+                                  _builder.newLineIfNotEmpty();
+                                }
                               }
                             }
-                            StringConcatenation _builder_7 = new StringConcatenation();
-                            _builder_7.append(");");
-                            it.append(_builder_7);
                           }
                         }
                       }
                     };
-                    OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+                    OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
                   }
                 };
                 JvmConstructor _constructor = OceletJvmModelInferrer.this._jvmTypesBuilder.toConstructor(meln, _function);
@@ -456,218 +440,194 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
           final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
             @Override
             public void apply(final JvmConstructor it) {
-              final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+              StringConcatenationClient _client = new StringConcatenationClient() {
                 @Override
-                public void apply(final ITreeAppendable it) {
-                  StringConcatenation _builder = new StringConcatenation();
+                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                   _builder.append("super(\"");
                   _builder.append(modlName, "");
                   _builder.append("\");");
-                  it.append(_builder);
-                  String _modeldesc = md.getModeldesc();
-                  boolean _notEquals = (!Objects.equal(_modeldesc, null));
-                  if (_notEquals) {
-                    it.newLine();
-                    StringConcatenation _builder_1 = new StringConcatenation();
-                    _builder_1.append("modDescription = \"");
-                    String _modeldesc_1 = md.getModeldesc();
-                    _builder_1.append(_modeldesc_1, "");
-                    _builder_1.append("\";");
-                    it.append(_builder_1);
+                  _builder.newLineIfNotEmpty();
+                  {
+                    String _modeldesc = md.getModeldesc();
+                    boolean _notEquals = (!Objects.equal(_modeldesc, null));
+                    if (_notEquals) {
+                      _builder.append("modDescription = \"");
+                      String _modeldesc_1 = md.getModeldesc();
+                      _builder.append(_modeldesc_1, "");
+                      _builder.append("\";");
+                    }
                   }
-                  String _webpage = md.getWebpage();
-                  boolean _notEquals_1 = (!Objects.equal(_webpage, null));
-                  if (_notEquals_1) {
-                    it.newLine();
-                    StringConcatenation _builder_2 = new StringConcatenation();
-                    _builder_2.append("modelWebPage = \"");
-                    String _webpage_1 = md.getWebpage();
-                    _builder_2.append(_webpage_1, "");
-                    _builder_2.append("\";");
-                    it.append(_builder_2);
+                  _builder.newLineIfNotEmpty();
+                  {
+                    String _webpage = md.getWebpage();
+                    boolean _notEquals_1 = (!Objects.equal(_webpage, null));
+                    if (_notEquals_1) {
+                      _builder.append("modelWebPage = \"");
+                      String _webpage_1 = md.getWebpage();
+                      _builder.append(_webpage_1, "");
+                      _builder.append("\";");
+                    }
                   }
-                  boolean _hasParameters = md.hasParameters();
-                  if (_hasParameters) {
-                    ArrayList<Parameterstuff> _params = md.getParams();
-                    for (final Parameterstuff pstuff : _params) {
+                  _builder.newLineIfNotEmpty();
+                  {
+                    boolean _hasParameters = md.hasParameters();
+                    if (_hasParameters) {
                       {
-                        JvmTypeReference _type = pstuff.getType();
-                        final JvmTypeReference genptype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.model.Parameter", _type);
-                        boolean _isNumericType = pstuff.isNumericType();
-                        if (_isNumericType) {
-                          JvmTypeReference _type_1 = pstuff.getType();
-                          final JvmTypeReference implptype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.model.NumericParameterImpl", _type_1);
-                          it.newLine();
-                          OceletJvmModelInferrer.this._typeReferenceSerializer.serialize(genptype, genptype, it);
-                          StringConcatenation _builder_3 = new StringConcatenation();
-                          _builder_3.append(" ");
-                          _builder_3.append("par_");
-                          String _name = pstuff.getName();
-                          _builder_3.append(_name, " ");
-                          _builder_3.append(" = new ");
-                          it.append(_builder_3);
-                          OceletJvmModelInferrer.this._typeReferenceSerializer.serialize(implptype, implptype, it);
-                          StringConcatenation _builder_4 = new StringConcatenation();
-                          _builder_4.append("(\"");
-                          String _name_1 = pstuff.getName();
-                          _builder_4.append(_name_1, "");
-                          _builder_4.append("\",\"");
-                          String _description = pstuff.getDescription();
-                          _builder_4.append(_description, "");
-                          _builder_4.append("\",");
-                          Boolean _optionnal = pstuff.getOptionnal();
-                          _builder_4.append(_optionnal, "");
-                          it.append(_builder_4);
-                          Object _dvalue = pstuff.getDvalue();
-                          boolean _equals = Objects.equal(_dvalue, null);
-                          if (_equals) {
-                            StringConcatenation _builder_5 = new StringConcatenation();
-                            _builder_5.append(",null");
-                            it.append(_builder_5);
-                          } else {
-                            StringConcatenation _builder_6 = new StringConcatenation();
-                            _builder_6.append(",");
-                            Object _dvalue_1 = pstuff.getDvalue();
-                            _builder_6.append(_dvalue_1, "");
-                            it.append(_builder_6);
-                          }
-                          Object _minvalue = pstuff.getMinvalue();
-                          boolean _equals_1 = Objects.equal(_minvalue, null);
-                          if (_equals_1) {
-                            StringConcatenation _builder_7 = new StringConcatenation();
-                            _builder_7.append(",null");
-                            it.append(_builder_7);
-                          } else {
-                            StringConcatenation _builder_8 = new StringConcatenation();
-                            _builder_8.append(",");
-                            Object _minvalue_1 = pstuff.getMinvalue();
-                            _builder_8.append(_minvalue_1, "");
-                            it.append(_builder_8);
-                          }
-                          Object _maxvalue = pstuff.getMaxvalue();
-                          boolean _equals_2 = Objects.equal(_maxvalue, null);
-                          if (_equals_2) {
-                            StringConcatenation _builder_9 = new StringConcatenation();
-                            _builder_9.append(",null");
-                            it.append(_builder_9);
-                          } else {
-                            StringConcatenation _builder_10 = new StringConcatenation();
-                            _builder_10.append(",");
-                            Object _maxvalue_1 = pstuff.getMaxvalue();
-                            _builder_10.append(_maxvalue_1, "");
-                            it.append(_builder_10);
-                          }
-                          String _unit = pstuff.getUnit();
-                          boolean _equals_3 = Objects.equal(_unit, null);
-                          if (_equals_3) {
-                            StringConcatenation _builder_11 = new StringConcatenation();
-                            _builder_11.append(",null");
-                            it.append(_builder_11);
-                          } else {
-                            StringConcatenation _builder_12 = new StringConcatenation();
-                            _builder_12.append(",\"");
-                            String _unit_1 = pstuff.getUnit();
-                            _builder_12.append(_unit_1, "");
-                            _builder_12.append("\"");
-                            it.append(_builder_12);
-                          }
-                          StringConcatenation _builder_13 = new StringConcatenation();
-                          _builder_13.append(");");
-                          it.append(_builder_13);
-                        } else {
-                          JvmTypeReference _type_2 = pstuff.getType();
-                          final JvmTypeReference implptype_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.model.ParameterImpl", _type_2);
-                          it.newLine();
-                          OceletJvmModelInferrer.this._typeReferenceSerializer.serialize(genptype, genptype, it);
-                          StringConcatenation _builder_14 = new StringConcatenation();
-                          _builder_14.append(" ");
-                          _builder_14.append("par_");
-                          String _name_2 = pstuff.getName();
-                          _builder_14.append(_name_2, " ");
-                          _builder_14.append(" = new ");
-                          it.append(_builder_14);
-                          OceletJvmModelInferrer.this._typeReferenceSerializer.serialize(implptype_1, implptype_1, it);
-                          StringConcatenation _builder_15 = new StringConcatenation();
-                          _builder_15.append("(\"");
-                          String _name_3 = pstuff.getName();
-                          _builder_15.append(_name_3, "");
-                          _builder_15.append("\",\"");
-                          String _description_1 = pstuff.getDescription();
-                          _builder_15.append(_description_1, "");
-                          _builder_15.append("\",");
-                          Boolean _optionnal_1 = pstuff.getOptionnal();
-                          _builder_15.append(_optionnal_1, "");
-                          it.append(_builder_15);
-                          Object _dvalue_2 = pstuff.getDvalue();
-                          boolean _equals_4 = Objects.equal(_dvalue_2, null);
-                          if (_equals_4) {
-                            StringConcatenation _builder_16 = new StringConcatenation();
-                            _builder_16.append(",null");
-                            it.append(_builder_16);
-                          } else {
-                            boolean _isStringType = pstuff.isStringType();
-                            if (_isStringType) {
-                              StringConcatenation _builder_17 = new StringConcatenation();
-                              _builder_17.append(",\"");
-                              Object _dvalue_3 = pstuff.getDvalue();
-                              _builder_17.append(_dvalue_3, "");
-                              _builder_17.append("\"");
-                              it.append(_builder_17);
+                        ArrayList<Parameterstuff> _params = md.getParams();
+                        for(final Parameterstuff pstuff : _params) {
+                          JvmTypeReference _type = pstuff.getType();
+                          final JvmTypeReference genptype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.model.Parameter", _type);
+                          _builder.newLineIfNotEmpty();
+                          {
+                            boolean _isNumericType = pstuff.isNumericType();
+                            if (_isNumericType) {
+                              JvmTypeReference _type_1 = pstuff.getType();
+                              final JvmTypeReference implptype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.model.NumericParameterImpl", _type_1);
+                              _builder.newLineIfNotEmpty();
+                              _builder.append(genptype, "");
+                              _builder.append(" par_");
+                              String _name = pstuff.getName();
+                              _builder.append(_name, "");
+                              _builder.append(" = new ");
+                              _builder.append(implptype, "");
+                              _builder.append("(\"");
+                              String _name_1 = pstuff.getName();
+                              _builder.append(_name_1, "");
+                              _builder.append("\",\"");
+                              String _description = pstuff.getDescription();
+                              _builder.append(_description, "");
+                              _builder.append("\",");
+                              Boolean _optionnal = pstuff.getOptionnal();
+                              _builder.append(_optionnal, "");
+                              {
+                                Object _dvalue = pstuff.getDvalue();
+                                boolean _equals = Objects.equal(_dvalue, null);
+                                if (_equals) {
+                                  _builder.append(",null");
+                                } else {
+                                  _builder.append(",");
+                                  Object _dvalue_1 = pstuff.getDvalue();
+                                  _builder.append(_dvalue_1, "");
+                                }
+                              }
+                              {
+                                Object _minvalue = pstuff.getMinvalue();
+                                boolean _equals_1 = Objects.equal(_minvalue, null);
+                                if (_equals_1) {
+                                  _builder.append(",null");
+                                } else {
+                                  _builder.append(",");
+                                  Object _minvalue_1 = pstuff.getMinvalue();
+                                  _builder.append(_minvalue_1, "");
+                                }
+                              }
+                              {
+                                Object _maxvalue = pstuff.getMaxvalue();
+                                boolean _equals_2 = Objects.equal(_maxvalue, null);
+                                if (_equals_2) {
+                                  _builder.append(",null");
+                                } else {
+                                  _builder.append(",");
+                                  Object _maxvalue_1 = pstuff.getMaxvalue();
+                                  _builder.append(_maxvalue_1, "");
+                                }
+                              }
+                              {
+                                String _unit = pstuff.getUnit();
+                                boolean _equals_3 = Objects.equal(_unit, null);
+                                if (_equals_3) {
+                                  _builder.append(",null");
+                                } else {
+                                  _builder.append(",");
+                                  String _unit_1 = pstuff.getUnit();
+                                  _builder.append(_unit_1, "");
+                                }
+                              }
+                              _builder.append(");");
+                              _builder.newLineIfNotEmpty();
                             } else {
-                              StringConcatenation _builder_18 = new StringConcatenation();
-                              _builder_18.append(",");
-                              Object _dvalue_4 = pstuff.getDvalue();
-                              _builder_18.append(_dvalue_4, "");
-                              it.append(_builder_18);
+                              JvmTypeReference _type_2 = pstuff.getType();
+                              final JvmTypeReference implptype_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.model.ParameterImpl", _type_2);
+                              _builder.newLineIfNotEmpty();
+                              _builder.append(genptype, "");
+                              _builder.append("par_");
+                              String _name_2 = pstuff.getName();
+                              _builder.append(_name_2, "");
+                              _builder.append(" = new ");
+                              _builder.append(implptype_1, "");
+                              _builder.append("(\"");
+                              String _name_3 = pstuff.getName();
+                              _builder.append(_name_3, "");
+                              _builder.append("\",\"");
+                              String _description_1 = pstuff.getDescription();
+                              _builder.append(_description_1, "");
+                              _builder.append("\",");
+                              Boolean _optionnal_1 = pstuff.getOptionnal();
+                              _builder.append(_optionnal_1, "");
+                              {
+                                Object _dvalue_2 = pstuff.getDvalue();
+                                boolean _equals_4 = Objects.equal(_dvalue_2, null);
+                                if (_equals_4) {
+                                  _builder.append(",null");
+                                } else {
+                                  {
+                                    boolean _isStringType = pstuff.isStringType();
+                                    if (_isStringType) {
+                                      _builder.append(",\"");
+                                      Object _dvalue_3 = pstuff.getDvalue();
+                                      _builder.append(_dvalue_3, "");
+                                      _builder.append("\"");
+                                    } else {
+                                      _builder.append(",");
+                                      Object _dvalue_4 = pstuff.getDvalue();
+                                      _builder.append(_dvalue_4, "");
+                                    }
+                                  }
+                                  _builder.newLineIfNotEmpty();
+                                  _builder.append("            ");
+                                }
+                              }
+                              {
+                                String _unit_2 = pstuff.getUnit();
+                                boolean _equals_5 = Objects.equal(_unit_2, null);
+                                if (_equals_5) {
+                                  _builder.append(",null");
+                                } else {
+                                  _builder.append(",\"");
+                                  String _unit_3 = pstuff.getUnit();
+                                  _builder.append(_unit_3, "");
+                                  _builder.append("\"");
+                                }
+                              }
+                              _builder.append(");");
+                              _builder.newLineIfNotEmpty();
                             }
                           }
-                          String _unit_2 = pstuff.getUnit();
-                          boolean _equals_5 = Objects.equal(_unit_2, null);
-                          if (_equals_5) {
-                            StringConcatenation _builder_19 = new StringConcatenation();
-                            _builder_19.append(",null");
-                            it.append(_builder_19);
-                          } else {
-                            StringConcatenation _builder_20 = new StringConcatenation();
-                            _builder_20.append(",\"");
-                            String _unit_3 = pstuff.getUnit();
-                            _builder_20.append(_unit_3, "");
-                            _builder_20.append("\"");
-                            it.append(_builder_20);
-                          }
-                          StringConcatenation _builder_21 = new StringConcatenation();
-                          _builder_21.append(");");
-                          it.append(_builder_21);
-                        }
-                        it.newLine();
-                        StringConcatenation _builder_22 = new StringConcatenation();
-                        _builder_22.append("addParameter(par_");
-                        String _name_4 = pstuff.getName();
-                        _builder_22.append(_name_4, "");
-                        _builder_22.append(");");
-                        it.append(_builder_22);
-                        Object _dvalue_5 = pstuff.getDvalue();
-                        boolean _notEquals_2 = (!Objects.equal(_dvalue_5, null));
-                        if (_notEquals_2) {
-                          it.newLine();
-                          StringConcatenation _builder_23 = new StringConcatenation();
-                          _builder_23.append(pstuff.name, "");
-                          _builder_23.append(" = ");
-                          it.append(_builder_23);
-                          boolean _isStringType_1 = pstuff.isStringType();
-                          if (_isStringType_1) {
-                            StringConcatenation _builder_24 = new StringConcatenation();
-                            _builder_24.append("\"");
-                            Object _dvalue_6 = pstuff.getDvalue();
-                            _builder_24.append(_dvalue_6, "");
-                            _builder_24.append("\";");
-                            it.append(_builder_24);
-                          } else {
-                            StringConcatenation _builder_25 = new StringConcatenation();
-                            Object _dvalue_7 = pstuff.getDvalue();
-                            _builder_25.append(_dvalue_7, "");
-                            _builder_25.append(";");
-                            it.append(_builder_25);
+                          _builder.append("addParameter(par_");
+                          String _name_4 = pstuff.getName();
+                          _builder.append(_name_4, "");
+                          _builder.append(");");
+                          _builder.newLineIfNotEmpty();
+                          {
+                            Object _dvalue_5 = pstuff.getDvalue();
+                            boolean _notEquals_2 = (!Objects.equal(_dvalue_5, null));
+                            if (_notEquals_2) {
+                              _builder.append(pstuff.name, "");
+                              _builder.append(" = ");
+                              {
+                                boolean _isStringType_1 = pstuff.isStringType();
+                                if (_isStringType_1) {
+                                  Object _dvalue_6 = pstuff.getDvalue();
+                                  _builder.append(_dvalue_6, "");
+                                  _builder.append("\";");
+                                } else {
+                                  Object _dvalue_7 = pstuff.getDvalue();
+                                  _builder.append(_dvalue_7, "");
+                                  _builder.append(";");
+                                }
+                              }
+                              _builder.newLineIfNotEmpty();
+                            }
                           }
                         }
                       }
@@ -675,7 +635,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   }
                 }
               };
-              OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+              OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
             }
           };
           JvmConstructor _constructor = OceletJvmModelInferrer.this._jvmTypesBuilder.toConstructor(modl, _function);
@@ -696,10 +656,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(modl, "args", _addArrayTypeDimension);
                   OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
                   it.setStatic(true);
-                  final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                  StringConcatenationClient _client = new StringConcatenationClient() {
                     @Override
-                    public void apply(final ITreeAppendable it) {
-                      StringConcatenation _builder = new StringConcatenation();
+                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                       _builder.append(modlName, "");
                       _builder.append(" model_");
                       _builder.append(modlName, "");
@@ -712,10 +671,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       _builder.append(".run_");
                       _builder.append(modlName, "");
                       _builder.append("();");
-                      it.append(_builder);
                     }
                   };
-                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
                 }
               };
               JvmOperation _method = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(modl, "main", _typeRef_1, _function_1);
@@ -742,55 +700,52 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   JvmTypeReference _typeRef_2 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("java.util.HashMap", _typeRef, _typeRef_1);
                   JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(modl, "in_params", _typeRef_2);
                   OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
-                  final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                  StringConcatenationClient _client = new StringConcatenationClient() {
                     @Override
-                    public void apply(final ITreeAppendable it) {
-                      boolean _hasParameters = md.hasParameters();
-                      if (_hasParameters) {
-                        ArrayList<Parameterstuff> _params = md.getParams();
-                        for (final Parameterstuff pstuff : _params) {
+                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                      {
+                        boolean _hasParameters = md.hasParameters();
+                        if (_hasParameters) {
                           {
-                            StringConcatenation _builder = new StringConcatenation();
-                            JvmTypeReference _type = pstuff.getType();
-                            String _simpleName = _type.getSimpleName();
-                            _builder.append(_simpleName, "");
-                            _builder.append(" val_");
-                            String _name = pstuff.getName();
-                            _builder.append(_name, "");
-                            _builder.append(" = (");
-                            JvmTypeReference _type_1 = pstuff.getType();
-                            String _simpleName_1 = _type_1.getSimpleName();
-                            _builder.append(_simpleName_1, "");
-                            _builder.append(") in_params.get(\"");
-                            String _name_1 = pstuff.getName();
-                            _builder.append(_name_1, "");
-                            _builder.append("\");");
-                            it.append(_builder);
-                            it.newLine();
-                            StringConcatenation _builder_1 = new StringConcatenation();
-                            _builder_1.append("if (val_");
-                            String _name_2 = pstuff.getName();
-                            _builder_1.append(_name_2, "");
-                            _builder_1.append(" != null) ");
-                            String _name_3 = pstuff.getName();
-                            _builder_1.append(_name_3, "");
-                            _builder_1.append(" = val_");
-                            String _name_4 = pstuff.getName();
-                            _builder_1.append(_name_4, "");
-                            _builder_1.append(";");
-                            it.append(_builder_1);
-                            it.newLine();
+                            ArrayList<Parameterstuff> _params = md.getParams();
+                            for(final Parameterstuff pstuff : _params) {
+                              JvmTypeReference _type = pstuff.getType();
+                              String _simpleName = _type.getSimpleName();
+                              _builder.append(_simpleName, "");
+                              _builder.append(" val_");
+                              String _name = pstuff.getName();
+                              _builder.append(_name, "");
+                              _builder.append(" = (");
+                              JvmTypeReference _type_1 = pstuff.getType();
+                              String _simpleName_1 = _type_1.getSimpleName();
+                              _builder.append(_simpleName_1, "");
+                              _builder.append(") in_params.get(\"");
+                              String _name_1 = pstuff.getName();
+                              _builder.append(_name_1, "");
+                              _builder.append("\");");
+                              _builder.newLineIfNotEmpty();
+                              _builder.append("if (val_");
+                              String _name_2 = pstuff.getName();
+                              _builder.append(_name_2, "");
+                              _builder.append(" != null) ");
+                              String _name_3 = pstuff.getName();
+                              _builder.append(_name_3, "");
+                              _builder.append(" = val_");
+                              String _name_4 = pstuff.getName();
+                              _builder.append(_name_4, "");
+                              _builder.append(";");
+                              _builder.newLineIfNotEmpty();
+                            }
                           }
                         }
                       }
-                      StringConcatenation _builder = new StringConcatenation();
                       _builder.append("run_");
                       _builder.append(modlName, "");
                       _builder.append("();");
-                      it.append(_builder);
+                      _builder.newLineIfNotEmpty();
                     }
                   };
-                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
                 }
               };
               JvmOperation _method_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(modl, "simulate", _typeRef_3, _function_3);

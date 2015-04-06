@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.common.types.util.Primitives
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.naming.IQualifiedNameProvider
-import org.eclipse.xtext.xbase.compiler.TypeReferenceSerializer
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
@@ -28,7 +27,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 	@Inject extension JvmTypesBuilder
 
     // Used in our case to deal with imports in the generated code
-    @Inject extension TypeReferenceSerializer
+//    @Inject extension TypeReferenceSerializer
     @Inject extension IQualifiedNameProvider
     @Inject TypeReferences typeReferences
     
@@ -91,11 +90,11 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				documentation = enteln.documentation
       		  				val parName = enteln.name
       		  				parameters += enteln.toParameter(parName, enteln.type)
-      		  				body=[append('''setProperty("«enteln.name»",«parName»);''')]
+      		  				body='''setProperty("«enteln.name»",«parName»);'''
       		  			]
       		  			members += enteln.toMethod('get'+enteln.name.toFirstUpper,enteln.type)[
       		  				documentation = enteln.documentation
-      		  				body=[append('''return getProperty("«enteln.name»");''')]
+      		  				body='''return getProperty("«enteln.name»");'''
       		  			]
       		  		  }
       		  		}
@@ -124,31 +123,24 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  }
       	      // Ajout d'un constructeur avec déclaration de toutes les properties
       	      members+= meln.toConstructor[
-      	        body = [
-                  append('''super();''')
-                  for( hprop : lpropdefs) {
-                    var hhtype = typeRef('fr.ocelet.runtime.entity.Hproperty',asWrapperTypeIfPrimitive(hprop.type))
-     	            newLine();     	        
-                    append('''defProperty("«hprop.name»",new ''')
-                    hhtype.serialize(hprop,it) // also deals with import if needed
-                    append('''());''')
-                    newLine
-                    val vtyp = asWrapperTypeIfPrimitive(hprop.type)
-                    append('''set«hprop.name.toFirstUpper»(new ''')
-               	    vtyp.serialize(vtyp,it)
-                    if (vtyp.qualifiedName.equals("java.lang.Integer") ||
+      	      	body = '''
+      	      	  super();
+      	      	  «FOR hprop : lpropdefs»
+      	      	    «val hhtype = typeRef('fr.ocelet.runtime.entity.Hproperty',asWrapperTypeIfPrimitive(hprop.type))»
+      	      	    defProperty("«hprop.name»",new «hhtype»());
+      	      	    «val vtyp = asWrapperTypeIfPrimitive(hprop.type)»
+      	      	    set«hprop.name.toFirstUpper»(new «vtyp»
+      	      	    «IF (vtyp.qualifiedName.equals("java.lang.Integer") ||
                       vtyp.qualifiedName.equals("java.lang.Double") ||
                       vtyp.qualifiedName.equals("java.lang.Float") ||
                       vtyp.qualifiedName.equals("java.lang.Long") ||
                       vtyp.qualifiedName.equals("java.lang.Byte") ||
-                      vtyp.qualifiedName.equals("java.lang.Short")
-                    ) append('''("0")''')
-                    else if (vtyp.qualifiedName.equals("java.lang.Boolean")) append('''(false)''')
-                    else append('''()''')
-                    append(''');''')
-                  }
-                ]
-      	      ]  
+                      vtyp.qualifiedName.equals("java.lang.Short"))»("0"));
+                    «ELSEIF (vtyp.qualifiedName.equals("java.lang.Boolean"))»(false));
+                    «ELSE»());
+                    «ENDIF»
+      	      	  «ENDFOR»
+      	      	''']
       	    ]
           }
                       
@@ -167,60 +159,29 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           documentation = modl.documentation
           superTypes += typeRef('fr.ocelet.runtime.model.AbstractModel')
           members+= modl.toConstructor[
-      	   body = [
-             append('''super("«modlName»");''')
-             if (md.getModeldesc != null) {
-             	newLine
-             	append('''modDescription = "«md.getModeldesc»";''')
-             }
-             if (md.getWebpage != null) {
-             	newLine
-             	append('''modelWebPage = "«md.getWebpage»";''')
-             }
-             if (md.hasParameters) {
-             	for(pstuff:md.params) {
-             		// TODO Enum type
-            	  val genptype = typeRef('fr.ocelet.runtime.model.Parameter',pstuff.getType)
-             	  if (pstuff.numericType) {
-             	  	val implptype = typeRef('fr.ocelet.runtime.model.NumericParameterImpl',pstuff.getType)
-             	  	newLine
-             	  	genptype.serialize(genptype,it)
-             	  	append(''' par_«pstuff.getName» = new ''')
-             	  	implptype.serialize(implptype,it)
-               	  	// NumericParameterImpl(String pname, String pdesc, boolean opt,T defval, T minvalue, T maxvalue)
-             	  	append('''("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»''')
-             	  	if (pstuff.getDvalue == null) append(''',null''') else append(''',«pstuff.getDvalue»''')
-             	  	if (pstuff.getMinvalue == null) append(''',null''') else append(''',«pstuff.getMinvalue»''')
-             	  	if (pstuff.getMaxvalue == null) append(''',null''') else append(''',«pstuff.getMaxvalue»''')
-             	  	if (pstuff.getUnit == null) append(''',null''') else append(''',"«pstuff.getUnit»"''')
-                    append(''');''')
-             	  }
-             	  else {
-             	  	val implptype = typeRef('fr.ocelet.runtime.model.ParameterImpl',pstuff.getType)
-             	  	newLine
-             	  	genptype.serialize(genptype,it)
-             	  	append(''' par_«pstuff.getName» = new ''')
-             	  	implptype.serialize(implptype,it)
-              	  	// String pname, String pdesc, boolean opt, T defval
-             	  	append('''("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»''')
-             	  	if (pstuff.getDvalue == null) append(''',null''')
-             	  	 else {
-             	  	 	if (pstuff.stringType) append(''',"«pstuff.getDvalue»"''')
-             	  	 	else append(''',«pstuff.getDvalue»''')
-             	  	}
-             	  	if (pstuff.getUnit == null) append(''',null''') else append(''',"«pstuff.getUnit»"''')                    append(''');''')
-             	  }
-                 	newLine
-                 	append('''addParameter(par_«pstuff.getName»);''')
-                    if (pstuff.getDvalue != null) {
-                    	newLine
-                    	append('''«pstuff.name» = ''')
-                    	if (pstuff.stringType) append('''"«pstuff.getDvalue»";''')
-             	  	 	else append('''«pstuff.getDvalue»;''')
-                    }
-             	}
-             }
-            ]
+          // Metadata related code generation
+          body = '''
+            super("«modlName»");
+            «IF (md.getModeldesc != null)»modDescription = "«md.getModeldesc»";«ENDIF»
+            «IF (md.getWebpage != null)»modelWebPage = "«md.getWebpage»";«ENDIF»
+            «IF (md.hasParameters)»
+            «FOR pstuff:md.params»
+            «val genptype = typeRef('fr.ocelet.runtime.model.Parameter',pstuff.getType)»
+            «IF(pstuff.numericType)»
+              «val implptype = typeRef('fr.ocelet.runtime.model.NumericParameterImpl',pstuff.getType)»
+              «genptype» par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»«IF (pstuff.getDvalue == null)»,null«ELSE»,«pstuff.getDvalue»«ENDIF»«IF (pstuff.getMinvalue == null)»,null«ELSE»,«pstuff.getMinvalue»«ENDIF»«IF (pstuff.getMaxvalue == null)»,null«ELSE»,«pstuff.getMaxvalue»«ENDIF»«IF (pstuff.getUnit == null)»,null«ELSE»,«pstuff.getUnit»«ENDIF»);
+            «ELSE»
+              «val implptype = typeRef('fr.ocelet.runtime.model.ParameterImpl',pstuff.getType)»
+              «genptype»par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»«IF (pstuff.getDvalue == null)»,null«ELSE»«IF (pstuff.stringType)»,"«pstuff.getDvalue»"«ELSE»,«pstuff.getDvalue»«ENDIF»
+            «ENDIF»«IF (pstuff.getUnit == null)»,null«ELSE»,"«pstuff.getUnit»"«ENDIF»);
+            «ENDIF»
+            addParameter(par_«pstuff.getName»);
+            «IF (pstuff.getDvalue != null)»
+            «pstuff.name» = «IF (pstuff.stringType)»«pstuff.getDvalue»";«ELSE»«pstuff.getDvalue»;«ENDIF»
+            «ENDIF»
+            «ENDFOR»
+            «ENDIF»
+          '''
           ]
                   
           for(scen:scens) {
@@ -228,26 +189,24 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
               members += modl.toMethod("main",typeRef(Void.TYPE)) [
               	 parameters += modl.toParameter('args', typeRef('java.lang.String').addArrayTypeDimension)
               	 setStatic(true)
-                 body = [ append('''
+                 body = '''
                  «modlName» model_«modlName» = new «modlName»();
-                 model_«modlName».run_«modlName»();''')]
+                 model_«modlName».run_«modlName»();'''
               ]
               members += modl.toMethod("run_"+modlName,typeRef(Void.TYPE)) [
               	body = scen.sccode
               ]
               members += modl.toMethod("simulate",typeRef(Void.TYPE)) [
-              	parameters += modl.toParameter('in_params',typeRef('java.util.HashMap',typeRef('java.lang.String'),typeRef('java.lang.Object')))
-              	body = [
-              	 if (md.hasParameters) {
-             	   for(pstuff:md.params) {
-             	   	 append('''«pstuff.getType.getSimpleName» val_«pstuff.getName» = («pstuff.getType.getSimpleName») in_params.get("«pstuff.getName»");''') newLine
-              		 append('''if (val_«pstuff.getName» != null) «pstuff.getName» = val_«pstuff.getName»;''') newLine
-              		}
-              	  }
-           		 append('''run_«modlName»();''')
-              	]
-              ]
-              
+              parameters += modl.toParameter('in_params',typeRef('java.util.HashMap',typeRef('java.lang.String'),typeRef('java.lang.Object')))
+              body = '''
+              «IF (md.hasParameters)»
+                «FOR pstuff:md.params»
+                  «pstuff.getType.getSimpleName» val_«pstuff.getName» = («pstuff.getType.getSimpleName») in_params.get("«pstuff.getName»");
+                  if (val_«pstuff.getName» != null) «pstuff.getName» = val_«pstuff.getName»;
+                «ENDFOR»
+              «ENDIF»
+              run_«modlName»();
+              ''']
    	  	    } else
               members += scen.toMethod(scen.name,typeRef(Void.TYPE)) [
       		      body = scen.sccode
