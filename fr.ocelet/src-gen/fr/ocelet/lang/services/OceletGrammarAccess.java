@@ -274,30 +274,30 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cDefaultKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cPardefaAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final Alternatives cPardefaAlternatives_1_0 = (Alternatives)cPardefaAssignment_1.eContents().get(0);
-		private final RuleCall cPardefaNumberParserRuleCall_1_0_0 = (RuleCall)cPardefaAlternatives_1_0.eContents().get(0);
+		private final RuleCall cPardefaSignedNumberParserRuleCall_1_0_0 = (RuleCall)cPardefaAlternatives_1_0.eContents().get(0);
 		private final RuleCall cPardefaSTRINGTerminalRuleCall_1_0_1 = (RuleCall)cPardefaAlternatives_1_0.eContents().get(1);
 		private final Keyword cPardefaNullKeyword_1_0_2 = (Keyword)cPardefaAlternatives_1_0.eContents().get(2);
 		private final Keyword cPardefaFalseKeyword_1_0_3 = (Keyword)cPardefaAlternatives_1_0.eContents().get(3);
 		private final Keyword cPardefaTrueKeyword_1_0_4 = (Keyword)cPardefaAlternatives_1_0.eContents().get(4);
 		
 		//Paramdefa:
-		//	"default" pardefa=(Number | STRING | "null" | "false" | "true");
+		//	"default" pardefa=(SignedNumber | STRING | "null" | "false" | "true");
 		@Override public ParserRule getRule() { return rule; }
 
-		//"default" pardefa=(Number | STRING | "null" | "false" | "true")
+		//"default" pardefa=(SignedNumber | STRING | "null" | "false" | "true")
 		public Group getGroup() { return cGroup; }
 
 		//"default"
 		public Keyword getDefaultKeyword_0() { return cDefaultKeyword_0; }
 
-		//pardefa=(Number | STRING | "null" | "false" | "true")
+		//pardefa=(SignedNumber | STRING | "null" | "false" | "true")
 		public Assignment getPardefaAssignment_1() { return cPardefaAssignment_1; }
 
-		//Number | STRING | "null" | "false" | "true"
+		//SignedNumber | STRING | "null" | "false" | "true"
 		public Alternatives getPardefaAlternatives_1_0() { return cPardefaAlternatives_1_0; }
 
-		//Number
-		public RuleCall getPardefaNumberParserRuleCall_1_0_0() { return cPardefaNumberParserRuleCall_1_0_0; }
+		//SignedNumber
+		public RuleCall getPardefaSignedNumberParserRuleCall_1_0_0() { return cPardefaSignedNumberParserRuleCall_1_0_0; }
 
 		//STRING
 		public RuleCall getPardefaSTRINGTerminalRuleCall_1_0_1() { return cPardefaSTRINGTerminalRuleCall_1_0_1; }
@@ -317,35 +317,35 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cRangeKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cParminAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cParminNumberParserRuleCall_1_0 = (RuleCall)cParminAssignment_1.eContents().get(0);
+		private final RuleCall cParminSignedNumberParserRuleCall_1_0 = (RuleCall)cParminAssignment_1.eContents().get(0);
 		private final Keyword cFullStopFullStopKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cParmaxAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final RuleCall cParmaxNumberParserRuleCall_3_0 = (RuleCall)cParmaxAssignment_3.eContents().get(0);
+		private final RuleCall cParmaxSignedNumberParserRuleCall_3_0 = (RuleCall)cParmaxAssignment_3.eContents().get(0);
 		
 		//Rangevals:
-		//	"range" parmin=Number ".." parmax=Number;
+		//	"range" parmin=SignedNumber ".." parmax=SignedNumber;
 		@Override public ParserRule getRule() { return rule; }
 
-		//"range" parmin=Number ".." parmax=Number
+		//"range" parmin=SignedNumber ".." parmax=SignedNumber
 		public Group getGroup() { return cGroup; }
 
 		//"range"
 		public Keyword getRangeKeyword_0() { return cRangeKeyword_0; }
 
-		//parmin=Number
+		//parmin=SignedNumber
 		public Assignment getParminAssignment_1() { return cParminAssignment_1; }
 
-		//Number
-		public RuleCall getParminNumberParserRuleCall_1_0() { return cParminNumberParserRuleCall_1_0; }
+		//SignedNumber
+		public RuleCall getParminSignedNumberParserRuleCall_1_0() { return cParminSignedNumberParserRuleCall_1_0; }
 
 		//".."
 		public Keyword getFullStopFullStopKeyword_2() { return cFullStopFullStopKeyword_2; }
 
-		//parmax=Number
+		//parmax=SignedNumber
 		public Assignment getParmaxAssignment_3() { return cParmaxAssignment_3; }
 
-		//Number
-		public RuleCall getParmaxNumberParserRuleCall_3_0() { return cParmaxNumberParserRuleCall_3_0; }
+		//SignedNumber
+		public RuleCall getParmaxSignedNumberParserRuleCall_3_0() { return cParmaxSignedNumberParserRuleCall_3_0; }
 	}
 
 	public class ParadescElements extends AbstractParserRuleElementFinder {
@@ -1521,6 +1521,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cFullStopKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final RuleCall cIDTerminalRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
+		////------ Data and terminal rules ------
 		//Fqn:
 		//	ID ("." ID)*;
 		@Override public ParserRule getRule() { return rule; }
@@ -1539,6 +1540,26 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 
 		//ID
 		public RuleCall getIDTerminalRuleCall_1_1() { return cIDTerminalRuleCall_1_1; }
+	}
+
+	public class SignedNumberElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "SignedNumber");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cHyphenMinusKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final RuleCall cNumberParserRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
+		
+		//SignedNumber:
+		//	"-"? Number;
+		@Override public ParserRule getRule() { return rule; }
+
+		//"-"? Number
+		public Group getGroup() { return cGroup; }
+
+		//"-"?
+		public Keyword getHyphenMinusKeyword_0() { return cHyphenMinusKeyword_0; }
+
+		//Number
+		public RuleCall getNumberParserRuleCall_1() { return cNumberParserRuleCall_1; }
 	}
 	
 	
@@ -1575,6 +1596,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	private final AgregdefElements pAgregdef;
 	private final ScenarioElements pScenario;
 	private final FqnElements pFqn;
+	private final SignedNumberElements pSignedNumber;
 	
 	private final Grammar grammar;
 
@@ -1618,6 +1640,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		this.pAgregdef = new AgregdefElements();
 		this.pScenario = new ScenarioElements();
 		this.pFqn = new FqnElements();
+		this.pSignedNumber = new SignedNumberElements();
 	}
 	
 	protected Grammar internalFindGrammar(GrammarProvider grammarProvider) {
@@ -1709,7 +1732,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Paramdefa:
-	//	"default" pardefa=(Number | STRING | "null" | "false" | "true");
+	//	"default" pardefa=(SignedNumber | STRING | "null" | "false" | "true");
 	public ParamdefaElements getParamdefaAccess() {
 		return pParamdefa;
 	}
@@ -1719,7 +1742,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Rangevals:
-	//	"range" parmin=Number ".." parmax=Number;
+	//	"range" parmin=SignedNumber ".." parmax=SignedNumber;
 	public RangevalsElements getRangevalsAccess() {
 		return pRangevals;
 	}
@@ -1980,6 +2003,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		return getScenarioAccess().getRule();
 	}
 
+	////------ Data and terminal rules ------
 	//Fqn:
 	//	ID ("." ID)*;
 	public FqnElements getFqnAccess() {
@@ -1988,6 +2012,16 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getFqnRule() {
 		return getFqnAccess().getRule();
+	}
+
+	//SignedNumber:
+	//	"-"? Number;
+	public SignedNumberElements getSignedNumberAccess() {
+		return pSignedNumber;
+	}
+	
+	public ParserRule getSignedNumberRule() {
+		return getSignedNumberAccess().getRule();
 	}
 
 	//XExpression:

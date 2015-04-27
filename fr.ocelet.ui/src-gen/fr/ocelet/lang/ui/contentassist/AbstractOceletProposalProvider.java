@@ -318,4 +318,7 @@ public class AbstractOceletProposalProvider extends org.eclipse.xtext.xbase.ui.c
 	public void complete_Fqn(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		// subclasses may override
 	}
+	public void complete_SignedNumber(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		// subclasses may override
+	}
 }

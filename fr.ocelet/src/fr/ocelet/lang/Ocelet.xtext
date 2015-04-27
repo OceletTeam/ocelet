@@ -30,8 +30,8 @@ Parameter : 'parameter' ptype =JvmTypeReference name=ID '{'
 Parampart : Paramunit | Paramdefa | Rangevals | Paradesc | Paraopt;
 
 Paramunit :'unit' parunit = STRING;
-Paramdefa :'default' pardefa = (Number | STRING | 'null' | 'false' | 'true');
-Rangevals :'range' parmin=Number '..' parmax=Number;
+Paramdefa :'default' pardefa = (SignedNumber | STRING | 'null' | 'false' | 'true');
+Rangevals :'range' parmin=SignedNumber '..' parmax=SignedNumber;
 Paradesc  :'description' pardesc = STRING;
 Paraopt   :'optionnal' paropt = STRING;
 	
@@ -140,5 +140,9 @@ Scenario:
 	'scenario' name=ID  sccode=XBlockExpression
 ;
 
+//------ Data and terminal rules ------
 
-Fqn: ID('.'ID)*;	
+Fqn: ID('.'ID)*;
+
+SignedNumber: '-'? Number;
+	

@@ -547,7 +547,7 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (pardefa=Number | pardefa=STRING | pardefa='null' | pardefa='false' | pardefa='true')
+	 *     (pardefa=SignedNumber | pardefa=STRING | pardefa='null' | pardefa='false' | pardefa='true')
 	 */
 	protected void sequence_Paramdefa(EObject context, Paramdefa semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -616,7 +616,7 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (parmin=Number parmax=Number)
+	 *     (parmin=SignedNumber parmax=SignedNumber)
 	 */
 	protected void sequence_Rangevals(EObject context, Rangevals semanticObject) {
 		if(errorAcceptor != null) {
@@ -627,8 +627,8 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getRangevalsAccess().getParminNumberParserRuleCall_1_0(), semanticObject.getParmin());
-		feeder.accept(grammarAccess.getRangevalsAccess().getParmaxNumberParserRuleCall_3_0(), semanticObject.getParmax());
+		feeder.accept(grammarAccess.getRangevalsAccess().getParminSignedNumberParserRuleCall_1_0(), semanticObject.getParmin());
+		feeder.accept(grammarAccess.getRangevalsAccess().getParmaxSignedNumberParserRuleCall_3_0(), semanticObject.getParmax());
 		feeder.finish();
 	}
 	

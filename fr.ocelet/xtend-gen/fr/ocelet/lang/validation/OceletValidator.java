@@ -3,7 +3,16 @@
  */
 package fr.ocelet.lang.validation;
 
+import com.google.common.base.Objects;
+import fr.ocelet.lang.ocelet.OceletPackage;
+import fr.ocelet.lang.ocelet.Paramdefa;
+import fr.ocelet.lang.ocelet.Parameter;
+import fr.ocelet.lang.ocelet.Parampart;
+import fr.ocelet.lang.ocelet.Rangevals;
 import fr.ocelet.lang.validation.AbstractOceletValidator;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 
 /**
  * Custom validation rules.
@@ -12,4 +21,68 @@ import fr.ocelet.lang.validation.AbstractOceletValidator;
  */
 @SuppressWarnings("all")
 public class OceletValidator extends AbstractOceletValidator {
+  @Check
+  public void checkParamDefaultWithinRange(final Parameter parameter) {
+    EList<Parampart> _paramparts = parameter.getParamparts();
+    boolean _notEquals = (!Objects.equal(_paramparts, null));
+    if (_notEquals) {
+      String sdef = "";
+      double rgmin = 0.0;
+      double rgmax = 0.0;
+      boolean rangeDef = false;
+      EList<Parampart> _paramparts_1 = parameter.getParamparts();
+      for (final Parampart pp : _paramparts_1) {
+        boolean _matched = false;
+        if (!_matched) {
+          if (pp instanceof Paramdefa) {
+            _matched=true;
+            String _pardefa = ((Paramdefa)pp).getPardefa();
+            sdef = _pardefa;
+          }
+        }
+        if (!_matched) {
+          if (pp instanceof Rangevals) {
+            _matched=true;
+            try {
+              String _parmin = ((Rangevals)pp).getParmin();
+              Double _double = new Double(_parmin);
+              rgmin = (_double).doubleValue();
+              String _parmax = ((Rangevals)pp).getParmax();
+              Double _double_1 = new Double(_parmax);
+              rgmax = (_double_1).doubleValue();
+              rangeDef = true;
+            } catch (final Throwable _t) {
+              if (_t instanceof NumberFormatException) {
+                final NumberFormatException nfe = (NumberFormatException)_t;
+                this.warning("Parameter range values must be valid numeric values", OceletPackage.Literals.PARAMETER__NAME);
+              } else {
+                throw Exceptions.sneakyThrow(_t);
+              }
+            }
+          }
+        }
+      }
+      if (rangeDef) {
+        try {
+          final Double ddef = new Double(sdef);
+          if ((((ddef).doubleValue() < rgmin) || ((ddef).doubleValue() > rgmax))) {
+            String _name = parameter.getName();
+            String _plus = ("The default value of parameter " + _name);
+            String _plus_1 = (_plus + " is not within the defined range");
+            this.warning(_plus_1, 
+              OceletPackage.Literals.PARAMETER__NAME);
+          }
+        } catch (final Throwable _t) {
+          if (_t instanceof NumberFormatException) {
+            final NumberFormatException e = (NumberFormatException)_t;
+            this.warning(
+              (("The parameter Range can only be used for numeric values and " + sdef) + 
+                " is not a valid numeric value."), OceletPackage.Literals.PARAMETER__NAME);
+          } else {
+            throw Exceptions.sneakyThrow(_t);
+          }
+        }
+      }
+    }
+  }
 }

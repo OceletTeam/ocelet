@@ -132,6 +132,7 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getScenarioAccess().getGroup(), "rule__Scenario__Group__0");
 					put(grammarAccess.getFqnAccess().getGroup(), "rule__Fqn__Group__0");
 					put(grammarAccess.getFqnAccess().getGroup_1(), "rule__Fqn__Group_1__0");
+					put(grammarAccess.getSignedNumberAccess().getGroup(), "rule__SignedNumber__Group__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_0(), "rule__XAssignment__Group_0__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_1(), "rule__XAssignment__Group_1__0");
 					put(grammarAccess.getXAssignmentAccess().getGroup_1_1(), "rule__XAssignment__Group_1_1__0");

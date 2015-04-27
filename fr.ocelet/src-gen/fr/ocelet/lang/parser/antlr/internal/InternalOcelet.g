@@ -537,9 +537,9 @@ ruleParamdefa returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getParamdefaAccess().getPardefaNumberParserRuleCall_1_0_0()); 
+	        newCompositeNode(grammarAccess.getParamdefaAccess().getPardefaSignedNumberParserRuleCall_1_0_0()); 
 	    }
-		lv_pardefa_1_1=ruleNumber		{
+		lv_pardefa_1_1=ruleSignedNumber		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getParamdefaRule());
 	        }
@@ -547,7 +547,7 @@ ruleParamdefa returns [EObject current=null]
        			$current, 
        			"pardefa",
         		lv_pardefa_1_1, 
-        		"Number");
+        		"SignedNumber");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -633,9 +633,9 @@ ruleRangevals returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getRangevalsAccess().getParminNumberParserRuleCall_1_0()); 
+	        newCompositeNode(grammarAccess.getRangevalsAccess().getParminSignedNumberParserRuleCall_1_0()); 
 	    }
-		lv_parmin_1_0=ruleNumber		{
+		lv_parmin_1_0=ruleSignedNumber		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getRangevalsRule());
 	        }
@@ -643,7 +643,7 @@ ruleRangevals returns [EObject current=null]
        			$current, 
        			"parmin",
         		lv_parmin_1_0, 
-        		"Number");
+        		"SignedNumber");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -655,9 +655,9 @@ ruleRangevals returns [EObject current=null]
 (
 (
 		{ 
-	        newCompositeNode(grammarAccess.getRangevalsAccess().getParmaxNumberParserRuleCall_3_0()); 
+	        newCompositeNode(grammarAccess.getRangevalsAccess().getParmaxSignedNumberParserRuleCall_3_0()); 
 	    }
-		lv_parmax_3_0=ruleNumber		{
+		lv_parmax_3_0=ruleSignedNumber		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getRangevalsRule());
 	        }
@@ -665,7 +665,7 @@ ruleRangevals returns [EObject current=null]
        			$current, 
        			"parmax",
         		lv_parmax_3_0, 
-        		"Number");
+        		"SignedNumber");
 	        afterParserOrEnumRuleCall();
 	    }
 
@@ -2614,6 +2614,44 @@ ruleFqn returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()]
     newLeafNode(this_ID_2, grammarAccess.getFqnAccess().getIDTerminalRuleCall_1_1()); 
     }
 )*)
+    ;
+
+
+
+
+
+// Entry rule entryRuleSignedNumber
+entryRuleSignedNumber returns [String current=null] 
+	:
+	{ newCompositeNode(grammarAccess.getSignedNumberRule()); } 
+	 iv_ruleSignedNumber=ruleSignedNumber 
+	 { $current=$iv_ruleSignedNumber.current.getText(); }  
+	 EOF 
+;
+
+// Rule SignedNumber
+ruleSignedNumber returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] 
+    @init { enterRule(); 
+    }
+    @after { leaveRule(); }:
+((
+	kw='-' 
+    {
+        $current.merge(kw);
+        newLeafNode(kw, grammarAccess.getSignedNumberAccess().getHyphenMinusKeyword_0()); 
+    }
+)?
+    { 
+        newCompositeNode(grammarAccess.getSignedNumberAccess().getNumberParserRuleCall_1()); 
+    }
+    this_Number_1=ruleNumber    {
+		$current.merge(this_Number_1);
+    }
+
+    { 
+        afterParserOrEnumRuleCall();
+    }
+)
     ;
 
 
