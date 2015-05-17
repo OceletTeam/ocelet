@@ -25,7 +25,7 @@ import fr.ocelet.platform.PlatformSettings;
 /**
  * Ocelet project description and creation class
  * 
- * @author Pascal Degenne
+ * @author Pascal Degenne - Initial contribution
  */
 public abstract class ProjectModel {
 

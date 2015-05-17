@@ -191,6 +191,16 @@ public class OceletLabelProvider extends XbaseLabelProvider {
       }
     }
     if (!_matched) {
+      if (eln instanceof Datafacer) {
+        String _name = ((Datafacer)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (_notEquals) {
+          _matched=true;
+          _switchResult = ((Datafacer)eln).getName();
+        }
+      }
+    }
+    if (!_matched) {
       if (eln instanceof Entity) {
         String _name = ((Entity)eln).getName();
         boolean _notEquals = (!Objects.equal(_name, null));

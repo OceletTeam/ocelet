@@ -2,6 +2,7 @@ package fr.ocelet.lang.jvmmodel
 
 import com.google.inject.Inject
 import fr.ocelet.lang.ocelet.ConstructorDef
+import fr.ocelet.lang.ocelet.Datafacer
 import fr.ocelet.lang.ocelet.Entity
 import fr.ocelet.lang.ocelet.Metadata
 import fr.ocelet.lang.ocelet.Model
@@ -21,6 +22,7 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import java.util.HashMap
 
 class OceletJvmModelInferrer extends AbstractModelInferrer {
 
@@ -29,7 +31,8 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
     // Used in our case to deal with imports in the generated code
 //    @Inject extension TypeReferenceSerializer
     @Inject extension IQualifiedNameProvider
-    @Inject TypeReferences typeReferences
+//    @Inject TypeReferences typeReferences
+    @Inject OceletCompiler ocltCompiler
     
     // Used to wrap primtive types to their corresponding java classes when needed.
     @Inject extension Primitives
@@ -72,6 +75,129 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  md.params.add(pst)
           	}
           }
+          
+// ---- Datafacer ----------------------------------
+          Datafacer : {
+          	acceptor.accept(modl.toClass(meln.fullyQualifiedName)) [
+          	  superTypes += typeRef('fr.ocelet.datafacer.ocltypes.'+meln.storetype)
+          	  members+= meln.toConstructor[
+                body = [
+                	append('''super(''')
+                	var int carg=0
+                	for (arg:meln.arguments) {
+                	  if (carg > 0) append(''',''')
+                	  ocltCompiler.compileDatafacerParamExpression(arg,it)
+//                	  append('''«arg»''')
+                	  carg = carg+1
+                	}
+                	append(''');''')
+                ]
+     		  ]
+     		  // Generates a set of functions for every match definition
+          	var isFirst = true
+          	for(matchdef:meln.matchbox){
+     		  val mt = matchdef.mtype
+     		  if (mt != null) switch (mt) {
+     		    Entity : {
+     		  	  val entype = typeRef(mt.fullyQualifiedName.toString)
+                  val entname = mt.name.toFirstUpper
+                  val listype = typeRef('fr.ocelet.runtime.ocltypes.List',entype)
+                  val propmap = new HashMap<String,String>()
+                  val propmapf = new HashMap<String,String>()
+                  for(eprop:mt.entelns) {
+                  	switch(eprop) {
+                  		PropertyDef : {
+                  		  propmap.put(eprop.name,eprop.type.simpleName) 
+                  		  propmapf.put(eprop.name,eprop.type.qualifiedName)	
+                  		}
+                  	  }
+                    }
+
+                  // InputDatafacer functions
+                  if (Class::forName('fr.ocelet.datafacer.InputDatafacer').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
+                  	val inputRecordType = typeRef('fr.ocelet.datafacer.InputDataRecord')
+                  	members += meln.toMethod('readAll'+entname,listype)[
+                  	  body=[
+                  	  	append('''List<«entname»> _elist = new List<«entname»>();''') newLine
+                  	  	append('''for («inputRecordType» _record : this) {''') newLine
+                  	  	append('''  _elist.add(create«entname»FromRecord(_record));''')
+                  	  	append('''}''') newLine
+                  	  	append('''close();''') newLine
+                  	  	append('''return _elist;''')
+                  	  ]
+                  	]
+                  	
+                  	if (isFirst) {
+                  		members += toMethod('readAll',listype)[
+                  		  body = [append('''return readAll«entname»();''')]
+                  		]
+                  	}
+                  	
+                  	members += meln.toMethod('create'+entname+'FromRecord',entype) [
+                  	  parameters += meln.toParameter('_rec', typeRef('fr.ocelet.datafacer.InputDataRecord'))
+                  	  body = [
+                  	  	append('''«entname» _entity = new «entname»();''') newLine
+                  	  	for(mp:matchdef.matchprops) {
+                  	  	  val eproptype = propmap.get(mp.prop)
+                  	  	  if (eproptype != null) {
+                  	  	    if (mp.colname != null) append('''_entity.setProperty("«mp.prop»",read«eproptype»("«mp.colname»"));''')
+                  	  	     newLine
+                  	  	    }
+                  	  	}
+                  	  	append('''return _entity;''')
+                  	  ]
+                  	]
+                  	
+                  	val hmtype = typeRef('java.util.HashMap',typeRef('java.lang.String'),typeRef('java.lang.String'))
+                  	members += meln.toMethod('getMatchdef',hmtype) [
+                  		body = [
+                  			append('''«hmtype» hm = new «hmtype»();''') newLine
+                 	  	    for(mp:matchdef.matchprops) {
+                  	  	      val epropftype = propmapf.get(mp.prop)
+                  	  	      if (epropftype != null) {
+                  	  	        if (mp.colname != null) append('''hm.put("«mp.colname»","«epropftype»");''')
+                  	  	        newLine
+                  	  	    }
+                  	  	  }
+                  	  	  append('''return hm;''')
+                  		]
+                  	  ]
+                    }
+
+                 if (Class::forName('fr.ocelet.datafacer.FiltrableDatafacer').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
+                   members += meln.toMethod('readFiltered'+entname,listype)[
+                   parameters += meln.toParameter('_filt', typeRef('java.lang.String'))
+                   body = [
+                 	append('''setFilter(_filt);''') newLine
+                 	append('''return readAll«entname»();''')
+                 	]
+                   ]
+                 }
+
+
+                 // OutputDatafacer functions
+                 if (Class::forName('fr.ocelet.datafacer.OutputDatafacer').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
+                   members += meln.toMethod('createRecord',typeRef('fr.ocelet.datafacer.OutputDataRecord'))[
+                   parameters += meln.toParameter('ety',typeRef('fr.ocelet.runtime.entity.Entity'))
+                   body = [
+                 	 val odrtype = typeRef('fr.ocelet.datafacer.OutputDataRecord')
+                  	 append('''«odrtype» odr = createOutputDataRec();''') newLine
+                  	 append('''if (odr != null) {''') newLine
+                  	 // Add all the setAttributes
+                  	 for(mp:matchdef.matchprops) {
+                  	   append('''odr.setAttribute("«mp.colname»",((«entname») ety).get«mp.prop.toFirstUpper»());''') newLine
+                  	 }
+                  	 append('''}''') newLine
+                  	 append('''return odr;''')
+                  	]
+                  ]
+                 }
+                  }
+                }
+              }
+     		]
+     	  }     
+          
       // ---- Entity --------------------------------------
           Entity : {
             // Generation d'une classe par entity

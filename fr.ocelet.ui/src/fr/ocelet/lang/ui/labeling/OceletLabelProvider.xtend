@@ -66,6 +66,7 @@ override protected doGetText(Object eln){
 	switch eln {
 	  Agregdef case ((eln.name != null)&&(eln.type != null)) : eln.name+'() returns '+eln.type.simpleName
 	  ConstructorDef case (eln.name != null): eln.name+'()'
+	  Datafacer case (eln.name != null): eln.name
 	  Entity case (eln.name != null): eln.name
 	  Filterdef case (eln.name != null): eln.name+'()'
 	  Metadata : 'Metadata'
