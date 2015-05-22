@@ -240,14 +240,18 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               if (!_matched_1) {
                                 if (eprop instanceof PropertyDef) {
                                   _matched_1=true;
-                                  String _name_1 = ((PropertyDef)eprop).getName();
                                   JvmTypeReference _type = ((PropertyDef)eprop).getType();
-                                  String _simpleName = _type.getSimpleName();
-                                  propmap.put(_name_1, _simpleName);
-                                  String _name_2 = ((PropertyDef)eprop).getName();
-                                  JvmTypeReference _type_1 = ((PropertyDef)eprop).getType();
-                                  String _qualifiedName = _type_1.getQualifiedName();
-                                  propmapf.put(_name_2, _qualifiedName);
+                                  boolean _notEquals_1 = (!Objects.equal(_type, null));
+                                  if (_notEquals_1) {
+                                    String _name_1 = ((PropertyDef)eprop).getName();
+                                    JvmTypeReference _type_1 = ((PropertyDef)eprop).getType();
+                                    String _simpleName = _type_1.getSimpleName();
+                                    propmap.put(_name_1, _simpleName);
+                                    String _name_2 = ((PropertyDef)eprop).getName();
+                                    JvmTypeReference _type_2 = ((PropertyDef)eprop).getType();
+                                    String _qualifiedName = _type_2.getQualifiedName();
+                                    propmapf.put(_name_2, _qualifiedName);
+                                  }
                                 }
                               }
                             }
@@ -321,7 +325,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                     OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
                                   }
                                 };
-                                JvmOperation _method_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(it, "readAll", listype, _function_2);
+                                JvmOperation _method_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(meln, "readAll", listype, _function_2);
                                 OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _method_1);
                               }
                               EList<JvmMember> _members_3 = it.getMembers();

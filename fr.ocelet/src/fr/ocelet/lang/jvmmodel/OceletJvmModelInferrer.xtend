@@ -107,8 +107,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   for(eprop:mt.entelns) {
                   	switch(eprop) {
                   		PropertyDef : {
-                  		  propmap.put(eprop.name,eprop.type.simpleName) 
-                  		  propmapf.put(eprop.name,eprop.type.qualifiedName)	
+                  		  if (eprop.type != null) {
+                  		   propmap.put(eprop.name,eprop.type.simpleName) 
+                  		   propmapf.put(eprop.name,eprop.type.qualifiedName)
+                  		  }	
                   		}
                   	  }
                     }
@@ -128,7 +130,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	]
                   	
                   	if (isFirst) {
-                  		members += toMethod('readAll',listype)[
+                  		members += meln.toMethod('readAll',listype)[
                   		  body = [append('''return readAll«entname»();''')]
                   		]
                   	}
