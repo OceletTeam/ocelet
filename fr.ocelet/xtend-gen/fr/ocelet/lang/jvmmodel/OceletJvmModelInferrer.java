@@ -279,7 +279,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       it.newLine();
                                       StringConcatenation _builder_1 = new StringConcatenation();
                                       _builder_1.append("for (");
-                                      _builder_1.append(inputRecordType, "");
+                                      String _simpleName = inputRecordType.getSimpleName();
+                                      _builder_1.append(_simpleName, "");
                                       _builder_1.append(" _record : this) {");
                                       it.append(_builder_1);
                                       it.newLine();
@@ -393,9 +394,11 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                     @Override
                                     public void apply(final ITreeAppendable it) {
                                       StringConcatenation _builder = new StringConcatenation();
-                                      _builder.append(hmtype, "");
+                                      String _simpleName = hmtype.getSimpleName();
+                                      _builder.append(_simpleName, "");
                                       _builder.append(" hm = new ");
-                                      _builder.append(hmtype, "");
+                                      String _simpleName_1 = hmtype.getSimpleName();
+                                      _builder.append(_simpleName_1, "");
                                       _builder.append("();");
                                       it.append(_builder);
                                       it.newLine();
@@ -487,7 +490,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                     public void apply(final ITreeAppendable it) {
                                       final JvmTypeReference odrtype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.datafacer.OutputDataRecord");
                                       StringConcatenation _builder = new StringConcatenation();
-                                      _builder.append(odrtype, "");
+                                      String _simpleName = odrtype.getSimpleName();
+                                      _builder.append(_simpleName, "");
                                       _builder.append(" odr = createOutputDataRec();");
                                       it.append(_builder);
                                       it.newLine();

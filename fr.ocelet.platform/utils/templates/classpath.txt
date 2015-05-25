@@ -9,5 +9,24 @@
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.datafacer_1.1.0.lr3x28.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.runtime_1.1.0.lr3x28.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet_1.1.0.lr3x28.jar"/>
-	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-data-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-main-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-render-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-coverage-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-referencing-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-api-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-shapefile-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/miglayout-3.7-swing.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-swing-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-metadata-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-jdbc-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-jdbc-postgis-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-epsg-wkt-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/jts-1.13.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/gt-opengis-9.4.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/vecmath-1.3.2.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/jsr-275-1.0-beta-2.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28//jai_core-1.1.3.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/JavaAPIforKml.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.1.0.lr3x28/postgresql-9.3-1102.jdbc41.jar"/>
 </classpath>

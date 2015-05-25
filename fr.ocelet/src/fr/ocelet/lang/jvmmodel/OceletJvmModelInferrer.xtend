@@ -94,6 +94,8 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                 ]
      		  ]
      		  // Generates a set of functions for every match definition
+     		  // We have to add .simpleName to every type we need to generate
+     		  // don't know why so far ! ... but it works.
           	var isFirst = true
           	for(matchdef:meln.matchbox){
      		  val mt = matchdef.mtype
@@ -121,7 +123,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	members += meln.toMethod('readAll'+entname,listype)[
                   	  body=[
                   	  	append('''List<«entname»> _elist = new List<«entname»>();''') newLine
-                  	  	append('''for («inputRecordType» _record : this) {''') newLine
+                  	  	append('''for («inputRecordType.simpleName» _record : this) {''') newLine
                   	  	append('''  _elist.add(create«entname»FromRecord(_record));''')
                   	  	append('''}''') newLine
                   	  	append('''close();''') newLine
@@ -153,7 +155,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	val hmtype = typeRef('java.util.HashMap',typeRef('java.lang.String'),typeRef('java.lang.String'))
                   	members += meln.toMethod('getMatchdef',hmtype) [
                   		body = [
-                  			append('''«hmtype» hm = new «hmtype»();''') newLine
+                  			append('''«hmtype.simpleName» hm = new «hmtype.simpleName»();''') newLine
                  	  	    for(mp:matchdef.matchprops) {
                   	  	      val epropftype = propmapf.get(mp.prop)
                   	  	      if (epropftype != null) {
@@ -183,7 +185,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                    parameters += meln.toParameter('ety',typeRef('fr.ocelet.runtime.entity.Entity'))
                    body = [
                  	 val odrtype = typeRef('fr.ocelet.datafacer.OutputDataRecord')
-                  	 append('''«odrtype» odr = createOutputDataRec();''') newLine
+                  	 append('''«odrtype.simpleName» odr = createOutputDataRec();''') newLine
                   	 append('''if (odr != null) {''') newLine
                   	 // Add all the setAttributes
                   	 for(mp:matchdef.matchprops) {
