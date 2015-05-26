@@ -198,6 +198,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                  }
                   }
                 }
+                isFirst = false
               }
      		]
      	  }     

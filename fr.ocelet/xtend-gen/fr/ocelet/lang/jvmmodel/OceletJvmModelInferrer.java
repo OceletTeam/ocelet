@@ -535,6 +535,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           }
                         }
                       }
+                      isFirst = false;
                     }
                   }
                 } catch (Throwable _e) {
