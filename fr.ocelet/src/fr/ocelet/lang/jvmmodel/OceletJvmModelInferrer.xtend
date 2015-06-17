@@ -14,24 +14,20 @@ import fr.ocelet.lang.ocelet.PropertyDef
 import fr.ocelet.lang.ocelet.Rangevals
 import fr.ocelet.lang.ocelet.Scenario
 import fr.ocelet.lang.ocelet.ServiceDef
+import java.util.HashMap
 import java.util.List
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.common.types.util.Primitives
-import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import java.util.HashMap
 
 class OceletJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject extension JvmTypesBuilder
 
-    // Used in our case to deal with imports in the generated code
-//    @Inject extension TypeReferenceSerializer
     @Inject extension IQualifiedNameProvider
-//    @Inject TypeReferences typeReferences
     @Inject OceletCompiler ocltCompiler
     
     // Used to wrap primtive types to their corresponding java classes when needed.
@@ -302,15 +298,14 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
             «val genptype = typeRef('fr.ocelet.runtime.model.Parameter',pstuff.getType)»
             «IF(pstuff.numericType)»
               «val implptype = typeRef('fr.ocelet.runtime.model.NumericParameterImpl',pstuff.getType)»
-              «genptype» par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»«IF (pstuff.getDvalue == null)»,null«ELSE»,«pstuff.getDvalue»«ENDIF»«IF (pstuff.getMinvalue == null)»,null«ELSE»,«pstuff.getMinvalue»«ENDIF»«IF (pstuff.getMaxvalue == null)»,null«ELSE»,«pstuff.getMaxvalue»«ENDIF»«IF (pstuff.getUnit == null)»,null«ELSE»,«pstuff.getUnit»«ENDIF»);
+              «genptype» par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»,«pstuff.getDvalueString»«IF (pstuff.getMinvalue == null)»,null«ELSE»,«pstuff.getMinvalue»«ENDIF»«IF (pstuff.getMaxvalue == null)»,null«ELSE»,«pstuff.getMaxvalue»«ENDIF»«IF (pstuff.getUnit == null)»,null«ELSE»,«pstuff.getUnit»«ENDIF»);
             «ELSE»
               «val implptype = typeRef('fr.ocelet.runtime.model.ParameterImpl',pstuff.getType)»
-              «genptype»par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»«IF (pstuff.getDvalue == null)»,null«ELSE»«IF (pstuff.stringType)»,"«pstuff.getDvalue»"«ELSE»,«pstuff.getDvalue»«ENDIF»
-            «ENDIF»«IF (pstuff.getUnit == null)»,null«ELSE»,"«pstuff.getUnit»"«ENDIF»);
+              «genptype» par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»,«pstuff.getDvalueString»«IF (pstuff.getUnit == null)»,null«ELSE»,"«pstuff.getUnit»"«ENDIF»);
             «ENDIF»
             addParameter(par_«pstuff.getName»);
             «IF (pstuff.getDvalue != null)»
-            «pstuff.name» = «IF (pstuff.stringType)»"«pstuff.getDvalue»";«ELSE»«pstuff.getDvalue»;«ENDIF»
+            «pstuff.name» = «pstuff.getDvalueString»;
             «ENDIF»
             «ENDFOR»
             «ENDIF»

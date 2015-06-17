@@ -887,21 +887,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               _builder.append("\",");
                               Boolean _optionnal = pstuff.getOptionnal();
                               _builder.append(_optionnal, "");
-                              {
-                                Object _dvalue = pstuff.getDvalue();
-                                boolean _equals = Objects.equal(_dvalue, null);
-                                if (_equals) {
-                                  _builder.append(",null");
-                                } else {
-                                  _builder.append(",");
-                                  Object _dvalue_1 = pstuff.getDvalue();
-                                  _builder.append(_dvalue_1, "");
-                                }
-                              }
+                              _builder.append(",");
+                              String _dvalueString = pstuff.getDvalueString();
+                              _builder.append(_dvalueString, "");
                               {
                                 Object _minvalue = pstuff.getMinvalue();
-                                boolean _equals_1 = Objects.equal(_minvalue, null);
-                                if (_equals_1) {
+                                boolean _equals = Objects.equal(_minvalue, null);
+                                if (_equals) {
                                   _builder.append(",null");
                                 } else {
                                   _builder.append(",");
@@ -911,8 +903,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               }
                               {
                                 Object _maxvalue = pstuff.getMaxvalue();
-                                boolean _equals_2 = Objects.equal(_maxvalue, null);
-                                if (_equals_2) {
+                                boolean _equals_1 = Objects.equal(_maxvalue, null);
+                                if (_equals_1) {
                                   _builder.append(",null");
                                 } else {
                                   _builder.append(",");
@@ -922,8 +914,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               }
                               {
                                 String _unit = pstuff.getUnit();
-                                boolean _equals_3 = Objects.equal(_unit, null);
-                                if (_equals_3) {
+                                boolean _equals_2 = Objects.equal(_unit, null);
+                                if (_equals_2) {
                                   _builder.append(",null");
                                 } else {
                                   _builder.append(",");
@@ -938,7 +930,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               final JvmTypeReference implptype_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.model.ParameterImpl", _type_2);
                               _builder.newLineIfNotEmpty();
                               _builder.append(genptype, "");
-                              _builder.append("par_");
+                              _builder.append(" par_");
                               String _name_2 = pstuff.getName();
                               _builder.append(_name_2, "");
                               _builder.append(" = new ");
@@ -952,33 +944,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               _builder.append("\",");
                               Boolean _optionnal_1 = pstuff.getOptionnal();
                               _builder.append(_optionnal_1, "");
-                              {
-                                Object _dvalue_2 = pstuff.getDvalue();
-                                boolean _equals_4 = Objects.equal(_dvalue_2, null);
-                                if (_equals_4) {
-                                  _builder.append(",null");
-                                } else {
-                                  {
-                                    boolean _isStringType = pstuff.isStringType();
-                                    if (_isStringType) {
-                                      _builder.append(",\"");
-                                      Object _dvalue_3 = pstuff.getDvalue();
-                                      _builder.append(_dvalue_3, "");
-                                      _builder.append("\"");
-                                    } else {
-                                      _builder.append(",");
-                                      Object _dvalue_4 = pstuff.getDvalue();
-                                      _builder.append(_dvalue_4, "");
-                                    }
-                                  }
-                                  _builder.newLineIfNotEmpty();
-                                  _builder.append("            ");
-                                }
-                              }
+                              _builder.append(",");
+                              String _dvalueString_1 = pstuff.getDvalueString();
+                              _builder.append(_dvalueString_1, "");
                               {
                                 String _unit_2 = pstuff.getUnit();
-                                boolean _equals_5 = Objects.equal(_unit_2, null);
-                                if (_equals_5) {
+                                boolean _equals_3 = Objects.equal(_unit_2, null);
+                                if (_equals_3) {
                                   _builder.append(",null");
                                 } else {
                                   _builder.append(",\"");
@@ -997,24 +969,14 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(");");
                           _builder.newLineIfNotEmpty();
                           {
-                            Object _dvalue_5 = pstuff.getDvalue();
-                            boolean _notEquals_2 = (!Objects.equal(_dvalue_5, null));
+                            Object _dvalue = pstuff.getDvalue();
+                            boolean _notEquals_2 = (!Objects.equal(_dvalue, null));
                             if (_notEquals_2) {
                               _builder.append(pstuff.name, "");
                               _builder.append(" = ");
-                              {
-                                boolean _isStringType_1 = pstuff.isStringType();
-                                if (_isStringType_1) {
-                                  _builder.append("\"");
-                                  Object _dvalue_6 = pstuff.getDvalue();
-                                  _builder.append(_dvalue_6, "");
-                                  _builder.append("\";");
-                                } else {
-                                  Object _dvalue_7 = pstuff.getDvalue();
-                                  _builder.append(_dvalue_7, "");
-                                  _builder.append(";");
-                                }
-                              }
+                              String _dvalueString_2 = pstuff.getDvalueString();
+                              _builder.append(_dvalueString_2, "");
+                              _builder.append(";");
                               _builder.newLineIfNotEmpty();
                             }
                           }

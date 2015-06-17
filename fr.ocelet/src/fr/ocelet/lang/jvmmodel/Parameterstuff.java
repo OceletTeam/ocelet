@@ -45,9 +45,28 @@ class Parameterstuff {
 	}
 
 	public Object getDvalue() {
+		if (dvalue == null) {
+			if (isIntType())
+				dvalue = 0;
+			else if (isFloatType()) {
+				if (type.getSimpleName().compareTo("Float") == 0)
+					dvalue = 0.0f;
+				else
+					dvalue = 0.0;
+			} else if (isStringType())
+				dvalue = "";
+			else if (type.getSimpleName().compareTo("Boolean") == 0)
+				dvalue = false;
+		}
 		return dvalue;
 	}
 
+	public String getDvalueString() {
+		if (type.getSimpleName().compareTo("Float") == 0) return getDvalue()+"f";
+		else if (isStringType()) return "\""+getDvalue()+"\"";
+		else return getDvalue()+"";
+	}
+	
 	public Object getMinvalue() {
 		return minvalue;
 	}
@@ -59,18 +78,26 @@ class Parameterstuff {
 	public String getUnit() {
 		return unit;
 	}
-	
+
 	public boolean isNumericType() {
-		return ((type.getSimpleName().compareTo("Integer") == 0) ||
-				(type.getSimpleName().compareTo("Long") == 0) ||
-				(type.getSimpleName().compareTo("Float") == 0) ||
-				(type.getSimpleName().compareTo("Double") == 0) ||
-				(type.getSimpleName().compareTo("Short") == 0) ||
-				(type.getSimpleName().compareTo("Byte") == 0));
+		return (isIntType() || isFloatType());
 	}
-	
+
+	public boolean isIntType() {
+		return ((type.getSimpleName().compareTo("Integer") == 0)
+				|| (type.getSimpleName().compareTo("Long") == 0)
+				|| (type.getSimpleName().compareTo("Short") == 0) || (type
+				.getSimpleName().compareTo("Byte") == 0));
+	}
+
+	public boolean isFloatType() {
+		return ((type.getSimpleName().compareTo("Float") == 0) || (type
+				.getSimpleName().compareTo("Double") == 0));
+	}
+
 	public boolean isStringType() {
-		return (type.getSimpleName().compareTo("String") == 0);
+		return ((type.getSimpleName().compareTo("String") == 0) || (type
+				.getSimpleName().compareTo("Char") == 0));
 	}
 
 	public String getDescription() {
