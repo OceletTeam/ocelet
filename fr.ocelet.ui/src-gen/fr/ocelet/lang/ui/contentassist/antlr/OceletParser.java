@@ -130,6 +130,9 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getMdefAccess().getGroup(), "rule__Mdef__Group__0");
 					put(grammarAccess.getAgregdefAccess().getGroup(), "rule__Agregdef__Group__0");
 					put(grammarAccess.getScenarioAccess().getGroup(), "rule__Scenario__Group__0");
+					put(grammarAccess.getScenarioAccess().getGroup_3(), "rule__Scenario__Group_3__0");
+					put(grammarAccess.getScenarioAccess().getGroup_3_1(), "rule__Scenario__Group_3_1__0");
+					put(grammarAccess.getScenarioAccess().getGroup_3_1_1(), "rule__Scenario__Group_3_1_1__0");
 					put(grammarAccess.getFqnAccess().getGroup(), "rule__Fqn__Group__0");
 					put(grammarAccess.getFqnAccess().getGroup_1(), "rule__Fqn__Group_1__0");
 					put(grammarAccess.getSignedNumberAccess().getGroup(), "rule__SignedNumber__Group__0");
@@ -384,8 +387,11 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getAgregdefAccess().getTypeAssignment_1(), "rule__Agregdef__TypeAssignment_1");
 					put(grammarAccess.getAgregdefAccess().getNameAssignment_2(), "rule__Agregdef__NameAssignment_2");
 					put(grammarAccess.getAgregdefAccess().getBodyAssignment_3(), "rule__Agregdef__BodyAssignment_3");
-					put(grammarAccess.getScenarioAccess().getNameAssignment_1(), "rule__Scenario__NameAssignment_1");
-					put(grammarAccess.getScenarioAccess().getSccodeAssignment_2(), "rule__Scenario__SccodeAssignment_2");
+					put(grammarAccess.getScenarioAccess().getTypeAssignment_1(), "rule__Scenario__TypeAssignment_1");
+					put(grammarAccess.getScenarioAccess().getNameAssignment_2(), "rule__Scenario__NameAssignment_2");
+					put(grammarAccess.getScenarioAccess().getParamsAssignment_3_1_0(), "rule__Scenario__ParamsAssignment_3_1_0");
+					put(grammarAccess.getScenarioAccess().getParamsAssignment_3_1_1_1(), "rule__Scenario__ParamsAssignment_3_1_1_1");
+					put(grammarAccess.getScenarioAccess().getBodyAssignment_4(), "rule__Scenario__BodyAssignment_4");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_0_1(), "rule__XAssignment__FeatureAssignment_0_1");
 					put(grammarAccess.getXAssignmentAccess().getValueAssignment_0_3(), "rule__XAssignment__ValueAssignment_0_3");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_1_1_0_0_1(), "rule__XAssignment__FeatureAssignment_1_1_0_0_1");

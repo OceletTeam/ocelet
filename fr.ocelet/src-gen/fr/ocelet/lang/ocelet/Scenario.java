@@ -2,6 +2,11 @@
  */
 package fr.ocelet.lang.ocelet;
 
+import org.eclipse.emf.common.util.EList;
+
+import org.eclipse.xtext.common.types.JvmFormalParameter;
+import org.eclipse.xtext.common.types.JvmTypeReference;
+
 import org.eclipse.xtext.xbase.XExpression;
 
 /**
@@ -12,8 +17,10 @@ import org.eclipse.xtext.xbase.XExpression;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link fr.ocelet.lang.ocelet.Scenario#getType <em>Type</em>}</li>
  *   <li>{@link fr.ocelet.lang.ocelet.Scenario#getName <em>Name</em>}</li>
- *   <li>{@link fr.ocelet.lang.ocelet.Scenario#getSccode <em>Sccode</em>}</li>
+ *   <li>{@link fr.ocelet.lang.ocelet.Scenario#getParams <em>Params</em>}</li>
+ *   <li>{@link fr.ocelet.lang.ocelet.Scenario#getBody <em>Body</em>}</li>
  * </ul>
  * </p>
  *
@@ -23,6 +30,32 @@ import org.eclipse.xtext.xbase.XExpression;
  */
 public interface Scenario extends ModEln
 {
+  /**
+   * Returns the value of the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Type</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Type</em>' containment reference.
+   * @see #setType(JvmTypeReference)
+   * @see fr.ocelet.lang.ocelet.OceletPackage#getScenario_Type()
+   * @model containment="true"
+   * @generated
+   */
+  JvmTypeReference getType();
+
+  /**
+   * Sets the value of the '{@link fr.ocelet.lang.ocelet.Scenario#getType <em>Type</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Type</em>' containment reference.
+   * @see #getType()
+   * @generated
+   */
+  void setType(JvmTypeReference value);
+
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
@@ -50,29 +83,45 @@ public interface Scenario extends ModEln
   void setName(String value);
 
   /**
-   * Returns the value of the '<em><b>Sccode</b></em>' containment reference.
+   * Returns the value of the '<em><b>Params</b></em>' containment reference list.
+   * The list contents are of type {@link org.eclipse.xtext.common.types.JvmFormalParameter}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Sccode</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Params</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Sccode</em>' containment reference.
-   * @see #setSccode(XExpression)
-   * @see fr.ocelet.lang.ocelet.OceletPackage#getScenario_Sccode()
+   * @return the value of the '<em>Params</em>' containment reference list.
+   * @see fr.ocelet.lang.ocelet.OceletPackage#getScenario_Params()
    * @model containment="true"
    * @generated
    */
-  XExpression getSccode();
+  EList<JvmFormalParameter> getParams();
 
   /**
-   * Sets the value of the '{@link fr.ocelet.lang.ocelet.Scenario#getSccode <em>Sccode</em>}' containment reference.
+   * Returns the value of the '<em><b>Body</b></em>' containment reference.
    * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Body</em>' containment reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Sccode</em>' containment reference.
-   * @see #getSccode()
+   * @return the value of the '<em>Body</em>' containment reference.
+   * @see #setBody(XExpression)
+   * @see fr.ocelet.lang.ocelet.OceletPackage#getScenario_Body()
+   * @model containment="true"
    * @generated
    */
-  void setSccode(XExpression value);
+  XExpression getBody();
+
+  /**
+   * Sets the value of the '{@link fr.ocelet.lang.ocelet.Scenario#getBody <em>Body</em>}' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Body</em>' containment reference.
+   * @see #getBody()
+   * @generated
+   */
+  void setBody(XExpression value);
 
 } // Scenario

@@ -682,20 +682,10 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (name=ID sccode=XBlockExpression)
+	 *     (type=JvmTypeReference? name=ID (params+=FullJvmFormalParameter params+=FullJvmFormalParameter*)? body=XBlockExpression)
 	 */
 	protected void sequence_Scenario(EObject context, Scenario semanticObject) {
-		if(errorAcceptor != null) {
-			if(transientValues.isValueTransient(semanticObject, OceletPackage.Literals.SCENARIO__NAME) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, OceletPackage.Literals.SCENARIO__NAME));
-			if(transientValues.isValueTransient(semanticObject, OceletPackage.Literals.SCENARIO__SCCODE) == ValueTransient.YES)
-				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, OceletPackage.Literals.SCENARIO__SCCODE));
-		}
-		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
-		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getScenarioAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
-		feeder.accept(grammarAccess.getScenarioAccess().getSccodeXBlockExpressionParserRuleCall_2_0(), semanticObject.getSccode());
-		feeder.finish();
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	

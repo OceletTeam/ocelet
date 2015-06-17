@@ -24,6 +24,7 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected OceletGrammarAccess grammarAccess;
 	protected AbstractElementAlias match_Datafacer_DataKeyword_3_1_or_StoreKeyword_3_0;
 	protected AbstractElementAlias match_InteractionDef___AggKeyword_6_0_LeftCurlyBracketKeyword_6_1_RightCurlyBracketKeyword_6_3__q;
+	protected AbstractElementAlias match_Scenario___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q;
 	protected AbstractElementAlias match_StrucVarDef_SemicolonKeyword_2_q;
 	protected AbstractElementAlias match_XBlockExpression_SemicolonKeyword_2_1_q;
 	protected AbstractElementAlias match_XExpressionInClosure_SemicolonKeyword_1_1_q;
@@ -37,6 +38,7 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 		grammarAccess = (OceletGrammarAccess) access;
 		match_Datafacer_DataKeyword_3_1_or_StoreKeyword_3_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getDatafacerAccess().getDataKeyword_3_1()), new TokenAlias(false, false, grammarAccess.getDatafacerAccess().getStoreKeyword_3_0()));
 		match_InteractionDef___AggKeyword_6_0_LeftCurlyBracketKeyword_6_1_RightCurlyBracketKeyword_6_3__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getInteractionDefAccess().getAggKeyword_6_0()), new TokenAlias(false, false, grammarAccess.getInteractionDefAccess().getLeftCurlyBracketKeyword_6_1()), new TokenAlias(false, false, grammarAccess.getInteractionDefAccess().getRightCurlyBracketKeyword_6_3()));
+		match_Scenario___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q = new GroupAlias(false, true, new TokenAlias(false, false, grammarAccess.getScenarioAccess().getLeftParenthesisKeyword_3_0()), new TokenAlias(false, false, grammarAccess.getScenarioAccess().getRightParenthesisKeyword_3_2()));
 		match_StrucVarDef_SemicolonKeyword_2_q = new TokenAlias(false, true, grammarAccess.getStrucVarDefAccess().getSemicolonKeyword_2());
 		match_XBlockExpression_SemicolonKeyword_2_1_q = new TokenAlias(false, true, grammarAccess.getXBlockExpressionAccess().getSemicolonKeyword_2_1());
 		match_XExpressionInClosure_SemicolonKeyword_1_1_q = new TokenAlias(false, true, grammarAccess.getXExpressionInClosureAccess().getSemicolonKeyword_1_1());
@@ -87,6 +89,8 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_Datafacer_DataKeyword_3_1_or_StoreKeyword_3_0(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_InteractionDef___AggKeyword_6_0_LeftCurlyBracketKeyword_6_1_RightCurlyBracketKeyword_6_3__q.equals(syntax))
 				emit_InteractionDef___AggKeyword_6_0_LeftCurlyBracketKeyword_6_1_RightCurlyBracketKeyword_6_3__q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_Scenario___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q.equals(syntax))
+				emit_Scenario___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_StrucVarDef_SemicolonKeyword_2_q.equals(syntax))
 				emit_StrucVarDef_SemicolonKeyword_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_XBlockExpression_SemicolonKeyword_2_1_q.equals(syntax))
@@ -124,6 +128,17 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     body=XBlockExpression (ambiguity) (rule end)
 	 */
 	protected void emit_InteractionDef___AggKeyword_6_0_LeftCurlyBracketKeyword_6_1_RightCurlyBracketKeyword_6_3__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     ('(' ')')?
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     name=ID (ambiguity) body=XBlockExpression
+	 */
+	protected void emit_Scenario___LeftParenthesisKeyword_3_0_RightParenthesisKeyword_3_2__q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

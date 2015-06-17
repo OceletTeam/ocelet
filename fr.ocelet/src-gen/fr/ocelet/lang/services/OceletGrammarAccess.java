@@ -1484,33 +1484,83 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Scenario");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cScenarioKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Assignment cSccodeAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cSccodeXBlockExpressionParserRuleCall_2_0 = (RuleCall)cSccodeAssignment_2.eContents().get(0);
+		private final Assignment cTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_1_0 = (RuleCall)cTypeAssignment_1.eContents().get(0);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cLeftParenthesisKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Group cGroup_3_1 = (Group)cGroup_3.eContents().get(1);
+		private final Assignment cParamsAssignment_3_1_0 = (Assignment)cGroup_3_1.eContents().get(0);
+		private final RuleCall cParamsFullJvmFormalParameterParserRuleCall_3_1_0_0 = (RuleCall)cParamsAssignment_3_1_0.eContents().get(0);
+		private final Group cGroup_3_1_1 = (Group)cGroup_3_1.eContents().get(1);
+		private final Keyword cCommaKeyword_3_1_1_0 = (Keyword)cGroup_3_1_1.eContents().get(0);
+		private final Assignment cParamsAssignment_3_1_1_1 = (Assignment)cGroup_3_1_1.eContents().get(1);
+		private final RuleCall cParamsFullJvmFormalParameterParserRuleCall_3_1_1_1_0 = (RuleCall)cParamsAssignment_3_1_1_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3_2 = (Keyword)cGroup_3.eContents().get(2);
+		private final Assignment cBodyAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cBodyXBlockExpressionParserRuleCall_4_0 = (RuleCall)cBodyAssignment_4.eContents().get(0);
 		
 		////------ Scenario ------
 		//Scenario:
-		//	"scenario" name=ID sccode=XBlockExpression;
+		//	"scenario" type=JvmTypeReference? name=ID ("(" (params+=FullJvmFormalParameter ("," params+=FullJvmFormalParameter)*)?
+		//	")")? body=XBlockExpression;
 		@Override public ParserRule getRule() { return rule; }
 
-		//"scenario" name=ID sccode=XBlockExpression
+		//"scenario" type=JvmTypeReference? name=ID ("(" (params+=FullJvmFormalParameter ("," params+=FullJvmFormalParameter)*)?
+		//")")? body=XBlockExpression
 		public Group getGroup() { return cGroup; }
 
 		//"scenario"
 		public Keyword getScenarioKeyword_0() { return cScenarioKeyword_0; }
 
+		//type=JvmTypeReference?
+		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
+
+		//JvmTypeReference
+		public RuleCall getTypeJvmTypeReferenceParserRuleCall_1_0() { return cTypeJvmTypeReferenceParserRuleCall_1_0; }
+
 		//name=ID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 
 		//ID
-		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
+		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 
-		//sccode=XBlockExpression
-		public Assignment getSccodeAssignment_2() { return cSccodeAssignment_2; }
+		//("(" (params+=FullJvmFormalParameter ("," params+=FullJvmFormalParameter)*)? ")")?
+		public Group getGroup_3() { return cGroup_3; }
+
+		//"("
+		public Keyword getLeftParenthesisKeyword_3_0() { return cLeftParenthesisKeyword_3_0; }
+
+		//(params+=FullJvmFormalParameter ("," params+=FullJvmFormalParameter)*)?
+		public Group getGroup_3_1() { return cGroup_3_1; }
+
+		//params+=FullJvmFormalParameter
+		public Assignment getParamsAssignment_3_1_0() { return cParamsAssignment_3_1_0; }
+
+		//FullJvmFormalParameter
+		public RuleCall getParamsFullJvmFormalParameterParserRuleCall_3_1_0_0() { return cParamsFullJvmFormalParameterParserRuleCall_3_1_0_0; }
+
+		//("," params+=FullJvmFormalParameter)*
+		public Group getGroup_3_1_1() { return cGroup_3_1_1; }
+
+		//","
+		public Keyword getCommaKeyword_3_1_1_0() { return cCommaKeyword_3_1_1_0; }
+
+		//params+=FullJvmFormalParameter
+		public Assignment getParamsAssignment_3_1_1_1() { return cParamsAssignment_3_1_1_1; }
+
+		//FullJvmFormalParameter
+		public RuleCall getParamsFullJvmFormalParameterParserRuleCall_3_1_1_1_0() { return cParamsFullJvmFormalParameterParserRuleCall_3_1_1_1_0; }
+
+		//")"
+		public Keyword getRightParenthesisKeyword_3_2() { return cRightParenthesisKeyword_3_2; }
+
+		//body=XBlockExpression
+		public Assignment getBodyAssignment_4() { return cBodyAssignment_4; }
 
 		//XBlockExpression
-		public RuleCall getSccodeXBlockExpressionParserRuleCall_2_0() { return cSccodeXBlockExpressionParserRuleCall_2_0; }
+		public RuleCall getBodyXBlockExpressionParserRuleCall_4_0() { return cBodyXBlockExpressionParserRuleCall_4_0; }
 	}
 
 	public class FqnElements extends AbstractParserRuleElementFinder {
@@ -1994,7 +2044,8 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 
 	////------ Scenario ------
 	//Scenario:
-	//	"scenario" name=ID sccode=XBlockExpression;
+	//	"scenario" type=JvmTypeReference? name=ID ("(" (params+=FullJvmFormalParameter ("," params+=FullJvmFormalParameter)*)?
+	//	")")? body=XBlockExpression;
 	public ScenarioElements getScenarioAccess() {
 		return pScenario;
 	}

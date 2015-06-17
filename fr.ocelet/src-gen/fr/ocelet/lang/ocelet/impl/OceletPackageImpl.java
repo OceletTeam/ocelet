@@ -1251,9 +1251,9 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getScenario_Name()
+  public EReference getScenario_Type()
   {
-    return (EAttribute)scenarioEClass.getEStructuralFeatures().get(0);
+    return (EReference)scenarioEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1261,9 +1261,29 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getScenario_Sccode()
+  public EAttribute getScenario_Name()
   {
-    return (EReference)scenarioEClass.getEStructuralFeatures().get(1);
+    return (EAttribute)scenarioEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getScenario_Params()
+  {
+    return (EReference)scenarioEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getScenario_Body()
+  {
+    return (EReference)scenarioEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1417,8 +1437,10 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
     createEReference(agregdefEClass, AGREGDEF__BODY);
 
     scenarioEClass = createEClass(SCENARIO);
+    createEReference(scenarioEClass, SCENARIO__TYPE);
     createEAttribute(scenarioEClass, SCENARIO__NAME);
-    createEReference(scenarioEClass, SCENARIO__SCCODE);
+    createEReference(scenarioEClass, SCENARIO__PARAMS);
+    createEReference(scenarioEClass, SCENARIO__BODY);
   }
 
   /**
@@ -1599,8 +1621,10 @@ public class OceletPackageImpl extends EPackageImpl implements OceletPackage
     initEReference(getAgregdef_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, Agregdef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(scenarioEClass, Scenario.class, "Scenario", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getScenario_Type(), theTypesPackage.getJvmTypeReference(), null, "type", null, 0, 1, Scenario.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getScenario_Name(), ecorePackage.getEString(), "name", null, 0, 1, Scenario.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getScenario_Sccode(), theXbasePackage.getXExpression(), null, "sccode", null, 0, 1, Scenario.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getScenario_Params(), theTypesPackage.getJvmFormalParameter(), null, "params", null, 0, -1, Scenario.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getScenario_Body(), theXbasePackage.getXExpression(), null, "body", null, 0, 1, Scenario.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Create resource
     createResource(eNS_URI);

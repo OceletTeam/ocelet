@@ -59,6 +59,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
             
       // ---- Metadata ------------------------------------
           Metadata : {
+            if (meln.paramdefs != null) {          	
           	md.setModeldesc(meln.desc)
           	md.setWebpage(meln.webp)
           	for (paramdef:meln.paramdefs) {
@@ -73,6 +74,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			}
           		}
           	  md.params.add(pst)
+          	}
           	}
           }
           
@@ -308,7 +310,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
             «ENDIF»
             addParameter(par_«pstuff.getName»);
             «IF (pstuff.getDvalue != null)»
-            «pstuff.name» = «IF (pstuff.stringType)»«pstuff.getDvalue»";«ELSE»«pstuff.getDvalue»;«ENDIF»
+            «pstuff.name» = «IF (pstuff.stringType)»"«pstuff.getDvalue»";«ELSE»«pstuff.getDvalue»;«ENDIF»
             «ENDIF»
             «ENDFOR»
             «ENDIF»
@@ -325,7 +327,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                  model_«modlName».run_«modlName»();'''
               ]
               members += modl.toMethod("run_"+modlName,typeRef(Void.TYPE)) [
-              	body = scen.sccode
+              	body = scen.body
               ]
               members += modl.toMethod("simulate",typeRef(Void.TYPE)) [
               parameters += modl.toParameter('in_params',typeRef('java.util.HashMap',typeRef('java.lang.String'),typeRef('java.lang.Object')))
@@ -338,24 +340,29 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
               «ENDIF»
               run_«modlName»();
               ''']
-   	  	    } else
-              members += scen.toMethod(scen.name,typeRef(Void.TYPE)) [
-      		      body = scen.sccode
+   	  	    } else {
+   	  	      var rtype = scen.type
+      		  if (rtype == null) rtype = typeRef(Void::TYPE)
+              members += scen.toMethod(scen.name,rtype) [
+                for (p: scen.params) {
+      		  	  parameters += p.toParameter(p.name, p.parameterType)
+      		    }
+      		  	body = scen.body
               ]
+             }
            }
-           
            // Produces a field for every declared parameter
            if (md.hasParameters) {
-             	for(pstuff:md.params) {
-             		var jvmField = modl.toField(pstuff.name, pstuff.type)
-          	  	     if (jvmField != null) {
-          	  	       jvmField.setFinal(false)
-          		       members+= jvmField
-          		       members+= modl.toSetter(pstuff.name, pstuff.type)
-          		       members+= modl.toGetter(pstuff.name, pstuff.type)
-          		     }
-             	}
-            }
+             for(pstuff:md.params) {
+               var jvmField = modl.toField(pstuff.name, pstuff.type)
+          	  	 if (jvmField != null) {
+          	  	  jvmField.setFinal(false)
+          		  members+= jvmField
+          		  members+= modl.toSetter(pstuff.name, pstuff.type)
+          		  members+= modl.toGetter(pstuff.name, pstuff.type)
+          		 }
+          	   }
+            }            
          ]
       }
   }

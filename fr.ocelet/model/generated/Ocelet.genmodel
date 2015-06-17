@@ -124,8 +124,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ocelet.ecore#//Agregdef/body"/>
     </genClasses>
     <genClasses ecoreClass="Ocelet.ecore#//Scenario">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ocelet.ecore#//Scenario/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Ocelet.ecore#//Scenario/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ocelet.ecore#//Scenario/sccode"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ocelet.ecore#//Scenario/params"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Ocelet.ecore#//Scenario/body"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

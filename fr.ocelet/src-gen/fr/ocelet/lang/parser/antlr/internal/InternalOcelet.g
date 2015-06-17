@@ -2538,9 +2538,27 @@ ruleScenario returns [EObject current=null]
     }
 (
 (
-		lv_name_1_0=RULE_ID
+		{ 
+	        newCompositeNode(grammarAccess.getScenarioAccess().getTypeJvmTypeReferenceParserRuleCall_1_0()); 
+	    }
+		lv_type_1_0=ruleJvmTypeReference		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getScenarioRule());
+	        }
+       		set(
+       			$current, 
+       			"type",
+        		lv_type_1_0, 
+        		"JvmTypeReference");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)?(
+(
+		lv_name_2_0=RULE_ID
 		{
-			newLeafNode(lv_name_1_0, grammarAccess.getScenarioAccess().getNameIDTerminalRuleCall_1_0()); 
+			newLeafNode(lv_name_2_0, grammarAccess.getScenarioAccess().getNameIDTerminalRuleCall_2_0()); 
 		}
 		{
 	        if ($current==null) {
@@ -2549,24 +2567,72 @@ ruleScenario returns [EObject current=null]
        		setWithLastConsumed(
        			$current, 
        			"name",
-        		lv_name_1_0, 
+        		lv_name_2_0, 
         		"ID");
 	    }
 
 )
-)(
+)(	otherlv_3='(' 
+    {
+    	newLeafNode(otherlv_3, grammarAccess.getScenarioAccess().getLeftParenthesisKeyword_3_0());
+    }
+((
 (
 		{ 
-	        newCompositeNode(grammarAccess.getScenarioAccess().getSccodeXBlockExpressionParserRuleCall_2_0()); 
+	        newCompositeNode(grammarAccess.getScenarioAccess().getParamsFullJvmFormalParameterParserRuleCall_3_1_0_0()); 
 	    }
-		lv_sccode_2_0=ruleXBlockExpression		{
+		lv_params_4_0=ruleFullJvmFormalParameter		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getScenarioRule());
+	        }
+       		add(
+       			$current, 
+       			"params",
+        		lv_params_4_0, 
+        		"FullJvmFormalParameter");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+)(	otherlv_5=',' 
+    {
+    	newLeafNode(otherlv_5, grammarAccess.getScenarioAccess().getCommaKeyword_3_1_1_0());
+    }
+(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getScenarioAccess().getParamsFullJvmFormalParameterParserRuleCall_3_1_1_1_0()); 
+	    }
+		lv_params_6_0=ruleFullJvmFormalParameter		{
+	        if ($current==null) {
+	            $current = createModelElementForParent(grammarAccess.getScenarioRule());
+	        }
+       		add(
+       			$current, 
+       			"params",
+        		lv_params_6_0, 
+        		"FullJvmFormalParameter");
+	        afterParserOrEnumRuleCall();
+	    }
+
+)
+))*)?	otherlv_7=')' 
+    {
+    	newLeafNode(otherlv_7, grammarAccess.getScenarioAccess().getRightParenthesisKeyword_3_2());
+    }
+)?(
+(
+		{ 
+	        newCompositeNode(grammarAccess.getScenarioAccess().getBodyXBlockExpressionParserRuleCall_4_0()); 
+	    }
+		lv_body_8_0=ruleXBlockExpression		{
 	        if ($current==null) {
 	            $current = createModelElementForParent(grammarAccess.getScenarioRule());
 	        }
        		set(
        			$current, 
-       			"sccode",
-        		lv_sccode_2_0, 
+       			"body",
+        		lv_body_8_0, 
         		"XBlockExpression");
 	        afterParserOrEnumRuleCall();
 	    }

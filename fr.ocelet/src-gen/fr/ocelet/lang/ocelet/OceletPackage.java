@@ -1268,22 +1268,40 @@ public interface OceletPackage extends EPackage
   int SCENARIO = 31;
 
   /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SCENARIO__TYPE = MOD_ELN_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SCENARIO__NAME = MOD_ELN_FEATURE_COUNT + 0;
+  int SCENARIO__NAME = MOD_ELN_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Sccode</b></em>' containment reference.
+   * The feature id for the '<em><b>Params</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int SCENARIO__SCCODE = MOD_ELN_FEATURE_COUNT + 1;
+  int SCENARIO__PARAMS = MOD_ELN_FEATURE_COUNT + 2;
+
+  /**
+   * The feature id for the '<em><b>Body</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int SCENARIO__BODY = MOD_ELN_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Scenario</em>' class.
@@ -1292,7 +1310,7 @@ public interface OceletPackage extends EPackage
    * @generated
    * @ordered
    */
-  int SCENARIO_FEATURE_COUNT = MOD_ELN_FEATURE_COUNT + 2;
+  int SCENARIO_FEATURE_COUNT = MOD_ELN_FEATURE_COUNT + 4;
 
 
   /**
@@ -2254,6 +2272,17 @@ public interface OceletPackage extends EPackage
   EClass getScenario();
 
   /**
+   * Returns the meta object for the containment reference '{@link fr.ocelet.lang.ocelet.Scenario#getType <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Type</em>'.
+   * @see fr.ocelet.lang.ocelet.Scenario#getType()
+   * @see #getScenario()
+   * @generated
+   */
+  EReference getScenario_Type();
+
+  /**
    * Returns the meta object for the attribute '{@link fr.ocelet.lang.ocelet.Scenario#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2265,15 +2294,26 @@ public interface OceletPackage extends EPackage
   EAttribute getScenario_Name();
 
   /**
-   * Returns the meta object for the containment reference '{@link fr.ocelet.lang.ocelet.Scenario#getSccode <em>Sccode</em>}'.
+   * Returns the meta object for the containment reference list '{@link fr.ocelet.lang.ocelet.Scenario#getParams <em>Params</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Sccode</em>'.
-   * @see fr.ocelet.lang.ocelet.Scenario#getSccode()
+   * @return the meta object for the containment reference list '<em>Params</em>'.
+   * @see fr.ocelet.lang.ocelet.Scenario#getParams()
    * @see #getScenario()
    * @generated
    */
-  EReference getScenario_Sccode();
+  EReference getScenario_Params();
+
+  /**
+   * Returns the meta object for the containment reference '{@link fr.ocelet.lang.ocelet.Scenario#getBody <em>Body</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Body</em>'.
+   * @see fr.ocelet.lang.ocelet.Scenario#getBody()
+   * @see #getScenario()
+   * @generated
+   */
+  EReference getScenario_Body();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -3083,6 +3123,14 @@ public interface OceletPackage extends EPackage
     EClass SCENARIO = eINSTANCE.getScenario();
 
     /**
+     * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SCENARIO__TYPE = eINSTANCE.getScenario_Type();
+
+    /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3091,12 +3139,20 @@ public interface OceletPackage extends EPackage
     EAttribute SCENARIO__NAME = eINSTANCE.getScenario_Name();
 
     /**
-     * The meta object literal for the '<em><b>Sccode</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Params</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference SCENARIO__SCCODE = eINSTANCE.getScenario_Sccode();
+    EReference SCENARIO__PARAMS = eINSTANCE.getScenario_Params();
+
+    /**
+     * The meta object literal for the '<em><b>Body</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference SCENARIO__BODY = eINSTANCE.getScenario_Body();
 
   }
 

@@ -109,61 +109,65 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
         if (!_matched) {
           if (meln instanceof Metadata) {
             _matched=true;
-            String _desc = ((Metadata)meln).getDesc();
-            md.setModeldesc(_desc);
-            String _webp = ((Metadata)meln).getWebp();
-            md.setWebpage(_webp);
             EList<Parameter> _paramdefs = ((Metadata)meln).getParamdefs();
-            for (final Parameter paramdef : _paramdefs) {
-              {
-                String _name_2 = paramdef.getName();
-                JvmTypeReference _ptype = paramdef.getPtype();
-                final Parameterstuff pst = new Parameterstuff(_name_2, _ptype);
-                EList<Parampart> _paramparts = paramdef.getParamparts();
-                for (final Parampart ppart : _paramparts) {
-                  boolean _matched_1 = false;
-                  if (!_matched_1) {
-                    if (ppart instanceof Paramunit) {
-                      _matched_1=true;
-                      String _parunit = ((Paramunit)ppart).getParunit();
-                      pst.setUnit(_parunit);
+            boolean _notEquals = (!Objects.equal(_paramdefs, null));
+            if (_notEquals) {
+              String _desc = ((Metadata)meln).getDesc();
+              md.setModeldesc(_desc);
+              String _webp = ((Metadata)meln).getWebp();
+              md.setWebpage(_webp);
+              EList<Parameter> _paramdefs_1 = ((Metadata)meln).getParamdefs();
+              for (final Parameter paramdef : _paramdefs_1) {
+                {
+                  String _name_2 = paramdef.getName();
+                  JvmTypeReference _ptype = paramdef.getPtype();
+                  final Parameterstuff pst = new Parameterstuff(_name_2, _ptype);
+                  EList<Parampart> _paramparts = paramdef.getParamparts();
+                  for (final Parampart ppart : _paramparts) {
+                    boolean _matched_1 = false;
+                    if (!_matched_1) {
+                      if (ppart instanceof Paramunit) {
+                        _matched_1=true;
+                        String _parunit = ((Paramunit)ppart).getParunit();
+                        pst.setUnit(_parunit);
+                      }
+                    }
+                    if (!_matched_1) {
+                      if (ppart instanceof Paramdefa) {
+                        _matched_1=true;
+                        String _pardefa = ((Paramdefa)ppart).getPardefa();
+                        pst.setDefvalue(_pardefa);
+                      }
+                    }
+                    if (!_matched_1) {
+                      if (ppart instanceof Rangevals) {
+                        _matched_1=true;
+                        String _parmin = ((Rangevals)ppart).getParmin();
+                        pst.setMin(_parmin);
+                        String _parmax = ((Rangevals)ppart).getParmax();
+                        pst.setMax(_parmax);
+                      }
+                    }
+                    if (!_matched_1) {
+                      if (ppart instanceof Paradesc) {
+                        _matched_1=true;
+                        String _pardesc = ((Paradesc)ppart).getPardesc();
+                        pst.setDescription(_pardesc);
+                      }
+                    }
+                    if (!_matched_1) {
+                      if (ppart instanceof Paraopt) {
+                        _matched_1=true;
+                        String _paropt = ((Paraopt)ppart).getParopt();
+                        int _compareToIgnoreCase = _paropt.compareToIgnoreCase("true");
+                        boolean _equals_1 = (_compareToIgnoreCase == 0);
+                        pst.setOptionnal(Boolean.valueOf(_equals_1));
+                      }
                     }
                   }
-                  if (!_matched_1) {
-                    if (ppart instanceof Paramdefa) {
-                      _matched_1=true;
-                      String _pardefa = ((Paramdefa)ppart).getPardefa();
-                      pst.setDefvalue(_pardefa);
-                    }
-                  }
-                  if (!_matched_1) {
-                    if (ppart instanceof Rangevals) {
-                      _matched_1=true;
-                      String _parmin = ((Rangevals)ppart).getParmin();
-                      pst.setMin(_parmin);
-                      String _parmax = ((Rangevals)ppart).getParmax();
-                      pst.setMax(_parmax);
-                    }
-                  }
-                  if (!_matched_1) {
-                    if (ppart instanceof Paradesc) {
-                      _matched_1=true;
-                      String _pardesc = ((Paradesc)ppart).getPardesc();
-                      pst.setDescription(_pardesc);
-                    }
-                  }
-                  if (!_matched_1) {
-                    if (ppart instanceof Paraopt) {
-                      _matched_1=true;
-                      String _paropt = ((Paraopt)ppart).getParopt();
-                      int _compareToIgnoreCase = _paropt.compareToIgnoreCase("true");
-                      boolean _equals_1 = (_compareToIgnoreCase == 0);
-                      pst.setOptionnal(Boolean.valueOf(_equals_1));
-                    }
-                  }
+                  ArrayList<Parameterstuff> _params = md.getParams();
+                  _params.add(pst);
                 }
-                ArrayList<Parameterstuff> _params = md.getParams();
-                _params.add(pst);
               }
             }
           }
@@ -1001,6 +1005,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               {
                                 boolean _isStringType_1 = pstuff.isStringType();
                                 if (_isStringType_1) {
+                                  _builder.append("\"");
                                   Object _dvalue_6 = pstuff.getDvalue();
                                   _builder.append(_dvalue_6, "");
                                   _builder.append("\";");
@@ -1067,8 +1072,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
                 @Override
                 public void apply(final JvmOperation it) {
-                  XExpression _sccode = scen.getSccode();
-                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _sccode);
+                  XExpression _body = scen.getBody();
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _body);
                 }
               };
               JvmOperation _method_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(modl, ("run_" + modlName), _typeRef_2, _function_2);
@@ -1135,17 +1140,30 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               JvmOperation _method_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(modl, "simulate", _typeRef_3, _function_3);
               OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_3, _method_2);
             } else {
+              JvmTypeReference rtype = scen.getType();
+              boolean _equals_1 = Objects.equal(rtype, null);
+              if (_equals_1) {
+                JvmTypeReference _typeRef_4 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
+                rtype = _typeRef_4;
+              }
               EList<JvmMember> _members_4 = it.getMembers();
               String _name_1 = scen.getName();
-              JvmTypeReference _typeRef_4 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
               final Procedure1<JvmOperation> _function_4 = new Procedure1<JvmOperation>() {
                 @Override
                 public void apply(final JvmOperation it) {
-                  XExpression _sccode = scen.getSccode();
-                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _sccode);
+                  EList<JvmFormalParameter> _params = scen.getParams();
+                  for (final JvmFormalParameter p : _params) {
+                    EList<JvmFormalParameter> _parameters = it.getParameters();
+                    String _name = p.getName();
+                    JvmTypeReference _parameterType = p.getParameterType();
+                    JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(p, _name, _parameterType);
+                    OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+                  }
+                  XExpression _body = scen.getBody();
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _body);
                 }
               };
-              JvmOperation _method_3 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(scen, _name_1, _typeRef_4, _function_4);
+              JvmOperation _method_3 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(scen, _name_1, rtype, _function_4);
               OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method_3);
             }
           }
