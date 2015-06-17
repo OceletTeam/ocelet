@@ -14,9 +14,14 @@ import fr.ocelet.lang.ocelet.PropertyDef
 import fr.ocelet.lang.ocelet.Rangevals
 import fr.ocelet.lang.ocelet.Scenario
 import fr.ocelet.lang.ocelet.ServiceDef
+import fr.ocelet.lang.ocelet.StrucFuncDef
+import fr.ocelet.lang.ocelet.StrucVarDef
+import fr.ocelet.lang.ocelet.Strucdef
 import java.util.HashMap
 import java.util.List
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtext.common.types.JvmTypeParameter
+import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.common.types.util.Primitives
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
@@ -273,13 +278,75 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       	    ]
           }
                       
-            
-   	      }          // switch(meln)
+       // ---- Structure -----------------------------------
+          Strucdef : {
+          	acceptor.accept(meln.toClass(meln.fullyQualifiedName))[
+              if (meln.typeArgument != null) {
+                val JvmTypeParameter param = TypesFactory::eINSTANCE.createJvmTypeParameter
+                param.setName(meln.typeArgument)
+                typeParameters += param
+       		    if (meln.superType != null)
+       		      {
+       		        superTypes += typeRef(meln.superType, typeRef(param))
+                   }
+       		    }
+       		    else if (meln.superType != null) superTypes += typeRef(meln.superType)
+              val List<StrucVarDef> lvdefs = <StrucVarDef>newArrayList()
+          	  for(steln:meln.strucelns) {
+          	  	switch(steln) {
+          	  	  StrucVarDef: {
+          	  	   lvdefs.add(steln)
+          	  	   var jvmField = steln.toField(steln.name, steln.type)
+          	  	     if (jvmField != null) {
+          	  	       jvmField.setFinal(false) 
+          		       members+= jvmField
+          		       members+= steln.toSetter(steln.name, steln.type)
+          		       members+= steln.toGetter(steln.name, steln.type)
+          		     }
+      		      }
+      		      StrucFuncDef: {
+          	  	    if (steln.type == null) steln.type = typeRef(Void::TYPE)
+          	  	    members += steln.toMethod(steln.name,steln.type)[
+          	  	      documentation = steln.documentation
+      		  	      for (p: steln.params) {
+      		  	        parameters += p.toParameter(p.name, p.parameterType)
+      		  	      }
+  		  		      body = steln.body
+          	   	    ]
+       		      }
+      		    }  
+          	  }
+          	  members += meln.toConstructor[
+          	  	body = [
+                  append('''super();''')
+                  for(vardef : lvdefs) {
+                  	var vtyp = vardef.type
+                    if (! vtyp.primitive){
+     	              newLine();
+                      append('''«vardef.name» = new «vtyp.simpleName»''')
+                      if (vtyp.qualifiedName.equals("java.lang.Integer") ||
+                      	  vtyp.qualifiedName.equals("java.lang.Double") ||
+                      	  vtyp.qualifiedName.equals("java.lang.Float") ||
+                      	  vtyp.qualifiedName.equals("java.lang.Long") ||
+                      	  vtyp.qualifiedName.equals("java.lang.Byte") ||
+                      	  vtyp.qualifiedName.equals("java.lang.Short")
+                         ) append('''("0");''')
+                      else if (vtyp.qualifiedName.equals("java.lang.Boolean")) append('''(false);''')
+                      else append('''();''')
+                    }
+                  }
+                ]
+          	  ]
+          	]
+          }
+    
+   	    }          // switch(meln)
 
-        } catch (Exception e) {
+      } catch (Exception e) {
 	      println('''Exception caught : «e.getMessage()»''')
         }
-     }
+    }
+
      
     // ---- Scenario -----------------------------------
     // Génération de la classe qui contient le main() et d'une methode par scenario

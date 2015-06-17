@@ -25,6 +25,10 @@ import fr.ocelet.lang.ocelet.PropertyDef;
 import fr.ocelet.lang.ocelet.Rangevals;
 import fr.ocelet.lang.ocelet.Scenario;
 import fr.ocelet.lang.ocelet.ServiceDef;
+import fr.ocelet.lang.ocelet.StrucEln;
+import fr.ocelet.lang.ocelet.StrucFuncDef;
+import fr.ocelet.lang.ocelet.StrucVarDef;
+import fr.ocelet.lang.ocelet.Strucdef;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,7 +45,9 @@ import org.eclipse.xtext.common.types.JvmFormalParameter;
 import org.eclipse.xtext.common.types.JvmGenericType;
 import org.eclipse.xtext.common.types.JvmMember;
 import org.eclipse.xtext.common.types.JvmOperation;
+import org.eclipse.xtext.common.types.JvmTypeParameter;
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.Primitives;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
@@ -792,6 +798,202 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       }
                     };
                     OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+                  }
+                };
+                JvmConstructor _constructor = OceletJvmModelInferrer.this._jvmTypesBuilder.toConstructor(meln, _function);
+                OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmConstructor>operator_add(_members, _constructor);
+              }
+            };
+            acceptor.<JvmGenericType>accept(_class, _function);
+          }
+        }
+        if (!_matched) {
+          if (meln instanceof Strucdef) {
+            _matched=true;
+            QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(meln);
+            JvmGenericType _class = this._jvmTypesBuilder.toClass(meln, _fullyQualifiedName);
+            final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
+              @Override
+              public void apply(final JvmGenericType it) {
+                String _typeArgument = ((Strucdef)meln).getTypeArgument();
+                boolean _notEquals = (!Objects.equal(_typeArgument, null));
+                if (_notEquals) {
+                  final JvmTypeParameter param = TypesFactory.eINSTANCE.createJvmTypeParameter();
+                  String _typeArgument_1 = ((Strucdef)meln).getTypeArgument();
+                  param.setName(_typeArgument_1);
+                  EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, param);
+                  String _superType = ((Strucdef)meln).getSuperType();
+                  boolean _notEquals_1 = (!Objects.equal(_superType, null));
+                  if (_notEquals_1) {
+                    EList<JvmTypeReference> _superTypes = it.getSuperTypes();
+                    String _superType_1 = ((Strucdef)meln).getSuperType();
+                    JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(param);
+                    JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_superType_1, _typeRef);
+                    OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef_1);
+                  }
+                } else {
+                  String _superType_2 = ((Strucdef)meln).getSuperType();
+                  boolean _notEquals_2 = (!Objects.equal(_superType_2, null));
+                  if (_notEquals_2) {
+                    EList<JvmTypeReference> _superTypes_1 = it.getSuperTypes();
+                    String _superType_3 = ((Strucdef)meln).getSuperType();
+                    JvmTypeReference _typeRef_2 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_superType_3);
+                    OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _typeRef_2);
+                  }
+                }
+                final List<StrucVarDef> lvdefs = CollectionLiterals.<StrucVarDef>newArrayList();
+                EList<StrucEln> _strucelns = ((Strucdef)meln).getStrucelns();
+                for (final StrucEln steln : _strucelns) {
+                  boolean _matched = false;
+                  if (!_matched) {
+                    if (steln instanceof StrucVarDef) {
+                      _matched=true;
+                      lvdefs.add(((StrucVarDef)steln));
+                      String _name = ((StrucVarDef)steln).getName();
+                      JvmTypeReference _type = ((StrucVarDef)steln).getType();
+                      JvmField jvmField = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(steln, _name, _type);
+                      boolean _notEquals_3 = (!Objects.equal(jvmField, null));
+                      if (_notEquals_3) {
+                        jvmField.setFinal(false);
+                        EList<JvmMember> _members = it.getMembers();
+                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members, jvmField);
+                        EList<JvmMember> _members_1 = it.getMembers();
+                        String _name_1 = ((StrucVarDef)steln).getName();
+                        JvmTypeReference _type_1 = ((StrucVarDef)steln).getType();
+                        JvmOperation _setter = OceletJvmModelInferrer.this._jvmTypesBuilder.toSetter(steln, _name_1, _type_1);
+                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _setter);
+                        EList<JvmMember> _members_2 = it.getMembers();
+                        String _name_2 = ((StrucVarDef)steln).getName();
+                        JvmTypeReference _type_2 = ((StrucVarDef)steln).getType();
+                        JvmOperation _getter = OceletJvmModelInferrer.this._jvmTypesBuilder.toGetter(steln, _name_2, _type_2);
+                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _getter);
+                      }
+                    }
+                  }
+                  if (!_matched) {
+                    if (steln instanceof StrucFuncDef) {
+                      _matched=true;
+                      JvmTypeReference _type = ((StrucFuncDef)steln).getType();
+                      boolean _equals = Objects.equal(_type, null);
+                      if (_equals) {
+                        JvmTypeReference _typeRef_3 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
+                        ((StrucFuncDef)steln).setType(_typeRef_3);
+                      }
+                      EList<JvmMember> _members = it.getMembers();
+                      String _name = ((StrucFuncDef)steln).getName();
+                      JvmTypeReference _type_1 = ((StrucFuncDef)steln).getType();
+                      final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+                        @Override
+                        public void apply(final JvmOperation it) {
+                          String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(steln);
+                          OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
+                          EList<JvmFormalParameter> _params = ((StrucFuncDef)steln).getParams();
+                          for (final JvmFormalParameter p : _params) {
+                            EList<JvmFormalParameter> _parameters = it.getParameters();
+                            String _name = p.getName();
+                            JvmTypeReference _parameterType = p.getParameterType();
+                            JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(p, _name, _parameterType);
+                            OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+                          }
+                          XExpression _body = ((StrucFuncDef)steln).getBody();
+                          OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _body);
+                        }
+                      };
+                      JvmOperation _method = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(steln, _name, _type_1, _function);
+                      OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _method);
+                    }
+                  }
+                }
+                EList<JvmMember> _members = it.getMembers();
+                final Procedure1<JvmConstructor> _function = new Procedure1<JvmConstructor>() {
+                  @Override
+                  public void apply(final JvmConstructor it) {
+                    final Procedure1<ITreeAppendable> _function = new Procedure1<ITreeAppendable>() {
+                      @Override
+                      public void apply(final ITreeAppendable it) {
+                        StringConcatenation _builder = new StringConcatenation();
+                        _builder.append("super();");
+                        it.append(_builder);
+                        for (final StrucVarDef vardef : lvdefs) {
+                          {
+                            JvmTypeReference vtyp = vardef.getType();
+                            boolean _isPrimitive = OceletJvmModelInferrer.this._primitives.isPrimitive(vtyp);
+                            boolean _not = (!_isPrimitive);
+                            if (_not) {
+                              it.newLine();
+                              StringConcatenation _builder_1 = new StringConcatenation();
+                              String _name = vardef.getName();
+                              _builder_1.append(_name, "");
+                              _builder_1.append(" = new ");
+                              String _simpleName = vtyp.getSimpleName();
+                              _builder_1.append(_simpleName, "");
+                              it.append(_builder_1);
+                              boolean _or = false;
+                              boolean _or_1 = false;
+                              boolean _or_2 = false;
+                              boolean _or_3 = false;
+                              boolean _or_4 = false;
+                              String _qualifiedName = vtyp.getQualifiedName();
+                              boolean _equals = _qualifiedName.equals("java.lang.Integer");
+                              if (_equals) {
+                                _or_4 = true;
+                              } else {
+                                String _qualifiedName_1 = vtyp.getQualifiedName();
+                                boolean _equals_1 = _qualifiedName_1.equals("java.lang.Double");
+                                _or_4 = _equals_1;
+                              }
+                              if (_or_4) {
+                                _or_3 = true;
+                              } else {
+                                String _qualifiedName_2 = vtyp.getQualifiedName();
+                                boolean _equals_2 = _qualifiedName_2.equals("java.lang.Float");
+                                _or_3 = _equals_2;
+                              }
+                              if (_or_3) {
+                                _or_2 = true;
+                              } else {
+                                String _qualifiedName_3 = vtyp.getQualifiedName();
+                                boolean _equals_3 = _qualifiedName_3.equals("java.lang.Long");
+                                _or_2 = _equals_3;
+                              }
+                              if (_or_2) {
+                                _or_1 = true;
+                              } else {
+                                String _qualifiedName_4 = vtyp.getQualifiedName();
+                                boolean _equals_4 = _qualifiedName_4.equals("java.lang.Byte");
+                                _or_1 = _equals_4;
+                              }
+                              if (_or_1) {
+                                _or = true;
+                              } else {
+                                String _qualifiedName_5 = vtyp.getQualifiedName();
+                                boolean _equals_5 = _qualifiedName_5.equals("java.lang.Short");
+                                _or = _equals_5;
+                              }
+                              if (_or) {
+                                StringConcatenation _builder_2 = new StringConcatenation();
+                                _builder_2.append("(\"0\");");
+                                it.append(_builder_2);
+                              } else {
+                                String _qualifiedName_6 = vtyp.getQualifiedName();
+                                boolean _equals_6 = _qualifiedName_6.equals("java.lang.Boolean");
+                                if (_equals_6) {
+                                  StringConcatenation _builder_3 = new StringConcatenation();
+                                  _builder_3.append("(false);");
+                                  it.append(_builder_3);
+                                } else {
+                                  StringConcatenation _builder_4 = new StringConcatenation();
+                                  _builder_4.append("();");
+                                  it.append(_builder_4);
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    };
+                    OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _function);
                   }
                 };
                 JvmConstructor _constructor = OceletJvmModelInferrer.this._jvmTypesBuilder.toConstructor(meln, _function);

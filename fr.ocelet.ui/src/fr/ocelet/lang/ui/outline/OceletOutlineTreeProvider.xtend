@@ -3,18 +3,18 @@
 */
 package fr.ocelet.lang.ui.outline
 
-import fr.ocelet.lang.ocelet.Agregdef;
-import fr.ocelet.lang.ocelet.ConstructorDef;
-import fr.ocelet.lang.ocelet.Datafacer;
-import fr.ocelet.lang.ocelet.Filterdef;
-import fr.ocelet.lang.ocelet.InteractionDef;
-import fr.ocelet.lang.ocelet.Parameter;
-import fr.ocelet.lang.ocelet.PropertyDef;
-import fr.ocelet.lang.ocelet.RelPropertyDef;
-import fr.ocelet.lang.ocelet.Scenario;
-import fr.ocelet.lang.ocelet.ServiceDef;
-import fr.ocelet.lang.ocelet.StrucVarDef;
-
+import fr.ocelet.lang.ocelet.Agregdef
+import fr.ocelet.lang.ocelet.ConstructorDef
+import fr.ocelet.lang.ocelet.Datafacer
+import fr.ocelet.lang.ocelet.Filterdef
+import fr.ocelet.lang.ocelet.InteractionDef
+import fr.ocelet.lang.ocelet.Parameter
+import fr.ocelet.lang.ocelet.PropertyDef
+import fr.ocelet.lang.ocelet.RelPropertyDef
+import fr.ocelet.lang.ocelet.Scenario
+import fr.ocelet.lang.ocelet.ServiceDef
+import fr.ocelet.lang.ocelet.StrucFuncDef
+import fr.ocelet.lang.ocelet.StrucVarDef
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 
 /**
@@ -36,6 +36,10 @@ class OceletOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	def _isLeaf(StrucVarDef svdef) {
+		return true;
+	}
+
+	def _isLeaf(StrucFuncDef sfdef) {
 		return true;
 	}
 

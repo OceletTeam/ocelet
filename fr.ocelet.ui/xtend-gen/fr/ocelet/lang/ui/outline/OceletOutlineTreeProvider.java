@@ -13,6 +13,7 @@ import fr.ocelet.lang.ocelet.PropertyDef;
 import fr.ocelet.lang.ocelet.RelPropertyDef;
 import fr.ocelet.lang.ocelet.Scenario;
 import fr.ocelet.lang.ocelet.ServiceDef;
+import fr.ocelet.lang.ocelet.StrucFuncDef;
 import fr.ocelet.lang.ocelet.StrucVarDef;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
 
@@ -36,6 +37,10 @@ public class OceletOutlineTreeProvider extends DefaultOutlineTreeProvider {
   }
   
   public boolean _isLeaf(final StrucVarDef svdef) {
+    return true;
+  }
+  
+  public boolean _isLeaf(final StrucFuncDef sfdef) {
     return true;
   }
   

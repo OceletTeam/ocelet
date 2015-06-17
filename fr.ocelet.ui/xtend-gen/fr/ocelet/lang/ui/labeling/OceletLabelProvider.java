@@ -21,6 +21,7 @@ import fr.ocelet.lang.ocelet.Relation;
 import fr.ocelet.lang.ocelet.Role;
 import fr.ocelet.lang.ocelet.Scenario;
 import fr.ocelet.lang.ocelet.ServiceDef;
+import fr.ocelet.lang.ocelet.StrucFuncDef;
 import fr.ocelet.lang.ocelet.StrucVarDef;
 import fr.ocelet.lang.ocelet.Strucdef;
 import org.eclipse.emf.common.util.EList;
@@ -145,6 +146,12 @@ public class OceletLabelProvider extends XbaseLabelProvider {
       if (eln instanceof StrucVarDef) {
         _matched=true;
         _switchResult = "outline/gif/propStruc.gif";
+      }
+    }
+    if (!_matched) {
+      if (eln instanceof StrucFuncDef) {
+        _matched=true;
+        _switchResult = "outline/gif/entity_svc.gif";
       }
     }
     if (!_matched) {
@@ -363,6 +370,47 @@ public class OceletLabelProvider extends XbaseLabelProvider {
           JvmTypeReference _type_1 = ((StrucVarDef)eln).getType();
           String _simpleName = _type_1.getSimpleName();
           _switchResult = (_plus + _simpleName);
+        }
+      }
+    }
+    if (!_matched) {
+      if (eln instanceof StrucFuncDef) {
+        boolean _and = false;
+        String _name = ((StrucFuncDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          JvmTypeReference _type = ((StrucFuncDef)eln).getType();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((StrucFuncDef)eln).getName();
+          String _plus = (_name_1 + "() returns ");
+          JvmTypeReference _type_1 = ((StrucFuncDef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
+          _switchResult = (_plus + _simpleName);
+        }
+      }
+    }
+    if (!_matched) {
+      if (eln instanceof StrucFuncDef) {
+        boolean _and = false;
+        String _name = ((StrucFuncDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          JvmTypeReference _type = ((StrucFuncDef)eln).getType();
+          boolean _equals = Objects.equal(_type, null);
+          _and = _equals;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((StrucFuncDef)eln).getName();
+          _switchResult = (_name_1 + "()");
         }
       }
     }

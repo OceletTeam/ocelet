@@ -20,6 +20,7 @@ import fr.ocelet.lang.ocelet.Relation
 import fr.ocelet.lang.ocelet.Role
 import fr.ocelet.lang.ocelet.Scenario
 import fr.ocelet.lang.ocelet.ServiceDef
+import fr.ocelet.lang.ocelet.StrucFuncDef
 import fr.ocelet.lang.ocelet.StrucVarDef
 import fr.ocelet.lang.ocelet.Strucdef
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
@@ -57,6 +58,7 @@ override protected doGetImage(Object eln) {
     ServiceDef: 'outline/gif/entity_svc.gif'
     Strucdef : 'outline/gif/structure.gif'
     StrucVarDef : 'outline/gif/propStruc.gif'
+    StrucFuncDef : 'outline/gif/entity_svc.gif'
   default:
     super.doGetImage(eln)
   }
@@ -79,6 +81,8 @@ override protected doGetText(Object eln){
 	  ServiceDef case ((eln.name != null)&&(eln.type == null)) : eln.name+'()'
 	  Strucdef  case (eln.name != null) : eln.name
 	  StrucVarDef case ((eln.name != null)&&(eln.type != null)): eln.name+ " is " + eln.type.simpleName
+	  StrucFuncDef case ((eln.name != null)&&(eln.type != null)) : eln.name+'() returns '+eln.type.simpleName
+	  StrucFuncDef case ((eln.name != null)&&(eln.type == null)) : eln.name+'()'
 	default: '...'
 	}
 }
