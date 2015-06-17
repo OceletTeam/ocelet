@@ -1,6 +1,7 @@
 package fr.ocelet.lang.jvmmodel
 
 import com.google.inject.Inject
+import fr.ocelet.lang.ocelet.Agregdef
 import fr.ocelet.lang.ocelet.ConstructorDef
 import fr.ocelet.lang.ocelet.Datafacer
 import fr.ocelet.lang.ocelet.Entity
@@ -277,6 +278,21 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       	      	''']
       	    ]
           }
+
+      // ---- Agregdef --------------------------------------
+          Agregdef : {
+            // Generates one class for every agregation function
+            if (meln.type != null) {
+            acceptor.accept(modl.toClass(meln.fullyQualifiedName)) [
+              superTypes += typeRef('fr.ocelet.runtime.relation.AggregOperator',meln.type,typeRef('fr.ocelet.runtime.ocltypes.List',meln.type))
+              members += meln.toMethod('compute',meln.type)[
+                parameters += meln.toParameter('values', typeRef('fr.ocelet.runtime.ocltypes.List',meln.type))
+                parameters += meln.toParameter('preval',meln.type)
+                body  = meln.body
+              ]
+            ]
+          }
+        }
                       
        // ---- Structure -----------------------------------
           Strucdef : {

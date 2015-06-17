@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import fr.ocelet.lang.jvmmodel.Metadatastuff;
 import fr.ocelet.lang.jvmmodel.OceletCompiler;
 import fr.ocelet.lang.jvmmodel.Parameterstuff;
+import fr.ocelet.lang.ocelet.Agregdef;
 import fr.ocelet.lang.ocelet.ConstructorDef;
 import fr.ocelet.lang.ocelet.Datafacer;
 import fr.ocelet.lang.ocelet.Entity;
@@ -805,6 +806,49 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               }
             };
             acceptor.<JvmGenericType>accept(_class, _function);
+          }
+        }
+        if (!_matched) {
+          if (meln instanceof Agregdef) {
+            _matched=true;
+            JvmTypeReference _type = ((Agregdef)meln).getType();
+            boolean _notEquals = (!Objects.equal(_type, null));
+            if (_notEquals) {
+              QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(meln);
+              JvmGenericType _class = this._jvmTypesBuilder.toClass(modl, _fullyQualifiedName);
+              final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
+                @Override
+                public void apply(final JvmGenericType it) {
+                  EList<JvmTypeReference> _superTypes = it.getSuperTypes();
+                  JvmTypeReference _type = ((Agregdef)meln).getType();
+                  JvmTypeReference _type_1 = ((Agregdef)meln).getType();
+                  JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.ocltypes.List", _type_1);
+                  JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.AggregOperator", _type, _typeRef);
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef_1);
+                  EList<JvmMember> _members = it.getMembers();
+                  JvmTypeReference _type_2 = ((Agregdef)meln).getType();
+                  final Procedure1<JvmOperation> _function = new Procedure1<JvmOperation>() {
+                    @Override
+                    public void apply(final JvmOperation it) {
+                      EList<JvmFormalParameter> _parameters = it.getParameters();
+                      JvmTypeReference _type = ((Agregdef)meln).getType();
+                      JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.ocltypes.List", _type);
+                      JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(meln, "values", _typeRef);
+                      OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+                      EList<JvmFormalParameter> _parameters_1 = it.getParameters();
+                      JvmTypeReference _type_1 = ((Agregdef)meln).getType();
+                      JvmFormalParameter _parameter_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(meln, "preval", _type_1);
+                      OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters_1, _parameter_1);
+                      XExpression _body = ((Agregdef)meln).getBody();
+                      OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _body);
+                    }
+                  };
+                  JvmOperation _method = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(meln, "compute", _type_2, _function);
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members, _method);
+                }
+              };
+              acceptor.<JvmGenericType>accept(_class, _function);
+            }
           }
         }
         if (!_matched) {
