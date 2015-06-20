@@ -663,7 +663,7 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
-	 *     (type=[Entity|ID] name=ID)
+	 *     (type=[Entity|Fqn] name=ID)
 	 */
 	protected void sequence_Role(EObject context, Role semanticObject) {
 		if(errorAcceptor != null) {
@@ -674,7 +674,7 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 		}
 		INodesForEObjectProvider nodes = createNodeProvider(semanticObject);
 		SequenceFeeder feeder = createSequencerFeeder(semanticObject, nodes);
-		feeder.accept(grammarAccess.getRoleAccess().getTypeEntityIDTerminalRuleCall_0_0_1(), semanticObject.getType());
+		feeder.accept(grammarAccess.getRoleAccess().getTypeEntityFqnParserRuleCall_0_0_1(), semanticObject.getType());
 		feeder.accept(grammarAccess.getRoleAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
 	}

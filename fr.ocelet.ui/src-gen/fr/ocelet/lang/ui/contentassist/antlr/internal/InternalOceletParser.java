@@ -10451,11 +10451,11 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                 {
                 int LA10_1 = input.LA(2);
 
-                if ( (LA10_1==EOF||(LA10_1>=RULE_ID && LA10_1<=RULE_DECIMAL)||(LA10_1>=14 && LA10_1<=18)||(LA10_1>=22 && LA10_1<=55)||(LA10_1>=58 && LA10_1<=59)||LA10_1==64||(LA10_1>=70 && LA10_1<=72)||LA10_1==79||LA10_1==83||(LA10_1>=86 && LA10_1<=105)||(LA10_1>=109 && LA10_1<=110)||LA10_1==112) ) {
-                    alt10=2;
-                }
-                else if ( (LA10_1==13) ) {
+                if ( (LA10_1==13) ) {
                     alt10=1;
+                }
+                else if ( (LA10_1==EOF||(LA10_1>=RULE_ID && LA10_1<=RULE_DECIMAL)||(LA10_1>=14 && LA10_1<=18)||(LA10_1>=22 && LA10_1<=55)||(LA10_1>=58 && LA10_1<=59)||LA10_1==64||(LA10_1>=70 && LA10_1<=72)||LA10_1==79||LA10_1==83||(LA10_1>=86 && LA10_1<=105)||(LA10_1>=109 && LA10_1<=110)||LA10_1==112) ) {
+                    alt10=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return ;}
@@ -69143,30 +69143,34 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Role__TypeAssignment_0"
-    // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24277:1: rule__Role__TypeAssignment_0 : ( ( RULE_ID ) ) ;
+    // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24277:1: rule__Role__TypeAssignment_0 : ( ( ruleFqn ) ) ;
     public final void rule__Role__TypeAssignment_0() throws RecognitionException {
 
         		int stackSize = keepStackSize();
             
         try {
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24281:1: ( ( ( RULE_ID ) ) )
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24282:1: ( ( RULE_ID ) )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24281:1: ( ( ( ruleFqn ) ) )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24282:1: ( ( ruleFqn ) )
             {
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24282:1: ( ( RULE_ID ) )
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24283:1: ( RULE_ID )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24282:1: ( ( ruleFqn ) )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24283:1: ( ruleFqn )
             {
             if ( state.backtracking==0 ) {
                before(grammarAccess.getRoleAccess().getTypeEntityCrossReference_0_0()); 
             }
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24284:1: ( RULE_ID )
-            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24285:1: RULE_ID
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24284:1: ( ruleFqn )
+            // ../fr.ocelet.ui/src-gen/fr/ocelet/lang/ui/contentassist/antlr/internal/InternalOcelet.g:24285:1: ruleFqn
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getRoleAccess().getTypeEntityIDTerminalRuleCall_0_0_1()); 
+               before(grammarAccess.getRoleAccess().getTypeEntityFqnParserRuleCall_0_0_1()); 
             }
-            match(input,RULE_ID,FOLLOW_RULE_ID_in_rule__Role__TypeAssignment_048824); if (state.failed) return ;
+            pushFollow(FOLLOW_ruleFqn_in_rule__Role__TypeAssignment_048824);
+            ruleFqn();
+
+            state._fsp--;
+            if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getRoleAccess().getTypeEntityIDTerminalRuleCall_0_0_1()); 
+               after(grammarAccess.getRoleAccess().getTypeEntityFqnParserRuleCall_0_0_1()); 
             }
 
             }
@@ -79815,7 +79819,7 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
     static final String DFA86_acceptS =
         "\10\uffff\1\2\1\1";
     static final String DFA86_specialS =
-        "\1\uffff\1\1\1\4\1\6\1\0\1\2\1\5\1\3\2\uffff}>";
+        "\1\uffff\1\5\1\0\1\1\1\4\1\6\1\3\1\2\2\uffff}>";
     static final String[] DFA86_transitionS = {
             "\5\10\5\uffff\5\10\3\uffff\1\1\1\2\1\3\1\4\1\5\5\10\1\7\1\6\26\10\2\uffff\2\10\4\uffff\1\10\5\uffff\3\10\6\uffff\1\10\3\uffff\1\10\2\uffff\24\10\3\uffff\2\10\1\uffff\1\10",
             "\1\uffff",
@@ -79866,66 +79870,6 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA86_4 = input.LA(1);
-
-                         
-                        int index86_4 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index86_4);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 1 : 
-                        int LA86_1 = input.LA(1);
-
-                         
-                        int index86_1 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index86_1);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 2 : 
-                        int LA86_5 = input.LA(1);
-
-                         
-                        int index86_5 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index86_5);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 3 : 
-                        int LA86_7 = input.LA(1);
-
-                         
-                        int index86_7 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
-
-                        else if ( (true) ) {s = 8;}
-
-                         
-                        input.seek(index86_7);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
                         int LA86_2 = input.LA(1);
 
                          
@@ -79940,7 +79884,37 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         input.seek(index86_2);
                         if ( s>=0 ) return s;
                         break;
-                    case 5 : 
+                    case 1 : 
+                        int LA86_3 = input.LA(1);
+
+                         
+                        int index86_3 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index86_3);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 2 : 
+                        int LA86_7 = input.LA(1);
+
+                         
+                        int index86_7 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index86_7);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 3 : 
                         int LA86_6 = input.LA(1);
 
                          
@@ -79955,11 +79929,11 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         input.seek(index86_6);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
-                        int LA86_3 = input.LA(1);
+                    case 4 : 
+                        int LA86_4 = input.LA(1);
 
                          
-                        int index86_3 = input.index();
+                        int index86_4 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred142_InternalOcelet()) ) {s = 9;}
@@ -79967,7 +79941,37 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 8;}
 
                          
-                        input.seek(index86_3);
+                        input.seek(index86_4);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 5 : 
+                        int LA86_1 = input.LA(1);
+
+                         
+                        int index86_1 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index86_1);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
+                        int LA86_5 = input.LA(1);
+
+                         
+                        int index86_5 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred142_InternalOcelet()) ) {s = 9;}
+
+                        else if ( (true) ) {s = 8;}
+
+                         
+                        input.seek(index86_5);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -79989,7 +79993,7 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
     static final String DFA92_acceptS =
         "\1\uffff\1\2\10\uffff\1\1";
     static final String DFA92_specialS =
-        "\2\uffff\1\0\1\6\1\7\1\3\1\2\1\5\1\1\1\4\1\uffff}>";
+        "\2\uffff\1\1\1\4\1\0\1\6\1\5\1\3\1\2\1\7\1\uffff}>";
     static final String[] DFA92_transitionS = {
             "\5\1\5\uffff\5\1\3\uffff\12\1\1\3\1\2\1\4\1\5\1\6\1\7\1\10\1\11\20\1\2\uffff\2\1\4\uffff\1\1\5\uffff\3\1\6\uffff\1\1\3\uffff\1\1\2\uffff\24\1\3\uffff\2\1\1\uffff\1\1",
             "",
@@ -80041,6 +80045,21 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
+                        int LA92_4 = input.LA(1);
+
+                         
+                        int index92_4 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred148_InternalOcelet()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index92_4);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 1 : 
                         int LA92_2 = input.LA(1);
 
                          
@@ -80055,7 +80074,7 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         input.seek(index92_2);
                         if ( s>=0 ) return s;
                         break;
-                    case 1 : 
+                    case 2 : 
                         int LA92_8 = input.LA(1);
 
                          
@@ -80070,52 +80089,7 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         input.seek(index92_8);
                         if ( s>=0 ) return s;
                         break;
-                    case 2 : 
-                        int LA92_6 = input.LA(1);
-
-                         
-                        int index92_6 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred148_InternalOcelet()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index92_6);
-                        if ( s>=0 ) return s;
-                        break;
                     case 3 : 
-                        int LA92_5 = input.LA(1);
-
-                         
-                        int index92_5 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred148_InternalOcelet()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index92_5);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 4 : 
-                        int LA92_9 = input.LA(1);
-
-                         
-                        int index92_9 = input.index();
-                        input.rewind();
-                        s = -1;
-                        if ( (synpred148_InternalOcelet()) ) {s = 10;}
-
-                        else if ( (true) ) {s = 1;}
-
-                         
-                        input.seek(index92_9);
-                        if ( s>=0 ) return s;
-                        break;
-                    case 5 : 
                         int LA92_7 = input.LA(1);
 
                          
@@ -80130,7 +80104,7 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         input.seek(index92_7);
                         if ( s>=0 ) return s;
                         break;
-                    case 6 : 
+                    case 4 : 
                         int LA92_3 = input.LA(1);
 
                          
@@ -80145,11 +80119,11 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         input.seek(index92_3);
                         if ( s>=0 ) return s;
                         break;
-                    case 7 : 
-                        int LA92_4 = input.LA(1);
+                    case 5 : 
+                        int LA92_6 = input.LA(1);
 
                          
-                        int index92_4 = input.index();
+                        int index92_6 = input.index();
                         input.rewind();
                         s = -1;
                         if ( (synpred148_InternalOcelet()) ) {s = 10;}
@@ -80157,7 +80131,37 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
                         else if ( (true) ) {s = 1;}
 
                          
-                        input.seek(index92_4);
+                        input.seek(index92_6);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 6 : 
+                        int LA92_5 = input.LA(1);
+
+                         
+                        int index92_5 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred148_InternalOcelet()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index92_5);
+                        if ( s>=0 ) return s;
+                        break;
+                    case 7 : 
+                        int LA92_9 = input.LA(1);
+
+                         
+                        int index92_9 = input.index();
+                        input.rewind();
+                        s = -1;
+                        if ( (synpred148_InternalOcelet()) ) {s = 10;}
+
+                        else if ( (true) ) {s = 1;}
+
+                         
+                        input.seek(index92_9);
                         if ( s>=0 ) return s;
                         break;
             }
@@ -84477,7 +84481,7 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
     public static final BitSet FOLLOW_ruleRole_in_rule__Relation__RolesAssignment_548727 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleRole_in_rule__Relation__RolesAssignment_6_148758 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleRelElements_in_rule__Relation__RelelnsAssignment_948789 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RULE_ID_in_rule__Role__TypeAssignment_048824 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ruleFqn_in_rule__Role__TypeAssignment_048824 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_ID_in_rule__Role__NameAssignment_148859 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ruleJvmTypeReference_in_rule__RelPropertyDef__TypeAssignment_148890 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_RULE_ID_in_rule__RelPropertyDef__NameAssignment_248921 = new BitSet(new long[]{0x0000000000000002L});

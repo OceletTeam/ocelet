@@ -229,6 +229,17 @@ public class OceletLabelProvider extends XbaseLabelProvider {
       }
     }
     if (!_matched) {
+      if (eln instanceof InteractionDef) {
+        String _name = ((InteractionDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (_notEquals) {
+          _matched=true;
+          String _name_1 = ((InteractionDef)eln).getName();
+          _switchResult = (_name_1 + "()");
+        }
+      }
+    }
+    if (!_matched) {
       if (eln instanceof Metadata) {
         _matched=true;
         _switchResult = "Metadata";
@@ -288,6 +299,38 @@ public class OceletLabelProvider extends XbaseLabelProvider {
       if (eln instanceof Relation) {
         _matched=true;
         _switchResult = this.relText(((Relation)eln));
+      }
+    }
+    if (!_matched) {
+      if (eln instanceof RelPropertyDef) {
+        boolean _and = false;
+        String _name = ((RelPropertyDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          JvmTypeReference _type = ((RelPropertyDef)eln).getType();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((RelPropertyDef)eln).getName();
+          String _plus = (_name_1 + " is ");
+          JvmTypeReference _type_1 = ((RelPropertyDef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
+          _switchResult = (_plus + _simpleName);
+        }
+      }
+    }
+    if (!_matched) {
+      if (eln instanceof Role) {
+        String _name = ((Role)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (_notEquals) {
+          _matched=true;
+          _switchResult = ((Role)eln).getName();
+        }
       }
     }
     if (!_matched) {

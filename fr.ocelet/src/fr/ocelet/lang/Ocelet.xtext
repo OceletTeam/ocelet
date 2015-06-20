@@ -68,7 +68,7 @@ Relation:
 	'}'
 ;
 
-Role : type=[Entity] name=ID;
+Role : type=[Entity|Fqn] name=ID;
 
 RelElements : RelPropertyDef|InteractionDef|Filterdef;
 
