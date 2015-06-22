@@ -99,7 +99,7 @@ private def String relText(Relation rel){
 			if (i > 0)
 				r.append(",");
 			i = i + 1;
-			r.append(rol.getType().getName());
+			r.append(rol.getType()?.getName()?:".?.");
 		}
 		} catch (NullPointerException npe){
 			// Do not crash if there is no Role defined yet

@@ -731,25 +731,25 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
 		private final CrossReference cTypeEntityCrossReference_0_0 = (CrossReference)cTypeAssignment_0.eContents().get(0);
-		private final RuleCall cTypeEntityFqnParserRuleCall_0_0_1 = (RuleCall)cTypeEntityCrossReference_0_0.eContents().get(1);
+		private final RuleCall cTypeEntityIDTerminalRuleCall_0_0_1 = (RuleCall)cTypeEntityCrossReference_0_0.eContents().get(1);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
 		//Role:
-		//	type=[Entity|Fqn] name=ID;
+		//	type=[Entity] name=ID;
 		@Override public ParserRule getRule() { return rule; }
 
-		//type=[Entity|Fqn] name=ID
+		//type=[Entity] name=ID
 		public Group getGroup() { return cGroup; }
 
-		//type=[Entity|Fqn]
+		//type=[Entity]
 		public Assignment getTypeAssignment_0() { return cTypeAssignment_0; }
 
-		//[Entity|Fqn]
+		//[Entity]
 		public CrossReference getTypeEntityCrossReference_0_0() { return cTypeEntityCrossReference_0_0; }
 
-		//Fqn
-		public RuleCall getTypeEntityFqnParserRuleCall_0_0_1() { return cTypeEntityFqnParserRuleCall_0_0_1; }
+		//ID
+		public RuleCall getTypeEntityIDTerminalRuleCall_0_0_1() { return cTypeEntityIDTerminalRuleCall_0_0_1; }
 
 		//name=ID
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
@@ -1886,7 +1886,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	}
 
 	//Role:
-	//	type=[Entity|Fqn] name=ID;
+	//	type=[Entity] name=ID;
 	public RoleElements getRoleAccess() {
 		return pRole;
 	}

@@ -1339,12 +1339,10 @@ ruleRole returns [EObject current=null]
 	            $current = createModelElement(grammarAccess.getRoleRule());
 	        }
         }
-		{ 
-	        newCompositeNode(grammarAccess.getRoleAccess().getTypeEntityCrossReference_0_0()); 
-	    }
-		ruleFqn		{ 
-	        afterParserOrEnumRuleCall();
-	    }
+	otherlv_0=RULE_ID
+	{
+		newLeafNode(otherlv_0, grammarAccess.getRoleAccess().getTypeEntityCrossReference_0_0()); 
+	}
 
 )
 )(

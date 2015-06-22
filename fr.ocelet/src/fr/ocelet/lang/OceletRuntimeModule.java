@@ -30,4 +30,5 @@ public class OceletRuntimeModule extends fr.ocelet.lang.AbstractOceletRuntimeMod
 	public void configureIScopeProviderDelegate(com.google.inject.Binder binder) {
 		binder.bind(org.eclipse.xtext.scoping.IScopeProvider.class).annotatedWith(Names.named(org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider.NAMED_DELEGATE)).to(fr.ocelet.lang.scoping.OceletImportedNamespaceScopeProvider.class);
 	}
+	
 }

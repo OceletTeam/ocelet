@@ -5,7 +5,7 @@ import "http://www.eclipse.org/xtext/common/JavaVMTypes" as types
 
 generate ocelet "http://www.ocelet.fr/lang/Ocelet"
 
-Model:
+Model: 
 	('package' name=Fqn)?
 	(modelns += ModEln)*;
 	
@@ -68,7 +68,7 @@ Relation:
 	'}'
 ;
 
-Role : type=[Entity|Fqn] name=ID;
+Role : type=[Entity] name=ID;
 
 RelElements : RelPropertyDef|InteractionDef|Filterdef;
 

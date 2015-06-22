@@ -477,9 +477,18 @@ public class OceletLabelProvider extends XbaseLabelProvider {
             r.append(",");
           }
           i = (i + 1);
+          String _elvis = null;
           Entity _type = rol.getType();
-          String _name_1 = _type.getName();
-          r.append(_name_1);
+          String _name_1 = null;
+          if (_type!=null) {
+            _name_1=_type.getName();
+          }
+          if (_name_1 != null) {
+            _elvis = _name_1;
+          } else {
+            _elvis = ".?.";
+          }
+          r.append(_elvis);
         }
       }
     } catch (final Throwable _t) {

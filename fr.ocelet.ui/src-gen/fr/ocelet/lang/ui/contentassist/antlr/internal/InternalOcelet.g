@@ -24282,8 +24282,8 @@ rule__Role__TypeAssignment_0
 (
 { before(grammarAccess.getRoleAccess().getTypeEntityCrossReference_0_0()); }
 (
-{ before(grammarAccess.getRoleAccess().getTypeEntityFqnParserRuleCall_0_0_1()); }
-	ruleFqn{ after(grammarAccess.getRoleAccess().getTypeEntityFqnParserRuleCall_0_0_1()); }
+{ before(grammarAccess.getRoleAccess().getTypeEntityIDTerminalRuleCall_0_0_1()); }
+	RULE_ID{ after(grammarAccess.getRoleAccess().getTypeEntityIDTerminalRuleCall_0_0_1()); }
 )
 { after(grammarAccess.getRoleAccess().getTypeEntityCrossReference_0_0()); }
 )

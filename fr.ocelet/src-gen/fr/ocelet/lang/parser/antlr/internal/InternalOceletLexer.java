@@ -2218,10 +2218,10 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_HEX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:10: ( ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )? )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:12: ( '0x' | '0X' ) ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+ ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:12: ( '0x' | '0X' )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:12: ( '0x' | '0X' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -2249,7 +2249,7 @@ public class InternalOceletLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:13: '0x'
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:13: '0x'
                     {
                     match("0x"); 
 
@@ -2257,7 +2257,7 @@ public class InternalOceletLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:18: '0X'
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:18: '0X'
                     {
                     match("0X"); 
 
@@ -2267,7 +2267,7 @@ public class InternalOceletLexer extends Lexer {
 
             }
 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' | '_' )+
             int cnt2=0;
             loop2:
             do {
@@ -2305,7 +2305,7 @@ public class InternalOceletLexer extends Lexer {
                 cnt2++;
             } while (true);
 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:58: ( '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) ) )?
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -2314,10 +2314,10 @@ public class InternalOceletLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:59: '#' ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     {
                     match('#'); 
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:63: ( ( 'b' | 'B' ) ( 'i' | 'I' ) | ( 'l' | 'L' ) )
                     int alt3=2;
                     int LA3_0 = input.LA(1);
 
@@ -2335,7 +2335,7 @@ public class InternalOceletLexer extends Lexer {
                     }
                     switch (alt3) {
                         case 1 :
-                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:64: ( 'b' | 'B' ) ( 'i' | 'I' )
+                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:64: ( 'b' | 'B' ) ( 'i' | 'I' )
                             {
                             if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                                 input.consume();
@@ -2359,7 +2359,7 @@ public class InternalOceletLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:84: ( 'l' | 'L' )
+                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8683:84: ( 'l' | 'L' )
                             {
                             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
                                 input.consume();
@@ -2398,11 +2398,11 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:12: '0' .. '9' ( '0' .. '9' | '_' )*
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:10: ( '0' .. '9' ( '0' .. '9' | '_' )* )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:12: '0' .. '9' ( '0' .. '9' | '_' )*
             {
             matchRange('0','9'); 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:21: ( '0' .. '9' | '_' )*
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8685:21: ( '0' .. '9' | '_' )*
             loop5:
             do {
                 int alt5=2;
@@ -2451,11 +2451,11 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_DECIMAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:14: ( RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )? )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:16: RULE_INT ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )? ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             {
             mRULE_INT(); 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:25: ( ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT )?
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -2464,7 +2464,7 @@ public class InternalOceletLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:26: ( 'e' | 'E' ) ( '+' | '-' )? RULE_INT
                     {
                     if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                         input.consume();
@@ -2475,7 +2475,7 @@ public class InternalOceletLexer extends Lexer {
                         recover(mse);
                         throw mse;}
 
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:36: ( '+' | '-' )?
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:36: ( '+' | '-' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -2508,7 +2508,7 @@ public class InternalOceletLexer extends Lexer {
 
             }
 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:58: ( ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' ) | ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' ) )?
             int alt8=3;
             int LA8_0 = input.LA(1);
 
@@ -2520,7 +2520,7 @@ public class InternalOceletLexer extends Lexer {
             }
             switch (alt8) {
                 case 1 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:59: ( 'b' | 'B' ) ( 'i' | 'I' | 'd' | 'D' )
                     {
                     if ( input.LA(1)=='B'||input.LA(1)=='b' ) {
                         input.consume();
@@ -2544,7 +2544,7 @@ public class InternalOceletLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8687:87: ( 'l' | 'L' | 'd' | 'D' | 'f' | 'F' )
                     {
                     if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='L'||input.LA(1)=='d'||input.LA(1)=='f'||input.LA(1)=='l' ) {
                         input.consume();
@@ -2577,10 +2577,10 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:9: ( ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )* )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:11: ( '^' )? ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:11: ( '^' )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:11: ( '^' )?
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -2589,7 +2589,7 @@ public class InternalOceletLexer extends Lexer {
             }
             switch (alt9) {
                 case 1 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:11: '^'
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:11: '^'
                     {
                     match('^'); 
 
@@ -2607,7 +2607,7 @@ public class InternalOceletLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8689:44: ( 'a' .. 'z' | 'A' .. 'Z' | '$' | '_' | '0' .. '9' )*
             loop10:
             do {
                 int alt10=2;
@@ -2656,10 +2656,10 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_STRING;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:13: ( ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? ) )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:15: ( '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )? | '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )? )
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -2677,10 +2677,10 @@ public class InternalOceletLexer extends Lexer {
             }
             switch (alt15) {
                 case 1 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:16: '\"' ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )* ( '\"' )?
                     {
                     match('\"'); 
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:20: ( '\\\\' . | ~ ( ( '\\\\' | '\"' ) ) )*
                     loop11:
                     do {
                         int alt11=3;
@@ -2696,7 +2696,7 @@ public class InternalOceletLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:21: '\\\\' .
+                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:21: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2704,7 +2704,7 @@ public class InternalOceletLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:28: ~ ( ( '\\\\' | '\"' ) )
+                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:28: ~ ( ( '\\\\' | '\"' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='!')||(input.LA(1)>='#' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2724,7 +2724,7 @@ public class InternalOceletLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:44: ( '\"' )?
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:44: ( '\"' )?
                     int alt12=2;
                     int LA12_0 = input.LA(1);
 
@@ -2733,7 +2733,7 @@ public class InternalOceletLexer extends Lexer {
                     }
                     switch (alt12) {
                         case 1 :
-                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:44: '\"'
+                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:44: '\"'
                             {
                             match('\"'); 
 
@@ -2746,10 +2746,10 @@ public class InternalOceletLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:49: '\\'' ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )* ( '\\'' )?
                     {
                     match('\''); 
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:54: ( '\\\\' . | ~ ( ( '\\\\' | '\\'' ) ) )*
                     loop13:
                     do {
                         int alt13=3;
@@ -2765,7 +2765,7 @@ public class InternalOceletLexer extends Lexer {
 
                         switch (alt13) {
                     	case 1 :
-                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:55: '\\\\' .
+                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:55: '\\\\' .
                     	    {
                     	    match('\\'); 
                     	    matchAny(); 
@@ -2773,7 +2773,7 @@ public class InternalOceletLexer extends Lexer {
                     	    }
                     	    break;
                     	case 2 :
-                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:62: ~ ( ( '\\\\' | '\\'' ) )
+                    	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:62: ~ ( ( '\\\\' | '\\'' ) )
                     	    {
                     	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='&')||(input.LA(1)>='(' && input.LA(1)<='[')||(input.LA(1)>=']' && input.LA(1)<='\uFFFF') ) {
                     	        input.consume();
@@ -2793,7 +2793,7 @@ public class InternalOceletLexer extends Lexer {
                         }
                     } while (true);
 
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:79: ( '\\'' )?
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:79: ( '\\'' )?
                     int alt14=2;
                     int LA14_0 = input.LA(1);
 
@@ -2802,7 +2802,7 @@ public class InternalOceletLexer extends Lexer {
                     }
                     switch (alt14) {
                         case 1 :
-                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:79: '\\''
+                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8691:79: '\\''
                             {
                             match('\''); 
 
@@ -2833,12 +2833,12 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_ML_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:19: '/*' ( options {greedy=false; } : . )* '*/'
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:17: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:19: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:24: ( options {greedy=false; } : . )*
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:24: ( options {greedy=false; } : . )*
             loop16:
             do {
                 int alt16=2;
@@ -2863,7 +2863,7 @@ public class InternalOceletLexer extends Lexer {
 
                 switch (alt16) {
             	case 1 :
-            	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:52: .
+            	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8693:52: .
             	    {
             	    matchAny(); 
 
@@ -2893,12 +2893,12 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_SL_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:17: ( '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )? )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:19: '//' (~ ( ( '\\n' | '\\r' ) ) )* ( ( '\\r' )? '\\n' )?
             {
             match("//"); 
 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:24: (~ ( ( '\\n' | '\\r' ) ) )*
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:24: (~ ( ( '\\n' | '\\r' ) ) )*
             loop17:
             do {
                 int alt17=2;
@@ -2911,7 +2911,7 @@ public class InternalOceletLexer extends Lexer {
 
                 switch (alt17) {
             	case 1 :
-            	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:24: ~ ( ( '\\n' | '\\r' ) )
+            	    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:24: ~ ( ( '\\n' | '\\r' ) )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -2931,7 +2931,7 @@ public class InternalOceletLexer extends Lexer {
                 }
             } while (true);
 
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:40: ( ( '\\r' )? '\\n' )?
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:40: ( ( '\\r' )? '\\n' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -2940,9 +2940,9 @@ public class InternalOceletLexer extends Lexer {
             }
             switch (alt19) {
                 case 1 :
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:41: ( '\\r' )? '\\n'
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:41: ( '\\r' )? '\\n'
                     {
-                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:41: ( '\\r' )?
+                    // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:41: ( '\\r' )?
                     int alt18=2;
                     int LA18_0 = input.LA(1);
 
@@ -2951,7 +2951,7 @@ public class InternalOceletLexer extends Lexer {
                     }
                     switch (alt18) {
                         case 1 :
-                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:41: '\\r'
+                            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8695:41: '\\r'
                             {
                             match('\r'); 
 
@@ -2983,10 +2983,10 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8699:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8699:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:9: ( ( ' ' | '\\t' | '\\r' | '\\n' )+ )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             {
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8699:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8697:11: ( ' ' | '\\t' | '\\r' | '\\n' )+
             int cnt20=0;
             loop20:
             do {
@@ -3040,8 +3040,8 @@ public class InternalOceletLexer extends Lexer {
         try {
             int _type = RULE_ANY_OTHER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8701:16: ( . )
-            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8701:18: .
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8699:16: ( . )
+            // ../fr.ocelet/src-gen/fr/ocelet/lang/parser/antlr/internal/InternalOcelet.g:8699:18: .
             {
             matchAny(); 
 

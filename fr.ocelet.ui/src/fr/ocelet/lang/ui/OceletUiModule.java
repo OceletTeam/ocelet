@@ -6,8 +6,10 @@ package fr.ocelet.lang.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
+import org.eclipse.xtext.resource.containers.IAllContainersState;
 
 import com.google.inject.Binder;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import fr.ocelet.lang.OcltOutputConfigurationProvider;
@@ -27,4 +29,5 @@ public class OceletUiModule extends fr.ocelet.lang.ui.AbstractOceletUiModule {
 		binder.bind(IOutputConfigurationProvider.class)
 				.to(OcltOutputConfigurationProvider.class).in(Singleton.class);
 	}
+	
 }

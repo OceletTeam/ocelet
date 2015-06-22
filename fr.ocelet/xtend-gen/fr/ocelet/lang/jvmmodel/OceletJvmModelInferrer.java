@@ -836,160 +836,146 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
             _matched=true;
             final QualifiedName graphcname = this._iQualifiedNameProvider.getFullyQualifiedName(meln);
             final String edgecname = (graphcname + "_Edge");
-            boolean _and = false;
-            boolean _and_1 = false;
-            boolean _and_2 = false;
-            boolean _and_3 = false;
-            boolean _and_4 = false;
-            boolean _and_5 = false;
-            boolean _and_6 = false;
-            boolean _and_7 = false;
             EList<Role> _roles = ((Relation)meln).getRoles();
             int _size = _roles.size();
-            boolean _greaterEqualsThan = (_size >= 2);
-            if (!_greaterEqualsThan) {
-              _and_7 = false;
-            } else {
-              EList<Role> _roles_1 = ((Relation)meln).getRoles();
-              Role _get = _roles_1.get(0);
-              boolean _notEquals = (!Objects.equal(_get, null));
-              _and_7 = _notEquals;
+            boolean _greaterThan = (_size > 2);
+            if (_greaterThan) {
+              InputOutput.<String>println("Sorry, only graphs with two roles are supported by this version. The two first roles will be used and the others will be ignored.");
             }
-            if (!_and_7) {
-              _and_6 = false;
-            } else {
-              EList<Role> _roles_2 = ((Relation)meln).getRoles();
-              Role _get_1 = _roles_2.get(1);
-              boolean _notEquals_1 = (!Objects.equal(_get_1, null));
-              _and_6 = _notEquals_1;
-            }
-            if (!_and_6) {
-              _and_5 = false;
-            } else {
-              EList<Role> _roles_3 = ((Relation)meln).getRoles();
-              Role _get_2 = _roles_3.get(0);
-              Entity _type = _get_2.getType();
-              boolean _notEquals_2 = (!Objects.equal(_type, null));
-              _and_5 = _notEquals_2;
-            }
-            if (!_and_5) {
-              _and_4 = false;
-            } else {
-              EList<Role> _roles_4 = ((Relation)meln).getRoles();
-              Role _get_3 = _roles_4.get(1);
-              Entity _type_1 = _get_3.getType();
-              boolean _notEquals_3 = (!Objects.equal(_type_1, null));
-              _and_4 = _notEquals_3;
-            }
-            if (!_and_4) {
-              _and_3 = false;
-            } else {
-              EList<Role> _roles_5 = ((Relation)meln).getRoles();
-              Role _get_4 = _roles_5.get(0);
-              Entity _type_2 = _get_4.getType();
-              QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(_type_2);
-              boolean _notEquals_4 = (!Objects.equal(_fullyQualifiedName, null));
-              _and_3 = _notEquals_4;
-            }
-            if (!_and_3) {
-              _and_2 = false;
-            } else {
-              EList<Role> _roles_6 = ((Relation)meln).getRoles();
-              Role _get_5 = _roles_6.get(1);
-              Entity _type_3 = _get_5.getType();
-              QualifiedName _fullyQualifiedName_1 = this._iQualifiedNameProvider.getFullyQualifiedName(_type_3);
-              boolean _notEquals_5 = (!Objects.equal(_fullyQualifiedName_1, null));
-              _and_2 = _notEquals_5;
-            }
-            if (!_and_2) {
-              _and_1 = false;
-            } else {
-              EList<Role> _roles_7 = ((Relation)meln).getRoles();
-              Role _get_6 = _roles_7.get(0);
-              String _name_2 = _get_6.getName();
-              boolean _notEquals_6 = (!Objects.equal(_name_2, null));
-              _and_1 = _notEquals_6;
-            }
-            if (!_and_1) {
-              _and = false;
-            } else {
-              EList<Role> _roles_8 = ((Relation)meln).getRoles();
-              Role _get_7 = _roles_8.get(1);
-              String _name_3 = _get_7.getName();
-              boolean _notEquals_7 = (!Objects.equal(_name_3, null));
-              _and = _notEquals_7;
-            }
-            if (_and) {
-              EList<Role> _roles_9 = ((Relation)meln).getRoles();
-              int _size_1 = _roles_9.size();
-              boolean _greaterThan = (_size_1 > 2);
-              if (_greaterThan) {
-                InputOutput.<String>println("Sorry, only graphs with two roles are supported by this version. The two first roles will be used and the others will be ignored.");
-              }
-              EList<Role> _roles_10 = ((Relation)meln).getRoles();
-              Role _get_8 = _roles_10.get(0);
-              Entity _type_4 = _get_8.getType();
-              EList<Role> _roles_11 = ((Relation)meln).getRoles();
-              Role _get_9 = _roles_11.get(1);
-              Entity _type_5 = _get_9.getType();
-              final boolean isAutoGraph = _type_4.equals(_type_5);
-              String _xifexpression = null;
-              if (isAutoGraph) {
-                _xifexpression = "fr.ocelet.runtime.relation.impl.AutoGraph";
-              } else {
-                _xifexpression = "fr.ocelet.runtime.relation.impl.DiGraph";
-              }
-              final String graphTypeName = _xifexpression;
-              JvmGenericType _class = this._jvmTypesBuilder.toClass(modl, edgecname);
-              final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
-                @Override
-                public void apply(final JvmGenericType it) {
-                  EList<JvmTypeReference> _superTypes = it.getSuperTypes();
-                  JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.OcltEdge");
-                  OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef);
-                  EList<Role> _roles = ((Relation)meln).getRoles();
-                  final Role firstRole = _roles.get(0);
+            JvmGenericType _class = this._jvmTypesBuilder.toClass(modl, edgecname);
+            final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
+              @Override
+              public void apply(final JvmGenericType it) {
+                EList<JvmTypeReference> _superTypes = it.getSuperTypes();
+                JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.OcltEdge");
+                OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef);
+                boolean _and = false;
+                boolean _and_1 = false;
+                boolean _and_2 = false;
+                boolean _and_3 = false;
+                boolean _and_4 = false;
+                boolean _and_5 = false;
+                boolean _and_6 = false;
+                boolean _and_7 = false;
+                EList<Role> _roles = ((Relation)meln).getRoles();
+                int _size = _roles.size();
+                boolean _greaterEqualsThan = (_size >= 2);
+                if (!_greaterEqualsThan) {
+                  _and_7 = false;
+                } else {
                   EList<Role> _roles_1 = ((Relation)meln).getRoles();
-                  final Role secondRole = _roles_1.get(1);
-                  Entity _type = firstRole.getType();
-                  QualifiedName _fullyQualifiedName = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type);
-                  String _string = _fullyQualifiedName.toString();
+                  Role _get = _roles_1.get(0);
+                  boolean _notEquals = (!Objects.equal(_get, null));
+                  _and_7 = _notEquals;
+                }
+                if (!_and_7) {
+                  _and_6 = false;
+                } else {
+                  EList<Role> _roles_2 = ((Relation)meln).getRoles();
+                  Role _get_1 = _roles_2.get(1);
+                  boolean _notEquals_1 = (!Objects.equal(_get_1, null));
+                  _and_6 = _notEquals_1;
+                }
+                if (!_and_6) {
+                  _and_5 = false;
+                } else {
+                  EList<Role> _roles_3 = ((Relation)meln).getRoles();
+                  Role _get_2 = _roles_3.get(0);
+                  Entity _type = _get_2.getType();
+                  boolean _notEquals_2 = (!Objects.equal(_type, null));
+                  _and_5 = _notEquals_2;
+                }
+                if (!_and_5) {
+                  _and_4 = false;
+                } else {
+                  EList<Role> _roles_4 = ((Relation)meln).getRoles();
+                  Role _get_3 = _roles_4.get(1);
+                  Entity _type_1 = _get_3.getType();
+                  boolean _notEquals_3 = (!Objects.equal(_type_1, null));
+                  _and_4 = _notEquals_3;
+                }
+                if (!_and_4) {
+                  _and_3 = false;
+                } else {
+                  EList<Role> _roles_5 = ((Relation)meln).getRoles();
+                  Role _get_4 = _roles_5.get(0);
+                  Entity _type_2 = _get_4.getType();
+                  QualifiedName _fullyQualifiedName = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_2);
+                  boolean _notEquals_4 = (!Objects.equal(_fullyQualifiedName, null));
+                  _and_3 = _notEquals_4;
+                }
+                if (!_and_3) {
+                  _and_2 = false;
+                } else {
+                  EList<Role> _roles_6 = ((Relation)meln).getRoles();
+                  Role _get_5 = _roles_6.get(1);
+                  Entity _type_3 = _get_5.getType();
+                  QualifiedName _fullyQualifiedName_1 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_3);
+                  boolean _notEquals_5 = (!Objects.equal(_fullyQualifiedName_1, null));
+                  _and_2 = _notEquals_5;
+                }
+                if (!_and_2) {
+                  _and_1 = false;
+                } else {
+                  EList<Role> _roles_7 = ((Relation)meln).getRoles();
+                  Role _get_6 = _roles_7.get(0);
+                  String _name = _get_6.getName();
+                  boolean _notEquals_6 = (!Objects.equal(_name, null));
+                  _and_1 = _notEquals_6;
+                }
+                if (!_and_1) {
+                  _and = false;
+                } else {
+                  EList<Role> _roles_8 = ((Relation)meln).getRoles();
+                  Role _get_7 = _roles_8.get(1);
+                  String _name_1 = _get_7.getName();
+                  boolean _notEquals_7 = (!Objects.equal(_name_1, null));
+                  _and = _notEquals_7;
+                }
+                if (_and) {
+                  EList<Role> _roles_9 = ((Relation)meln).getRoles();
+                  final Role firstRole = _roles_9.get(0);
+                  EList<Role> _roles_10 = ((Relation)meln).getRoles();
+                  final Role secondRole = _roles_10.get(1);
+                  Entity _type_4 = firstRole.getType();
+                  QualifiedName _fullyQualifiedName_2 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_4);
+                  String _string = _fullyQualifiedName_2.toString();
                   final JvmTypeReference firstRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string);
-                  Entity _type_1 = secondRole.getType();
-                  QualifiedName _fullyQualifiedName_1 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_1);
-                  String _string_1 = _fullyQualifiedName_1.toString();
+                  Entity _type_5 = secondRole.getType();
+                  QualifiedName _fullyQualifiedName_3 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_5);
+                  String _string_1 = _fullyQualifiedName_3.toString();
                   final JvmTypeReference secondRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string_1);
-                  String _name = firstRole.getName();
-                  JvmField jvmField = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(meln, _name, firstRoleType);
-                  boolean _notEquals = (!Objects.equal(jvmField, null));
-                  if (_notEquals) {
+                  String _name_2 = firstRole.getName();
+                  JvmField jvmField = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(meln, _name_2, firstRoleType);
+                  boolean _notEquals_8 = (!Objects.equal(jvmField, null));
+                  if (_notEquals_8) {
                     jvmField.setFinal(false);
                     EList<JvmMember> _members = it.getMembers();
                     OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members, jvmField);
                     EList<JvmMember> _members_1 = it.getMembers();
-                    String _name_1 = firstRole.getName();
-                    JvmOperation _setter = OceletJvmModelInferrer.this._jvmTypesBuilder.toSetter(meln, _name_1, firstRoleType);
+                    String _name_3 = firstRole.getName();
+                    JvmOperation _setter = OceletJvmModelInferrer.this._jvmTypesBuilder.toSetter(meln, _name_3, firstRoleType);
                     OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _setter);
                     EList<JvmMember> _members_2 = it.getMembers();
-                    String _name_2 = firstRole.getName();
-                    JvmOperation _getter = OceletJvmModelInferrer.this._jvmTypesBuilder.toGetter(meln, _name_2, firstRoleType);
+                    String _name_4 = firstRole.getName();
+                    JvmOperation _getter = OceletJvmModelInferrer.this._jvmTypesBuilder.toGetter(meln, _name_4, firstRoleType);
                     OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _getter);
                   }
-                  String _name_3 = secondRole.getName();
-                  JvmField _field = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(meln, _name_3, secondRoleType);
+                  String _name_5 = secondRole.getName();
+                  JvmField _field = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(meln, _name_5, secondRoleType);
                   jvmField = _field;
-                  boolean _notEquals_1 = (!Objects.equal(jvmField, null));
-                  if (_notEquals_1) {
+                  boolean _notEquals_9 = (!Objects.equal(jvmField, null));
+                  if (_notEquals_9) {
                     jvmField.setFinal(false);
                     EList<JvmMember> _members_3 = it.getMembers();
                     OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_3, jvmField);
                     EList<JvmMember> _members_4 = it.getMembers();
-                    String _name_4 = secondRole.getName();
-                    JvmOperation _setter_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toSetter(meln, _name_4, secondRoleType);
+                    String _name_6 = secondRole.getName();
+                    JvmOperation _setter_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toSetter(meln, _name_6, secondRoleType);
                     OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _setter_1);
                     EList<JvmMember> _members_5 = it.getMembers();
-                    String _name_5 = secondRole.getName();
-                    JvmOperation _getter_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toGetter(meln, _name_5, secondRoleType);
+                    String _name_7 = secondRole.getName();
+                    JvmOperation _getter_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toGetter(meln, _name_7, secondRoleType);
                     OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _getter_1);
                   }
                   EList<JvmMember> _members_6 = it.getMembers();
@@ -1057,129 +1043,214 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   };
                   JvmOperation _method = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(meln, "getRole", _typeRef_1, _function_1);
                   OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method);
-                  EList<RelElements> _relelns = ((Relation)meln).getRelelns();
-                  for (final RelElements reln : _relelns) {
-                    boolean _matched = false;
-                    if (!_matched) {
-                      if (reln instanceof RelPropertyDef) {
-                        _matched=true;
-                        String _name_6 = ((RelPropertyDef)reln).getName();
-                        JvmTypeReference _type_2 = ((RelPropertyDef)reln).getType();
-                        final JvmField rField = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(reln, _name_6, _type_2);
-                        boolean _notEquals_2 = (!Objects.equal(rField, null));
-                        if (_notEquals_2) {
-                          rField.setFinal(false);
-                          EList<JvmMember> _members_8 = it.getMembers();
-                          OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_8, rField);
-                          EList<JvmMember> _members_9 = it.getMembers();
-                          String _name_7 = ((RelPropertyDef)reln).getName();
-                          JvmTypeReference _type_3 = ((RelPropertyDef)reln).getType();
-                          JvmOperation _setter_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toSetter(reln, _name_7, _type_3);
-                          OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_9, _setter_2);
-                          EList<JvmMember> _members_10 = it.getMembers();
-                          String _name_8 = ((RelPropertyDef)reln).getName();
-                          JvmTypeReference _type_4 = ((RelPropertyDef)reln).getType();
-                          JvmOperation _getter_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toGetter(reln, _name_8, _type_4);
-                          OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_10, _getter_2);
-                        }
+                }
+                EList<RelElements> _relelns = ((Relation)meln).getRelelns();
+                for (final RelElements reln : _relelns) {
+                  boolean _matched = false;
+                  if (!_matched) {
+                    if (reln instanceof RelPropertyDef) {
+                      _matched=true;
+                      String _name_8 = ((RelPropertyDef)reln).getName();
+                      JvmTypeReference _type_6 = ((RelPropertyDef)reln).getType();
+                      final JvmField rField = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(reln, _name_8, _type_6);
+                      boolean _notEquals_10 = (!Objects.equal(rField, null));
+                      if (_notEquals_10) {
+                        rField.setFinal(false);
+                        EList<JvmMember> _members_8 = it.getMembers();
+                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_8, rField);
+                        EList<JvmMember> _members_9 = it.getMembers();
+                        String _name_9 = ((RelPropertyDef)reln).getName();
+                        JvmTypeReference _type_7 = ((RelPropertyDef)reln).getType();
+                        JvmOperation _setter_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toSetter(reln, _name_9, _type_7);
+                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_9, _setter_2);
+                        EList<JvmMember> _members_10 = it.getMembers();
+                        String _name_10 = ((RelPropertyDef)reln).getName();
+                        JvmTypeReference _type_8 = ((RelPropertyDef)reln).getType();
+                        JvmOperation _getter_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toGetter(reln, _name_10, _type_8);
+                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_10, _getter_2);
                       }
                     }
-                    if (!_matched) {
-                      if (reln instanceof InteractionDef) {
-                        _matched=true;
-                        EList<JvmMember> _members_8 = it.getMembers();
-                        String _name_6 = ((InteractionDef)reln).getName();
-                        JvmTypeReference _typeRef_2 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
-                        final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
+                  }
+                  if (!_matched) {
+                    if (reln instanceof InteractionDef) {
+                      _matched=true;
+                      EList<JvmMember> _members_8 = it.getMembers();
+                      String _name_8 = ((InteractionDef)reln).getName();
+                      JvmTypeReference _typeRef_2 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
+                      final Procedure1<JvmOperation> _function_2 = new Procedure1<JvmOperation>() {
+                        @Override
+                        public void apply(final JvmOperation it) {
+                          EList<JvmFormalParameter> _params = ((InteractionDef)reln).getParams();
+                          for (final JvmFormalParameter p : _params) {
+                            EList<JvmFormalParameter> _parameters = it.getParameters();
+                            String _name = p.getName();
+                            JvmTypeReference _parameterType = p.getParameterType();
+                            JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(reln, _name, _parameterType);
+                            OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+                          }
+                          XExpression _body = ((InteractionDef)reln).getBody();
+                          OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _body);
+                        }
+                      };
+                      JvmOperation _method_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _name_8, _typeRef_2, _function_2);
+                      OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_8, _method_1);
+                      EList<Comitexpr> _comitexpressions = ((InteractionDef)reln).getComitexpressions();
+                      int _size_1 = _comitexpressions.size();
+                      boolean _greaterThan = (_size_1 > 0);
+                      if (_greaterThan) {
+                        EList<JvmMember> _members_9 = it.getMembers();
+                        String _name_9 = ((InteractionDef)reln).getName();
+                        String _plus = ("_agr_" + _name_9);
+                        JvmTypeReference _typeRef_3 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
+                        final Procedure1<JvmOperation> _function_3 = new Procedure1<JvmOperation>() {
                           @Override
                           public void apply(final JvmOperation it) {
-                            EList<JvmFormalParameter> _params = ((InteractionDef)reln).getParams();
-                            for (final JvmFormalParameter p : _params) {
-                              EList<JvmFormalParameter> _parameters = it.getParameters();
-                              String _name = p.getName();
-                              JvmTypeReference _parameterType = p.getParameterType();
-                              JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(reln, _name, _parameterType);
-                              OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
-                            }
-                            XExpression _body = ((InteractionDef)reln).getBody();
-                            OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _body);
-                          }
-                        };
-                        JvmOperation _method_1 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _name_6, _typeRef_2, _function_2);
-                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_8, _method_1);
-                        EList<Comitexpr> _comitexpressions = ((InteractionDef)reln).getComitexpressions();
-                        int _size = _comitexpressions.size();
-                        boolean _greaterThan = (_size > 0);
-                        if (_greaterThan) {
-                          EList<JvmMember> _members_9 = it.getMembers();
-                          String _name_7 = ((InteractionDef)reln).getName();
-                          String _plus = ("_agr_" + _name_7);
-                          JvmTypeReference _typeRef_3 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
-                          final Procedure1<JvmOperation> _function_3 = new Procedure1<JvmOperation>() {
-                            @Override
-                            public void apply(final JvmOperation it) {
-                              StringConcatenationClient _client = new StringConcatenationClient() {
-                                @Override
-                                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                  {
-                                    EList<Comitexpr> _comitexpressions = ((InteractionDef)reln).getComitexpressions();
-                                    for(final Comitexpr ce : _comitexpressions) {
-                                      _builder.newLineIfNotEmpty();
-                                      _builder.append("this.");
-                                      Role _rol = ce.getRol();
-                                      String _name = _rol.getName();
-                                      _builder.append(_name, "");
-                                      _builder.append(".setAgregOp(\"");
-                                      String _prop = ce.getProp();
-                                      _builder.append(_prop, "");
-                                      _builder.append("\",new ");
-                                      JvmTypeReference _agrfunc = ce.getAgrfunc();
-                                      _builder.append(_agrfunc, "");
-                                      _builder.append("(),");
-                                      boolean _isUsepreval = ce.isUsepreval();
-                                      _builder.append(_isUsepreval, "");
-                                      _builder.append(");");
-                                      _builder.newLineIfNotEmpty();
-                                    }
+                            StringConcatenationClient _client = new StringConcatenationClient() {
+                              @Override
+                              protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                                {
+                                  EList<Comitexpr> _comitexpressions = ((InteractionDef)reln).getComitexpressions();
+                                  for(final Comitexpr ce : _comitexpressions) {
+                                    _builder.newLineIfNotEmpty();
+                                    _builder.append("this.");
+                                    Role _rol = ce.getRol();
+                                    String _name = _rol.getName();
+                                    _builder.append(_name, "");
+                                    _builder.append(".setAgregOp(\"");
+                                    String _prop = ce.getProp();
+                                    _builder.append(_prop, "");
+                                    _builder.append("\",new ");
+                                    JvmTypeReference _agrfunc = ce.getAgrfunc();
+                                    _builder.append(_agrfunc, "");
+                                    _builder.append("(),");
+                                    boolean _isUsepreval = ce.isUsepreval();
+                                    _builder.append(_isUsepreval, "");
+                                    _builder.append(");");
+                                    _builder.newLineIfNotEmpty();
                                   }
                                 }
-                              };
-                              OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
-                            }
-                          };
-                          JvmOperation _method_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _plus, _typeRef_3, _function_3);
-                          OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_9, _method_2);
-                        }
+                              }
+                            };
+                            OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+                          }
+                        };
+                        JvmOperation _method_2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _plus, _typeRef_3, _function_3);
+                        OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_9, _method_2);
                       }
                     }
                   }
                 }
-              };
-              acceptor.<JvmGenericType>accept(_class, _function);
-              EList<RelElements> _relelns = ((Relation)meln).getRelelns();
-              for (final RelElements reln : _relelns) {
-                boolean _matched_1 = false;
-                if (!_matched_1) {
-                  if (reln instanceof Filterdef) {
-                    _matched_1=true;
-                    String _plus_1 = (graphcname + "_");
-                    String _name_4 = ((Filterdef)reln).getName();
-                    final String filterfqn = (_plus_1 + _name_4);
-                    JvmGenericType _class_1 = this._jvmTypesBuilder.toClass(modl, filterfqn);
-                    final Procedure1<JvmGenericType> _function_1 = new Procedure1<JvmGenericType>() {
-                      @Override
-                      public void apply(final JvmGenericType it) {
-                        EList<Role> _roles = ((Relation)meln).getRoles();
-                        final Role firstRole = _roles.get(0);
+              }
+            };
+            acceptor.<JvmGenericType>accept(_class, _function);
+            EList<RelElements> _relelns = ((Relation)meln).getRelelns();
+            for (final RelElements reln : _relelns) {
+              boolean _matched_1 = false;
+              if (!_matched_1) {
+                if (reln instanceof Filterdef) {
+                  _matched_1=true;
+                  String _plus_1 = (graphcname + "_");
+                  String _name_2 = ((Filterdef)reln).getName();
+                  final String filterfqn = (_plus_1 + _name_2);
+                  JvmGenericType _class_1 = this._jvmTypesBuilder.toClass(modl, filterfqn);
+                  final Procedure1<JvmGenericType> _function_1 = new Procedure1<JvmGenericType>() {
+                    @Override
+                    public void apply(final JvmGenericType it) {
+                      boolean _and = false;
+                      boolean _and_1 = false;
+                      boolean _and_2 = false;
+                      boolean _and_3 = false;
+                      boolean _and_4 = false;
+                      boolean _and_5 = false;
+                      boolean _and_6 = false;
+                      boolean _and_7 = false;
+                      EList<Role> _roles = ((Relation)meln).getRoles();
+                      int _size = _roles.size();
+                      boolean _greaterEqualsThan = (_size >= 2);
+                      if (!_greaterEqualsThan) {
+                        _and_7 = false;
+                      } else {
                         EList<Role> _roles_1 = ((Relation)meln).getRoles();
-                        final Role secondRole = _roles_1.get(1);
-                        Entity _type = firstRole.getType();
-                        QualifiedName _fullyQualifiedName = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type);
-                        String _string = _fullyQualifiedName.toString();
+                        Role _get = _roles_1.get(0);
+                        boolean _notEquals = (!Objects.equal(_get, null));
+                        _and_7 = _notEquals;
+                      }
+                      if (!_and_7) {
+                        _and_6 = false;
+                      } else {
+                        EList<Role> _roles_2 = ((Relation)meln).getRoles();
+                        Role _get_1 = _roles_2.get(1);
+                        boolean _notEquals_1 = (!Objects.equal(_get_1, null));
+                        _and_6 = _notEquals_1;
+                      }
+                      if (!_and_6) {
+                        _and_5 = false;
+                      } else {
+                        EList<Role> _roles_3 = ((Relation)meln).getRoles();
+                        Role _get_2 = _roles_3.get(0);
+                        Entity _type = _get_2.getType();
+                        boolean _notEquals_2 = (!Objects.equal(_type, null));
+                        _and_5 = _notEquals_2;
+                      }
+                      if (!_and_5) {
+                        _and_4 = false;
+                      } else {
+                        EList<Role> _roles_4 = ((Relation)meln).getRoles();
+                        Role _get_3 = _roles_4.get(1);
+                        Entity _type_1 = _get_3.getType();
+                        boolean _notEquals_3 = (!Objects.equal(_type_1, null));
+                        _and_4 = _notEquals_3;
+                      }
+                      if (!_and_4) {
+                        _and_3 = false;
+                      } else {
+                        EList<Role> _roles_5 = ((Relation)meln).getRoles();
+                        Role _get_4 = _roles_5.get(0);
+                        Entity _type_2 = _get_4.getType();
+                        QualifiedName _fullyQualifiedName = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_2);
+                        boolean _notEquals_4 = (!Objects.equal(_fullyQualifiedName, null));
+                        _and_3 = _notEquals_4;
+                      }
+                      if (!_and_3) {
+                        _and_2 = false;
+                      } else {
+                        EList<Role> _roles_6 = ((Relation)meln).getRoles();
+                        Role _get_5 = _roles_6.get(1);
+                        Entity _type_3 = _get_5.getType();
+                        QualifiedName _fullyQualifiedName_1 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_3);
+                        boolean _notEquals_5 = (!Objects.equal(_fullyQualifiedName_1, null));
+                        _and_2 = _notEquals_5;
+                      }
+                      if (!_and_2) {
+                        _and_1 = false;
+                      } else {
+                        EList<Role> _roles_7 = ((Relation)meln).getRoles();
+                        Role _get_6 = _roles_7.get(0);
+                        String _name = _get_6.getName();
+                        boolean _notEquals_6 = (!Objects.equal(_name, null));
+                        _and_1 = _notEquals_6;
+                      }
+                      if (!_and_1) {
+                        _and = false;
+                      } else {
+                        EList<Role> _roles_8 = ((Relation)meln).getRoles();
+                        Role _get_7 = _roles_8.get(1);
+                        String _name_1 = _get_7.getName();
+                        boolean _notEquals_7 = (!Objects.equal(_name_1, null));
+                        _and = _notEquals_7;
+                      }
+                      if (_and) {
+                        EList<Role> _roles_9 = ((Relation)meln).getRoles();
+                        final Role firstRole = _roles_9.get(0);
+                        EList<Role> _roles_10 = ((Relation)meln).getRoles();
+                        final Role secondRole = _roles_10.get(1);
+                        Entity _type_4 = firstRole.getType();
+                        QualifiedName _fullyQualifiedName_2 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_4);
+                        String _string = _fullyQualifiedName_2.toString();
                         final JvmTypeReference firstRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string);
-                        Entity _type_1 = secondRole.getType();
-                        QualifiedName _fullyQualifiedName_1 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_1);
-                        String _string_1 = _fullyQualifiedName_1.toString();
+                        Entity _type_5 = secondRole.getType();
+                        QualifiedName _fullyQualifiedName_3 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_5);
+                        String _string_1 = _fullyQualifiedName_3.toString();
                         final JvmTypeReference secondRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string_1);
                         EList<JvmTypeReference> _superTypes = it.getSuperTypes();
                         JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.EdgeFilter", firstRoleType, secondRoleType);
@@ -1187,11 +1258,11 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         EList<JvmFormalParameter> _params = ((Filterdef)reln).getParams();
                         for (final JvmFormalParameter p : _params) {
                           {
-                            String _name = p.getName();
+                            String _name_2 = p.getName();
                             JvmTypeReference _parameterType = p.getParameterType();
-                            final JvmField pfield = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(reln, _name, _parameterType);
-                            boolean _notEquals = (!Objects.equal(pfield, null));
-                            if (_notEquals) {
+                            final JvmField pfield = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(reln, _name_2, _parameterType);
+                            boolean _notEquals_8 = (!Objects.equal(pfield, null));
+                            if (_notEquals_8) {
                               pfield.setFinal(false);
                               EList<JvmMember> _members = it.getMembers();
                               OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members, pfield);
@@ -1253,40 +1324,139 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         JvmOperation _method = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, "filter", _typeRef_1, _function_1);
                         OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _method);
                       }
-                    };
-                    acceptor.<JvmGenericType>accept(_class_1, _function_1);
-                  }
+                    }
+                  };
+                  acceptor.<JvmGenericType>accept(_class_1, _function_1);
                 }
               }
-              JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(edgecname);
-              boolean _notEquals_8 = (!Objects.equal(_typeRef, null));
-              if (_notEquals_8) {
-                JvmGenericType _class_1 = this._jvmTypesBuilder.toClass(modl, graphcname);
-                final Procedure1<JvmGenericType> _function_1 = new Procedure1<JvmGenericType>() {
-                  @Override
-                  public void apply(final JvmGenericType it) {
-                    String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(meln);
-                    OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
-                    EList<Role> _roles = ((Relation)meln).getRoles();
-                    final Role firstRole = _roles.get(0);
+            }
+            JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(edgecname);
+            boolean _notEquals = (!Objects.equal(_typeRef, null));
+            if (_notEquals) {
+              JvmGenericType _class_1 = this._jvmTypesBuilder.toClass(modl, graphcname);
+              final Procedure1<JvmGenericType> _function_1 = new Procedure1<JvmGenericType>() {
+                @Override
+                public void apply(final JvmGenericType it) {
+                  String _documentation = OceletJvmModelInferrer.this._jvmTypesBuilder.getDocumentation(meln);
+                  OceletJvmModelInferrer.this._jvmTypesBuilder.setDocumentation(it, _documentation);
+                  boolean _and = false;
+                  boolean _and_1 = false;
+                  boolean _and_2 = false;
+                  boolean _and_3 = false;
+                  boolean _and_4 = false;
+                  boolean _and_5 = false;
+                  boolean _and_6 = false;
+                  boolean _and_7 = false;
+                  EList<Role> _roles = ((Relation)meln).getRoles();
+                  int _size = _roles.size();
+                  boolean _greaterEqualsThan = (_size >= 2);
+                  if (!_greaterEqualsThan) {
+                    _and_7 = false;
+                  } else {
                     EList<Role> _roles_1 = ((Relation)meln).getRoles();
-                    final Role secondRole = _roles_1.get(1);
-                    Entity _type = firstRole.getType();
-                    QualifiedName _fullyQualifiedName = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type);
-                    String _string = _fullyQualifiedName.toString();
-                    final JvmTypeReference firstRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string);
-                    Entity _type_1 = secondRole.getType();
-                    QualifiedName _fullyQualifiedName_1 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_1);
-                    String _string_1 = _fullyQualifiedName_1.toString();
-                    final JvmTypeReference secondRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string_1);
+                    Role _get = _roles_1.get(0);
+                    boolean _notEquals = (!Objects.equal(_get, null));
+                    _and_7 = _notEquals;
+                  }
+                  if (!_and_7) {
+                    _and_6 = false;
+                  } else {
                     EList<Role> _roles_2 = ((Relation)meln).getRoles();
-                    Role _get = _roles_2.get(0);
-                    String _name = _get.getName();
-                    final String rolset1 = (_name + "Set");
+                    Role _get_1 = _roles_2.get(1);
+                    boolean _notEquals_1 = (!Objects.equal(_get_1, null));
+                    _and_6 = _notEquals_1;
+                  }
+                  if (!_and_6) {
+                    _and_5 = false;
+                  } else {
                     EList<Role> _roles_3 = ((Relation)meln).getRoles();
-                    Role _get_1 = _roles_3.get(1);
-                    String _name_1 = _get_1.getName();
-                    final String rolset2 = (_name_1 + "Set");
+                    Role _get_2 = _roles_3.get(0);
+                    Entity _type = _get_2.getType();
+                    boolean _notEquals_2 = (!Objects.equal(_type, null));
+                    _and_5 = _notEquals_2;
+                  }
+                  if (!_and_5) {
+                    _and_4 = false;
+                  } else {
+                    EList<Role> _roles_4 = ((Relation)meln).getRoles();
+                    Role _get_3 = _roles_4.get(1);
+                    Entity _type_1 = _get_3.getType();
+                    boolean _notEquals_3 = (!Objects.equal(_type_1, null));
+                    _and_4 = _notEquals_3;
+                  }
+                  if (!_and_4) {
+                    _and_3 = false;
+                  } else {
+                    EList<Role> _roles_5 = ((Relation)meln).getRoles();
+                    Role _get_4 = _roles_5.get(0);
+                    Entity _type_2 = _get_4.getType();
+                    QualifiedName _fullyQualifiedName = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_2);
+                    boolean _notEquals_4 = (!Objects.equal(_fullyQualifiedName, null));
+                    _and_3 = _notEquals_4;
+                  }
+                  if (!_and_3) {
+                    _and_2 = false;
+                  } else {
+                    EList<Role> _roles_6 = ((Relation)meln).getRoles();
+                    Role _get_5 = _roles_6.get(1);
+                    Entity _type_3 = _get_5.getType();
+                    QualifiedName _fullyQualifiedName_1 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_3);
+                    boolean _notEquals_5 = (!Objects.equal(_fullyQualifiedName_1, null));
+                    _and_2 = _notEquals_5;
+                  }
+                  if (!_and_2) {
+                    _and_1 = false;
+                  } else {
+                    EList<Role> _roles_7 = ((Relation)meln).getRoles();
+                    Role _get_6 = _roles_7.get(0);
+                    String _name = _get_6.getName();
+                    boolean _notEquals_6 = (!Objects.equal(_name, null));
+                    _and_1 = _notEquals_6;
+                  }
+                  if (!_and_1) {
+                    _and = false;
+                  } else {
+                    EList<Role> _roles_8 = ((Relation)meln).getRoles();
+                    Role _get_7 = _roles_8.get(1);
+                    String _name_1 = _get_7.getName();
+                    boolean _notEquals_7 = (!Objects.equal(_name_1, null));
+                    _and = _notEquals_7;
+                  }
+                  if (_and) {
+                    EList<Role> _roles_9 = ((Relation)meln).getRoles();
+                    final Role firstRole = _roles_9.get(0);
+                    EList<Role> _roles_10 = ((Relation)meln).getRoles();
+                    final Role secondRole = _roles_10.get(1);
+                    Entity _type_4 = firstRole.getType();
+                    QualifiedName _fullyQualifiedName_2 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_4);
+                    String _string = _fullyQualifiedName_2.toString();
+                    final JvmTypeReference firstRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string);
+                    Entity _type_5 = secondRole.getType();
+                    QualifiedName _fullyQualifiedName_3 = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(_type_5);
+                    String _string_1 = _fullyQualifiedName_3.toString();
+                    final JvmTypeReference secondRoleType = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string_1);
+                    EList<Role> _roles_11 = ((Relation)meln).getRoles();
+                    Role _get_8 = _roles_11.get(0);
+                    String _name_2 = _get_8.getName();
+                    final String rolset1 = (_name_2 + "Set");
+                    EList<Role> _roles_12 = ((Relation)meln).getRoles();
+                    Role _get_9 = _roles_12.get(1);
+                    String _name_3 = _get_9.getName();
+                    final String rolset2 = (_name_3 + "Set");
+                    EList<Role> _roles_13 = ((Relation)meln).getRoles();
+                    Role _get_10 = _roles_13.get(0);
+                    Entity _type_6 = _get_10.getType();
+                    EList<Role> _roles_14 = ((Relation)meln).getRoles();
+                    Role _get_11 = _roles_14.get(1);
+                    Entity _type_7 = _get_11.getType();
+                    final boolean isAutoGraph = _type_6.equals(_type_7);
+                    String _xifexpression = null;
+                    if (isAutoGraph) {
+                      _xifexpression = "fr.ocelet.runtime.relation.impl.AutoGraph";
+                    } else {
+                      _xifexpression = "fr.ocelet.runtime.relation.impl.DiGraph";
+                    }
+                    final String graphTypeName = _xifexpression;
                     if (isAutoGraph) {
                       EList<JvmTypeReference> _superTypes = it.getSuperTypes();
                       JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(edgecname);
@@ -1486,8 +1656,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_4);
                     final JvmTypeReference rsetype = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.RoleSet", firstRoleType);
                     final JvmField rsfield = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(meln, rolset1, rsetype);
-                    boolean _notEquals = (!Objects.equal(rsfield, null));
-                    if (_notEquals) {
+                    boolean _notEquals_8 = (!Objects.equal(rsfield, null));
+                    if (_notEquals_8) {
                       EList<JvmMember> _members_6 = it.getMembers();
                       OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_6, rsfield);
                       EList<JvmMember> _members_7 = it.getMembers();
@@ -1541,8 +1711,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       if ((!isAutoGraph)) {
                         final JvmTypeReference rsetype2 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.RoleSet", secondRoleType);
                         final JvmField rsfield2 = OceletJvmModelInferrer.this._jvmTypesBuilder.toField(meln, rolset2, rsetype2);
-                        boolean _notEquals_1 = (!Objects.equal(rsfield2, null));
-                        if (_notEquals_1) {
+                        boolean _notEquals_9 = (!Objects.equal(rsfield2, null));
+                        if (_notEquals_9) {
                           EList<JvmMember> _members_9 = it.getMembers();
                           OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmField>operator_add(_members_9, rsfield2);
                           EList<JvmMember> _members_10 = it.getMembers();
@@ -1926,15 +2096,19 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_23, _method_20);
                       }
                     }
-                    EList<RelElements> _relelns = ((Relation)meln).getRelelns();
-                    for (final RelElements reln : _relelns) {
-                      boolean _matched = false;
-                      if (!_matched) {
-                        if (reln instanceof RelPropertyDef) {
-                          _matched=true;
+                  }
+                  EList<RelElements> _relelns = ((Relation)meln).getRelelns();
+                  for (final RelElements reln : _relelns) {
+                    boolean _matched = false;
+                    if (!_matched) {
+                      if (reln instanceof RelPropertyDef) {
+                        _matched=true;
+                        String _name_4 = ((RelPropertyDef)reln).getName();
+                        boolean _notEquals_10 = (!Objects.equal(_name_4, null));
+                        if (_notEquals_10) {
                           EList<JvmMember> _members_24 = it.getMembers();
-                          String _name_2 = ((RelPropertyDef)reln).getName();
-                          String _firstUpper_4 = StringExtensions.toFirstUpper(_name_2);
+                          String _name_5 = ((RelPropertyDef)reln).getName();
+                          String _firstUpper_4 = StringExtensions.toFirstUpper(_name_5);
                           String _plus_12 = ("set" + _firstUpper_4);
                           JvmTypeReference _typeRef_23 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
                           final Procedure1<JvmOperation> _function_22 = new Procedure1<JvmOperation>() {
@@ -1977,11 +2151,15 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_24, _method_21);
                         }
                       }
-                      if (!_matched) {
-                        if (reln instanceof InteractionDef) {
-                          _matched=true;
+                    }
+                    if (!_matched) {
+                      if (reln instanceof InteractionDef) {
+                        _matched=true;
+                        String _name_4 = ((InteractionDef)reln).getName();
+                        boolean _notEquals_10 = (!Objects.equal(_name_4, null));
+                        if (_notEquals_10) {
                           EList<JvmMember> _members_24 = it.getMembers();
-                          String _name_2 = ((InteractionDef)reln).getName();
+                          String _name_5 = ((InteractionDef)reln).getName();
                           JvmTypeReference _typeRef_23 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(Void.TYPE);
                           final Procedure1<JvmOperation> _function_22 = new Procedure1<JvmOperation>() {
                             @Override
@@ -2049,15 +2227,19 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
                             }
                           };
-                          JvmOperation _method_21 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _name_2, _typeRef_23, _function_22);
+                          JvmOperation _method_21 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _name_5, _typeRef_23, _function_22);
                           OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_24, _method_21);
                         }
                       }
-                      if (!_matched) {
-                        if (reln instanceof Filterdef) {
-                          _matched=true;
+                    }
+                    if (!_matched) {
+                      if (reln instanceof Filterdef) {
+                        _matched=true;
+                        String _name_4 = ((Filterdef)reln).getName();
+                        boolean _notEquals_10 = (!Objects.equal(_name_4, null));
+                        if (_notEquals_10) {
                           EList<JvmMember> _members_24 = it.getMembers();
-                          String _name_2 = ((Filterdef)reln).getName();
+                          String _name_5 = ((Filterdef)reln).getName();
                           String _string_3 = graphcname.toString();
                           JvmTypeReference _typeRef_23 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(_string_3);
                           final Procedure1<JvmOperation> _function_22 = new Procedure1<JvmOperation>() {
@@ -2125,15 +2307,15 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
                             }
                           };
-                          JvmOperation _method_21 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _name_2, _typeRef_23, _function_22);
+                          JvmOperation _method_21 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(reln, _name_5, _typeRef_23, _function_22);
                           OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_24, _method_21);
                         }
                       }
                     }
                   }
-                };
-                acceptor.<JvmGenericType>accept(_class_1, _function_1);
-              }
+                }
+              };
+              acceptor.<JvmGenericType>accept(_class_1, _function_1);
             }
           }
         }
@@ -2141,7 +2323,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
           if (meln instanceof Strucdef) {
             _matched=true;
             QualifiedName _fullyQualifiedName = this._iQualifiedNameProvider.getFullyQualifiedName(meln);
-            JvmGenericType _class = this._jvmTypesBuilder.toClass(meln, _fullyQualifiedName);
+            JvmGenericType _class = this._jvmTypesBuilder.toClass(modl, _fullyQualifiedName);
             final Procedure1<JvmGenericType> _function = new Procedure1<JvmGenericType>() {
               @Override
               public void apply(final JvmGenericType it) {

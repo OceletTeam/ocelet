@@ -293,29 +293,24 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
         }
 
 
-
-
       // ---- Relation ------------------------------------
           Relation : {
           	val graphcname = meln.fullyQualifiedName
           	val edgecname = graphcname+"_Edge"
-            if ((meln.roles.size >= 2) &&
-            	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
-            	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
-               	(meln.roles.get(0).type.fullyQualifiedName != null) &&
-               	(meln.roles.get(1).type.fullyQualifiedName != null) &&
-            	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
-                ) {
-
             if (meln.roles.size > 2) println("Sorry, only graphs with two roles are supported by this version. The two first roles will be used and the others will be ignored.")
-
-            val isAutoGraph = (meln.roles.get(0).type.equals(meln.roles.get(1).type))
-            val graphTypeName = if(isAutoGraph) 'fr.ocelet.runtime.relation.impl.AutoGraph'
-                                           else 'fr.ocelet.runtime.relation.impl.DiGraph'
 
             // Generate the edge class
           	acceptor.accept(modl.toClass(edgecname))[
           	  superTypes += typeRef('fr.ocelet.runtime.relation.OcltEdge')
+
+            if ((meln.roles.size >= 2) &&
+            	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+       	        (meln.roles.get(0).type.fullyQualifiedName != null) &&
+            	(meln.roles.get(1).type.fullyQualifiedName != null) &&
+            	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+                ) {
+
               val firstRole = meln.roles.get(0)
               val secondRole = meln.roles.get(1)
               val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
@@ -355,7 +350,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			  else return null;
           	       '''
           		]
-          		
+             } // if roles are well defined
+                	
+                		    		
      		  // Generate Properties and Interactions on the edge level
     		  for (reln:meln.relelns){
     		  	switch(reln) {
@@ -387,15 +384,22 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	  }
           	  	}
   		      }
-          		
+
           	]
           	
           	// -- Generate filters classes --
           	for (reln:meln.relelns){
-    		  	switch(reln) {
-          	  	  Filterdef : {
-          	  	  	val filterfqn = graphcname+"_"+reln.name
-          	  	  	acceptor.accept(modl.toClass(filterfqn))[
+    		  switch(reln) {
+          	  	Filterdef : {
+          	  	  val filterfqn = graphcname+"_"+reln.name
+          	  	  acceptor.accept(modl.toClass(filterfqn))[
+                    if ((meln.roles.size >= 2) &&
+            	    (meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            	    (meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+       	            (meln.roles.get(0).type.fullyQualifiedName != null) &&
+            	    (meln.roles.get(1).type.fullyQualifiedName != null) &&
+            	    (meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+                    ) {
                       val firstRole = meln.roles.get(0)
                       val secondRole = meln.roles.get(1)
                       val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
@@ -423,22 +427,32 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	  		parameters += reln.toParameter(secondRole.name,secondRoleType)
           	  	  		body = reln.body
           	  	  	  ]
-          	  	  	]
-          	  	  }
-           	  	}
-          	 }
+          	  	  	} // if roles are well defined
+          	      ]
+          	    }
+           	  }
+          	}
           	
           	// -- Generate the interaction graph class --
-          	if	(typeRef(edgecname) != null) {
-          	acceptor.accept(modl.toClass(graphcname)) [
-      		  documentation = meln.documentation
+          if(typeRef(edgecname) != null) {
+          acceptor.accept(modl.toClass(graphcname)) [
+      		documentation = meln.documentation
+            if ((meln.roles.size >= 2) &&
+             (meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+             (meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+       	     (meln.roles.get(0).type.fullyQualifiedName != null) &&
+             (meln.roles.get(1).type.fullyQualifiedName != null) &&
+             (meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+             ) {
               val firstRole = meln.roles.get(0)
               val secondRole = meln.roles.get(1)
               val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
               val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
               val rolset1 = meln.roles.get(0).name+"Set"
               val rolset2 = meln.roles.get(1).name+"Set"
-                  		  
+              val isAutoGraph = (meln.roles.get(0).type.equals(meln.roles.get(1).type))
+              val graphTypeName = if(isAutoGraph) 'fr.ocelet.runtime.relation.impl.AutoGraph'
+                                           else 'fr.ocelet.runtime.relation.impl.DiGraph'               		  
              if (isAutoGraph) superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType)
              else superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType, secondRoleType)
 
@@ -601,6 +615,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
    		  	      	  parameters += meln.toParameter('roles',typeRef('java.lang.Iterable',secondRoleType))
    		  	      	  body = '''if (this.«rolset2» != null) this.«rolset2».removeRoles(roles);'''
    		  	        ]
+   		  	      } // if roles are well defined
    		  	   }
    		     }
      		  
@@ -608,6 +623,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
     		  for (reln:meln.relelns){
     		  	switch(reln) {
           	  	  RelPropertyDef : {
+          	  	  	if (reln.name != null) {
                     members+=reln.toMethod("set"+reln.name.toFirstUpper,typeRef(Void::TYPE))[
                       parameters+= reln.toParameter(reln.name,reln.type)	
                       body='''
@@ -617,9 +633,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                       	  _edg_.set«reln.name.toFirstUpper»(«reln.name»);
                       	endTransaction();
                       '''
-                    ]
+                    ]}
           	  	  }
           	  	  InteractionDef : {
+          	  	  	if (reln.name != null) {
                     members+=reln.toMethod(reln.name,typeRef(Void::TYPE))[
           	  	  	  for(p:reln.params){
           	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
@@ -635,9 +652,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                       	}
                       	endTransaction();
                       '''
-                    ]
+                    ]}
           	  	  }
           	  	  Filterdef : {
+          	  	  	if (reln.name != null) {
           	  	  	members += reln.toMethod(reln.name,typeRef(graphcname.toString))[
           	  	  	  for(p:reln.params) {
                         parameters += reln.toParameter(p.name,p.parameterType)
@@ -647,25 +665,19 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                         super.addFilter(_filter);
                         return this;
                       '''
-          	  	  	]
+          	  	  	]}
           	  	  }
  		        }
   		      }
      		]
-     		}
-     		} // if series testing uncomplete relation definition
+     		} // if (typeref(edgecname != null)
+  //   		} // if series testing uncomplete relation definition
           }
-          
-
-
-
-
-
 
                       
        // ---- Structure -----------------------------------
           Strucdef : {
-          	acceptor.accept(meln.toClass(meln.fullyQualifiedName))[
+          	acceptor.accept(modl.toClass(meln.fullyQualifiedName))[
               if (meln.typeArgument != null) {
                 val JvmTypeParameter param = TypesFactory::eINSTANCE.createJvmTypeParameter
                 param.setName(meln.typeArgument)
