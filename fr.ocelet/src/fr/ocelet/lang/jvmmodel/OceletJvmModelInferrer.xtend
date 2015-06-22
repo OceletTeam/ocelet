@@ -26,6 +26,7 @@ import java.util.HashMap
 import java.util.List
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.common.types.JvmTypeParameter
+import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.common.types.util.Primitives
 import org.eclipse.xtext.naming.IQualifiedNameProvider
@@ -264,12 +265,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       	      	    «val hhtype = typeRef('fr.ocelet.runtime.entity.Hproperty',asWrapperTypeIfPrimitive(hprop.type))»
       	      	    defProperty("«hprop.name»",new «hhtype»());
       	      	    «val vtyp = asWrapperTypeIfPrimitive(hprop.type)»
-      	      	    set«hprop.name.toFirstUpper»(new «vtyp»«IF (vtyp.qualifiedName.equals("java.lang.Integer") ||
-                      vtyp.qualifiedName.equals("java.lang.Double") ||
-                      vtyp.qualifiedName.equals("java.lang.Float") ||
-                      vtyp.qualifiedName.equals("java.lang.Long") ||
-                      vtyp.qualifiedName.equals("java.lang.Byte") ||
-                      vtyp.qualifiedName.equals("java.lang.Short"))»("0"));«ELSEIF (vtyp.qualifiedName.equals("java.lang.Boolean"))»(false));«ELSE»());
+      	      	    set«hprop.name.toFirstUpper»(new «vtyp»«IF (vtyp.isNumberType)»("0"));«ELSEIF (vtyp.qualifiedName.equals("java.lang.Boolean"))»(false));«ELSE»());
                     «ENDIF»
       	      	  «ENDFOR»
       	      	'''
@@ -715,19 +711,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  }
           	  members += meln.toConstructor[
           	  	body = '''
-          	  	  super();
-                  «FOR vardef:lvdefs»
-                    «var vtyp = vardef.type»
-                    «IF !vtyp.primitive»
-                    «vardef.name» = new «vtyp»«IF vtyp.qualifiedName.equals("java.lang.Integer")||
-                      	  vtyp.qualifiedName.equals("java.lang.Double") ||
-                      	  vtyp.qualifiedName.equals("java.lang.Float") ||
-                      	  vtyp.qualifiedName.equals("java.lang.Long") ||
-                      	  vtyp.qualifiedName.equals("java.lang.Byte") ||
-                      	  vtyp.qualifiedName.equals("java.lang.Short")»("0");
-                      «ELSEIF (vtyp.qualifiedName.equals("java.lang.Boolean"))»(false);«ENDIF»
-                      «ELSE»();
-                    «ENDIF»
+          	  	  super();«FOR vardef:lvdefs»
+          	  	  «var vtyp = vardef.type»
+          	  	  «IF !vtyp.primitive»«vardef.name» = new «vtyp»«IF vtyp.isNumberType»("0");«ELSEIF vtyp.qualifiedName.equals("java.lang.Boolean")»(false);«ELSE»();«ENDIF»
+                   «ENDIF»
                   «ENDFOR»
                 '''
           	  ]
@@ -822,5 +809,14 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
          ]
       }
   }
+  
+  private def boolean isNumberType(JvmTypeReference vtyp){
+  	return vtyp.qualifiedName.equals("java.lang.Integer") ||
+  	       vtyp.qualifiedName.equals("java.lang.Double") ||
+           vtyp.qualifiedName.equals("java.lang.Float") ||
+           vtyp.qualifiedName.equals("java.lang.Long") ||
+           vtyp.qualifiedName.equals("java.lang.Byte") ||
+           vtyp.qualifiedName.equals("java.lang.Short")
+   }
 }
 

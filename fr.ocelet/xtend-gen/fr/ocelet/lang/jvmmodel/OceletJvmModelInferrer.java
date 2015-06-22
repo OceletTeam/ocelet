@@ -719,54 +719,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append("(new ");
                             _builder.append(vtyp, "");
                             {
-                              boolean _or = false;
-                              boolean _or_1 = false;
-                              boolean _or_2 = false;
-                              boolean _or_3 = false;
-                              boolean _or_4 = false;
-                              String _qualifiedName = vtyp.getQualifiedName();
-                              boolean _equals = _qualifiedName.equals("java.lang.Integer");
-                              if (_equals) {
-                                _or_4 = true;
-                              } else {
-                                String _qualifiedName_1 = vtyp.getQualifiedName();
-                                boolean _equals_1 = _qualifiedName_1.equals("java.lang.Double");
-                                _or_4 = _equals_1;
-                              }
-                              if (_or_4) {
-                                _or_3 = true;
-                              } else {
-                                String _qualifiedName_2 = vtyp.getQualifiedName();
-                                boolean _equals_2 = _qualifiedName_2.equals("java.lang.Float");
-                                _or_3 = _equals_2;
-                              }
-                              if (_or_3) {
-                                _or_2 = true;
-                              } else {
-                                String _qualifiedName_3 = vtyp.getQualifiedName();
-                                boolean _equals_3 = _qualifiedName_3.equals("java.lang.Long");
-                                _or_2 = _equals_3;
-                              }
-                              if (_or_2) {
-                                _or_1 = true;
-                              } else {
-                                String _qualifiedName_4 = vtyp.getQualifiedName();
-                                boolean _equals_4 = _qualifiedName_4.equals("java.lang.Byte");
-                                _or_1 = _equals_4;
-                              }
-                              if (_or_1) {
-                                _or = true;
-                              } else {
-                                String _qualifiedName_5 = vtyp.getQualifiedName();
-                                boolean _equals_5 = _qualifiedName_5.equals("java.lang.Short");
-                                _or = _equals_5;
-                              }
-                              if (_or) {
+                              boolean _isNumberType = OceletJvmModelInferrer.this.isNumberType(vtyp);
+                              if (_isNumberType) {
                                 _builder.append("(\"0\"));");
                               } else {
-                                String _qualifiedName_6 = vtyp.getQualifiedName();
-                                boolean _equals_6 = _qualifiedName_6.equals("java.lang.Boolean");
-                                if (_equals_6) {
+                                String _qualifiedName = vtyp.getQualifiedName();
+                                boolean _equals = _qualifiedName.equals("java.lang.Boolean");
+                                if (_equals) {
                                   _builder.append("(false));");
                                 } else {
                                   _builder.append("());");
@@ -2425,82 +2384,33 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       @Override
                       protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                         _builder.append("super();");
-                        _builder.newLine();
                         {
                           for(final StrucVarDef vardef : lvdefs) {
-                            _builder.append("                  ");
+                            _builder.newLineIfNotEmpty();
                             JvmTypeReference vtyp = vardef.getType();
                             _builder.newLineIfNotEmpty();
                             {
                               boolean _isPrimitive = OceletJvmModelInferrer.this._primitives.isPrimitive(vtyp);
                               boolean _not = (!_isPrimitive);
                               if (_not) {
-                                _builder.append("                  ");
                                 String _name = vardef.getName();
-                                _builder.append(_name, "                  ");
+                                _builder.append(_name, "");
                                 _builder.append(" = new ");
-                                _builder.append(vtyp, "                  ");
+                                _builder.append(vtyp, "");
                                 {
-                                  boolean _or = false;
-                                  boolean _or_1 = false;
-                                  boolean _or_2 = false;
-                                  boolean _or_3 = false;
-                                  boolean _or_4 = false;
-                                  String _qualifiedName = vtyp.getQualifiedName();
-                                  boolean _equals = _qualifiedName.equals("java.lang.Integer");
-                                  if (_equals) {
-                                    _or_4 = true;
-                                  } else {
-                                    String _qualifiedName_1 = vtyp.getQualifiedName();
-                                    boolean _equals_1 = _qualifiedName_1.equals("java.lang.Double");
-                                    _or_4 = _equals_1;
-                                  }
-                                  if (_or_4) {
-                                    _or_3 = true;
-                                  } else {
-                                    String _qualifiedName_2 = vtyp.getQualifiedName();
-                                    boolean _equals_2 = _qualifiedName_2.equals("java.lang.Float");
-                                    _or_3 = _equals_2;
-                                  }
-                                  if (_or_3) {
-                                    _or_2 = true;
-                                  } else {
-                                    String _qualifiedName_3 = vtyp.getQualifiedName();
-                                    boolean _equals_3 = _qualifiedName_3.equals("java.lang.Long");
-                                    _or_2 = _equals_3;
-                                  }
-                                  if (_or_2) {
-                                    _or_1 = true;
-                                  } else {
-                                    String _qualifiedName_4 = vtyp.getQualifiedName();
-                                    boolean _equals_4 = _qualifiedName_4.equals("java.lang.Byte");
-                                    _or_1 = _equals_4;
-                                  }
-                                  if (_or_1) {
-                                    _or = true;
-                                  } else {
-                                    String _qualifiedName_5 = vtyp.getQualifiedName();
-                                    boolean _equals_5 = _qualifiedName_5.equals("java.lang.Short");
-                                    _or = _equals_5;
-                                  }
-                                  if (_or) {
+                                  boolean _isNumberType = OceletJvmModelInferrer.this.isNumberType(vtyp);
+                                  if (_isNumberType) {
                                     _builder.append("(\"0\");");
-                                    _builder.newLineIfNotEmpty();
-                                    _builder.append("                  ");
-                                    _builder.append("  ");
                                   } else {
-                                    String _qualifiedName_6 = vtyp.getQualifiedName();
-                                    boolean _equals_6 = _qualifiedName_6.equals("java.lang.Boolean");
-                                    if (_equals_6) {
+                                    String _qualifiedName = vtyp.getQualifiedName();
+                                    boolean _equals = _qualifiedName.equals("java.lang.Boolean");
+                                    if (_equals) {
                                       _builder.append("(false);");
+                                    } else {
+                                      _builder.append("();");
                                     }
                                   }
                                 }
-                                _builder.newLineIfNotEmpty();
-                                _builder.append("                  ");
-                                _builder.append("  ");
-                              } else {
-                                _builder.append("();");
                                 _builder.newLineIfNotEmpty();
                               }
                             }
@@ -2871,6 +2781,52 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
       };
       acceptor.<JvmGenericType>accept(_class, _function);
     }
+  }
+  
+  private boolean isNumberType(final JvmTypeReference vtyp) {
+    boolean _or = false;
+    boolean _or_1 = false;
+    boolean _or_2 = false;
+    boolean _or_3 = false;
+    boolean _or_4 = false;
+    String _qualifiedName = vtyp.getQualifiedName();
+    boolean _equals = _qualifiedName.equals("java.lang.Integer");
+    if (_equals) {
+      _or_4 = true;
+    } else {
+      String _qualifiedName_1 = vtyp.getQualifiedName();
+      boolean _equals_1 = _qualifiedName_1.equals("java.lang.Double");
+      _or_4 = _equals_1;
+    }
+    if (_or_4) {
+      _or_3 = true;
+    } else {
+      String _qualifiedName_2 = vtyp.getQualifiedName();
+      boolean _equals_2 = _qualifiedName_2.equals("java.lang.Float");
+      _or_3 = _equals_2;
+    }
+    if (_or_3) {
+      _or_2 = true;
+    } else {
+      String _qualifiedName_3 = vtyp.getQualifiedName();
+      boolean _equals_3 = _qualifiedName_3.equals("java.lang.Long");
+      _or_2 = _equals_3;
+    }
+    if (_or_2) {
+      _or_1 = true;
+    } else {
+      String _qualifiedName_4 = vtyp.getQualifiedName();
+      boolean _equals_4 = _qualifiedName_4.equals("java.lang.Byte");
+      _or_1 = _equals_4;
+    }
+    if (_or_1) {
+      _or = true;
+    } else {
+      String _qualifiedName_5 = vtyp.getQualifiedName();
+      boolean _equals_5 = _qualifiedName_5.equals("java.lang.Short");
+      _or = _equals_5;
+    }
+    return _or;
   }
   
   public void infer(final EObject modl, final IJvmDeclaredTypeAcceptor acceptor, final boolean isPreIndexingPhase) {
