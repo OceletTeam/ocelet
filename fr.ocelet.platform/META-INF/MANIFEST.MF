@@ -16,5 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.launching;bundle-version="3.7.101",
  org.apache.ant;bundle-version="1.9.2",
  org.eclipse.ui.navigator.resources;bundle-version="3.4.700",
- org.eclipse.debug.ui;bundle-version="3.10.1"
+ org.eclipse.debug.ui;bundle-version="3.10.1",
+ org.eclipse.core.filesystem;bundle-version="1.4.100"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

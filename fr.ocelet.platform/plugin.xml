@@ -42,6 +42,12 @@
             name="New Ocelet Project">
       </command>
       <command
+            categoryId="fr.ocelet.platform.cmdcat"
+            defaultHandler="fr.ocelet.platform.handlers.NewOcltFile"
+            id="fr.ocelet.platform.newocltfile"
+            name="New Ocelet file">
+      </command>
+      <command
             defaultHandler="fr.ocelet.platform.handlers.RunSim"
             id="fr.ocelet.platform.runsim"
             name="Run Simulation">
@@ -100,6 +106,12 @@
                   commandId="fr.ocelet.platform.import"
                   icon="icons/square16/png/import_project.png"
                   label="Import Ocelet Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.newocltfile"
+                  icon="icons/square16/gif/new_oclt.gif"
+                  label="New Ocelet file"
                   style="push">
             </command>
             <command
@@ -173,6 +185,12 @@
                   commandId="fr.ocelet.platform.import"
                   icon="icons/square16/png/import_project.png"
                   label="Import Ocelet Project"
+                  style="push">
+            </command>
+            <command
+                  commandId="fr.ocelet.platform.newocltfile"
+                  icon="icons/square16/gif/new_oclt.gif"
+                  label="New Ocelet file"
                   style="push">
             </command>
             <separator

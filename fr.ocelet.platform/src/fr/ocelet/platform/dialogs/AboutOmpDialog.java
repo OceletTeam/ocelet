@@ -16,8 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 import fr.ocelet.platform.PlatformSettings;
 
 /**
- * An information dialog that displays all the available
- * color gradients defined in config/gradients.ocg
+ * An information dialog about the Ocelet Modelling Platform
  * 
  * @author Pascal Degenne - Initial contribution
  */
