@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -18,6 +20,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.osgi.framework.Bundle;
 
 import fr.ocelet.platform.PlatformSettings;
@@ -111,7 +119,6 @@ public abstract class ProjectModel {
 				ocltfw.write(wline + System.getProperty("line.separator"));
 			}
 			ocltfw.close();
-			newProject.refreshLocal(IResource.DEPTH_INFINITE, null);
 
 			// Add a gradient.ocg into config
 			errmsg = "adding the default gradient.ocg file";
@@ -124,13 +131,41 @@ public abstract class ProjectModel {
 			IFile grdf = newProject.getFile("config/gradients.ocg");
 			grdf.create(ginputStream, true, null);
 
+			newProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+					ocltFile.toURI());
+			IWorkbenchPage page = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage();
+			IDE.openEditorOnFileStore(page, fileStore);
+
 		} catch (CoreException e) {
-			System.err.println("Failed to create the Ocelet project "
-					+ modelName + ".");
-			if (PlatformSettings.msgLevel >= PlatformSettings.VERBOSE)
-				System.err.println("While " + errmsg + ".");
-			if (PlatformSettings.msgLevel >= PlatformSettings.DEBUG)
-				e.printStackTrace();
+			if (e.getMessage().contains("already exists")) {
+				Shell shell = PlatformUI.getWorkbench().getDisplay()
+						.getActiveShell();
+				MessageBox dialog = new MessageBox(shell, SWT.ICON_WARNING
+						| SWT.OK);
+				dialog.setText("Project could not be created");
+				dialog.setMessage("A project named " + getModelName()
+						+ " already exists in the workspace.");
+				dialog.open();
+			} else if (e.getMessage().contains("invalid name")) {
+				Shell shell = PlatformUI.getWorkbench().getDisplay()
+						.getActiveShell();
+				MessageBox dialog = new MessageBox(shell, SWT.ICON_WARNING
+						| SWT.OK);
+				dialog.setText("Project could not be created");
+				dialog.setMessage("The text '" + getModelName()
+						+ "' is not a valid project name.");
+				dialog.open();
+			} else {
+				System.err.println("Failed to create the Ocelet project "
+						+ modelName + ".");
+				if (PlatformSettings.msgLevel >= PlatformSettings.VERBOSE)
+					System.err.println("While " + errmsg + ".");
+				if (PlatformSettings.msgLevel >= PlatformSettings.DEBUG)
+					e.printStackTrace();
+			}
 		} catch (IOException e1) {
 			System.err.println("Failed to create the Ocelet project "
 					+ modelName + ".");

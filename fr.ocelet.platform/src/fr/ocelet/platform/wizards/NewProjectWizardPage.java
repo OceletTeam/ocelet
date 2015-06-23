@@ -1,5 +1,6 @@
 package fr.ocelet.platform.wizards;
 
+import org.eclipse.core.internal.resources.OS;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -13,6 +14,7 @@ import org.eclipse.swt.widgets.Text;
 import fr.ocelet.platform.wizards.models.DefaultProject;
 import fr.ocelet.platform.wizards.models.ProjectModel;
 
+@SuppressWarnings("restriction")
 public class NewProjectWizardPage extends WizardPage {
 
 	private Composite container;
@@ -46,8 +48,13 @@ public class NewProjectWizardPage extends WizardPage {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (!name.getText().isEmpty()) {
-					pm.setModelName(name.getText());
+				String rawname;
+				rawname = name.getText().trim();
+				rawname = rawname.replace(' ', '_');
+				if (OS.isNameValid(rawname)) {
+					String pname = Character.toString(rawname.charAt(0))
+							.toUpperCase() + rawname.substring(1);
+					pm.setModelName(pname);
 					setPageComplete(true);
 				}
 			}

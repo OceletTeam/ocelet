@@ -1,7 +1,11 @@
 package fr.ocelet.platform.dialogs;
 
+import org.eclipse.core.internal.resources.OS;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -17,6 +21,7 @@ import org.eclipse.swt.widgets.Text;
  * 
  * @author Pascal Degenne - Initial contributor
  */
+@SuppressWarnings("restriction")
 public class NewOcltFileDialog extends TitleAreaDialog {
 
 	private Text tFileName;
@@ -30,6 +35,7 @@ public class NewOcltFileDialog extends TitleAreaDialog {
 	public void create() {
 		super.create();
 		setTitle("New Ocelet file");
+		getButton(IDialogConstants.OK_ID).setEnabled(false);
 	}
 
 	@Override
@@ -53,6 +59,15 @@ public class NewOcltFileDialog extends TitleAreaDialog {
 
 		tFileName = new Text(container, SWT.BORDER);
 		tFileName.setLayoutData(dataFirstName);
+		tFileName.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent mev) {
+				if (OS.isNameValid(tFileName.getText()))
+					getButton(IDialogConstants.OK_ID).setEnabled(true);
+				else
+					getButton(IDialogConstants.OK_ID).setEnabled(false);
+			}
+		});
 	}
 
 	@Override
@@ -63,10 +78,13 @@ public class NewOcltFileDialog extends TitleAreaDialog {
 	private void saveInput() {
 		String rawname;
 		rawname = tFileName.getText().trim();
-		if (!rawname.endsWith(".oclt"))
-			rawname = rawname + ".oclt";
-		fileName = Character.toString(rawname.charAt(0)).toUpperCase()
-				+ rawname.substring(1);
+		rawname = rawname.replace(' ', '_');
+		if (!rawname.isEmpty()) {
+			if (!rawname.endsWith(".oclt"))
+				rawname = rawname + ".oclt";
+			fileName = Character.toString(rawname.charAt(0)).toUpperCase()
+					+ rawname.substring(1);
+		}
 	}
 
 	@Override
