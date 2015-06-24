@@ -424,4 +424,24 @@
       </property>
    </product>
 </extension>
+<extension
+      point="org.eclipse.ui.bindings">
+   <scheme
+         id="fr.ocelet.platform.keyscheme"
+         name="ocelet_scheme"
+         parentId="org.eclipse.ui.defaultAcceleratorConfiguration">
+   </scheme>
+   <key
+         commandId="fr.ocelet.platform.runsim"
+         contextId="org.eclipse.ui.contexts.window"
+         schemeId="fr.ocelet.platform.keyscheme"
+         sequence="M1+R">
+   </key>
+   <key
+         commandId="fr.ocelet.platform.savemodel"
+         contextId="org.eclipse.ui.contexts.window"
+         schemeId="fr.ocelet.platform.keyscheme"
+         sequence="M1+S">
+   </key>
+</extension>
 </plugin>
