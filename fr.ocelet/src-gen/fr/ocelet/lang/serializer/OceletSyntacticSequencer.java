@@ -32,6 +32,7 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_XImportDeclaration_SemicolonKeyword_2_q;
 	protected AbstractElementAlias match_XParenthesizedExpression_LeftParenthesisKeyword_0_a;
 	protected AbstractElementAlias match_XParenthesizedExpression_LeftParenthesisKeyword_0_p;
+	protected AbstractElementAlias match_XVariableDeclaration_ConstKeyword_1_1_1_or_FixKeyword_1_1_0;
 	
 	@Inject
 	protected void init(IGrammarAccess access) {
@@ -46,6 +47,7 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_XImportDeclaration_SemicolonKeyword_2_q = new TokenAlias(false, true, grammarAccess.getXImportDeclarationAccess().getSemicolonKeyword_2());
 		match_XParenthesizedExpression_LeftParenthesisKeyword_0_a = new TokenAlias(true, true, grammarAccess.getXParenthesizedExpressionAccess().getLeftParenthesisKeyword_0());
 		match_XParenthesizedExpression_LeftParenthesisKeyword_0_p = new TokenAlias(true, false, grammarAccess.getXParenthesizedExpressionAccess().getLeftParenthesisKeyword_0());
+		match_XVariableDeclaration_ConstKeyword_1_1_1_or_FixKeyword_1_1_0 = new AlternativeAlias(false, false, new TokenAlias(false, false, grammarAccess.getXVariableDeclarationAccess().getConstKeyword_1_1_1()), new TokenAlias(false, false, grammarAccess.getXVariableDeclarationAccess().getFixKeyword_1_1_0()));
 	}
 	
 	@Override
@@ -105,6 +107,8 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_XParenthesizedExpression_LeftParenthesisKeyword_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if(match_XParenthesizedExpression_LeftParenthesisKeyword_0_p.equals(syntax))
 				emit_XParenthesizedExpression_LeftParenthesisKeyword_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if(match_XVariableDeclaration_ConstKeyword_1_1_1_or_FixKeyword_1_1_0.equals(syntax))
+				emit_XVariableDeclaration_ConstKeyword_1_1_1_or_FixKeyword_1_1_0(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
 		}
 	}
@@ -304,6 +308,18 @@ public class OceletSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     (rule start) (ambiguity) {XPostfixOperation.operand=}
 	 */
 	protected void emit_XParenthesizedExpression_LeftParenthesisKeyword_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     'fix' | 'const'
+	 *
+	 * This ambiguous syntax occurs at:
+	 *     (rule start) (ambiguity) name=ValidID
+	 *     (rule start) (ambiguity) type=JvmTypeReference
+	 */
+	protected void emit_XVariableDeclaration_ConstKeyword_1_1_1_or_FixKeyword_1_1_0(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

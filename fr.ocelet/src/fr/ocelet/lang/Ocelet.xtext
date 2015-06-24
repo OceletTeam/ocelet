@@ -142,6 +142,11 @@ Scenario:
      body=XBlockExpression
 ;
 
+//------ XBase customization ------
+XVariableDeclaration returns XExpression:
+	{XVariableDeclaration}
+	(writeable?=('create'|'let')|('fix'|'const')) (=>(type=JvmTypeReference name=ValidID) | name=ValidID) ('=' right=XExpression)?;
+
 //------ Data and terminal rules ------
 
 Fqn: ID('.'ID)*;

@@ -46,6 +46,10 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getStrucElnAccess().getAlternatives(), "rule__StrucEln__Alternatives");
 					put(grammarAccess.getDatafacerAccess().getAlternatives_3(), "rule__Datafacer__Alternatives_3");
 					put(grammarAccess.getMatchtypeAccess().getAlternatives(), "rule__Matchtype__Alternatives");
+					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_1(), "rule__XVariableDeclaration__Alternatives_1");
+					put(grammarAccess.getXVariableDeclarationAccess().getWriteableAlternatives_1_0_0(), "rule__XVariableDeclaration__WriteableAlternatives_1_0_0");
+					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_1_1(), "rule__XVariableDeclaration__Alternatives_1_1");
+					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_2(), "rule__XVariableDeclaration__Alternatives_2");
 					put(grammarAccess.getXAssignmentAccess().getAlternatives(), "rule__XAssignment__Alternatives");
 					put(grammarAccess.getOpMultiAssignAccess().getAlternatives(), "rule__OpMultiAssign__Alternatives");
 					put(grammarAccess.getOpEqualityAccess().getAlternatives(), "rule__OpEquality__Alternatives");
@@ -69,8 +73,6 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXSwitchExpressionAccess().getAlternatives_2(), "rule__XSwitchExpression__Alternatives_2");
 					put(grammarAccess.getXCasePartAccess().getAlternatives_3(), "rule__XCasePart__Alternatives_3");
 					put(grammarAccess.getXExpressionOrVarDeclarationAccess().getAlternatives(), "rule__XExpressionOrVarDeclaration__Alternatives");
-					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_1(), "rule__XVariableDeclaration__Alternatives_1");
-					put(grammarAccess.getXVariableDeclarationAccess().getAlternatives_2(), "rule__XVariableDeclaration__Alternatives_2");
 					put(grammarAccess.getXFeatureCallAccess().getAlternatives_3_1(), "rule__XFeatureCall__Alternatives_3_1");
 					put(grammarAccess.getFeatureCallIDAccess().getAlternatives(), "rule__FeatureCallID__Alternatives");
 					put(grammarAccess.getIdOrSuperAccess().getAlternatives(), "rule__IdOrSuper__Alternatives");
@@ -133,6 +135,10 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getScenarioAccess().getGroup_3(), "rule__Scenario__Group_3__0");
 					put(grammarAccess.getScenarioAccess().getGroup_3_1(), "rule__Scenario__Group_3_1__0");
 					put(grammarAccess.getScenarioAccess().getGroup_3_1_1(), "rule__Scenario__Group_3_1_1__0");
+					put(grammarAccess.getXVariableDeclarationAccess().getGroup(), "rule__XVariableDeclaration__Group__0");
+					put(grammarAccess.getXVariableDeclarationAccess().getGroup_2_0(), "rule__XVariableDeclaration__Group_2_0__0");
+					put(grammarAccess.getXVariableDeclarationAccess().getGroup_2_0_0(), "rule__XVariableDeclaration__Group_2_0_0__0");
+					put(grammarAccess.getXVariableDeclarationAccess().getGroup_3(), "rule__XVariableDeclaration__Group_3__0");
 					put(grammarAccess.getFqnAccess().getGroup(), "rule__Fqn__Group__0");
 					put(grammarAccess.getFqnAccess().getGroup_1(), "rule__Fqn__Group_1__0");
 					put(grammarAccess.getSignedNumberAccess().getGroup(), "rule__SignedNumber__Group__0");
@@ -248,10 +254,6 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXDoWhileExpressionAccess().getGroup(), "rule__XDoWhileExpression__Group__0");
 					put(grammarAccess.getXBlockExpressionAccess().getGroup(), "rule__XBlockExpression__Group__0");
 					put(grammarAccess.getXBlockExpressionAccess().getGroup_2(), "rule__XBlockExpression__Group_2__0");
-					put(grammarAccess.getXVariableDeclarationAccess().getGroup(), "rule__XVariableDeclaration__Group__0");
-					put(grammarAccess.getXVariableDeclarationAccess().getGroup_2_0(), "rule__XVariableDeclaration__Group_2_0__0");
-					put(grammarAccess.getXVariableDeclarationAccess().getGroup_2_0_0(), "rule__XVariableDeclaration__Group_2_0_0__0");
-					put(grammarAccess.getXVariableDeclarationAccess().getGroup_3(), "rule__XVariableDeclaration__Group_3__0");
 					put(grammarAccess.getJvmFormalParameterAccess().getGroup(), "rule__JvmFormalParameter__Group__0");
 					put(grammarAccess.getFullJvmFormalParameterAccess().getGroup(), "rule__FullJvmFormalParameter__Group__0");
 					put(grammarAccess.getXFeatureCallAccess().getGroup(), "rule__XFeatureCall__Group__0");
@@ -392,6 +394,11 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getScenarioAccess().getParamsAssignment_3_1_0(), "rule__Scenario__ParamsAssignment_3_1_0");
 					put(grammarAccess.getScenarioAccess().getParamsAssignment_3_1_1_1(), "rule__Scenario__ParamsAssignment_3_1_1_1");
 					put(grammarAccess.getScenarioAccess().getBodyAssignment_4(), "rule__Scenario__BodyAssignment_4");
+					put(grammarAccess.getXVariableDeclarationAccess().getWriteableAssignment_1_0(), "rule__XVariableDeclaration__WriteableAssignment_1_0");
+					put(grammarAccess.getXVariableDeclarationAccess().getTypeAssignment_2_0_0_0(), "rule__XVariableDeclaration__TypeAssignment_2_0_0_0");
+					put(grammarAccess.getXVariableDeclarationAccess().getNameAssignment_2_0_0_1(), "rule__XVariableDeclaration__NameAssignment_2_0_0_1");
+					put(grammarAccess.getXVariableDeclarationAccess().getNameAssignment_2_1(), "rule__XVariableDeclaration__NameAssignment_2_1");
+					put(grammarAccess.getXVariableDeclarationAccess().getRightAssignment_3_1(), "rule__XVariableDeclaration__RightAssignment_3_1");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_0_1(), "rule__XAssignment__FeatureAssignment_0_1");
 					put(grammarAccess.getXAssignmentAccess().getValueAssignment_0_3(), "rule__XAssignment__ValueAssignment_0_3");
 					put(grammarAccess.getXAssignmentAccess().getFeatureAssignment_1_1_0_0_1(), "rule__XAssignment__FeatureAssignment_1_1_0_0_1");
@@ -468,11 +475,6 @@ public class OceletParser extends AbstractContentAssistParser {
 					put(grammarAccess.getXDoWhileExpressionAccess().getBodyAssignment_2(), "rule__XDoWhileExpression__BodyAssignment_2");
 					put(grammarAccess.getXDoWhileExpressionAccess().getPredicateAssignment_5(), "rule__XDoWhileExpression__PredicateAssignment_5");
 					put(grammarAccess.getXBlockExpressionAccess().getExpressionsAssignment_2_0(), "rule__XBlockExpression__ExpressionsAssignment_2_0");
-					put(grammarAccess.getXVariableDeclarationAccess().getWriteableAssignment_1_0(), "rule__XVariableDeclaration__WriteableAssignment_1_0");
-					put(grammarAccess.getXVariableDeclarationAccess().getTypeAssignment_2_0_0_0(), "rule__XVariableDeclaration__TypeAssignment_2_0_0_0");
-					put(grammarAccess.getXVariableDeclarationAccess().getNameAssignment_2_0_0_1(), "rule__XVariableDeclaration__NameAssignment_2_0_0_1");
-					put(grammarAccess.getXVariableDeclarationAccess().getNameAssignment_2_1(), "rule__XVariableDeclaration__NameAssignment_2_1");
-					put(grammarAccess.getXVariableDeclarationAccess().getRightAssignment_3_1(), "rule__XVariableDeclaration__RightAssignment_3_1");
 					put(grammarAccess.getJvmFormalParameterAccess().getParameterTypeAssignment_0(), "rule__JvmFormalParameter__ParameterTypeAssignment_0");
 					put(grammarAccess.getJvmFormalParameterAccess().getNameAssignment_1(), "rule__JvmFormalParameter__NameAssignment_1");
 					put(grammarAccess.getFullJvmFormalParameterAccess().getParameterTypeAssignment_0(), "rule__FullJvmFormalParameter__ParameterTypeAssignment_0");

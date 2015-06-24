@@ -1563,6 +1563,109 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		public RuleCall getBodyXBlockExpressionParserRuleCall_4_0() { return cBodyXBlockExpressionParserRuleCall_4_0; }
 	}
 
+	public class XVariableDeclarationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "XVariableDeclaration");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cXVariableDeclarationAction_0 = (Action)cGroup.eContents().get(0);
+		private final Alternatives cAlternatives_1 = (Alternatives)cGroup.eContents().get(1);
+		private final Assignment cWriteableAssignment_1_0 = (Assignment)cAlternatives_1.eContents().get(0);
+		private final Alternatives cWriteableAlternatives_1_0_0 = (Alternatives)cWriteableAssignment_1_0.eContents().get(0);
+		private final Keyword cWriteableCreateKeyword_1_0_0_0 = (Keyword)cWriteableAlternatives_1_0_0.eContents().get(0);
+		private final Keyword cWriteableLetKeyword_1_0_0_1 = (Keyword)cWriteableAlternatives_1_0_0.eContents().get(1);
+		private final Alternatives cAlternatives_1_1 = (Alternatives)cAlternatives_1.eContents().get(1);
+		private final Keyword cFixKeyword_1_1_0 = (Keyword)cAlternatives_1_1.eContents().get(0);
+		private final Keyword cConstKeyword_1_1_1 = (Keyword)cAlternatives_1_1.eContents().get(1);
+		private final Alternatives cAlternatives_2 = (Alternatives)cGroup.eContents().get(2);
+		private final Group cGroup_2_0 = (Group)cAlternatives_2.eContents().get(0);
+		private final Group cGroup_2_0_0 = (Group)cGroup_2_0.eContents().get(0);
+		private final Assignment cTypeAssignment_2_0_0_0 = (Assignment)cGroup_2_0_0.eContents().get(0);
+		private final RuleCall cTypeJvmTypeReferenceParserRuleCall_2_0_0_0_0 = (RuleCall)cTypeAssignment_2_0_0_0.eContents().get(0);
+		private final Assignment cNameAssignment_2_0_0_1 = (Assignment)cGroup_2_0_0.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_2_0_0_1_0 = (RuleCall)cNameAssignment_2_0_0_1.eContents().get(0);
+		private final Assignment cNameAssignment_2_1 = (Assignment)cAlternatives_2.eContents().get(1);
+		private final RuleCall cNameValidIDParserRuleCall_2_1_0 = (RuleCall)cNameAssignment_2_1.eContents().get(0);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cEqualsSignKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cRightAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cRightXExpressionParserRuleCall_3_1_0 = (RuleCall)cRightAssignment_3_1.eContents().get(0);
+		
+		////------ XBase customization ------
+		//XVariableDeclaration returns XExpression:
+		//	{XVariableDeclaration} (writeable?=("create" | "let") | ("fix" | "const")) (=> (type=JvmTypeReference name=ValidID) |
+		//	name=ValidID) ("=" right=XExpression)?;
+		@Override public ParserRule getRule() { return rule; }
+
+		//{XVariableDeclaration} (writeable?=("create" | "let") | ("fix" | "const")) (=> (type=JvmTypeReference name=ValidID) |
+		//name=ValidID) ("=" right=XExpression)?
+		public Group getGroup() { return cGroup; }
+
+		//{XVariableDeclaration}
+		public Action getXVariableDeclarationAction_0() { return cXVariableDeclarationAction_0; }
+
+		//writeable?=("create" | "let") | ("fix" | "const")
+		public Alternatives getAlternatives_1() { return cAlternatives_1; }
+
+		//writeable?=("create" | "let")
+		public Assignment getWriteableAssignment_1_0() { return cWriteableAssignment_1_0; }
+
+		//"create" | "let"
+		public Alternatives getWriteableAlternatives_1_0_0() { return cWriteableAlternatives_1_0_0; }
+
+		//"create"
+		public Keyword getWriteableCreateKeyword_1_0_0_0() { return cWriteableCreateKeyword_1_0_0_0; }
+
+		//"let"
+		public Keyword getWriteableLetKeyword_1_0_0_1() { return cWriteableLetKeyword_1_0_0_1; }
+
+		//"fix" | "const"
+		public Alternatives getAlternatives_1_1() { return cAlternatives_1_1; }
+
+		//"fix"
+		public Keyword getFixKeyword_1_1_0() { return cFixKeyword_1_1_0; }
+
+		//"const"
+		public Keyword getConstKeyword_1_1_1() { return cConstKeyword_1_1_1; }
+
+		//=> (type=JvmTypeReference name=ValidID) | name=ValidID
+		public Alternatives getAlternatives_2() { return cAlternatives_2; }
+
+		//=> (type=JvmTypeReference name=ValidID)
+		public Group getGroup_2_0() { return cGroup_2_0; }
+
+		//type=JvmTypeReference name=ValidID
+		public Group getGroup_2_0_0() { return cGroup_2_0_0; }
+
+		//type=JvmTypeReference
+		public Assignment getTypeAssignment_2_0_0_0() { return cTypeAssignment_2_0_0_0; }
+
+		//JvmTypeReference
+		public RuleCall getTypeJvmTypeReferenceParserRuleCall_2_0_0_0_0() { return cTypeJvmTypeReferenceParserRuleCall_2_0_0_0_0; }
+
+		//name=ValidID
+		public Assignment getNameAssignment_2_0_0_1() { return cNameAssignment_2_0_0_1; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_2_0_0_1_0() { return cNameValidIDParserRuleCall_2_0_0_1_0; }
+
+		//name=ValidID
+		public Assignment getNameAssignment_2_1() { return cNameAssignment_2_1; }
+
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_2_1_0() { return cNameValidIDParserRuleCall_2_1_0; }
+
+		//("=" right=XExpression)?
+		public Group getGroup_3() { return cGroup_3; }
+
+		//"="
+		public Keyword getEqualsSignKeyword_3_0() { return cEqualsSignKeyword_3_0; }
+
+		//right=XExpression
+		public Assignment getRightAssignment_3_1() { return cRightAssignment_3_1; }
+
+		//XExpression
+		public RuleCall getRightXExpressionParserRuleCall_3_1_0() { return cRightXExpressionParserRuleCall_3_1_0; }
+	}
+
 	public class FqnElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "Fqn");
 		private final Group cGroup = (Group)rule.eContents().get(1);
@@ -1645,6 +1748,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	private final MdefElements pMdef;
 	private final AgregdefElements pAgregdef;
 	private final ScenarioElements pScenario;
+	private final XVariableDeclarationElements pXVariableDeclaration;
 	private final FqnElements pFqn;
 	private final SignedNumberElements pSignedNumber;
 	
@@ -1689,6 +1793,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 		this.pMdef = new MdefElements();
 		this.pAgregdef = new AgregdefElements();
 		this.pScenario = new ScenarioElements();
+		this.pXVariableDeclaration = new XVariableDeclarationElements();
 		this.pFqn = new FqnElements();
 		this.pSignedNumber = new SignedNumberElements();
 	}
@@ -2052,6 +2157,18 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getScenarioRule() {
 		return getScenarioAccess().getRule();
+	}
+
+	////------ XBase customization ------
+	//XVariableDeclaration returns XExpression:
+	//	{XVariableDeclaration} (writeable?=("create" | "let") | ("fix" | "const")) (=> (type=JvmTypeReference name=ValidID) |
+	//	name=ValidID) ("=" right=XExpression)?;
+	public XVariableDeclarationElements getXVariableDeclarationAccess() {
+		return pXVariableDeclaration;
+	}
+	
+	public ParserRule getXVariableDeclarationRule() {
+		return getXVariableDeclarationAccess().getRule();
 	}
 
 	////------ Data and terminal rules ------
@@ -2517,17 +2634,6 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getXExpressionOrVarDeclarationRule() {
 		return getXExpressionOrVarDeclarationAccess().getRule();
-	}
-
-	//XVariableDeclaration returns XExpression:
-	//	{XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
-	//	right=XExpression)?;
-	public XbaseGrammarAccess.XVariableDeclarationElements getXVariableDeclarationAccess() {
-		return gaXbase.getXVariableDeclarationAccess();
-	}
-	
-	public ParserRule getXVariableDeclarationRule() {
-		return getXVariableDeclarationAccess().getRule();
 	}
 
 	//JvmFormalParameter returns types::JvmFormalParameter:

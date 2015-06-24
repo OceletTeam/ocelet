@@ -733,4 +733,13 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	protected void sequence_Strucdef(EObject context, Strucdef semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
+	
+	
+	/**
+	 * Constraint:
+	 *     ((writeable?='create' | writeable?='let')? ((type=JvmTypeReference name=ValidID) | name=ValidID) right=XExpression?)
+	 */
+	protected void sequence_XVariableDeclaration(EObject context, XVariableDeclaration semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
 }
