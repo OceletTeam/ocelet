@@ -2153,13 +2153,14 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                     EList<JvmFormalParameter> _params = ((InteractionDef)reln).getParams();
                                     for(final JvmFormalParameter p : _params) {
                                       {
-                                        if ((ci > 0)) {
+                                        int _plusPlus = ci++;
+                                        boolean _greaterThan = (_plusPlus > 0);
+                                        if (_greaterThan) {
                                           _builder.append(",");
                                         }
                                       }
                                       String _name_1 = p.getName();
                                       _builder.append(_name_1, "  ");
-                                      _builder.append(ci = 1, "  ");
                                     }
                                   }
                                   _builder.append(");");
@@ -2167,8 +2168,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   {
                                     EList<Comitexpr> _comitexpressions = ((InteractionDef)reln).getComitexpressions();
                                     int _size = _comitexpressions.size();
-                                    boolean _greaterThan = (_size > 0);
-                                    if (_greaterThan) {
+                                    boolean _greaterThan_1 = (_size > 0);
+                                    if (_greaterThan_1) {
                                       _builder.append(" ");
                                       _builder.append("_edg_._agr_");
                                       String _name_2 = ((InteractionDef)reln).getName();

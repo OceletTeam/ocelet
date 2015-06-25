@@ -642,7 +642,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                       	beginTransaction();
                       	«var ci=0»
                       	for(«typ_edgecname» _edg_ : this) {
-                      	  _edg_.«reln.name»(«FOR p:reln.params»«IF (ci > 0)»,«ENDIF»«p.name»«ci=1»«ENDFOR»);
+                      	  _edg_.«reln.name»(«FOR p:reln.params»«IF (ci++ > 0)»,«ENDIF»«p.name»«ENDFOR»);
                       	 «IF (reln.comitexpressions.size() > 0)»
                       	 _edg_._agr_«reln.name»();«ENDIF»
                       	}
