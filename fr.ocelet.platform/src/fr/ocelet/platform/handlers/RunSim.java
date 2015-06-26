@@ -3,8 +3,6 @@ package fr.ocelet.platform.handlers;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -17,6 +15,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.ui.PlatformUI;
 
 import fr.ocelet.platform.PlatformSettings;
+import fr.ocelet.platform.launching.OceletDebugEventListener;
 
 public class RunSim extends ModelCmdHandler {
 
@@ -33,7 +32,6 @@ public class RunSim extends ModelCmdHandler {
 							"Please select an element of the project you want to simulate.");
 			return null;
 		}
-
 
 		/*
 		 * Bug issue #48 : We have to locate the java source file that has the
@@ -99,12 +97,15 @@ public class RunSim extends ModelCmdHandler {
 			ILaunchConfiguration configuration = null;
 			configuration = workingCopy.doSave();
 
-			// Run
-			DebugUITools.launch(configuration, ILaunchManager.RUN_MODE);
+			// Listener that will be notified when the simulation
+			// has terminated, and will refresh the project view
+			// (and the output folder)
+	        DebugPlugin dplug = DebugPlugin.getDefault();
+	        dplug.addDebugEventListener(new OceletDebugEventListener(selectedProject));
 
-			// Refresh the platform views
-			ResourcesPlugin.getWorkspace().getRoot()
-					.refreshLocal(IResource.DEPTH_INFINITE, null);
+            // Run the simulation asynchronously
+	        DebugUITools.launch(configuration, ILaunchManager.RUN_MODE);
+			
 		} catch (CoreException e) {
 			if (PlatformSettings.msgLevel >= PlatformSettings.VERBOSE)
 				System.err
