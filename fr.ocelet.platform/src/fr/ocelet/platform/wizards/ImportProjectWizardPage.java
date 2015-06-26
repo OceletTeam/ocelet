@@ -1365,13 +1365,11 @@ public class ImportProjectWizardPage extends WizardDataTransferPage {
 				inputStream = FileLocator.openStream(oceletPlatformBundle,
 						classpathTemplate, false);
 				classpathFile.create(inputStream, true, null);
-				// Clean src directories to force clean rebuild
+				// Clean src and bin directories to force clean rebuild
 				IFolder srcFolder = (IFolder) ipr.getFolder("src");
 				IFolder binFolder = (IFolder) ipr.getFolder("bin");
 				binFolder.delete(true, null);
 				srcFolder.delete(true, null);
-				binFolder.create(true, true, null);
-				srcFolder.create(true, true, null);
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();
