@@ -306,7 +306,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       _builder.append(" ");
                                       _builder.append("}");
                                       _builder.newLine();
-                                      _builder.append("close();");
+                                      _builder.append("resetIterator();");
                                       _builder.newLine();
                                       _builder.append("return _elist;");
                                       _builder.newLine();

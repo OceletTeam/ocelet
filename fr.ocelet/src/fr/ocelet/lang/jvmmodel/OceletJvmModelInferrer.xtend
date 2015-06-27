@@ -134,7 +134,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	    for («inputRecordType» _record : this) {
                   	      _elist.add(create«entname»FromRecord(_record));
                   	     }
-                  	    close();
+                  	    resetIterator();
                   	    return _elist;
                   	  '''
                   	]
