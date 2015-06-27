@@ -20,6 +20,7 @@ import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.Date;
 import fr.ocelet.runtime.ocltypes.List;
 
+@SuppressWarnings("restriction")
 public class KmlExport implements Datafacer {
 
 	private final String ERR_HEADER = "Datafacer KmlExport: ";
@@ -30,14 +31,15 @@ public class KmlExport implements Datafacer {
 	private KmlFolder defolder; // Default folder in case we need one.
 	private HashMap<String, KmlFolder> folders;
 	private String filename;
+	private boolean isValidFileName;
 
 	@Override
 	public String getErrHeader() {
 		return this.ERR_HEADER;
 	}
 
-	public KmlExport(String filename) {
-		this.filename = AbstractModel.getBasedir() + File.separator + filename;
+	public KmlExport(String fileName) {
+		setFileName(fileName);
 		kml = new Kml();
 		doc = kml.createAndSetDocument();
 		folders = new HashMap<String, KmlFolder>();
@@ -266,9 +268,23 @@ public class KmlExport implements Datafacer {
 		iconstyle.createAndSetIcon().withHref(iconFile);
 	}
 
+	public void saveAsKml(String newFileName) {
+		setFileName(newFileName);
+		saveAsKml();
+	}
+
+	public void saveAsKmz(String newFileName) {
+		setFileName(newFileName);
+		saveAsKmz();
+	}
+
 	public void saveAsKml() {
 		try {
-			kml.marshal(new File(filename));
+			if (isValidFileName)
+				kml.marshal(new File(filename));
+			else
+				System.out
+						.println("Failed to save the kml file : no valid file name was provided.");
 		} catch (FileNotFoundException e) {
 			System.out.println(ERR_HEADER + "Failed to open " + filename
 					+ " for saving.");
@@ -277,10 +293,24 @@ public class KmlExport implements Datafacer {
 
 	public void saveAsKmz() {
 		try {
-			kml.marshalAsKmz(filename);
+			if (isValidFileName)
+				kml.marshalAsKmz(filename);
+			else
+				System.out
+						.println("Failed to save the kmz file : no valid file name was provided.");
 		} catch (IOException e) {
 			System.out.println(ERR_HEADER + "Failed to open " + filename
 					+ " for saving.");
+		}
+	}
+
+	public void setFileName(String newFileName) {
+		isValidFileName = !newFileName.isEmpty();
+		if (isValidFileName)
+			this.filename = AbstractModel.getBasedir() + File.separator
+					+ newFileName;
+		else {
+			this.filename = "output" + File.separator + "unknown";
 		}
 	}
 
