@@ -147,6 +147,25 @@ XVariableDeclaration returns XExpression:
 	{XVariableDeclaration}
 	(writeable?=('create'|'let')|('fix'|'const')) (=>(type=JvmTypeReference name=ValidID) | name=ValidID) ('=' right=XExpression)?;
 
+XMemberFeatureCall returns XExpression:
+  XPrimaryExpression
+  (=>({XAssignment.assignable=current} ('.'|explicitStatic?="|") feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign) value=XAssignment
+  |=>({XMemberFeatureCall.memberCallTarget=current} ("."|nullSafe?="?."|explicitStatic?="|")) 
+    ('<' typeArguments+=JvmArgumentTypeReference (',' typeArguments+=JvmArgumentTypeReference)* '>')?  
+    feature=[types::JvmIdentifiableElement|IdOrSuper] (
+      =>explicitOperationCall?='(' 
+        (
+            memberCallArguments+=XShortClosure
+          | memberCallArguments+=XExpression (',' memberCallArguments+=XExpression)*
+        )? 
+      ')')?
+      memberCallArguments+=XClosure?
+    )*;
+
+StaticQualifier:
+        (ValidID '|')+
+;
+
 //------ Data and terminal rules ------
 
 Fqn: ID('.'ID)*;

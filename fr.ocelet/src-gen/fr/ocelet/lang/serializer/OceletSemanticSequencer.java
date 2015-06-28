@@ -737,6 +737,34 @@ public class OceletSemanticSequencer extends XbaseSemanticSequencer {
 	
 	/**
 	 * Constraint:
+	 *     (
+	 *         (assignable=XMemberFeatureCall_XAssignment_1_0_0_0_0 explicitStatic?='|'? feature=[JvmIdentifiableElement|FeatureCallID] value=XAssignment) | 
+	 *         (feature=[JvmIdentifiableElement|FeatureCallID] value=XAssignment)
+	 *     )
+	 */
+	protected void sequence_XAssignment_XMemberFeatureCall(EObject context, XAssignment semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
+	 *     (
+	 *         memberCallTarget=XMemberFeatureCall_XMemberFeatureCall_1_1_0_0_0 
+	 *         (nullSafe?='?.' | explicitStatic?='|')? 
+	 *         (typeArguments+=JvmArgumentTypeReference typeArguments+=JvmArgumentTypeReference*)? 
+	 *         feature=[JvmIdentifiableElement|IdOrSuper] 
+	 *         (explicitOperationCall?='(' (memberCallArguments+=XShortClosure | (memberCallArguments+=XExpression memberCallArguments+=XExpression*))?)? 
+	 *         memberCallArguments+=XClosure?
+	 *     )
+	 */
+	protected void sequence_XMemberFeatureCall(EObject context, XMemberFeatureCall semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Constraint:
 	 *     ((writeable?='create' | writeable?='let')? ((type=JvmTypeReference name=ValidID) | name=ValidID) right=XExpression?)
 	 */
 	protected void sequence_XVariableDeclaration(EObject context, XVariableDeclaration semanticObject) {
