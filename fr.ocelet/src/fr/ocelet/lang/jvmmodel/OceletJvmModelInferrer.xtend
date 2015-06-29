@@ -471,9 +471,6 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                 '''
               ]
               
-              // TODO : Generaliser ce système en utilisant des noms de methode générable : getSet1 get Set2 etc.
-              //        ce qui permet d'integrer cette génération de code dans la boucle des roles
-              //        et d'être davantage générique vis à vis du nombre de roles
               members+= meln.toMethod("getLeftSet", typeRef("fr.ocelet.runtime.relation.RoleSet",firstRoleType))[
               	body ='''return «rolset1»;'''
               ]
