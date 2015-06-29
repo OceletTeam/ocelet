@@ -22,6 +22,10 @@ public class Date {
 		gc = new GregorianCalendar(year, month-1, day);
 	}
 
+	public Date(int year, int month, int day, int hour, int minute, int second) {
+		gc = new GregorianCalendar(year,month-1,day, hour, minute, second);
+	}
+	
 	public static Date ymd(int year, int month, int day) {
 		return new Date(year, month, day);
 	}
@@ -41,7 +45,7 @@ public class Date {
 	}
 
 	public Date clone() {
-		return new Date(getYear(),getMonth(),getDayOfMonth());
+		return new Date(getYear(),getMonth(),getDayOfMonth(),getHour(),getMinute(),getSecond());
 	}
 	
 	public Date addDays(int amount) {
@@ -120,7 +124,7 @@ public class Date {
 	}
 
 	public int getHour() {
-		return gc.get(Calendar.HOUR);
+		return gc.get(Calendar.HOUR_OF_DAY);
 	}
 
 	public int getMinute() {
