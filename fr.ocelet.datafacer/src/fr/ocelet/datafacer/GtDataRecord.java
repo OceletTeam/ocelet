@@ -3,7 +3,7 @@ package fr.ocelet.datafacer;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.operation.MathTransform;
 
-import de.micromata.opengis.kml.v_2_2_0.Geometry;
+import com.vividsolutions.jts.geom.Geometry;
 import fr.ocelet.runtime.geom.ocltypes.Line;
 import fr.ocelet.runtime.geom.ocltypes.MultiLine;
 import fr.ocelet.runtime.geom.ocltypes.MultiPoint;
