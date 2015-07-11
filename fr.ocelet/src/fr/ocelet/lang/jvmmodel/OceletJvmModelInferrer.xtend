@@ -193,8 +193,8 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                  	 «val odrtype = typeRef('fr.ocelet.datafacer.OutputDataRecord')»
                  	 «odrtype» odr = createOutputDataRec();
                  	 if (odr != null) {
-                  	 «FOR mp:matchdef.matchprops»
-                 	   odr.setAttribute("«mp.colname»",((«entname») ety).get«mp.prop.toFirstUpper»());
+                   «FOR mp:matchdef.matchprops»
+                     odr.setAttribute("«mp.colname»",((«entname») ety).get«mp.prop.toFirstUpper»());
                  	 «ENDFOR»
                  	 }
                  	 return odr;

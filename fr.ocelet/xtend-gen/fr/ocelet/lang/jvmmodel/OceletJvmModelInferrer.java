@@ -503,15 +503,16 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       {
                                         EList<Mdef> _matchprops = matchdef.getMatchprops();
                                         for(final Mdef mp : _matchprops) {
+                                          _builder.append("                   ");
                                           _builder.append("odr.setAttribute(\"");
                                           String _colname = mp.getColname();
-                                          _builder.append(_colname, "");
+                                          _builder.append(_colname, "                   ");
                                           _builder.append("\",((");
-                                          _builder.append(entname, "");
+                                          _builder.append(entname, "                   ");
                                           _builder.append(") ety).get");
                                           String _prop = mp.getProp();
                                           String _firstUpper = StringExtensions.toFirstUpper(_prop);
-                                          _builder.append(_firstUpper, "");
+                                          _builder.append(_firstUpper, "                   ");
                                           _builder.append("());");
                                           _builder.newLineIfNotEmpty();
                                         }

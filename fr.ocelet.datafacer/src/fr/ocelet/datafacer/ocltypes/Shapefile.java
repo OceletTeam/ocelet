@@ -32,6 +32,12 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	protected File sourceFile;
 
 	/**
+	 * If true, overwrite means that existing files with the same name will be
+	 * overwritten
+	 */
+	protected boolean overwrite;
+
+	/**
 	 * Constructor initializing the filename and the SRID.
 	 * 
 	 * @param fileName
@@ -41,6 +47,7 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	 */
 	public Shapefile(String fileName, String epsgcode) {
 		super();
+		overwrite = true;
 		setFileName(AbstractModel.getBasedir() + File.separator + fileName);
 		setCrs(epsgcode);
 	}
@@ -59,6 +66,7 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	 */
 	public void setFileName(String shpFileName) {
 		sourceFile = new File(shpFileName);
+
 		try {
 			// Open a datastore that uses our own geometry factory
 			datastore = new OcltShapefileDataStore(sourceFile.toURI().toURL());
@@ -66,6 +74,26 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 			System.out.println(ERR_HEADER + "Failed to open the shapefile "
 					+ sourceFile);
 		}
+	}
+
+	/**
+	 * If true, overwrite means that existing files with the same name will be
+	 * overwritten
+	 * 
+	 * @return overwrite
+	 */
+	public Boolean getOverwrite() {
+		return overwrite;
+	}
+
+	/**
+	 * If true, overwrite means that existing files with the same name will be
+	 * overwritten
+	 * 
+	 * @param ov The new overwrite value
+	 */
+	public void setOverwrite(Boolean ov) {
+		this.overwrite = ov;
 	}
 
 	/**
@@ -191,7 +219,7 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	/**
 	 * Used to rewind the record iterator when calling readAll() several times.
 	 */
-	protected void resetIterator() {
+	public void resetIterator() {
 		sfiterator.close();
 		sfiterator = null;
 	}

@@ -118,4 +118,8 @@ public interface InputDatafacer extends Datafacer, Iterable<InputDataRecord> {
 	 */
 	public Boolean readBoolean(String colName);
 	
+	/**
+	 * Used to rewind the record iterator when calling readAll() several times.
+	 */
+	public void resetIterator();
 }

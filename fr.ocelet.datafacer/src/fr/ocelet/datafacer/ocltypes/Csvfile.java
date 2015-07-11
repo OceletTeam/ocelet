@@ -2,7 +2,6 @@ package fr.ocelet.datafacer.ocltypes;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,6 +26,7 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	protected String separator;
 	protected CsvRecord lastRead;
 	protected HashMap<String, Integer> colIndex;
+	protected String filename;
 
 	/**
 	 * Empty constructor, nothing special
@@ -42,10 +42,8 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	 *            Path and name of a comma separated value file.
 	 */
 	public Csvfile(String fileName) {
-		super();
 		initDefaults();
 		setFileName(AbstractModel.getBasedir() + File.separator + fileName);
-		getHeader();
 	}
 
 	/**
@@ -57,11 +55,9 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	 *            A separator String
 	 */
 	public Csvfile(String fileName, String sep) {
-		super();
 		initDefaults();
-		setFileName(AbstractModel.getBasedir() + File.separator + fileName);
 		setSeparator(sep);
-		getHeader();
+		setFileName(AbstractModel.getBasedir() + File.separator + fileName);
 	}
 
 	protected void getHeader() {
@@ -75,9 +71,10 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 				for (int i = 0; i < colnames.length; i++)
 					colIndex.put(colnames[i], i);
 			} catch (IOException e) {
-				System.out
+				System.err
 						.println(ERR_HEADER
-								+ "An error occured while attempting to read the header line (column names).");
+								+ "An error occured while attempting to read the header line (column names) from "
+								+ filename + ".");
 			}
 		}
 	}
@@ -88,20 +85,31 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 
 	/**
 	 * Initialize and prepares the .csv file using the file name given in
-	 * argument. The file is not read at this point, but it's availability is
-	 * being checked. An error message is printed in case of initialization
-	 * problem.
+	 * argument. Only the header of the file is read at this point, but it's
+	 * availability is being checked. An error message is printed in case of
+	 * initialization problem.
 	 * 
 	 * @param fileName
 	 *            Name of the .csv file to read
 	 */
 	public void setFileName(String fileName) {
+		this.filename = fileName;
 		try {
-			reader = new BufferedReader(new FileReader(fileName));
-		} catch (FileNotFoundException e) {
-			System.out.println(ERR_HEADER + "Impossible to open the file "
+			if (reader != null)
+				reader.close();
+			reader = new BufferedReader(new FileReader(this.filename));
+			getHeader();
+		} catch (IOException e) {
+			System.err.println(ERR_HEADER + "Impossible to open the file "
 					+ fileName + " for reading.");
 		}
+	}
+
+	/**
+	 * Used to rewind the record iterator when calling readAll() several times.
+	 */
+	public void resetIterator() {
+		setFileName(this.filename);
 	}
 
 	/**
@@ -315,9 +323,20 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	}
 
 	/**
-	 * Release  any resource used by this datafacer
+	 * Release any resource used by this datafacer
 	 */
 	@Override
-	public void close() {}
-	
+	public void close() {
+		if (reader != null)
+			try {
+				reader.close();
+			} catch (IOException e) {
+				System.err
+						.println(ERR_HEADER
+								+ "An error occured while attempting to close the file "
+								+ filename + ".");
+
+			}
+	}
+
 }
