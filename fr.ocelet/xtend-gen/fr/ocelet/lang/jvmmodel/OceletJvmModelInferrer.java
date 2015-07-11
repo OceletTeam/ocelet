@@ -529,6 +529,101 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               JvmOperation _method_5 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(meln, "createRecord", _typeRef_3, _function_6);
                               OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_5);
                             }
+                            Class<?> _forName_6 = Class.forName("fr.ocelet.datafacer.ocltypes.Csvfile");
+                            String _storetype_4 = ((Datafacer)meln).getStoretype();
+                            String _plus_4 = ("fr.ocelet.datafacer.ocltypes." + _storetype_4);
+                            Class<?> _forName_7 = Class.forName(_plus_4);
+                            boolean _isAssignableFrom_3 = _forName_6.isAssignableFrom(_forName_7);
+                            if (_isAssignableFrom_3) {
+                              EList<JvmMember> _members_7 = it.getMembers();
+                              JvmTypeReference _typeRef_4 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("java.lang.String");
+                              final Procedure1<JvmOperation> _function_7 = new Procedure1<JvmOperation>() {
+                                @Override
+                                public void apply(final JvmOperation it) {
+                                  StringConcatenationClient _client = new StringConcatenationClient() {
+                                    @Override
+                                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                                      _builder.append("  ");
+                                      _builder.append("StringBuffer sb = new StringBuffer();");
+                                      _builder.newLine();
+                                      _builder.append("  ");
+                                      int coma = 0;
+                                      _builder.newLineIfNotEmpty();
+                                      {
+                                        EList<Mdef> _matchprops = matchdef.getMatchprops();
+                                        for(final Mdef mp : _matchprops) {
+                                          {
+                                            int _plusPlus = coma++;
+                                            boolean _greaterThan = (_plusPlus > 0);
+                                            if (_greaterThan) {
+                                              _builder.append("sb.append(separator);");
+                                            }
+                                          }
+                                          _builder.append("                     ");
+                                          _builder.newLineIfNotEmpty();
+                                          _builder.append("sb.append(\"");
+                                          String _colname = mp.getColname();
+                                          _builder.append(_colname, "");
+                                          _builder.append("\");");
+                                          _builder.newLineIfNotEmpty();
+                                        }
+                                      }
+                                      _builder.append("return sb.toString();");
+                                      _builder.newLine();
+                                    }
+                                  };
+                                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+                                }
+                              };
+                              JvmOperation _method_6 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(meln, "headerString", _typeRef_4, _function_7);
+                              OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method_6);
+                              EList<JvmMember> _members_8 = it.getMembers();
+                              JvmTypeReference _typeRef_5 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("java.lang.String");
+                              final Procedure1<JvmOperation> _function_8 = new Procedure1<JvmOperation>() {
+                                @Override
+                                public void apply(final JvmOperation it) {
+                                  EList<JvmFormalParameter> _parameters = it.getParameters();
+                                  JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.entity.Entity");
+                                  JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(meln, "_entity", _typeRef);
+                                  OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+                                  StringConcatenationClient _client = new StringConcatenationClient() {
+                                    @Override
+                                    protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                                      _builder.append("  ");
+                                      _builder.append("StringBuffer sb = new StringBuffer();");
+                                      _builder.newLine();
+                                      _builder.append("  ");
+                                      int coma = 0;
+                                      _builder.newLineIfNotEmpty();
+                                      {
+                                        EList<Mdef> _matchprops = matchdef.getMatchprops();
+                                        for(final Mdef mp : _matchprops) {
+                                          {
+                                            int _plusPlus = coma++;
+                                            boolean _greaterThan = (_plusPlus > 0);
+                                            if (_greaterThan) {
+                                              _builder.append("sb.append(separator);");
+                                            }
+                                          }
+                                          _builder.append("                     ");
+                                          _builder.newLineIfNotEmpty();
+                                          _builder.append("sb.append(_entity.getProperty(\"");
+                                          String _prop = mp.getProp();
+                                          _builder.append(_prop, "");
+                                          _builder.append("\"));");
+                                          _builder.newLineIfNotEmpty();
+                                        }
+                                      }
+                                      _builder.append("return sb.toString();");
+                                      _builder.newLine();
+                                    }
+                                  };
+                                  OceletJvmModelInferrer.this._jvmTypesBuilder.setBody(it, _client);
+                                }
+                              };
+                              JvmOperation _method_7 = OceletJvmModelInferrer.this._jvmTypesBuilder.toMethod(meln, "propsString", _typeRef_5, _function_8);
+                              OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmOperation>operator_add(_members_8, _method_7);
+                            }
                           }
                         }
                       }

@@ -201,6 +201,34 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                     '''
                   ]
                  }
+                 
+                 if (Class::forName('fr.ocelet.datafacer.ocltypes.Csvfile').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
+                   members += meln.toMethod('headerString',typeRef('java.lang.String'))[
+                     body = '''
+                     StringBuffer sb = new StringBuffer();
+                     «var coma = 0»
+                   «FOR mp:matchdef.matchprops»
+                     «IF coma++ > 0»sb.append(separator);«ENDIF»                     
+                     sb.append("«mp.colname»");
+                   «ENDFOR»
+                   return sb.toString();
+                   '''  
+                   ]
+                   
+                   members += meln.toMethod('propsString',typeRef('java.lang.String'))[
+                     parameters += meln.toParameter('_entity', typeRef('fr.ocelet.runtime.entity.Entity'))
+                     body='''
+                     StringBuffer sb = new StringBuffer();
+                     «var coma = 0»
+                   «FOR mp:matchdef.matchprops»
+                     «IF coma++ > 0»sb.append(separator);«ENDIF»                     
+                     sb.append(_entity.getProperty("«mp.prop»"));
+                   «ENDFOR»
+                   return sb.toString();
+                     '''
+                   ]
+                 }
+                 
                   }
                 }
                 isFirst = false

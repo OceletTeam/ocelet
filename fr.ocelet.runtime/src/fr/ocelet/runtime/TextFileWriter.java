@@ -59,10 +59,19 @@ public class TextFileWriter {
 	}
 
 	/**
+	 * Checks if the given filemane is already registered as a Prinwriter
+	 * @param filename
+	 * @return true if the corresponding file is known by fmap
+	 */
+	public static boolean isKnownFile(String filename) {
+		return ((fmap != null) && fmap.containsKey(filename));
+	}
+	
+	/**
 	 * Closes every file that could have been opened during the successive calls
 	 * to printline.
 	 */
-	public void close() {
+	public static void close() {
 		for (Iterator<PrintWriter> pwit = fmap.values().iterator(); pwit
 				.hasNext();) {
 			pwit.next().close();

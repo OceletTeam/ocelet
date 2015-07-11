@@ -2,6 +2,7 @@ package fr.ocelet.datafacer.ocltypes;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,7 +10,10 @@ import java.util.Iterator;
 
 import fr.ocelet.datafacer.InputDataRecord;
 import fr.ocelet.datafacer.InputDatafacer;
+import fr.ocelet.runtime.TextFileWriter;
+import fr.ocelet.runtime.entity.Entity;
 import fr.ocelet.runtime.model.AbstractModel;
+import fr.ocelet.runtime.ocltypes.List;
 
 /**
  * Datafacer specialized for reading Comma Separated Values format files
@@ -85,24 +89,78 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 
 	/**
 	 * Initialize and prepares the .csv file using the file name given in
-	 * argument. Only the header of the file is read at this point, but it's
-	 * availability is being checked. An error message is printed in case of
-	 * initialization problem.
+	 * argument. If the file already exists, it is considered we are going to
+	 * read it, we read the header. If the file does not already exist, we
+	 * create it and write the header. Only the header of the file is read at
+	 * this point, but it's availability is being checked. An error message is
+	 * printed in case of initialization problem.
 	 * 
 	 * @param fileName
 	 *            Name of the .csv file to read
 	 */
 	public void setFileName(String fileName) {
 		this.filename = fileName;
-		try {
-			if (reader != null)
+
+		if (reader != null)
+			try {
 				reader.close();
+			} catch (IOException e1) {
+				// Could not close the reader ... er, so what ?
+			}
+		try {
 			reader = new BufferedReader(new FileReader(this.filename));
 			getHeader();
-		} catch (IOException e) {
-			System.err.println(ERR_HEADER + "Impossible to open the file "
-					+ fileName + " for reading.");
+		} catch (FileNotFoundException e) {
+			TextFileWriter.printToFile(this.filename, headerString());
 		}
+	}
+
+	/**
+	 * This method returns an empty string but we will call a specialized
+	 * generated version
+	 * 
+	 * @return The header of the Csvfile, in write mode
+	 */
+	protected String headerString() {
+		return "";
+	}
+
+	/**
+	 * This method returns an empty string but we will call a specialized
+	 * generated version
+	 * 
+	 * @return On line of coma separated values for the Csvfile
+	 */
+	protected String propsString(final Entity _entity) {
+		return "";
+	}
+
+	/**
+	 * Uses the entity given in argument to create a record and adds that record
+	 * to the Csvfile. The values written to the file are those defined in the
+	 * match statement of the datafacer definition.
+	 * 
+	 * @param ety
+	 *            The entity to add
+	 */
+	public void append(Entity ety) {
+		if (!TextFileWriter.isKnownFile(this.filename))
+			TextFileWriter.printToFile(this.filename, headerString());
+		TextFileWriter.printToFile(this.filename, propsString(ety));
+	}
+
+	/**
+	 * Writes a series of coma seperated values into the Csvfile for every
+	 * Entity found in the list given in argument. The values written to the
+	 * file are those defined in the match statement of the datafacer
+	 * definition.
+	 * 
+	 * @param lety
+	 *            A list of entities
+	 */
+	public void append(List<? extends Entity> lety) {
+		for (Entity ety : lety)
+			append(ety);
 	}
 
 	/**
