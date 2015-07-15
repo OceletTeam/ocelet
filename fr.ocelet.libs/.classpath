@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="commons-pool-1.5.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="commons-dbcp-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="jaxb-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="jaxb-core.jar"/>
 	<classpathentry exported="true" kind="lib" path="jaxb-impl.jar"/>

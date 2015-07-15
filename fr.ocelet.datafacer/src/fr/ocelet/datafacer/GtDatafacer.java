@@ -245,6 +245,14 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 		}
 	}
 
+	/**
+	 * Used to rewind the record iterator when calling readAll() several times.
+	 */
+	public void resetIterator() {
+		if (sfiterator !=null) sfiterator.close();
+		sfiterator = null;
+	}
+		
 	public Point readPoint() {
 		return lastRead.readPoint(mt);
 	}

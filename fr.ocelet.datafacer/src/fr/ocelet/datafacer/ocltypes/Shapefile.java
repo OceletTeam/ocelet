@@ -217,14 +217,6 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	}
 
 	/**
-	 * Used to rewind the record iterator when calling readAll() several times.
-	 */
-	public void resetIterator() {
-		sfiterator.close();
-		sfiterator = null;
-	}
-
-	/**
 	 * Returns the next record read from the file.
 	 * 
 	 * @return A line String

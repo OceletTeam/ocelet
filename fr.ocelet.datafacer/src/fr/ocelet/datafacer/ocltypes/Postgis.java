@@ -110,9 +110,17 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 	}
 
 	/**
-	 * @return A complete description of everything we know about this Table
+	 * @return A complete description of everything we know about this Shapefile
+	 * @deprecated Use about() instead
 	 */
 	public String getMetadata() {
+		return about();
+	}
+
+	/**
+	 * @return A complete description of everything we know about this Shapefile
+	 */
+	public String about() {
 		StringBuffer sb = new StringBuffer();
 		try {
 			SimpleFeatureType sft = datastore.getSchema(table);
