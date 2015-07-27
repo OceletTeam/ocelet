@@ -72,8 +72,9 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 				header = reader.readLine();
 				colnames = header.split(separator);
 				colIndex = new HashMap<String, Integer>();
-				for (int i = 0; i < colnames.length; i++)
+				for (int i = 0; i < colnames.length; i++) {
 					colIndex.put(colnames[i], i);
+				}
 			} catch (IOException e) {
 				System.err
 						.println(ERR_HEADER
@@ -214,7 +215,7 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 			hasNext();
 		String result = currentLine;
 		currentLine = null;
-		lastRead = new CsvRecord(result, separator);
+		lastRead = new CsvRecord(result, separator,colIndex);
 		return lastRead;
 	}
 

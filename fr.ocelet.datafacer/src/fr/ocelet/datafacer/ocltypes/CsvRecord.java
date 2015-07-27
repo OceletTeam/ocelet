@@ -1,16 +1,22 @@
 package fr.ocelet.datafacer.ocltypes;
 
+import java.util.HashMap;
+
 import fr.ocelet.datafacer.InputDataRecord;
 
 public class CsvRecord implements InputDataRecord {
 
 	protected boolean colNamesAvailable;
+	protected HashMap<String, Integer> colIndex;
 
 	@Override
 	public int getColumnIndexFromName(String colName) {
 		if (colNamesAvailable) {
-			// TODO
-			return 0;
+			Integer cix = colIndex.get(colName);
+			if (cix == null)
+				return -1;
+			else
+				return cix.intValue();
 		} else {
 			System.out
 					.println(getErrHeader()
@@ -35,6 +41,23 @@ public class CsvRecord implements InputDataRecord {
 	 */
 	public CsvRecord(String newline, String separator) {
 		this.cols = newline.split(separator);
+	}
+
+	/**
+	 * Creates a new CsvRecord by parsing the line given in argument
+	 * 
+	 * @param newline
+	 *            A String with each field separated by a separator
+	 * @param separator
+	 *            The separator String
+	 */
+	public CsvRecord(String newline, String separator,
+			HashMap<String, Integer> colIndex) {
+		this.cols = newline.split(separator);
+		if (colIndex != null) {
+			this.colIndex = colIndex;
+			colNamesAvailable = true;
+		}
 	}
 
 	/**
@@ -88,7 +111,6 @@ public class CsvRecord implements InputDataRecord {
 		}
 		return result;
 	}
-	
 
 	/**
 	 * Obtains the value from one column of the record
@@ -108,17 +130,16 @@ public class CsvRecord implements InputDataRecord {
 					+ ". The number of available columns is " + cols.length
 					+ ". For your information, the first column is number 0.");
 		} catch (NumberFormatException nfe) {
-			System.out.println(ERR_HEADER + "Impossible to convert the column "
-					+ colNumber
-					+ " into a Long Integer value. Content found is that column :"
-					+ cols[colNumber]);
+			System.out
+					.println(ERR_HEADER
+							+ "Impossible to convert the column "
+							+ colNumber
+							+ " into a Long Integer value. Content found is that column :"
+							+ cols[colNumber]);
 		}
 		return result;
 	}
 
-	
-	
-	
 	/**
 	 * Obtains the value from one column of the record
 	 * 
@@ -170,97 +191,104 @@ public class CsvRecord implements InputDataRecord {
 	public String getErrHeader() {
 		return this.ERR_HEADER;
 	}
-	
-   	/**
-   	 * Obtains the value from one column using the column name.
-   	 * 
-   	 * @param colName
-   	 *            Index of the column to read (first is #0)
-   	 * @return The value of the column as a String value
-	 * @deprecated Use CsvFile method instead
-   	 */
-       public String readString(String colName) {
-       	int colindex = getColumnIndexFromName(colName);
-       	if (colindex > 0) return readString(colindex);
-       	else {
-       		System.out.println(getErrHeader()
-   					+ "Impossible to obtain a value from the attribute name :"+colName);
-       		return new String("?");
-       	}
-       }
-       
+
 	/**
-	 * Obtains the value from one column of the last read record using the column name.
+	 * Obtains the value from one column using the column name.
+	 * 
+	 * @param colName
+	 *            Index of the column to read (first is #0)
+	 * @return The value of the column as a String value
+	 */
+	public String readString(String colName) {
+		int colindex = getColumnIndexFromName(colName);
+		if (colindex >= 0)
+			return readString(colindex);
+		else {
+			System.out.println(getErrHeader()
+					+ "Impossible to obtain a value from the attribute name :"
+					+ colName);
+			return new String("?");
+		}
+	}
+
+	/**
+	 * Obtains the value from one column of the last read record using the
+	 * column name.
 	 * 
 	 * @param colName
 	 *            Index of the column to read (first is #0)
 	 * @return The value of the column as an Integer value
-	 * @deprecated Use CsvFile method instead
 	 */
-    public Integer readInteger(String colName) {
-    	int colindex = getColumnIndexFromName(colName);
-    	if (colindex > 0) return readInteger(colindex);
-    	else {
-    		System.out.println(getErrHeader()
-					+ "Impossible to obtain a value from the attribute name :"+colName);
-    		return new Integer(0);
-    	}
-    }
+	public Integer readInteger(String colName) {
+		int colindex = getColumnIndexFromName(colName);
+		if (colindex >= 0)
+			return readInteger(colindex);
+		else {
+			System.out.println(getErrHeader()
+					+ "Impossible to obtain a value from the attribute name :"
+					+ colName);
+			return new Integer(0);
+		}
+	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the column name.
+	 * Obtains the value from one column of the last read record using the
+	 * column name.
 	 * 
 	 * @param colName
 	 *            Index of the column to read (first is #0)
 	 * @return The value of the column as an Long Integer value
-	 * @deprecated Use CsvFile method instead
 	 */
-    public Long readLong(String colName) {
-    	int colindex = getColumnIndexFromName(colName);
-    	if (colindex > 0) return readLong(colindex);
-    	else {
-    		System.out.println(getErrHeader()
-					+ "Impossible to obtain a value from the attribute name :"+colName);
-    		return new Long(0);
-    	}
-    }
+	public Long readLong(String colName) {
+		int colindex = getColumnIndexFromName(colName);
+		if (colindex >= 0)
+			return readLong(colindex);
+		else {
+			System.out.println(getErrHeader()
+					+ "Impossible to obtain a value from the attribute name :"
+					+ colName);
+			return new Long(0);
+		}
+	}
 
-    
-    
 	/**
-	 * Obtains the value from one column of the last read record using the column name.
+	 * Obtains the value from one column of the last read record using the
+	 * column name.
 	 * 
 	 * @param colName
 	 *            Index of the column to read (first is #0)
 	 * @return The value of the column as a Double value
-	 * @deprecated Use CsvFile method instead
 	 */
-    public Double readDouble(String colName) {
-    	int colindex = getColumnIndexFromName(colName);
-    	if (colindex > 0) return readDouble(colindex);
-    	else {
-    		System.out.println(getErrHeader()
-					+ "Impossible to obtain a value from the attribute name :"+colName);
-    		return new Double(0.0);
-    	}
-    }
-    
+	public Double readDouble(String colName) {
+		int colindex = getColumnIndexFromName(colName);
+		if (colindex >= 0)
+			return readDouble(colindex);
+		else {
+			System.out.println(getErrHeader()
+					+ "Impossible to obtain a value from the attribute name :"
+					+ colName);
+			return new Double(0.0);
+		}
+	}
+
 	/**
-	 * Obtains the value from one column of the last read record using the column name.
+	 * Obtains the value from one column of the last read record using the
+	 * column name.
 	 * 
 	 * @param colName
 	 *            Index of the column to read (first is #0)
 	 * @return The value of the column as a Boolean value
-	 * @deprecated Use CsvFile method instead
 	 */
-    public Boolean readBoolean(String colName) {
-    	int colindex = getColumnIndexFromName(colName);
-    	if (colindex > 0) return readBoolean(colindex);
-    	else {
-    		System.out.println(getErrHeader()
-					+ "Impossible to obtain a value from the attribute name :"+colName);
-    		return new Boolean(false);
-    	}
-    }
+	public Boolean readBoolean(String colName) {
+		int colindex = getColumnIndexFromName(colName);
+		if (colindex >= 0)
+			return readBoolean(colindex);
+		else {
+			System.out.println(getErrHeader()
+					+ "Impossible to obtain a value from the attribute name :"
+					+ colName);
+			return new Boolean(false);
+		}
+	}
 
 }
