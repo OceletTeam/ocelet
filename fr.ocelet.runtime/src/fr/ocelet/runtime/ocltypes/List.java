@@ -1,6 +1,7 @@
 package fr.ocelet.runtime.ocltypes;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 @SuppressWarnings("serial")
@@ -30,6 +31,15 @@ public class List<T> extends ArrayList<T> {
 			return add(obj);
 		else
 			return false;
+	}
+	
+	/**
+	 * Appends all of the elements in the specified List to the end of this list
+	 * 
+	 * @return true if the list could be changed as expected
+	 */
+	public boolean addAll(List<T> list) {
+		return super.addAll((Collection<? extends T>)list);
 	}
 
 	/**
