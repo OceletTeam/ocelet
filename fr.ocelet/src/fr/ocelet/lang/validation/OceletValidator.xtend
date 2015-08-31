@@ -3,18 +3,57 @@
  */
 package fr.ocelet.lang.validation
 
+import fr.ocelet.lang.ocelet.Entity
+import fr.ocelet.lang.ocelet.Match
+import fr.ocelet.lang.ocelet.Mdef
 import fr.ocelet.lang.ocelet.OceletPackage
 import fr.ocelet.lang.ocelet.Paramdefa
 import fr.ocelet.lang.ocelet.Parameter
+import fr.ocelet.lang.ocelet.PropertyDef
 import fr.ocelet.lang.ocelet.Rangevals
+import fr.ocelet.lang.ocelet.Strucdef
+import fr.ocelet.lang.ocelet.StrucVarDef
 import org.eclipse.xtext.validation.Check
 
 /**
  * Custom validation rules. 
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#validation
+ * @author Pascal Degenne - Initial contribution
  */
 class OceletValidator extends AbstractOceletValidator {
+
+ /**
+  * Makes sure that every datafacer match definition is defined in the
+  * corresponding entity (or structure)
+  */
+ @Check
+ def checkMatchElements(Mdef mdef){
+   val match = mdef.eContainer as Match
+   val mt = match.mtype
+   var propfound = false
+   switch(mt) {
+     Entity: {
+       for (eln:mt.entelns)
+       switch(eln) {
+         PropertyDef: {
+           if (eln.name.compareTo(mdef.prop) == 0) propfound=true
+         }
+       }
+       if (!propfound) error('The entity '+mt.name+' has no property named '+mdef.prop,OceletPackage.Literals.MDEF__PROP)
+     }
+     Strucdef: {
+       for (eln:mt.strucelns)
+       switch(eln){
+         StrucVarDef: {
+            if (eln.name.compareTo(mdef.prop) == 0) propfound=true
+         }
+       }
+       if (!propfound) error('The structure '+mt.name+' has no field named '+mdef.prop,OceletPackage.Literals.MDEF__PROP)
+     }
+   }
+}
+
 
 // TODO : Vérifier que default est d'un type compatible avec le type déclaré du parametre
 

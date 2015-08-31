@@ -4,13 +4,23 @@
 package fr.ocelet.lang.validation;
 
 import com.google.common.base.Objects;
+import fr.ocelet.lang.ocelet.Entity;
+import fr.ocelet.lang.ocelet.EntityElements;
+import fr.ocelet.lang.ocelet.Match;
+import fr.ocelet.lang.ocelet.Matchtype;
+import fr.ocelet.lang.ocelet.Mdef;
 import fr.ocelet.lang.ocelet.OceletPackage;
 import fr.ocelet.lang.ocelet.Paramdefa;
 import fr.ocelet.lang.ocelet.Parameter;
 import fr.ocelet.lang.ocelet.Parampart;
+import fr.ocelet.lang.ocelet.PropertyDef;
 import fr.ocelet.lang.ocelet.Rangevals;
+import fr.ocelet.lang.ocelet.StrucEln;
+import fr.ocelet.lang.ocelet.StrucVarDef;
+import fr.ocelet.lang.ocelet.Strucdef;
 import fr.ocelet.lang.validation.AbstractOceletValidator;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 
@@ -18,9 +28,81 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  * Custom validation rules.
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#validation
+ * @author Pascal Degenne - Initial contribution
  */
 @SuppressWarnings("all")
 public class OceletValidator extends AbstractOceletValidator {
+  /**
+   * Makes sure that every datafacer match definition is defined in the
+   * corresponding entity (or structure)
+   */
+  @Check
+  public void checkMatchElements(final Mdef mdef) {
+    EObject _eContainer = mdef.eContainer();
+    final Match match = ((Match) _eContainer);
+    final Matchtype mt = match.getMtype();
+    boolean propfound = false;
+    boolean _matched = false;
+    if (!_matched) {
+      if (mt instanceof Entity) {
+        _matched=true;
+        EList<EntityElements> _entelns = ((Entity)mt).getEntelns();
+        for (final EntityElements eln : _entelns) {
+          boolean _matched_1 = false;
+          if (!_matched_1) {
+            if (eln instanceof PropertyDef) {
+              _matched_1=true;
+              String _name = ((PropertyDef)eln).getName();
+              String _prop = mdef.getProp();
+              int _compareTo = _name.compareTo(_prop);
+              boolean _equals = (_compareTo == 0);
+              if (_equals) {
+                propfound = true;
+              }
+            }
+          }
+        }
+        if ((!propfound)) {
+          String _name = ((Entity)mt).getName();
+          String _plus = ("The entity " + _name);
+          String _plus_1 = (_plus + " has no property named ");
+          String _prop = mdef.getProp();
+          String _plus_2 = (_plus_1 + _prop);
+          this.error(_plus_2, OceletPackage.Literals.MDEF__PROP);
+        }
+      }
+    }
+    if (!_matched) {
+      if (mt instanceof Strucdef) {
+        _matched=true;
+        EList<StrucEln> _strucelns = ((Strucdef)mt).getStrucelns();
+        for (final StrucEln eln : _strucelns) {
+          boolean _matched_1 = false;
+          if (!_matched_1) {
+            if (eln instanceof StrucVarDef) {
+              _matched_1=true;
+              String _name = ((StrucVarDef)eln).getName();
+              String _prop = mdef.getProp();
+              int _compareTo = _name.compareTo(_prop);
+              boolean _equals = (_compareTo == 0);
+              if (_equals) {
+                propfound = true;
+              }
+            }
+          }
+        }
+        if ((!propfound)) {
+          String _name = ((Strucdef)mt).getName();
+          String _plus = ("The structure " + _name);
+          String _plus_1 = (_plus + " has no field named ");
+          String _prop = mdef.getProp();
+          String _plus_2 = (_plus_1 + _prop);
+          this.error(_plus_2, OceletPackage.Literals.MDEF__PROP);
+        }
+      }
+    }
+  }
+  
   @Check
   public void checkParamDefaultWithinRange(final Parameter parameter) {
     EList<Parampart> _paramparts = parameter.getParamparts();
