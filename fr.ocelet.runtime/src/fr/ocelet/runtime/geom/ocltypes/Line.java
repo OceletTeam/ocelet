@@ -1,6 +1,9 @@
 package fr.ocelet.runtime.geom.ocltypes;
 
+import java.awt.geom.AffineTransform;
+
 import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -85,6 +88,46 @@ public class Line extends LineString {
 								+ "Transformation error when trying to transform coordinates to a new coordinates system.");
 			}
 		return this;
+	}
+
+	/**
+	 * Moves this Line to a new position given a distance along x and y axis.
+	 * 
+	 * @param dx Moving distance on X axis
+	 * @param dy Moving distance on Y axis
+	 * @return A Line moved to a new position
+	 */
+	public Line move(double dx, double dy) {
+		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx,dy);
+		MathTransform mt = new AffineTransform2D(affineTransform);
+		return transform(mt);
+	}
+	
+	/**
+	 * Rotates this Line given an angle and the coordinates of an anchor rotation point.
+	 * 
+	 * @param angle Rotation angle in radian
+	 * @param anchorx x coordinate of the anchor rotation point
+	 * @param anchory y coordinate of the anchor rotation point
+	 * @return A Line rotated around the anchor location
+	 */
+	public Line rotate(double angle, double anchorx, double anchory) {
+		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle,anchorx,anchory);
+		MathTransform mt = new AffineTransform2D(affineTransform);
+		return transform(mt);
+	}
+	
+	/**
+	 * Scales this Line by the given factors along x and y axis.
+	 * 
+	 * @param xfactor Scaling factor along the x axis
+	 * @param yfactor Scaling factor along the y axis
+	 * @return A Line rotated
+	 */
+	public Line scale(double xfactor, double yfactor) {
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(xfactor, yfactor);
+		MathTransform mt = new AffineTransform2D(affineTransform);
+		return transform(mt);
 	}
 
 }

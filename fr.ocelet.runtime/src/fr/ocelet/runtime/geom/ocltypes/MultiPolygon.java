@@ -1,6 +1,9 @@
 package fr.ocelet.runtime.geom.ocltypes;
 
+import java.awt.geom.AffineTransform;
+
 import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -95,4 +98,45 @@ public class MultiPolygon extends com.vividsolutions.jts.geom.MultiPolygon {
 				SpatialManager.geometryFactory());
 	}
 
+	/**
+	 * Moves this MultiPolygon to a new position given a distance along x and y axis.
+	 * 
+	 * @param dx Moving distance on X axis
+	 * @param dy Moving distance on Y axis
+	 * @return A MultiPolygon moved to a new position
+	 */
+	public MultiPolygon move(double dx, double dy) {
+		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx,dy);
+		MathTransform mt = new AffineTransform2D(affineTransform);
+		return transform(mt);
+	}
+	
+	/**
+	 * Rotates this MultiPolygon given an angle and the coordinates of an anchor rotation point.
+	 * 
+	 * @param angle Rotation angle in radian
+	 * @param anchorx x coordinate of the anchor rotation point
+	 * @param anchory y coordinate of the anchor rotation point
+	 * @return A MultiPolygon rotated around the anchor location
+	 */
+	public MultiPolygon rotate(double angle, double anchorx, double anchory) {
+		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle,anchorx,anchory);
+		MathTransform mt = new AffineTransform2D(affineTransform);
+		return transform(mt);
+	}
+	
+	/**
+	 * Scales this MultiPolygon by the given factors along x and y axis.
+	 * 
+	 * @param xfactor Scaling factor along the x axis
+	 * @param yfactor Scaling factor along the y axis
+	 * @return A MultiPolygon rotated
+	 */
+	public MultiPolygon scale(double xfactor, double yfactor) {
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(xfactor, yfactor);
+		MathTransform mt = new AffineTransform2D(affineTransform);
+		return transform(mt);
+	}
+	
+	
 }

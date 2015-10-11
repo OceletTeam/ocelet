@@ -6,4 +6,4 @@ bin/
 worklog.*
 worknotes.*
 doc/gfx/
-
+*.xtendbin
