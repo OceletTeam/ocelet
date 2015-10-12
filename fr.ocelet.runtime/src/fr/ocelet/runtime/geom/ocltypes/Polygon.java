@@ -8,6 +8,7 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 
@@ -122,4 +123,17 @@ public class Polygon extends com.vividsolutions.jts.geom.Polygon {
 		return transform(mt);
 	}
 
+	/**
+	 * Gives access to every coordinate forming this Polygon's shell into the form of a list of Points
+	 * @return An ordered list of Point
+	 */
+	public List<Point> asListOfPoints() {
+		List<Point> lp = new List<Point>();
+		for (Coordinate coord : this.shell.getCoordinates()) {
+		  Point newp = Point.xy(coord.x,coord.y);
+		  lp.add(newp);
+		}
+		return lp;
+	}
+	
 }

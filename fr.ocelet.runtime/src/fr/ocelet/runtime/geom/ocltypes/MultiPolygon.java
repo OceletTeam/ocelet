@@ -9,6 +9,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.ocltypes.Group;
@@ -16,6 +17,7 @@ import fr.ocelet.runtime.ocltypes.List;
 
 /**
  * Multiple polygonal geometry
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  */
@@ -70,7 +72,8 @@ public class MultiPolygon extends com.vividsolutions.jts.geom.MultiPolygon {
 	 *            A series of Polygons
 	 * @return A new initialized MultiPolygon
 	 */
-	public static MultiPolygon polygons(com.vividsolutions.jts.geom.Polygon... pts) {
+	public static MultiPolygon polygons(
+			com.vividsolutions.jts.geom.Polygon... pts) {
 		return new MultiPolygon(pts, SpatialManager.geometryFactory());
 	}
 
@@ -81,7 +84,8 @@ public class MultiPolygon extends com.vividsolutions.jts.geom.MultiPolygon {
 	 *            A Group of Polygons
 	 * @return A new initialized MultiPolygon
 	 */
-	public static MultiPolygon polygons(Group<com.vividsolutions.jts.geom.Polygon> gp) {
+	public static MultiPolygon polygons(
+			Group<com.vividsolutions.jts.geom.Polygon> gp) {
 		return new MultiPolygon(gp.toArray(new Polygon[gp.size()]),
 				SpatialManager.geometryFactory());
 	}
@@ -93,50 +97,76 @@ public class MultiPolygon extends com.vividsolutions.jts.geom.MultiPolygon {
 	 *            A List of Polygons
 	 * @return A new initialized MultiPolygon
 	 */
-	public static MultiPolygon polygons(List<com.vividsolutions.jts.geom.Polygon> lp) {
+	public static MultiPolygon polygons(
+			List<com.vividsolutions.jts.geom.Polygon> lp) {
 		return new MultiPolygon(lp.toArray(new Polygon[lp.size()]),
 				SpatialManager.geometryFactory());
 	}
 
 	/**
-	 * Moves this MultiPolygon to a new position given a distance along x and y axis.
+	 * Moves this MultiPolygon to a new position given a distance along x and y
+	 * axis.
 	 * 
-	 * @param dx Moving distance on X axis
-	 * @param dy Moving distance on Y axis
+	 * @param dx
+	 *            Moving distance on X axis
+	 * @param dy
+	 *            Moving distance on Y axis
 	 * @return A MultiPolygon moved to a new position
 	 */
 	public MultiPolygon move(double dx, double dy) {
-		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx,dy);
+		AffineTransform affineTransform = AffineTransform.getTranslateInstance(
+				dx, dy);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
-	 * Rotates this MultiPolygon given an angle and the coordinates of an anchor rotation point.
+	 * Rotates this MultiPolygon given an angle and the coordinates of an anchor
+	 * rotation point.
 	 * 
-	 * @param angle Rotation angle in radian
-	 * @param anchorx x coordinate of the anchor rotation point
-	 * @param anchory y coordinate of the anchor rotation point
+	 * @param angle
+	 *            Rotation angle in radian
+	 * @param anchorx
+	 *            x coordinate of the anchor rotation point
+	 * @param anchory
+	 *            y coordinate of the anchor rotation point
 	 * @return A MultiPolygon rotated around the anchor location
 	 */
 	public MultiPolygon rotate(double angle, double anchorx, double anchory) {
-		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle,anchorx,anchory);
+		AffineTransform affineTransform = AffineTransform.getRotateInstance(
+				angle, anchorx, anchory);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
 	 * Scales this MultiPolygon by the given factors along x and y axis.
 	 * 
-	 * @param xfactor Scaling factor along the x axis
-	 * @param yfactor Scaling factor along the y axis
+	 * @param xfactor
+	 *            Scaling factor along the x axis
+	 * @param yfactor
+	 *            Scaling factor along the y axis
 	 * @return A MultiPolygon rotated
 	 */
 	public MultiPolygon scale(double xfactor, double yfactor) {
-		AffineTransform affineTransform = AffineTransform.getScaleInstance(xfactor, yfactor);
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(
+				xfactor, yfactor);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
-	
+
+	/**
+	 * Gives access to every Polygon contained in this MultiPolygon into the
+	 * form of a list of Polygons
+	 * 
+	 * @return An ordered list of Polygon
+	 */
+	public List<Polygon> asListOfPolygons() {
+		List<Polygon> lp = new List<Polygon>();
+		for (int i = 0; i < getNumGeometries(); i++) {
+			lp.add((Polygon) this.getGeometryN(i));
+		}
+		return lp;
+	}
+
 }

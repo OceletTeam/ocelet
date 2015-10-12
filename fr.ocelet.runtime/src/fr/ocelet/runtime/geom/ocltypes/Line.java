@@ -130,4 +130,17 @@ public class Line extends LineString {
 		return transform(mt);
 	}
 
+	/**
+	 * Gives access to every coordinate forming this Line into the form of a list of Points
+	 * @return An ordered list of Point
+	 */
+	public List<Point> asListOfPoints() {
+		List<Point> lp = new List<Point>();
+		for (Coordinate coord : this.getCoordinates()) {
+		  Point newp = Point.xy(coord.x,coord.y);
+		  lp.add(newp);
+		}
+		return lp;
+	}
+	
 }

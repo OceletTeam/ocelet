@@ -8,7 +8,9 @@ import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.ocltypes.Group;
@@ -16,6 +18,7 @@ import fr.ocelet.runtime.ocltypes.List;
 
 /**
  * Multiple punctual geometry
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  */
@@ -101,44 +104,74 @@ public class MultiPoint extends com.vividsolutions.jts.geom.MultiPoint {
 			}
 		return this;
 	}
-	
+
 	/**
-	 * Moves this MultiPoint to a new position given a distance along x and y axis.
+	 * Moves this MultiPoint to a new position given a distance along x and y
+	 * axis.
 	 * 
-	 * @param dx Moving distance on X axis
-	 * @param dy Moving distance on Y axis
+	 * @param dx
+	 *            Moving distance on X axis
+	 * @param dy
+	 *            Moving distance on Y axis
 	 * @return A MultiPoint moved to a new position
 	 */
 	public MultiPoint move(double dx, double dy) {
-		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx,dy);
+		AffineTransform affineTransform = AffineTransform.getTranslateInstance(
+				dx, dy);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
-	 * Rotates this MultiPoint given an angle and the coordinates of an anchor rotation point.
+	 * Rotates this MultiPoint given an angle and the coordinates of an anchor
+	 * rotation point.
 	 * 
-	 * @param angle Rotation angle in radian
-	 * @param anchorx x coordinate of the anchor rotation point
-	 * @param anchory y coordinate of the anchor rotation point
+	 * @param angle
+	 *            Rotation angle in radian
+	 * @param anchorx
+	 *            x coordinate of the anchor rotation point
+	 * @param anchory
+	 *            y coordinate of the anchor rotation point
 	 * @return A MultiPoint rotated around the anchor location
 	 */
 	public MultiPoint rotate(double angle, double anchorx, double anchory) {
-		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle,anchorx,anchory);
+		AffineTransform affineTransform = AffineTransform.getRotateInstance(
+				angle, anchorx, anchory);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
 	 * Scales this MultiPoint by the given factors along x and y axis.
 	 * 
-	 * @param xfactor Scaling factor along the x axis
-	 * @param yfactor Scaling factor along the y axis
+	 * @param xfactor
+	 *            Scaling factor along the x axis
+	 * @param yfactor
+	 *            Scaling factor along the y axis
 	 * @return A MultiPoint rotated
 	 */
 	public MultiPoint scale(double xfactor, double yfactor) {
-		AffineTransform affineTransform = AffineTransform.getScaleInstance(xfactor, yfactor);
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(
+				xfactor, yfactor);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
+	}
+
+	/**
+	 * Gives access to every coordinate forming this MultiPoint into the form of
+	 * a list of Points
+	 * 
+	 * @return An ordered list of Point
+	 */
+	public List<Point> asListOfPoints() {
+		List<Point> lp = new List<Point>();
+		for (int i = 0; i < getNumGeometries(); i++) {
+			Point newpoint = new Point(
+					((Point) this.getGeometryN(i)).getCoordinateSequence(),
+					SpatialManager.geometryFactory());
+			if (newpoint != null)
+				lp.add(newpoint);
+		}
+		return lp;
 	}
 }
