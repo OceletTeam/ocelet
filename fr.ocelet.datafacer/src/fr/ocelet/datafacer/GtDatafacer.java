@@ -251,6 +251,7 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 	public void resetIterator() {
 		if (sfiterator !=null) sfiterator.close();
 		sfiterator = null;
+		featureCollection=null;
 	}
 		
 	public Point readPoint() {
