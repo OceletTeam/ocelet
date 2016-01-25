@@ -1,5 +1,6 @@
 package fr.ocelet.runtime;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -73,7 +74,7 @@ public class Miscutils {
 	public static List<Color> colorRange(int nbSteps, Color c1, Color c2) {
 		return c1.colorRange(nbSteps, c2);
 	}
-	
+
 	/**
 	 * Creates a shade of colors between two colors given in argument
 	 * 
@@ -90,6 +91,17 @@ public class Miscutils {
 		Color c2 = Color.parse(sc2);
 		return c1.colorRange(nbSteps, c2);
 	}
-	
+
+	/**
+	 * Creates a new dir
+	 * @param dirpath
+	 * @return True is the new dir was created and false if anything went wrong.
+	 */
+	public static Boolean createDir(String dirpath) {
+		File df = new File(dirpath);
+		Boolean done = df.mkdirs();
+		if (!done) System.err.println("Sorry the directory "+dirpath+" could not be created. Please check its name and your rights for the destination path.");
+		return done;
+	}
 
 }
