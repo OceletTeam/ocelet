@@ -1,7 +1,6 @@
 package fr.ocelet.datafacer.ocltypes;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,8 +11,8 @@ import fr.ocelet.datafacer.InputDataRecord;
 import fr.ocelet.datafacer.InputDatafacer;
 import fr.ocelet.runtime.TextFileWriter;
 import fr.ocelet.runtime.entity.Entity;
-import fr.ocelet.runtime.model.AbstractModel;
 import fr.ocelet.runtime.ocltypes.List;
+import fr.ocelet.runtime.util.FileUtils;
 
 /**
  * Datafacer specialized for reading Comma Separated Values format files
@@ -47,7 +46,7 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	 */
 	public Csvfile(String fileName) {
 		initDefaults();
-		setFileName(AbstractModel.getBasedir() + File.separator + fileName);
+		setFileName(fileName);
 	}
 
 	/**
@@ -61,7 +60,7 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	public Csvfile(String fileName, String sep) {
 		initDefaults();
 		setSeparator(sep);
-		setFileName(AbstractModel.getBasedir() + File.separator + fileName);
+		setFileName(fileName);
 	}
 
 	protected void getHeader() {
@@ -100,7 +99,7 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	 *            Name of the .csv file to read
 	 */
 	public void setFileName(String fileName) {
-		this.filename = fileName;
+		this.filename = FileUtils.applyOutput(fileName);
 
 		if (reader != null)
 			try {
@@ -215,7 +214,7 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 			hasNext();
 		String result = currentLine;
 		currentLine = null;
-		lastRead = new CsvRecord(result, separator,colIndex);
+		lastRead = new CsvRecord(result, separator, colIndex);
 		return lastRead;
 	}
 

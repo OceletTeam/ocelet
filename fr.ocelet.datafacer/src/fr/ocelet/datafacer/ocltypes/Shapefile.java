@@ -22,6 +22,7 @@ import fr.ocelet.datafacer.OcltShapefileDataStore;
 import fr.ocelet.datafacer.OutputDataRecord;
 import fr.ocelet.datafacer.OutputDatafacer;
 import fr.ocelet.runtime.model.AbstractModel;
+import fr.ocelet.runtime.util.FileUtils;
 
 public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 		OutputDatafacer, Iterator<InputDataRecord> {
@@ -48,7 +49,7 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	public Shapefile(String fileName, String epsgcode) {
 		super();
 		overwrite = true;
-		setFileName(AbstractModel.getBasedir() + File.separator + fileName);
+		setFileName(fileName);
 		setCrs(epsgcode);
 	}
 
@@ -65,7 +66,7 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	 *            Name of the .shp file
 	 */
 	public void setFileName(String shpFileName) {
-		sourceFile = new File(shpFileName);
+		sourceFile = new File(FileUtils.applyOutput(shpFileName));
 
 		try {
 			// Open a datastore that uses our own geometry factory

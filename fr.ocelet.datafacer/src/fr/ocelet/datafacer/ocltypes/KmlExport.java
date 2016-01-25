@@ -15,10 +15,10 @@ import de.micromata.opengis.kml.v_2_2_0.Style;
 import fr.ocelet.datafacer.Datafacer;
 import fr.ocelet.datafacer.KmlFolder;
 import fr.ocelet.datafacer.KmlUtils;
-import fr.ocelet.runtime.model.AbstractModel;
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.Date;
 import fr.ocelet.runtime.ocltypes.List;
+import fr.ocelet.runtime.util.FileUtils;
 
 @SuppressWarnings("restriction")
 public class KmlExport implements Datafacer {
@@ -301,11 +301,7 @@ public class KmlExport implements Datafacer {
 	public void setFileName(String newFileName) {
 		isValidFileName = !newFileName.isEmpty();
 		if (isValidFileName)
-			this.filename = AbstractModel.getBasedir() + File.separator
-					+ newFileName;
-		else {
-			this.filename = "output" + File.separator + "unknown";
-		}
+			this.filename = FileUtils.applyOutput(newFileName);
 	}
 
 	protected KmlFolder getDefaultFolder() {
