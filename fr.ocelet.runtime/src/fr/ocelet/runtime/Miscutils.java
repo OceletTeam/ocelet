@@ -156,14 +156,9 @@ public class Miscutils {
 	 * @param filepath The file to be removed
 	 */
 	public static void removeFile(String filepath) {
-		try {
-			Files.deleteIfExists(Paths.get(filepath));
-		} catch (IOException e) {
-			System.err
-					.println("Sorry the file "
-							+ filepath
-							+ " could not be deleted. Please check its name and your rights for that operation.");
-		}
+		File f = new File(filepath);
+		if (f.exists()) f.delete();
+		while(f.exists()){System.err.print('.');}
 	}
 
 }

@@ -4,11 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import fr.ocelet.datafacer.InputDataRecord;
 import fr.ocelet.datafacer.InputDatafacer;
+import fr.ocelet.runtime.Miscutils;
 import fr.ocelet.runtime.TextFileWriter;
 import fr.ocelet.runtime.entity.Entity;
 import fr.ocelet.runtime.ocltypes.List;
@@ -100,19 +104,14 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	 */
 	public void setFileName(String fileName) {
 		this.filename = FileUtils.applyOutput(fileName);
-
 		if (reader != null)
-			try {
-				reader.close();
-			} catch (IOException e1) {
-				// Could not close the reader ... er, so what ?
-			}
-		try {
-			reader = new BufferedReader(new FileReader(this.filename));
-			getHeader();
-		} catch (FileNotFoundException e) {
-			TextFileWriter.printToFile(this.filename, headerString());
-		}
+			close();
+		// try {
+		// reader = new BufferedReader(new FileReader(this.filename));
+		// getHeader();
+		// } catch (FileNotFoundException e) {
+		// // The file doesn't exist yet ... doesn't matter at this point.
+		// }
 	}
 
 	/**
@@ -144,7 +143,8 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	 *            The entity to add
 	 */
 	public void append(Entity ety) {
-		if (!TextFileWriter.isKnownFile(this.filename))
+		if ((!TextFileWriter.isKnownFile(this.filename))
+				&& (!Files.exists(Paths.get(this.filename))))
 			TextFileWriter.printToFile(this.filename, headerString());
 		TextFileWriter.printToFile(this.filename, propsString(ety));
 	}
@@ -192,15 +192,24 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 	@Override
 	public boolean hasNext() {
 		boolean result = true;
-		try {
-			currentLine = reader.readLine();
-		} catch (IOException e) {
-			System.out.println(ERR_HEADER
-					+ "An error occured while reading the file.");
-			currentLine = null;
-		}
+		if (reader == null)
+			try {
+				reader = new BufferedReader(new FileReader(this.filename));
+				getHeader();
+			} catch (FileNotFoundException e) {
+				result = false;
+			}
+		if (result)
+			try {
+				currentLine = reader.readLine();
+			} catch (IOException e) {
+				System.out.println(ERR_HEADER
+						+ "An error occured while reading the file.");
+				currentLine = null;
+			}
 		if (currentLine == null)
 			result = false;
+
 		return result;
 	}
 
@@ -220,6 +229,10 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 
 	@Override
 	public void remove() {
+		if (reader != null)
+			close();
+		Miscutils.removeFile(filename);
+		TextFileWriter.forget(filename);
 	}
 
 	@Override
@@ -395,6 +408,8 @@ public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 								+ filename + ".");
 
 			}
+		reader = null;
+		currentLine = null;
 	}
 
 }

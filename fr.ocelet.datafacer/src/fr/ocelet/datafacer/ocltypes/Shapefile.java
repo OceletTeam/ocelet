@@ -21,6 +21,7 @@ import fr.ocelet.datafacer.InputDatafacer;
 import fr.ocelet.datafacer.OcltShapefileDataStore;
 import fr.ocelet.datafacer.OutputDataRecord;
 import fr.ocelet.datafacer.OutputDatafacer;
+import fr.ocelet.runtime.Miscutils;
 import fr.ocelet.runtime.model.AbstractModel;
 import fr.ocelet.runtime.util.FileUtils;
 
@@ -237,6 +238,11 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 
 	@Override
 	public void remove() {
+		String rootName = sourceFile.getPath().substring(0, sourceFile.getPath().indexOf(".shp"));
+		Miscutils.removeFile(rootName+".prj");
+		Miscutils.removeFile(rootName+".shx");
+		Miscutils.removeFile(rootName+".shp");
+		Miscutils.removeFile(rootName+".dbf");
 	}
 
 	@Override

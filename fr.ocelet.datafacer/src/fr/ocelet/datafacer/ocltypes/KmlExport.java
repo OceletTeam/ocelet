@@ -15,6 +15,7 @@ import de.micromata.opengis.kml.v_2_2_0.Style;
 import fr.ocelet.datafacer.Datafacer;
 import fr.ocelet.datafacer.KmlFolder;
 import fr.ocelet.datafacer.KmlUtils;
+import fr.ocelet.runtime.Miscutils;
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.Date;
 import fr.ocelet.runtime.ocltypes.List;
@@ -304,6 +305,10 @@ public class KmlExport implements Datafacer {
 			this.filename = FileUtils.applyOutput(newFileName);
 	}
 
+	public void remove() {
+		Miscutils.removeFile(filename);
+	}
+	
 	protected KmlFolder getDefaultFolder() {
 		if (defolder == null) {
 			defolder = new KmlFolder(doc, filename);

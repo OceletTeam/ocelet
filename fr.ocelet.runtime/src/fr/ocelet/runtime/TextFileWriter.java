@@ -1,6 +1,9 @@
 package fr.ocelet.runtime;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,9 +51,12 @@ public class TextFileWriter {
 		String errorString = null;
 		if (pw == null) {
 			try {
-				pw = new PrintWriter(ofname);
+				pw = new PrintWriter(new BufferedWriter(new FileWriter(ofname,
+						true)));
 				fmap.put(ofname, pw);
 			} catch (FileNotFoundException e) {
+				errorString = "Impossible to create the file " + filename;
+			} catch (IOException e) {
 				errorString = "Impossible to create the file " + filename;
 			}
 		}
@@ -70,6 +76,19 @@ public class TextFileWriter {
 	public static boolean isKnownFile(String filename) {
 		String ofname = FileUtils.applyOutput(filename);
 		return ((fmap != null) && fmap.containsKey(ofname));
+	}
+
+	/**
+	 * Remove the given file from the list of known files.
+	 * 
+	 * @param filename
+	 */
+	public static void forget(String filename) {
+		String ofname = FileUtils.applyOutput(filename);
+		if (fmap == null) {
+			fmap = new HashMap<String, PrintWriter>();
+		}
+		fmap.remove(ofname);
 	}
 
 	/**
