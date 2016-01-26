@@ -1,6 +1,13 @@
 package fr.ocelet.runtime;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -94,14 +101,69 @@ public class Miscutils {
 
 	/**
 	 * Creates a new dir
+	 * 
 	 * @param dirpath
 	 * @return True is the new dir was created and false if anything went wrong.
 	 */
 	public static Boolean createDir(String dirpath) {
 		File df = new File(dirpath);
 		Boolean done = df.mkdirs();
-		if (!done) System.err.println("Sorry the directory "+dirpath+" could not be created. Please check its name and your rights for the destination path.");
+		if (!done)
+			System.err
+					.println("Sorry the directory "
+							+ dirpath
+							+ " could not be created. Please check its name and your rights for the destination path.");
 		return done;
+	}
+
+	
+	/**
+	 * Deletes a directory and all its content. Without warning. Use with
+	 * caution.
+	 * 
+	 * @param dirpath Path of the directory to be removed
+	 */
+	public static void removeDir(String dirpath) {
+		Path dir = Paths.get(dirpath);
+		try {
+			Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
+				@Override
+				public FileVisitResult visitFile(Path file,
+						BasicFileAttributes attrs) throws IOException {
+					Files.delete(file);
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult postVisitDirectory(Path dir,
+						IOException exc) throws IOException {
+					Files.delete(dir);
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		} catch (IOException e) {
+			System.err
+					.println("Sorry the directory "
+							+ dirpath
+							+ " could not be deleted. Please check its name and your rights for that operation.");
+		}
+	}
+
+	
+	/**
+	 * Deletes a file. Without warning. Use with caution.
+	 * 
+	 * @param filepath The file to be removed
+	 */
+	public static void removeFile(String filepath) {
+		try {
+			Files.deleteIfExists(Paths.get(filepath));
+		} catch (IOException e) {
+			System.err
+					.println("Sorry the file "
+							+ filepath
+							+ " could not be deleted. Please check its name and your rights for that operation.");
+		}
 	}
 
 }
