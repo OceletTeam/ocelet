@@ -189,6 +189,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                  if (Class::forName('fr.ocelet.datafacer.OutputDatafacer').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
                    members += meln.toMethod('createRecord',typeRef('fr.ocelet.datafacer.OutputDataRecord'))[
                    parameters += meln.toParameter('ety',typeRef('fr.ocelet.runtime.entity.Entity'))
+                   exceptions += typeRef('java.lang.IllegalArgumentException')
                    body = '''
                  	 «val odrtype = typeRef('fr.ocelet.datafacer.OutputDataRecord')»
                  	 «odrtype» odr = createOutputDataRec();

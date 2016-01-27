@@ -490,6 +490,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.entity.Entity");
                                   JvmFormalParameter _parameter = OceletJvmModelInferrer.this._jvmTypesBuilder.toParameter(meln, "ety", _typeRef);
                                   OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+                                  EList<JvmTypeReference> _exceptions = it.getExceptions();
+                                  JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("java.lang.IllegalArgumentException");
+                                  OceletJvmModelInferrer.this._jvmTypesBuilder.<JvmTypeReference>operator_add(_exceptions, _typeRef_1);
                                   StringConcatenationClient _client = new StringConcatenationClient() {
                                     @Override
                                     protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {

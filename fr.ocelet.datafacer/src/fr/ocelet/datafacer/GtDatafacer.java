@@ -32,7 +32,8 @@ import fr.ocelet.runtime.geom.ocltypes.Point;
 import fr.ocelet.runtime.geom.ocltypes.Polygon;
 import fr.ocelet.runtime.geom.ocltypes.Ring;
 
-public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, FiltrableDatafacer {
+public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
+		FiltrableDatafacer {
 
 	protected MathTransform mt;
 	protected CoordinateReferenceSystem crs;
@@ -40,8 +41,8 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 
 	protected SimpleFeatureCollection featureCollection;
 	protected GtDataRecord lastRead;
-    protected String cqlFilter;
-	
+	protected String cqlFilter;
+
 	public GtDataRecord getLastRead() {
 		return this.lastRead;
 	}
@@ -79,9 +80,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 	 * Creates an initialized GtDataRecord from the properties of the Entity
 	 * given in argument. The conversions from properties to record attributes
 	 * is inferred from a match definition and is realized by a generated
-	 * subclass of this one.
-	 * The implementation given here is only to make sure the method is
-	 * implemented in case a match is missing in the datafacer declaration.
+	 * subclass of this one. The implementation given here is only to make sure
+	 * the method is implemented in case a match is missing in the datafacer
+	 * declaration.
+	 * 
 	 * @param ety
 	 * @return A GtDataRecord with a feature initialized with a series of
 	 *         attributes.
@@ -134,15 +136,16 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 		return sft;
 	}
 
-		/**
+	/**
 	 * Implementation of the FiltrableDatafacer interface
+	 * 
 	 * @param cqlFilter
 	 */
 	@Override
 	public void setFilter(String cqlFilter) {
 		this.cqlFilter = cqlFilter;
 	}
-	
+
 	/**
 	 * Creates a new empty feature according to the feature type given in
 	 * argument
@@ -179,11 +182,12 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 				lfc.add(gdr.getFeature());
 				commitWrite(lfc);
 			}
-		} catch (IOException e) {
-			System.out.println(getErrHeader()
-					+ " Failed to write an entity to " + this.toString());
-			System.out
-					.println("Please check the datafacer's definition in your model.");
+		} catch (IOException | IllegalArgumentException e) {
+			System.err
+					.println(getErrHeader()
+							+ " Failed to write an entity to "
+							+ this.toString()
+							+ ". Please check the datafacer's definition in your model.");
 		}
 	}
 
@@ -205,13 +209,12 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 				lfeatures.add(createRecord(ety).getFeature());
 			lfc.addAll(lfeatures);
 			commitWrite(lfc);
-		} catch (IOException e) {
-			System.out
+		} catch (IOException | IllegalArgumentException e) {
+			System.err
 					.println(getErrHeader()
-							+ " Failed to write list of entities to "
-							+ this.toString());
-			System.out
-					.println("Please check the datafacer's definition in your model.");
+							+ " Failed to write an entity to "
+							+ this.toString()
+							+ ". Please check the datafacer's definition in your model.");
 		}
 	}
 
@@ -249,11 +252,12 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 	 * Used to rewind the record iterator when calling readAll() several times.
 	 */
 	public void resetIterator() {
-		if (sfiterator !=null) sfiterator.close();
+		if (sfiterator != null)
+			sfiterator.close();
 		sfiterator = null;
-		featureCollection=null;
+		featureCollection = null;
 	}
-		
+
 	public Point readPoint() {
 		return lastRead.readPoint(mt);
 	}
