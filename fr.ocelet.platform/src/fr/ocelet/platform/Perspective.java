@@ -1,3 +1,24 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
+
 package fr.ocelet.platform;
 
 import org.eclipse.ui.IFolderLayout;
@@ -7,7 +28,7 @@ import org.eclipse.ui.console.IConsoleConstants;
 
 /**
  * 
- * @author Rémi Tylski - Initial contribution
+ * @author Remi Tylski - Initial contribution
  * @author Pascal Degenne - Adapted for v1.1
  *
  */
@@ -27,7 +48,6 @@ public class Perspective implements IPerspectiveFactory {
         layout.addShowViewShortcut("fr.ocelet.platform.views.Navigator");
         layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
         layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
-//        layout.addShowViewShortcut("fr.ocelet.platform.views.Problems");
 	}
 
 	
@@ -46,7 +66,6 @@ public class Perspective implements IPerspectiveFactory {
 		left.addView("fr.ocelet.platform.views.Navigator");
 		right.addView(IPageLayout.ID_OUTLINE);
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
-//		bottom.addView("fr.ocelet.platform.views.Problems");
 
 		// set static views:
 		layout.getViewLayout("fr.ocelet.platform.views.Navigator")
@@ -54,7 +73,6 @@ public class Perspective implements IPerspectiveFactory {
 		layout.getViewLayout(IPageLayout.ID_OUTLINE).setCloseable(false);
 		layout.getViewLayout(IConsoleConstants.ID_CONSOLE_VIEW).setCloseable(
 				false);
-//		layout.getViewLayout("fr.ocelet.platform.views.Problems").setCloseable(false);
 	}
 
 }

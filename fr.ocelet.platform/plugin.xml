@@ -406,11 +406,11 @@
       </property>
       <property
             name="startupProgressRect"
-            value="15,245,425,14">
+            value="15,300,482,14">
       </property>
       <property
             name="startupMessageRect"
-            value="17,224,445,20">
+            value="17,280,502,20">
       </property>
       <property
             name="appName"

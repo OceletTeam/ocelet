@@ -1,3 +1,24 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
+
 package fr.ocelet.platform.wizards.models;
 
 import java.io.BufferedReader;
@@ -181,29 +202,7 @@ public abstract class ProjectModel {
 
 	public void createModelFromTemplate(IProject project, String modelName,
 			String templatePath) {
-		/*
-		 * public static void createTemplateFileInProjectAt(IProject project,
-		 * String relativePath, String filename) throws IOException,
-		 * CoreException { String templateFilePath = NewWizardMessages.
-		 * WizardSchemaNewFileCreationPage_Schema_Template_Location; InputStream
-		 * inputStream = null; inputStream =
-		 * Activator.getDefault().getBundle().getEntry
-		 * (templateFilePath).openStream();
-		 * 
-		 * BufferedReader bufferedReader = new BufferedReader(new
-		 * InputStreamReader(inputStream));
-		 * 
-		 * File tempFile = new File(getAbsolutePathToProject(project) +
-		 * File.separator + relativePath + File.separator +
-		 * CustomSchemaSupport.FILENAME); FileWriter fileWriter = new
-		 * FileWriter(tempFile);
-		 * 
-		 * String line = null; while((line = bufferedReader.readLine()) != null)
-		 * { fileWriter.write(line); } fileWriter.close();
-		 * 
-		 * // Add this to make the file discoverable.
-		 * project.refreshLocal(IResource.DEPTH_INFINITE, null); }
-		 */
+
 	}
 
 	public String getModelName() {

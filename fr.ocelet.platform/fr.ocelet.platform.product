@@ -25,13 +25,21 @@
 
    <splash
       location="fr.ocelet.platform"
-      startupProgressRect="15,245,425,14"
-      startupMessageRect="17,224,445,20"
+      startupProgressRect="15,300,482,14"
+      startupMessageRect="17,280,502,20"
       startupForegroundColor="71918D" />
    <launcher name="omp">
+      <linux icon="/fr.ocelet.platform/icons/launcher/alt_launcher.xpm"/>
+      <macosx icon="/fr.ocelet.platform/icons/alt_launcher.icns"/>
       <solaris/>
       <win useIco="false">
-         <bmp/>
+         <bmp
+            winSmallHigh="/fr.ocelet.platform/icons/launcher/launcher16_32bit.bmp"
+            winSmallLow="/fr.ocelet.platform/icons/launcher/launcher16_8bit.bmp"
+            winMediumHigh="/fr.ocelet.platform/icons/launcher/launcher32_32bit.bmp"
+            winMediumLow="/fr.ocelet.platform/icons/launcher/launcher32_8bit.bmp"
+            winLargeHigh="/fr.ocelet.platform/icons/launcher/launcher48_32bit.bmp"
+            winLargeLow="/fr.ocelet.platform/icons/launcher/launcher48_8bit.bmp"/>
       </win>
    </launcher>
 
