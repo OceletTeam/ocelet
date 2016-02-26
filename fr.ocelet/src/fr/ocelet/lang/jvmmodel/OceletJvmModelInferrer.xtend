@@ -247,7 +247,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                      «var coma = 0»
                    «FOR mp:matchdef.matchprops»
                      «IF coma++ > 0»sb.append(separator);«ENDIF»                     
-                     sb.append(_entity.getProperty("«mp.prop»"));
+                     sb.append(_entity.getProperty("«mp.prop»").toString());
                    «ENDFOR»
                    return sb.toString();
                      '''

@@ -2,35 +2,32 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fr.ocelet
 Bundle-Vendor: UMR TETIS - CIRAD
-Bundle-Version: 1.1.0.lr3x28
-Bundle-SymbolicName: fr.ocelet;singleton:=true
+Bundle-Version: 1.2.0.beta
+Bundle-SymbolicName: fr.ocelet; singleton:=true
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.xtext;bundle-version="2.8.1";visibility:=reexport,
- org.eclipse.xtext.xbase;bundle-version="2.8.1";resolution:=optional;visibility:=reexport,
- org.eclipse.xtext.generator;resolution:=optional,
- org.apache.commons.logging;bundle-version="1.0.4";resolution:=optional,
- org.eclipse.emf.codegen.ecore;resolution:=optional,
- org.eclipse.emf.mwe.utils;resolution:=optional,
- org.eclipse.emf.mwe2.launch;resolution:=optional,
- org.eclipse.xtext.util,
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
  org.eclipse.emf.ecore,
- org.eclipse.emf.common,
- org.eclipse.xtext.xbase.lib;bundle-version="2.8.1",
- org.antlr.runtime,
  org.eclipse.xtext.common.types,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
- fr.ocelet.runtime;bundle-version="1.1.0",
- fr.ocelet.datafacer;bundle-version="1.1.0"
-Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: fr.ocelet.lang,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common,
+ fr.ocelet.datafacer,
+ fr.ocelet.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: fr.ocelet.lang.scoping,
  fr.ocelet.lang.services,
- fr.ocelet.lang.ocelet,
- fr.ocelet.lang.ocelet.impl,
- fr.ocelet.lang.ocelet.util,
- fr.ocelet.lang.serializer,
- fr.ocelet.lang.parser.antlr,
- fr.ocelet.lang.parser.antlr.internal,
  fr.ocelet.lang.validation,
- fr.ocelet.lang.formatting,
- fr.ocelet.lang.jvmmodel
+ fr.ocelet.lang,
+ fr.ocelet.lang.parser.antlr.internal,
+ fr.ocelet.lang.ocelet.impl,
+ fr.ocelet.lang.serializer,
+ fr.ocelet.lang.ocelet.util,
+ fr.ocelet.lang.jvmmodel,
+ fr.ocelet.lang.ocelet,
+ fr.ocelet.lang.parser.antlr
+Import-Package: org.apache.log4j

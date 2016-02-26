@@ -2,7 +2,7 @@
 <feature
       id="fr.ocelet.platform.feature"
       label="fr.ocelet.platform.feature"
-      version="1.1.0.lr3x28">
+      version="1.2.0.beta">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -21,19 +21,7 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.emf.codegen.ecore"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.rcp"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.xtend.sdk"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.xtext.xbase"
          version="0.0.0"/>
 
    <plugin
@@ -66,6 +54,13 @@
 
    <plugin
          id="fr.ocelet.platform"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="fr.ocelet.ide"
          download-size="0"
          install-size="0"
          version="0.0.0"

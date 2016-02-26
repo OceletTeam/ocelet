@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
@@ -161,7 +162,9 @@ public abstract class ProjectModel {
 					ocltFile.toURI());
 			IWorkbenchPage page = PlatformUI.getWorkbench()
 					.getActiveWorkbenchWindow().getActivePage();
-			IDE.openEditorOnFileStore(page, fileStore);
+			IEditorPart iep=  IDE.openEditorOnFileStore(page, fileStore);
+			iep.doSave(null);
+			
 
 		} catch (CoreException e) {
 			if (e.getMessage().contains("already exists")) {
