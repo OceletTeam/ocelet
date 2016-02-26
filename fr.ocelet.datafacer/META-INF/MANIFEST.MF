@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: fr.ocelet.datafacer
 Bundle-SymbolicName: fr.ocelet.datafacer
 Bundle-Version: 1.2.0.beta
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: fr.ocelet.runtime,
  fr.ocelet.libs;bundle-version="1.1.0"
 Export-Package: fr.ocelet.datafacer,
