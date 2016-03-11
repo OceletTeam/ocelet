@@ -4,7 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="oclt"/>
 	<classpathentry kind="output" path="bin"/>
-	<classpathentry kind="lib" path="../../plugins/org.eclipse.xtext.xbase.lib_2.9.1.v201512180746.jar"/>
+	<classpathentry kind="lib" path="../../plugins/org.eclipse.xtext.xbase.lib_2.9.2.v201603040440.jar"/>
 	<classpathentry kind="lib" path="../../plugins/com.google.guava_15.0.0.v201403281430.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.datafacer_1.2.0.beta.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.runtime_1.2.0.beta.jar"/>
