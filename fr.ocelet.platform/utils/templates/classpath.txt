@@ -26,7 +26,7 @@
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta/gt-opengis-9.4.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta/vecmath-1.3.2.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta/jsr-275-1.0-beta-2.jar"/>
-	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta//jai_core-1.1.3.jar"/>
+	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta/jai_core-1.1.3.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta/JavaAPIforKml.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta/jaxb-core.jar"/>
 	<classpathentry kind="lib" path="../../plugins/fr.ocelet.libs_1.2.0.beta/jaxb-api.jar"/>

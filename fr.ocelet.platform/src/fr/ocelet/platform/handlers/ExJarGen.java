@@ -126,8 +126,7 @@ public class ExJarGen extends ModelCmdHandler {
 					if ((deb > 0) && (fin > 0)) {
 						String cpjar = cpline.substring(deb + 8, fin + 4);
 						cpathlist.append(cpjar + " ");
-						filesets.append("      <zipfileset src=\"${plugins.dir}/"
-								+ cpjar + "\" excludes=\"META-INF/*.SF\"/>\n");
+						filesets.append("        <include name=\""+cpjar+"\" />\n");
 					}
 				}
 
@@ -146,11 +145,14 @@ public class ExJarGen extends ModelCmdHandler {
 				String rline = null;
 				String wline = null;
 
+				String ocltlibsversion = Platform.getBundle("fr.ocelet.libs").getVersion().toString();
+				
 				while ((rline = br.readLine()) != null) {
 					wline = rline.replaceAll("_MODELNAME_", modelName);
 					wline = wline.replaceAll("_MAINCLASS_", "fr.ocelet.model."
 							+ modelName.toLowerCase() + "." + modelName);
 					wline = wline.replaceAll("_DESTFILE_", choosenfile);
+					wline = wline.replaceAll("_OCLTLIBS_", "fr.ocelet.libs_"+ocltlibsversion);
 					wline = wline.replaceAll("_CPATH_", cpathlist.toString());
 					if (rline.contains("_JARFILES_"))
 						antfw.write(filesets.toString());
@@ -187,6 +189,12 @@ public class ExJarGen extends ModelCmdHandler {
 				monitor.worked(25);
 
 				p.executeTarget(p.getDefaultTarget());
+				
+				IFile ilibsfile = selectedProject.getFile("output/libs.jar");
+				File libsfile = ilibsfile.getRawLocation().makeAbsolute().toFile();
+				libsfile.delete();
+				antFile.delete();
+				
 				printStream.println("Done.");
 			} catch (BuildException be) {
 				be.printStackTrace();
@@ -197,6 +205,8 @@ public class ExJarGen extends ModelCmdHandler {
 			}
 
 			monitor.done();
+			
+			//
 			return Status.OK_STATUS;
 		}
 	}
