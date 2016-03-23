@@ -21,6 +21,7 @@
 
 package fr.ocelet.runtime.relation;
 
+import fr.ocelet.runtime.geom.ocltypes.SpatialType;
 import fr.ocelet.runtime.ocltypes.List;
 
 /**
@@ -89,4 +90,10 @@ public interface OcltRole extends OcltGraphElement {
 	 * any property since the last tbegin() are lost.
 	 */
 	public void tabort();
+	
+	public SpatialType getSpatialType();
+	
+	public void setSpatialType(SpatialType st);
+	
+	public <T> String getPropName(T val);
 }

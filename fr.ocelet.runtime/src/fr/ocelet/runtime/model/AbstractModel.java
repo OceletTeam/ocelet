@@ -25,6 +25,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.KeyMap;
@@ -56,6 +60,12 @@ public abstract class AbstractModel implements OceletModel {
 		modParams = new ArrayList<Parameter>();
 		this.simlisteners = new ArrayList<SimulationListener>();
 		modBasedir = ".";
+		Logger globalLogger = Logger.getLogger("global");
+		Handler[] handlers = globalLogger.getHandlers();
+		for(Handler handler : handlers) {
+		    globalLogger.removeHandler(handler);
+		}
+		LogManager.getLogManager().reset();
 	}
 
 	@Override

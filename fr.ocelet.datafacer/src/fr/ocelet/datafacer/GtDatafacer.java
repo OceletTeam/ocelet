@@ -33,6 +33,7 @@ import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
@@ -264,7 +265,12 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	protected void setCrs(String epsgCode) {
 		try {
 			crs = CRS.decode(epsgCode);
+			Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, 
+					Boolean.TRUE);
+			
+
 			mt = SpatialManager.getTransformCrs(crs, getErrHeader());
+			
 		} catch (NoSuchAuthorityCodeException e) {
 			System.out.println(getErrHeader() + "Unknown EPSG code : "
 					+ epsgCode);

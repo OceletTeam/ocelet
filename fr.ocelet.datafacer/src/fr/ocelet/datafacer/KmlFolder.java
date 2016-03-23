@@ -21,6 +21,10 @@
 
 package fr.ocelet.datafacer;
 
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -173,21 +177,48 @@ public class KmlFolder {
 				"#" + styleName);
 		placemark.setName(label);
 		placemark.createAndSetTimeSpan().withBegin(beginDate).withEnd(endDate);
-		MathTransform mt = SpatialManager.getTransformCrs("EPSG:4326",
-				ERR_HEADER);
-		if (geom instanceof Point)
-			addPoint(placemark, ((Point) geom).transform(mt), height);
-		else if (geom instanceof Line)
-			addLine(placemark, ((Line) geom).transform(mt), height);
-		else if (geom instanceof Polygon)
-			addPolygon(placemark, ((Polygon) geom).transform(mt), height);
-		else if (geom instanceof MultiPoint)
-			addMultiPoint(placemark, ((MultiPoint) geom).transform(mt), height);
-		else if (geom instanceof MultiLine)
-			addMultiLine(placemark, ((MultiLine) geom).transform(mt), height);
-		else if (geom instanceof MultiPolygon)
-			addMultiPolygon(placemark, ((MultiPolygon) geom).transform(mt),
-					height);
+		
+		CoordinateReferenceSystem crs = null;
+		try {
+			crs = CRS.decode("EPSG:4326");
+		} catch (NoSuchAuthorityCodeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FactoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(crs.getName().equals(SpatialManager.getCrs().getName())){
+			if (geom instanceof Point)
+				addPoint(placemark, ((Point) geom), height);
+			else if (geom instanceof Line)
+				addLine(placemark, ((Line) geom), height);
+			else if (geom instanceof Polygon)
+				addPolygon(placemark, ((Polygon) geom), height);
+			else if (geom instanceof MultiPoint)
+				addMultiPoint(placemark, ((MultiPoint) geom), height);
+			else if (geom instanceof MultiLine)
+				addMultiLine(placemark, ((MultiLine) geom), height);
+			else if (geom instanceof MultiPolygon)
+				addMultiPolygon(placemark, ((MultiPolygon) geom),
+						height);
+		}else{
+			MathTransform mt = SpatialManager.getTransformCrs("EPSG:4326",
+					ERR_HEADER);
+			if (geom instanceof Point)
+				addPoint(placemark, ((Point) geom).transform(mt), height);
+			else if (geom instanceof Line)
+				addLine(placemark, ((Line) geom).transform(mt), height);
+			else if (geom instanceof Polygon)
+				addPolygon(placemark, ((Polygon) geom).transform(mt), height);
+			else if (geom instanceof MultiPoint)
+				addMultiPoint(placemark, ((MultiPoint) geom).transform(mt), height);
+			else if (geom instanceof MultiLine)
+				addMultiLine(placemark, ((MultiLine) geom).transform(mt), height);
+			else if (geom instanceof MultiPolygon)
+				addMultiPolygon(placemark, ((MultiPolygon) geom).transform(mt),
+						height);
+		}
 	}
 
 	private void addPoint(Placemark pm, Point point, double height) {

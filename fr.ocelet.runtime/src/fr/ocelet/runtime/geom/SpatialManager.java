@@ -27,7 +27,15 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+
+import fr.ocelet.runtime.geom.ocltypes.Line;
+import fr.ocelet.runtime.geom.ocltypes.MultiLine;
+import fr.ocelet.runtime.geom.ocltypes.MultiPoint;
+import fr.ocelet.runtime.geom.ocltypes.MultiPolygon;
+import fr.ocelet.runtime.geom.ocltypes.Point;
+import fr.ocelet.runtime.geom.ocltypes.Polygon;
 
 /**
  * A class that keep track of the coordinate reference system
@@ -125,6 +133,69 @@ public class SpatialManager {
 		else
 			mt = CRS.findMathTransform(crs, tgcrs, true);
 		return mt;
+	}
+	
+public static Line lineTransform(Geometry geometry){
+		
+		if(geometry instanceof Line){
+			return (Line)geometry;
+		}
+		return null;
+	}
+    public static MultiLine multiLineTransform(Geometry geometry){
+		
+		if(geometry instanceof MultiLine){
+			return (MultiLine)geometry;
+		}
+		if(geometry instanceof Line){
+			Line[] ls = new Line[1];
+			ls[0] = (Line)geometry;
+			MultiLine ml = new MultiLine(ls, SpatialManager.geometryFactory());
+			return ml;
+		}
+		return null;
+	}	
+    
+public static Point pointTransform(Geometry geometry){
+		
+		if(geometry instanceof Point){
+			return (Point)geometry;
+		}
+		return null;
+	}
+    public static MultiPoint multiPointTransform(Geometry geometry){
+		
+		if(geometry instanceof MultiPoint){
+			return (MultiPoint)geometry;
+		}
+		if(geometry instanceof Point){
+			Point[] ps = new Point[1];
+			ps[0] = (Point)geometry;
+			MultiPoint mp = new MultiPoint(ps, SpatialManager.geometryFactory());
+			return mp;
+		}
+		return null;
+	}
+    
+public static Polygon polygonTransform(Geometry geometry){
+		
+		if(geometry instanceof Polygon){
+			return (Polygon)geometry;
+		}
+		return null;
+	}
+    public static MultiPolygon multiPolygonTransform(Geometry geometry){
+		
+		if(geometry instanceof MultiPolygon){
+			return (MultiPolygon)geometry;
+		}
+		if(geometry instanceof Polygon){
+			Polygon[] ps = new Polygon[1];
+			ps[0] = (Polygon)geometry;
+			MultiPolygon mp = new MultiPolygon(ps, SpatialManager.geometryFactory());
+			return mp;
+		}
+		return null;
 	}
 
 }

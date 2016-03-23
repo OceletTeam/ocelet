@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import fr.ocelet.runtime.geom.ocltypes.SpatialType;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.AggregOperator;
 import fr.ocelet.runtime.relation.OcltRole;
@@ -42,7 +43,10 @@ public abstract class AbstractEntity implements Entity {
 	protected boolean transaction;
 	protected HashMap<String, Hproperty<?>> propmap;
 	protected Long graph_Element_Identifier;
-
+	protected SpatialType spatialType;
+	protected String spatialTypeName;
+	protected boolean spatialSet = false;
+	
 	protected AbstractEntity() {
 		propmap = new HashMap<String, Hproperty<?>>();
 		graph_Element_Identifier = nextgei++;
@@ -103,10 +107,23 @@ public abstract class AbstractEntity implements Entity {
 	 */
 	public <T> void setProperty(String pname, T val) {
 		Hproperty<T> hp = (Hproperty<T>) propmap.get(pname);
-		if (transaction)
+		if (transaction){
 			hp.setFuture(val);
-		else
+		}else{
 			hp.set(val);
+			
+			if(!spatialSet){
+				if(hp.get() instanceof SpatialType){
+					spatialType = (SpatialType)hp.get();
+					spatialSet = true;
+					spatialTypeName = pname;
+					
+				}
+			}else{
+				if(spatialTypeName == pname)
+				spatialType = (SpatialType)hp.get();
+			}
+		}
 	}
 
 	/**
@@ -206,6 +223,26 @@ public abstract class AbstractEntity implements Entity {
 			ts += e.getKey() + "=" + ((Hproperty<?>) e.getValue()) + "; ";
 		}
 		return ts;
+	}
+	
+
+	public SpatialType getSpatialType(){
+		return spatialType;
+	}
+	
+	public void setSpatialType(SpatialType st){
+		this.spatialType = st;
+	}
+	
+	public <T> String getPropName(T val){
+		
+		for(String s : propmap.keySet()){
+			if(propmap.get(s).get().equals(val)){
+				return s;
+			}
+		}
+		return null;
+		
 	}
 
 }

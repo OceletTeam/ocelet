@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Ocelet Modelling Platform" uid="omp12b" id="fr.ocelet.platform.product" application="fr.ocelet.platform.application" version="1.2.0.beta" useFeatures="true" includeLaunchers="true">
+<product name="Ocelet Modelling Platform" uid="omp20a" id="fr.ocelet.platform.product" application="fr.ocelet.platform.application" version="2.0.0.alpha" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <text>
@@ -42,7 +42,6 @@
             winLargeLow="/fr.ocelet.platform/icons/launcher/launcher48_8bit.bmp"/>
       </win>
    </launcher>
-
 
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6</windows>

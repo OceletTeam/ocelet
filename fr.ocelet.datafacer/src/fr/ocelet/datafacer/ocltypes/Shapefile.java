@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.geotools.data.DataStore;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -35,6 +36,11 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+
 import fr.ocelet.datafacer.InputDataRecord;
 import fr.ocelet.datafacer.GtDataRecord;
 import fr.ocelet.datafacer.GtDatafacer;
@@ -43,6 +49,8 @@ import fr.ocelet.datafacer.OcltShapefileDataStore;
 import fr.ocelet.datafacer.OutputDataRecord;
 import fr.ocelet.datafacer.OutputDatafacer;
 import fr.ocelet.runtime.Miscutils;
+import fr.ocelet.runtime.geom.SpatialManager;
+import fr.ocelet.runtime.geom.ocltypes.Polygon;
 import fr.ocelet.runtime.model.AbstractModel;
 import fr.ocelet.runtime.util.FileUtils;
 
@@ -59,7 +67,7 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	protected ShapefileDataStore datastore;
 
 	protected File sourceFile;
-
+	 protected Double bounds[] = new Double[4];
 	/**
 	 * If true, overwrite means that existing files with the same name will be
 	 * overwritten
@@ -99,6 +107,12 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 		try {
 			// Open a datastore that uses our own geometry factory
 			datastore = new OcltShapefileDataStore(sourceFile.toURI().toURL());
+			  String typeName = datastore.getTypeNames()[0];
+	            FeatureSource source = datastore.getFeatureSource(typeName);
+	            bounds[0] = source.getBounds().getMinX();
+	            bounds[1] = source.getBounds().getMinY();
+	            bounds[2] = source.getBounds().getMaxX();
+	            bounds[3] = source.getBounds().getMaxY();
 		} catch (IOException e) {
 			System.out.println(ERR_HEADER + "Failed to open the shapefile "
 					+ sourceFile);
@@ -298,6 +312,27 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	@Override
 	public void close() {
 		datastore.dispose();
+	}
+	
+	public Double[] getBounds(){
+	    
+        return bounds;
+    }
+
+	public Polygon getEnveloppe(){
+		
+		Coordinate[] coordinates = new Coordinate[5];
+		
+		coordinates[0] = new Coordinate(bounds[0], bounds[1]);
+		coordinates[1] =new Coordinate(bounds[0], bounds[3]);
+		coordinates[2] = new Coordinate(bounds[2], bounds[3]);
+		coordinates[3] =new Coordinate(bounds[2], bounds[1]);
+		coordinates[4] = coordinates[0];
+		
+		CoordinateSequence cs = new CoordinateArraySequence(coordinates);
+		LinearRing lr = new LinearRing(cs, SpatialManager.geometryFactory());
+		return new Polygon(lr, null, SpatialManager.geometryFactory());
+		
 	}
 
 }
