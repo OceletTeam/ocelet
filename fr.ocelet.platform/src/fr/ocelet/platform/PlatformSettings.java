@@ -21,11 +21,22 @@
 
 package fr.ocelet.platform;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
+
 /**
  * General version and debug settings of the Ocelet Modelling Platform
  *
  * @author Pascal Degenne - Initial contribution
- *
  */
 public class PlatformSettings {
 
@@ -35,7 +46,7 @@ public class PlatformSettings {
 	public final static int VERBOSE = 1;
 	public final static int DEBUG = 2;
 
-	public static int msgLevel=DEBUG;
+	public static int msgLevel = DEBUG;
 
 	public static int getMsgLevel() {
 		return msgLevel;
@@ -47,5 +58,58 @@ public class PlatformSettings {
 
 	public PlatformSettings() {
 		msgLevel = NORMAL;
+	}
+
+	/**
+	 * Generates the .classpath file of an Ocelet project. This generation
+	 * process adapts the version of included jar files to the ones released
+	 * with the OMP version being executed.
+	 */
+	public static void generateClasspath(IProject selectedProject) {
+
+		// Prepare the classpath file content in a String
+		StringBuffer spsb = new StringBuffer();
+		spsb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		spsb.append("<classpath>\n");
+		spsb.append(
+				"  <classpathentry exported=\"true\" kind=\"con\" path=\"org.eclipse.jdt.launching.JRE_CONTAINER\"/>\n");
+		spsb.append("  <classpathentry kind=\"src\" path=\"src\"/>\n");
+		spsb.append("  <classpathentry kind=\"src\" path=\"oclt\"/>\n");
+		spsb.append("  <classpathentry kind=\"output\" path=\"bin\"/>\n");
+
+		final String prefix = "  <classpathentry kind=\"lib\" path=\"../../plugins/";
+		final String suffix = ".jar\"/>\n";
+
+		spsb.append(prefix + getVersioned("org.eclipse.xtext.xbase.lib") + suffix);
+		spsb.append(prefix + getVersioned("com.google.guava") + suffix);
+		spsb.append(prefix + getVersioned("fr.ocelet.datafacer") + suffix);
+		spsb.append(prefix + getVersioned("fr.ocelet.runtime") + suffix);
+		spsb.append(prefix + getVersioned("fr.ocelet") + suffix);
+
+		try {
+			Files.walk(Paths.get("plugins/" + getVersioned("fr.ocelet.libs"))).forEach(filePath -> {
+				if (Files.isRegularFile(filePath) && (filePath.toString().endsWith("jar"))) {
+					spsb.append("  <classpathentry kind=\"lib\" path=\"../../" + filePath + "\"/>\n");
+				}
+			});
+		} catch (IOException e1) {
+			System.err.println("Could not read the fr.ocelet.libs bundle, Ocelet may not be installed correctly or has been corrupted.");
+		}
+		spsb.append("</classpath>");
+
+		// Save the classpath content into the .classpath file
+		IFile cpfile = selectedProject.getFile(".classpath");
+		try {
+			if (cpfile.exists())
+				cpfile.delete(true, null);
+			InputStream istr = new ByteArrayInputStream(spsb.toString().getBytes(Charset.forName("UTF-8")));
+			cpfile.create(istr, true, null);
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static String getVersioned(String plugin) {
+		return plugin + "_" + Platform.getBundle(plugin).getVersion().toString();
 	}
 }

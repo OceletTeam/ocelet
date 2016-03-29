@@ -113,17 +113,10 @@ public abstract class ProjectModel {
 			srcFolder.create(true, true, null);
 
 			// Create the .classpath file
-			errmsg = "creating the .classpath file";
-			IFile classpathFile = newProject.getFile(".classpath");
-			Bundle oceletPlatformBundle = Platform
-					.getBundle("fr.ocelet.platform");
-			Path classpathTemplate = new Path("utils/templates/classpath.txt");
-			InputStream inputStream = null;
-			inputStream = FileLocator.openStream(oceletPlatformBundle,
-					classpathTemplate, false);
-			classpathFile.create(inputStream, true, null);
+			PlatformSettings.generateClasspath(newProject);
 
 			// Add a dummy minimal ocelet model
+			Bundle oceletPlatformBundle = Platform.getBundle("fr.ocelet.platform");
 			errmsg = "adding a template model";
 			Path modelTemplate = new Path(
 					"utils/templates/DefaultMinimalScenario.txt");

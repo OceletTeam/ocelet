@@ -108,6 +108,8 @@ import org.eclipse.ui.wizards.datatransfer.FileSystemStructureProvider;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.osgi.framework.Bundle;
 
+import fr.ocelet.platform.PlatformSettings;
+
 /**
  * This class is a copy of the class
  * org.eclipse.ui.internal.wizards.datatransfer.WizardProjectsImportPage that we
@@ -1374,18 +1376,10 @@ public class ImportProjectWizardPage extends WizardDataTransferPage {
 		// ---- Added for Ocelet projects ----
 		try {
 			for (IProject ipr : (List<IProject>) createdProjects) {
-				// Updates the .classpath file to sync with Ocelet version
-				IFile classpathFile = ipr.getFile(".classpath");
-				if (classpathFile.exists())
-					classpathFile.delete(true, null);
-				Bundle oceletPlatformBundle = Platform
-						.getBundle("fr.ocelet.platform");
-				Path classpathTemplate = new Path(
-						"utils/templates/classpath.txt");
-				InputStream inputStream = null;
-				inputStream = FileLocator.openStream(oceletPlatformBundle,
-						classpathTemplate, false);
-				classpathFile.create(inputStream, true, null);
+				
+				// Generates the .classpath file in sync with this Ocelet version
+				PlatformSettings.generateClasspath(ipr);
+
 				// Clean src and bin directories to force clean rebuild
 				IFolder srcFolder = (IFolder) ipr.getFolder("src");
 				IFolder binFolder = (IFolder) ipr.getFolder("bin");
@@ -1393,8 +1387,6 @@ public class ImportProjectWizardPage extends WizardDataTransferPage {
 				srcFolder.delete(true, null);
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return true;
