@@ -313,7 +313,6 @@ public double[] worldBounds(){
 	double maxX = max[0];
 	double maxY = min[1];
 	
-System.out.println("bounds" +minX+" "+minY+" "+maxX+" "+maxY);
 
 worldBounds[0] = minX;
 worldBounds[1] = minY;
