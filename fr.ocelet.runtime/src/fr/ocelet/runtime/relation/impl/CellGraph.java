@@ -1,8 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   CellGraph.java
-
 package fr.ocelet.runtime.relation.impl;
 
 import fr.ocelet.runtime.geom.SpatialManager;
@@ -83,36 +78,47 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
         return (new StringBuilder("Interaction graph (")).append(getClass().getSimpleName()).append(") contains ").append(size()).append(" edges.").toString();
     }
 
-    public int getWidth()
-    {
+    public int getWidth(){
         return grid.getWidth();
     }
 
-    public int getHeight()
-    {
+    public int getHeight(){
         return grid.getHeight();
     }
+public void setAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg, boolean val){
+        cellIterator.setAggregOpDouble(name, agg, val);
 
-   
+    }
+public void setAggregOpInteger(String name, AggregOperator<Integer, List<Integer>> agg, boolean val){
+        cellIterator.setAggregOpInteger(name, agg, val);
 
-    protected void setAggregOp(String name, AggregOperator agg, boolean val)
-    {
-        cellIterator.setAggregOp(name, agg, val);
     }
 
-    protected void setCellOperator(CellAggregOperator operator)
-    {
+public void setAggregOpFloat(String name, AggregOperator<Float, List<Float>> agg, boolean val){
+        cellIterator.setAggregOpFloat(name, agg, val);
+    }
+
+public void setAggregOpByte(String name, AggregOperator<Byte, List<Byte>> agg, boolean val){
+        cellIterator.setAggregOpByte(name, agg, val);
+    }
+
+public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean>> agg, boolean val){
+        cellIterator.setAggregOpBoolean(name, agg, val);
+    }
+   /* protected void setAggregOp(String name, AggregOperator agg, boolean val){
+        cellIterator.setAggregOp(name, agg, val);
+    }*/
+
+    protected void setCellOperator(CellAggregOperator operator){
         grid.setAggregOp(operator);
     }
 
-    protected void cleanOperator()
-    {
+    protected void cleanOperator(){
         grid.cleanOperator();
         grid.clearGeomTempVal();
     }
 
-    protected void setMode(int mode)
-    {
+    protected void setMode(int mode){
         grid.setMode(mode);
     }
     

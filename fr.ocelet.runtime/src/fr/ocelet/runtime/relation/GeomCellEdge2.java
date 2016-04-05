@@ -1,8 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   GeomCellEdge.java
-
 package fr.ocelet.runtime.relation;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -25,6 +20,7 @@ import fr.ocelet.runtime.geom.ocltypes.MultiPoint;
 import fr.ocelet.runtime.geom.ocltypes.MultiPolygon;
 import fr.ocelet.runtime.geom.ocltypes.Point;
 import fr.ocelet.runtime.geom.ocltypes.Polygon;
+import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.raster.Grid;
@@ -82,12 +78,55 @@ public abstract class GeomCellEdge2<R1 extends OcltRole, R2 extends OcltRole> ex
         aggregMap.put(name, operator);
     }
 
-    public void setCellOperator(String name, AggregOperator operator)
+    public void setCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps)
     {
-        CellAggregOperator cao = new CellAggregOperator(operator, name);
+        CellAggregOperator cao = new CellAggregOperator();
+        if(typeProps.get(name).equals("Double")){
+        	setAggregOpDouble(name, operator);
+        }else if(typeProps.get(name).equals("Integer")){
+        	setAggregOpInteger(name, operator);
+
+        }else if(typeProps.get(name).equals("Float")){
+        	setAggregOpFloat(name, operator);
+
+        }else if(typeProps.get(name).equals("Byte")){
+        	setAggregOpByte(name, operator);
+
+        }else if(typeProps.get(name).equals("Boolean")){
+        	setAggregOpBoolean(name, operator);
+
+        }
+    }
+public void setAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorDouble(agg);
+        aggregMap.put(name, cao);
+
+    }
+public void setAggregOpInteger(String name, AggregOperator<Integer, List<Integer>> agg){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorInteger(agg);
+        aggregMap.put(name, cao);
+
+    }
+
+public void setAggregOpFloat(String name, AggregOperator<Float, List<Float>> agg){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorFloat(agg);
         aggregMap.put(name, cao);
     }
 
+public void setAggregOpByte(String name, AggregOperator<Byte, List<Byte>> agg){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorByte(agg);
+        aggregMap.put(name, cao);
+    }
+
+public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean>> agg){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorBoolean(agg);
+        aggregMap.put(name, cao);
+    }
     public GeomCellEdge2(Grid grid, List<R2> geomEntities){
     
       

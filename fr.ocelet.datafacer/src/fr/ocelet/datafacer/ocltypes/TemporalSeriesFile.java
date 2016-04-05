@@ -3,16 +3,19 @@ package fr.ocelet.datafacer.ocltypes;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.geotools.coverage.grid.GridGeometry2D;
 
+import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.raster.Grid;
+import fr.ocelet.runtime.raster.GridManager;
 import fr.ocelet.runtime.raster.ORaster;
 import fr.ocelet.runtime.relation.OcltRole;
 import fr.ocelet.runtime.util.FileUtils;
 
-public class TemporalSeriesFile {
+public abstract class TemporalSeriesFile {
 	
 	
 	protected int index = 0;
@@ -23,16 +26,26 @@ public class TemporalSeriesFile {
 	protected String[] names;
 	protected Double[] bounds;
 	protected HashMap<String, ParsedName> parsedNames = new HashMap<String, ParsedName>();
+	protected int numGrid;
+	
+	protected KeyMap<String, Integer> matchedBand = new KeyMap<String, Integer>();
 
 	  public TemporalSeriesFile(String fileName){
 	    
 	        path = fileName;
 	      	File file = new File(FileUtils.applyOutput(path));
 	        names = file.list();
-	      
-	      /*  for(String name : names){
-	        	System.out.println(name);
-	        }*/
+	        File[] files = file.listFiles();
+ArrayList<String> tempNames = new ArrayList<String>();
+for(File f : files){
+	if(!f.isDirectory()){
+		tempNames.add(f.getName());
+
+	}
+}
+Collections.sort(tempNames);
+	names = tempNames.toArray(new String[tempNames.size()]);
+	      init();
 	    }
 
 	    public void setProperties(Grid grid1, OcltRole ocltrole){
@@ -86,16 +99,14 @@ public class TemporalSeriesFile {
 
 	    public void next(){
 	    	index ++;
-	    	
-	    	
-	    	
 	    }
 	    
-	    public void update(Grid grid){
-	    	
+	    public void update(){
+	    	currentGrid();
+	    	Grid grid = GridManager.getInstance().get(numGrid);
 	    	ORaster raster = new ORaster(FileUtils.applyOutput(path+"/"+names[index]));
 	    	
-	    	grid.copy(raster);
+	    	grid.copy(raster, matchedBand);
 	    }
 	    
 	    public void mask(String mask){
@@ -113,11 +124,7 @@ public class TemporalSeriesFile {
 	    		decoupe = decoupe.substring(lastIndex, decoupe.length());
 	    		// = decoupe.indexOf("%");
 	    		String ref = decoupe.substring(0, lastIndex);
-	    		
-	    		
 	    	}
-	    	
-	   
 	    }
 	    
 	    public class ParsedName{
@@ -154,4 +161,9 @@ public class TemporalSeriesFile {
 	    		}
 	    	}
 	    }
+	    
+	    public abstract void currentGrid();
+	    
+	    public abstract void init();
+	    
 }

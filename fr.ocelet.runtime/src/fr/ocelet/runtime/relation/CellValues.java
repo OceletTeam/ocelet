@@ -1,46 +1,34 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   CellValues.java
-
 package fr.ocelet.runtime.relation;
 
 import fr.ocelet.runtime.ocltypes.List;
 import java.util.*;
 
-public class CellValues
-{
+public class CellValues{
 
-    public CellValues()
-    {
+    public CellValues(){
         values = new HashMap<String, List<Double>>();
     }
 
-    public void set(String name)
-    {
+    public void set(String name){
         List<Double> aList = new List<Double>();
         values.put(name, aList);
     }
 
-    public void add(String name, Double value)
-    {
-        ((List<Double>)values.get(name)).add(value);
+    public void add(String name, Double value){
+        values.get(name).add(value);
     }
 
-    public void clear(String name)
-    {
-        ((List<Double>)values.get(name)).clear();
+    public void clear(String name){
+        values.get(name).clear();
     }
 
-    public List<Double> getValues(String name)
-    {
-        return (List<Double>)values.get(name);
+    public List<Double> getValues(String name){
+        return values.get(name);
     }
 
-    public void clearAll()
-    {
+    public void clearAll(){
         String name;
-        for(Iterator<String> iterator = values.keySet().iterator(); iterator.hasNext(); ((List<Double>)values.get(name)).clear())
+        for(Iterator<String> iterator = values.keySet().iterator(); iterator.hasNext(); values.get(name).clear())
             name = (String)iterator.next();
 
     }

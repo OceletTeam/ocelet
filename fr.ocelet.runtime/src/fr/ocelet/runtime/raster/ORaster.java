@@ -1,8 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   ORaster.java
-
 package fr.ocelet.runtime.raster;
 
 import com.sun.media.jai.codecimpl.util.RasterFactory;

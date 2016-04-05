@@ -5,6 +5,7 @@
 
 package fr.ocelet.runtime.relation.impl;
 
+import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.relation.*;
 
@@ -45,11 +46,30 @@ public class CompleteIteratorCell<E extends OcltEdge, Ro extends OcltRole> imple
     public void remove()
     {
     }
+public void setAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg, boolean val){
+        ((CursorEdge)cursorEdge).setAggregOpDouble(name, agg, val);
 
-    public void setAggregOp(String name, AggregOperator agg, boolean val)
+    }
+public void setAggregOpInteger(String name, AggregOperator<Integer, List<Integer>> agg, boolean val){
+        ((CursorEdge)cursorEdge).setAggregOpInteger(name, agg, val);
+
+    }
+
+public void setAggregOpFloat(String name, AggregOperator<Float, List<Float>> agg, boolean val){
+        ((CursorEdge)cursorEdge).setAggregOpFloat(name, agg, val);
+    }
+
+public void setAggregOpByte(String name, AggregOperator<Byte, List<Byte>> agg, boolean val){
+        ((CursorEdge)cursorEdge).setAggregOpByte(name, agg, val);
+    }
+
+public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean>> agg, boolean val){
+        ((CursorEdge)cursorEdge).setAggregOpBoolean(name, agg, val);
+    }
+   /* public void setAggregOp(String name, AggregOperator agg, boolean val)
     {
         ((CursorEdge)cursorEdge).setAggregOp(name, agg, val);
-    }
+    }*/
 
     public void setCellOperator(CellAggregOperator operator)
     {

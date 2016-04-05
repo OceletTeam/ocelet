@@ -152,29 +152,26 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  }
                     }
   					if ('RasterFile'.equals(''+meln.storetype)) { 
-                 // if (Class::forName('fr.ocelet.datafacer.RasterFile').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
+                 // if (Class::forName('fr.ocelet.daatafacer.RasterFile').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
 
                  		val tabType = typeRef('fr.ocelet.runtime.raster.Grid')
                   		members += meln.toMethod('readAll'+entname,tabType)[
                   		body='''
-                   			if(grid == null){
-                  				grid = new Grid(getWidth(), getHeight(), getGridGeometry());
+							if(grid == null){
+								grid = new Grid(getWidth(), getHeight(), getGridGeometry());
                   	  			«FOR mp:matchdef.matchprops»
                   	  	  		«val eproptype = propmap.get(mp.prop)»
                  	  	  			«IF eproptype != null»
                   	  	    			«IF mp.colname != null»
-                  	  	    				grid.addProp("«mp.prop»","«mp.colname»");
+										addProperty("«mp.prop»",«mp.colname»);
                   	  	    			«ENDIF»
                   	  	  			«ENDIF»
                   	  			«ENDFOR»
                   				«entname» entity = new «entname»();
-                  	   	    	grid.setInitRaster(raster.getRaster(0, 0 , getWidth(), getHeight()));
-                  	   	    	grid.setFinalProperties(entity.getProps());
-                  	   	    	grid.setRes(raster);
-                  	   	    	fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
-                  	   	    	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	 			}
-                  	  			return grid;
+								createGrid(entity.getProps(), "«entname»Grid");
+								entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+								}
+							return grid;
                   		  	'''
                   		]                  	
                   	  	members += meln.toMethod('readAll'+entname,tabType)[
@@ -184,49 +181,85 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  	parameters += meln.toParameter('maxY', typeRef('java.lang.Integer'))
                   	  	body='''                 
                   			if(grid == null){
-                  	  		grid = new Grid(minX, minY, maxX, maxY, getGridGeometry());
+							grid = new Grid(minX, minY, maxX, maxY, getGridGeometry());
                   	 		«FOR mp:matchdef.matchprops»
                   	  	  	«val eproptype = propmap.get(mp.prop)»
                  	  	  		«IF eproptype != null»
                   	  	    		«IF mp.colname != null»
-                  	  	    			grid.addProp("«mp.prop»","«mp.colname»");
+										grid.addProp("«mp.prop»","«mp.colname»");
                   	  	    		«ENDIF»
                   	  	  		«ENDIF»
                   	  		«ENDFOR»
-                  	  	  	«entname» entity = new «entname»(); 
-                  	   	    grid.setInitRaster(raster.getRaster(minX, minY, maxX, maxY));
-                  	   	    grid.setFinalProperties(entity.getProps());
-                  	   	    grid.setRes(raster);
-                  	   	    fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
-                  	   	    entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	  		}
-                  	  		return grid;
+							«entname» entity = new «entname»(); 
+							grid.setInitRaster(raster.getRaster(minX, minY, maxX, maxY));
+							grid.setFinalProperties(entity.getProps());
+							grid.setRes(raster);
+							fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+							entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+							}
+						return grid;
                   	  	'''
                   	]
                    	members += meln.toMethod('readAll'+entname,tabType)[
                   	parameters += meln.toParameter('shp', typeRef('fr.ocelet.datafacer.ocltypes.Shapefile'))
                   	body='''
                   	if(grid == null){
-                  	grid = new Grid();
+                  
                   	«FOR mp:matchdef.matchprops»
                   	«val eproptype = propmap.get(mp.prop)»
                  	«IF eproptype != null»
                   	«IF mp.colname != null»
-                  	grid.addProp("«mp.prop»","«mp.colname»");
+						addProperty("«mp.prop»",«mp.colname»);
                   	«ENDIF»
                   	«ENDIF»
                   	«ENDFOR»
                   	«entname» entity = new «entname»();
-                   	grid.setData(shp.getBounds(), raster, entity.getProps().size());
-                    grid.setFinalProperties(entity.getProps());
-                  	grid.setRes(raster);
-                  	fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
+                  	this.grid = createGrid(entity.getProps(), shp, 	"«entname»Grid");
                     entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
                   	}
                     return grid;
                     '''
                   ]
-                  	
+             }else if('TemporalSeriesFile'.equals(''+meln.storetype)) { 
+             	
+             	
+             	 /*	acceptor.accept(modl.toClass(meln.fullyQualifiedName)) [
+          	  superTypes += typeRef('fr.ocelet.datafacer.ocltypes.'+meln.storetype)
+          	  members+= meln.toConstructor[
+         	    parameters += meln.toParameter('filename', typeRef('java.lang.String'))
+                body = '''
+                	super(filename);
+                '''
+     		  ]*/
+             	/*var jvmFieldY = meln.toField("cellEntity", entype)
+          	    if (jvmFieldY != null) {
+          	      jvmFieldY.setFinal(false) 
+          		  members+= jvmFieldY
+          		
+          		 }*/
+          		 
+          		 
+          		 	members += meln.toMethod('init',typeRef(Void::TYPE))[
+                  		body='''
+                  				«FOR mp:matchdef.matchprops»
+                  	  	  		«val eproptype = propmap.get(mp.prop)»
+                 	  	  			«IF eproptype != null»
+                  	  	    			«IF mp.colname != null»
+										matchedBand.put("«mp.prop»",«mp.colname»);
+                  	  	    			«ENDIF»
+                  	  	  			«ENDIF»
+                  	  			«ENDFOR»
+                  		  	'''
+                  		]  
+                  		
+                  		members += meln.toMethod('currentGrid',typeRef(Void::TYPE))[
+                  		body='''
+                  		
+                  		«entname» cellEntity = new «entname»();
+                  				this.numGrid = cellEntity.getNumGrid();
+                  		  	'''
+                  		]
+              	
        		}else{
 
                   // InputDatafacer functions
@@ -298,8 +331,8 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                  	 «val odrtype = typeRef('fr.ocelet.datafacer.OutputDataRecord')»
                  	 «odrtype» odr = createOutputDataRec();
                  	 if (odr != null) {
-                   «FOR mp:matchdef.matchprops»
-                     odr.setAttribute("«mp.colname»",((«entname») ety).get«mp.prop.toFirstUpper»());
+                   	 «FOR mp:matchdef.matchprops»
+						odr.setAttribute("«mp.colname»",((«entname») ety).get«mp.prop.toFirstUpper»());
                  	 «ENDFOR»
                  	 }
                  	 return odr;
@@ -351,6 +384,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
      		  superTypes += typeRef('fr.ocelet.runtime.entity.AbstractEntity')
      		  val List<PropertyDef> lpropdefs = <PropertyDef>newArrayList()
      		  val List<String> cellProps = <String>newArrayList() 
+     		  val HashMap<String, String> typeProps = <String, String>newHashMap()
      		  var boolean isCell = false
      		  
      		  for(enteln:meln.entelns) {
@@ -372,8 +406,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                       if (enteln.name != null) {
       		  			lpropdefs.add(enteln)
       		  			
-      		  			if(!enteln.type.simpleName.equals("Cell"))
+      		  			if(!enteln.type.simpleName.equals("Cell")){
       		  			cellProps.add(enteln.name)
+      		  			typeProps.put(enteln.name, enteln.type.simpleName)
+      		  			}
       		  			
       		  			
       		  			if(isCell){
@@ -382,15 +418,71 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				documentation = enteln.documentation
       		  				val parName = enteln.name
       		  				parameters += enteln.toParameter(parName, enteln.type)
+      		  				if(enteln.type.simpleName.equals('Double')){
       		  				body= '''
       		  					 fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).setValue("«enteln.name»",getX(), getY(),«enteln.name»);
       		  				'''
+      		  				}else if(enteln.type.simpleName.equals('Integer')){
+      		  					body= '''
+      		  					 fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).setValue("«enteln.name»",getX(), getY(),«enteln.name».doubleValue());
+      		  				'''
+      		  				}else if(enteln.type.simpleName.equals('Float')){
+      		  					body= '''
+      		  					 fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).setValue("«enteln.name»",getX(), getY(),«enteln.name».doubleValue());
+      		  				'''
+      		  				}else if(enteln.type.simpleName.equals('Boolean')){
+      		  					body= '''
+      		  						if(«enteln.name» == true)
+										fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).setValue("«enteln.name»",getX(), getY(),1.0);
+										fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).setValue("«enteln.name»",getX(), getY(),0.0);
+
+      		  				'''
+      		  				}else if(enteln.type.simpleName.equals('Byte')){
+      		  					body= '''
+      		  					 fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).setValue("«enteln.name»",getX(), getY(),«enteln.name».doubleValue());
+      		  				'''
+      		  				}else{
+      		  					body= '''
+      		  					println("«enteln.name» type is not allowed for a cell entity");
+      		  				'''
+
+      		  				}
+      		  				
       		  			]
       		  			members += enteln.toMethod('get'+enteln.name.toFirstUpper,enteln.type)[
       		  				documentation = enteln.documentation
+      		  				
+      		  					if(enteln.type.simpleName.equals('Double')){
       		  				body= '''
       		  					return fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).getValue("«enteln.name»",getX(), getY());
       		  				'''
+      		  				
+      		  				}else if(enteln.type.simpleName.equals('Integer')){
+      		  					body= '''
+      		  					return fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).getValue("«enteln.name»",getX(), getY()).intValue();
+      		  				'''
+      		  				}else if(enteln.type.simpleName.equals('Float')){
+      		  					body= '''
+      		  					return fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).getValue("«enteln.name»",getX(), getY()).floatValue();
+      		  				'''
+      		  				}else if(enteln.type.simpleName.equals('Byte')){
+      		  					body= '''
+      		  					return fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).getValue("«enteln.name»",getX(), getY()).byteValue();
+      		  				'''
+      		  				}else if(enteln.type.simpleName.equals('Boolean')){
+      		  					body= '''
+      		  					Double val =fr.ocelet.runtime.raster.GridManager.getInstance().get(numGrid).getValue("«enteln.name»",getX(), getY());
+      		  					if(val == 0){
+      		  						return true;
+      		  					} 
+      		  					return false;
+      		  				'''
+      		  				}else{
+      		  					body= '''
+      		  					println("«enteln.name» type is not allowed for a cell entity");
+      		  				'''
+
+      		  				}
       		  			]
       		  				}
       		  			
@@ -466,7 +558,16 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				return names;
       		  			'''
       		  		]
-      		  			
+      		  		members += meln.toMethod('getTypeProps',typeRef('fr.ocelet.runtime.ocltypes.KeyMap',typeRef('java.lang.String'), typeRef('java.lang.String')))[    	      	
+      	            		  				
+      		  			body='''
+      		  				KeyMap<String, String> names = new KeyMap<String, String>();
+      		  				«FOR name : cellProps»
+      		  					names.put("«name»","«typeProps.get(name)»");
+      		  				«ENDFOR»
+      		  				return names;
+      		  			'''
+      		  		]	
       		  			 members += meln.toMethod('updateCellInfo',typeRef(Void::TYPE))[    	      	
       	            		  	parameters += meln.toParameter('type', typeRef('java.lang.String'))
       		  				body='''
@@ -509,6 +610,11 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				body='''
       		  					this.numGrid = numGrid;
       		  					this.cell.setNumGrid(this.numGrid);
+      		  				'''
+      		  			]
+      		  			  members += meln.toMethod('getNumGrid', typeRef('java.lang.Integer'))[    	      	
+      		  				body='''
+      		  					return this.numGrid;
       		  				'''
       		  			]
       		   members += meln.toMethod('setX', typeRef(Void::TYPE))[    	      	
@@ -555,13 +661,1537 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                 parameters += meln.toParameter('preval',meln.type)
                 body  = meln.body
               ]
+              
+              
             ]
           }
         }
+// ---- Relation ------------------------------------
+          Relation : {
+          	val graphcname = meln.fullyQualifiedName
+          	val edgecname = graphcname+"_Edge"
+            if (meln.roles.size > 2) println("Sorry, only graphs with two roles are supported by this version. The two first roles will be used and the others will be ignored.")
+    
+            val aggregType = typeRef('fr.ocelet.runtime.raster.CellAggregOperator')
+            val listype = typeRef('fr.ocelet.runtime.ocltypes.List',aggregType)
+           	val gridType = typeRef('fr.ocelet.runtime.raster.Grid')
+     
+	 			// Generate the edge class
+        	acceptor.accept(modl.toClass(edgecname))[
+          			
+          			
+          	val isAutoGraph = (meln.roles.get(0).type.equals(meln.roles.get(1).type))
+            var isCellGraph = false
+            var isCellGeomGraph = false
+            var testCell1 = false
+            var testCell2 = false
+            var testGeom1 = false
+            var testGeom2 = false
+            val rol1 = meln.roles.get(0).type
+            val rol2 = meln.roles.get(1).type
+            for(e : rol1.eContents){
+            	switch (e){
+           	  		PropertyDef : {
+           				if(e.type.simpleName.equals('Cell')){
+           					testCell1 = true
+           				}
+           				if(e.type.simpleName.equals('Line') || e.type.simpleName.equals('MultiLine') ||
+           					e.type.simpleName.equals('Polygon') || e.type.simpleName.equals('MultiPolygon') ||
+           					e.type.simpleName.equals('Point') || e.type.simpleName.equals('MultiPoint') ||
+           					e.type.simpleName.equals('Ring')
+           				){
+           					testGeom1 = true
+           				}
+           			}
+           		}
+           }
+           for(e : rol2.eContents){
+           		switch (e){
+           			PropertyDef : {
+           				if(e.type.simpleName.equals('Cell')){
+           					testCell2 = true
+           				}
+           					if(e.type.simpleName.equals('Line') || e.type.simpleName.equals('MultiLine') ||
+           					e.type.simpleName.equals('Polygon') || e.type.simpleName.equals('MultiPolygon') ||
+           					e.type.simpleName.equals('Point') || e.type.simpleName.equals('MultiPoint') ||
+           					e.type.simpleName.equals('Ring')
+           				){
+           					testGeom2 = true
+           				}
+           			}
+           		}
+           	
+            }
+     
+            if(testCell1 && testCell2){
+            	isCellGraph = true
+            }
+            if(testGeom1 && testCell2 || testGeom2 && testCell1){
+            	isCellGeomGraph = true
+            }
+                        var graphname = 'fr.ocelet.runtime.relation.impl.AutoGraph'
+            
+            if(!isAutoGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.DiGraph'
+            }
+            if(isCellGraph){
+            	if(isAutoGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.CellGraph'
+            	}else{
+            		graphname = 'fr.ocelet.runtime.relation.impl.DiCellGraph'
+            	}
+            }
+			if(isCellGeomGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.GeometryCellGraph'
+            }
+        	val graphTypeName = graphname 
+          			
+          			
+          	if(isCellGeomGraph){	
+          	   	val firstRole = meln.roles.get(0)                                 
+              	val secondRole = meln.roles.get(1)     
+               
+              	var tempcellType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              	var tempgeomType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              
+             	var tempCellName = firstRole.name
+              	var tempGeomName = secondRole.name
+              
+             	if(testCell2){
+              	
+              		tempcellType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              		tempCellName = secondRole.name
+            		tempgeomType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              		tempGeomName = firstRole.name
+              	}
+              	val cellType = tempcellType
+              	val geomType = tempgeomType
+              	val cellName = tempCellName
+              	val geomName = tempGeomName
+              	
+          		superTypes += typeRef('fr.ocelet.runtime.relation.GeomCellEdge', cellType, geomType)            
+          	    if ((meln.roles.size >= 2) &&
+            	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+               	(meln.roles.get(0).type.fullyQualifiedName != null) &&
+               	(meln.roles.get(1).type.fullyQualifiedName != null) &&
+            	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+                ) {	
+          	 		var jvmField = meln.toField(cellName, cellType)
+          	    	if (jvmField != null) {
+          	      		jvmField.setFinal(false) 
+          		  		members+= jvmField
+          		  		members+= meln.toSetter(cellName, cellType)
+          		  		members+= meln.toGetter(cellName, cellType)
+          		  	}
+          			jvmField = meln.toField(geomName, geomType)
+          	  		if (jvmField != null) {
+          	  	  		jvmField.setFinal(false) 
+          		  		members+= jvmField
+          		  		members+= meln.toSetter(geomName, geomType)
+          		  		members+= meln.toGetter(geomName, geomType)
+          			}          		
+          		
+          			members+= meln.toConstructor[
+          			parameters += meln.toParameter("grid", typeRef("fr.ocelet.runtime.raster.Grid"))
+          			parameters += meln.toParameter("geom", typeRef("fr.ocelet.runtime.ocltypes.List", geomType))
+          			body = '''
+          			  super(grid, geom);  
+          			  this.«cellName» = new «cellType»();
+          			  «cellName».updateCellInfo(getCellType());
+          		  '''
+          		]
+          		members += meln.toMethod("getRole", typeRef("fr.ocelet.runtime.relation.OcltRole"))[
+          			parameters += meln.toParameter("i",typeRef("int"))
+          						body = '''
+          				if (i==0) return «cellName»;
+          				else if (i==1) return «geomName»;
+          				else return null;
+          			'''
+          		]
+          		
+          		members += meln.toMethod("update", typeRef(Void::TYPE))[
+          			
+          			body = '''
+						this.«cellName».setX(getX());
+						this.«cellName».setY(getY());
+						this. «geomName» = getGeomEntity();
+          			'''
+          		]
+          		}
+     		  // Generate Properties and Interactions on the edge level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  
+          	  	  InteractionDef : {
+          	  	  	members+= reln.toMethod(reln.name,typeRef(Void::TYPE))[
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  }
+          	  	  	  body = reln.body
+          	  	  	]
+          	  	    if (reln.comitexpressions.size() > 0) {
+          	  	    	
+          	  	    	
+          	  	        members += reln.toMethod("get_agr_"+reln.name,listype)[
+          	  	      	body = '''
+          	  	      		«var index = 0»
+          	  	      		«listype» cvtList = new «listype»();
+          	  	      	  «FOR ce : reln.comitexpressions»
+          	  	      	  	«IF ce.rol.type.fullyQualifiedName.toString.equals(cellType.qualifiedName.toString)»
+          	  	      	  		«aggregType» cvt«index» = new «aggregType»();
+								cvt«index».setName("«ce.prop»"); 
+								cvt«index».setCellOperator(new  «ce.agrfunc»(), «cellName».getTypeProps());
+								cvtList.add(cvt«index»);
+          	  	      	  	 	«{index = index + 1; null}»
+          	  	      	  	«ENDIF»
+           	  	      	  «ENDFOR »
+						return cvtList;
+          	  	      	'''
+          	  	      ]
+          	  	    	
+          	  	    	
+          	  	      members += reln.toMethod("_agr_"+reln.name,typeRef(Void::TYPE))[
+          	  	      	body = '''
+          	  	      		
+          	  	      		«FOR ce:reln.comitexpressions»
+          	  	      		«val t1 = ce.rol.type.fullyQualifiedName.toString»
+          	  	      		«val t2 = cellType.qualifiedName.toString»
+          	  	      			«IF !t1.equals(t2)»
+          	  	      				this.«ce.rol.getName()».setAgregOp("«ce.prop»",new «ce.agrfunc»(),«ce.usepreval»);
+								«ENDIF»
+							«ENDFOR»          	  	      		
+          	  	      	'''
+          	  	      ]
+          	  	    }else{
+          	  	    	   members += reln.toMethod("get_agr_"+reln.name,listype)[
+          	  	      	body = ''' 
+          	  	      		return null;
+          	  	      	'''
+          	  	      	]
+          	  	    }
+          	  	 }
+          	  }
+  		    }
+  		    
+  		    }else if (isCellGraph){
+  		    	
+  		    	if(!isAutoGraph){
+  		    		 superTypes += typeRef('fr.ocelet.runtime.relation.DiCursorEdge')
+              /*  if ((meln.roles.size >= 2) &&
+            	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+               	(meln.roles.get(0).type.fullyQualifiedName != null) &&
+               	(meln.roles.get(1).type.fullyQualifiedName != null) &&
+            	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+                ) {*/ 
+                	
+ 			  val firstRole = meln.roles.get(0)
+       		  val secondRole = meln.roles.get(1)      
+              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+          		
+          	  var jvmField = meln.toField(firstRole.name, firstRoleType)
+          	    if (jvmField != null) {
+          	      jvmField.setFinal(false) 
+          		  members+= jvmField
+          		
+          		 }
+          		jvmField = meln.toField(secondRole.name, secondRoleType)
+          	  	if (jvmField != null) {
+          	  	  jvmField.setFinal(false) 
+          		  members+= jvmField
+          	
+          		}          		
+          		
+          		members+= meln.toConstructor[
+          			parameters += meln.toParameter("grid1",typeRef("fr.ocelet.runtime.raster.Grid"))
+          			parameters += meln.toParameter("grid2",typeRef("fr.ocelet.runtime.raster.Grid"))
+          			
+          			body = ''' 
+          			  super(grid1, grid2);
+          			  «firstRole.name» = new «firstRoleType»();
+          			  «secondRole.name» = new «secondRoleType»();
+          			  «firstRole.name».updateCellInfo(getCellType());
+          			  «secondRole.name».updateCellInfo(getCellType());
+          			 // e1 = new «firstRoleType»();
+          			  //e2 = new «secondRoleType»();
+          			  //e1.updateCellInfo(getCellType());
+          			  //e2.updateCellInfo(getCellType());
+          			  updateRoleInfo();
+          		  '''
+          		]
+          		
+          	
+          		members += meln.toMethod("getRole",typeRef("fr.ocelet.runtime.relation.OcltRole"))[
+          			parameters += meln.toParameter("i",typeRef('java.lang.Integer'))
+          						body = '''
+          				if (i==0) return «firstRole.name»;
+          				else if (i==1) return «secondRole.name»;
+          				else return null;
+          			'''
+          		]
+          	
+          		          		
+          		members += meln.toMethod("update",typeRef(Void::TYPE))[
+          			
+          			body = '''
+          				this. «firstRole.name».setX(x);
+          				this. «firstRole.name».setY(y);
+          				this. «secondRole.name».setX(x2);
+          				this. «secondRole.name».setY(y2);
+          				// this.e1.setX(x);
+          				//this.e1.setY(y);
+          				//this.e2.setX(x2);
+          				//this.e2.setY(y2);
 
+          			'''
+          		]
+          		//}
+     		  // Generate Properties and Interactions on the edge level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  	  InteractionDef : {
+          	  	  	
+          	  	  	
+          	  	  	
+          	  	  	members+= reln.toMethod(reln.name, typeRef(Void::TYPE))[
+          	  	  		var params =""
+          	  	  		
+          	  	  
+          	  	  	var index = 0;
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  	
+          	  	  	  	if(index == reln.params.size){
+          	  	  	  		params = params + p.name
+          	  	  	  	}else{
+          	  	  	  		params = params + p.name+","
+          	  	  	  	}
+          	  	  	  }
+          	  	  	  val finalParams = params
+          	  	  	  body = reln.body
+          	  	  	]
+          	  	    if (reln.comitexpressions.size() > 0) {
+          	  	      members += reln.toMethod("get_agr_"+reln.name,listype)[
+          	  	      	body = '''
+          	  	      		«var index = 0»
+          	  	      		«listype» cvtList = new «listype»();	
+          	  	      		«FOR ce : reln.comitexpressions»
+								«aggregType» cvt«index» = new «aggregType»();	
+								cvt«index».setName("«ce.prop»"); 
+								cvt«index».setCellOperator(new «ce.agrfunc»(), «firstRole.name».getTypeProps());
+								cvtList.add(cvt«index»);
+          	  	      	  	 	«{index = index + 1; null}»
+							«ENDFOR»
+							return cvtList;
+          	  	      	'''
+          	  	      ]
+          	  	    }else{
+          	  	    	   members += reln.toMethod("get_agr_"+reln.name,listype)[
+          	  	      	body = '''
+          	  	      		return null;
+          	  	      	'''
+          	  	      	]
+          	  	    }
+          	  	  }
+          	  	}
+  		      }
+  		    		
+  		    		
+  		    		
+  		    		}else{
+  		    			
+  		    			superTypes += typeRef('fr.ocelet.runtime.relation.CursorEdge')
+              /*   if ((meln.roles.size >= 2) &&
+            	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+               	(meln.roles.get(0).type.fullyQualifiedName != null) &&
+               	(meln.roles.get(1).type.fullyQualifiedName != null) &&
+            	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+                ) {*/
+               val firstRole = meln.roles.get(0)
+              val secondRole = meln.roles.get(1)
+              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+          		
+          	  var jvmField = meln.toField(firstRole.name, firstRoleType)
+          	    if (jvmField != null) {
+          	      jvmField.setFinal(false) 
+          		  members+= jvmField
+          		
+          		 }
+          		jvmField = meln.toField(secondRole.name, secondRoleType)
+          	  	if (jvmField != null) {
+          	  	  jvmField.setFinal(false) 
+          		  members+= jvmField
+          	
+          		}          		
+          		
+          		members+= meln.toConstructor[
+          			parameters += meln.toParameter("igr",typeRef("fr.ocelet.runtime.raster.Grid"))
+          			body = '''
+          				super(igr);
+          			    «firstRole.name» = new «firstRoleType»();
+          			    «secondRole.name» = new «secondRoleType»();
+          			    «firstRole.name».updateCellInfo(getCellType());
+          			    «secondRole.name».updateCellInfo(getCellType());
+          		  '''
+          		]
+          		members += meln.toMethod("getRole",typeRef("fr.ocelet.runtime.relation.OcltRole"))[
+          			parameters += meln.toParameter("i",typeRef('java.lang.Integer'))
+          						body = '''
+          				if (i==0) return «firstRole.name»;
+          				else if (i==1) return «secondRole.name»;
+          				else return null;
+          			'''
+          		]
+          		members += meln.toMethod("updateCellType",typeRef(Void::TYPE))[
+          			
+          						body = '''
+          							 «firstRole.name».updateCellInfo(getCellType());
+          							 «secondRole.name».updateCellInfo(getCellType());
+          			'''
+          		]
+          		          		
+          		members += meln.toMethod("update",typeRef(Void::TYPE))[
+          			
+          			body = '''
+						this. «firstRole.name».setX(x);
+						this. «firstRole.name».setY(y);
+						this. «secondRole.name».setX(x2);
+						this. «secondRole.name».setY(y2);
+          			'''
+          		]
+          		//}
+     		  // Generate Properties and Interactions on the edge level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  	  InteractionDef : {          	  	  	          	  	  	
+          	  	  	
+          	  	  	members+= reln.toMethod(reln.name,typeRef(Void::TYPE))[
+          	  	  		var params =""          	  	  		
+          	  	  
+          	  	  	var index = 0;
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  	
+          	  	  	  	if(index == reln.params.size){
+          	  	  	  		params = params + p.name
+          	  	  	  	}else{
+          	  	  	  		params = params + p.name+","
+          	  	  	  	}
+          	  	  	  }
+          	  	  	  body = reln.body
+          	  	  	]
+          	  	  	 
+          	  	    if (reln.comitexpressions.size() > 0) {
+          	  	      members += reln.toMethod("get_agr_"+reln.name,listype)[
+          	  	      	body = '''
+          	  	      		«var index = 0»
+          	  	      	«listype» cvtList = new «listype»();
+          	  	      	«FOR ce : reln.comitexpressions»
+							«aggregType» cvt«index» = new «aggregType»();
+							cvt«index».setName("«ce.prop»"); 
+							
+							cvt«index».setCellOperator(new «ce.agrfunc»(), «firstRole.name».getTypeProps());
+							cvtList.add(cvt«index»);
+          	  	      	  	«{index = index + 1; null}»
+           	  	      	  «ENDFOR»
+						return cvtList;
+          	  	      	'''
+          	  	      ]
+          	  	    }else{
+          	  	    	   members += reln.toMethod("get_agr_"+reln.name,listype)[
+          	  	      	body = '''
+          	  	      		return null;
+          	  	      	 '''         	  	      	
+          	  	      	]
+          	  	    }
+          	  	  }
+          	  	}
+  		      }
+  		    }
+  		    	
+  		  }else{
+  		    	
+  		    	superTypes += typeRef('fr.ocelet.runtime.relation.OcltEdge')
+
+             if ((meln.roles.size >= 2) &&
+            	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+       	        (meln.roles.get(0).type.fullyQualifiedName != null) &&
+            	(meln.roles.get(1).type.fullyQualifiedName != null) &&
+            	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+                ) {
+
+              val firstRole = meln.roles.get(0)
+              val secondRole = meln.roles.get(1)
+              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+          		
+          		
+          		
+          	  var jvmField = meln.toField(firstRole.name, firstRoleType)
+          	    if (jvmField != null) {
+          	      jvmField.setFinal(false) 
+          		  members+= jvmField
+          		  members+= meln.toSetter(firstRole.name, firstRoleType)
+          		  members+= meln.toGetter(firstRole.name, firstRoleType)
+          		 }
+          		jvmField = meln.toField(secondRole.name, secondRoleType)
+          	  	if (jvmField != null) {
+          	  	  jvmField.setFinal(false) 
+          		  members+= jvmField
+          		  members+= meln.toSetter(secondRole.name, secondRoleType)
+          		  members+= meln.toGetter(secondRole.name, secondRoleType)
+          		}          		
+          		
+          		members+= meln.toConstructor[
+          			parameters += meln.toParameter("igr",typeRef("fr.ocelet.runtime.relation.InteractionGraph"))
+          			parameters += meln.toParameter("first",firstRoleType)
+          			parameters += meln.toParameter("second",secondRoleType)
+          			body = '''
+          			  super(igr);
+          			  «firstRole.name»=first;
+          			  «secondRole.name»=second;
+          			'''
+          		]
+          		
+          		members += meln.toMethod("getRole",typeRef("fr.ocelet.runtime.relation.OcltRole"))[
+          			parameters += meln.toParameter("i",typeRef("int"))
+          			body = '''
+          			  if (i==0) return «firstRole.name»;
+          			  else if (i==1) return «secondRole.name»;
+          			  else return null;
+          	       '''
+          		]
+             } // if roles are well defined
+                	
+                		    		
+     		  // Generate Properties and Interactions on the edge level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  	  RelPropertyDef : {
+            	    val rField = reln.toField(reln.name, reln.type)
+          	  	    if (rField != null) {
+          	  	      rField.setFinal(false) 
+          		      members+= rField
+          		      members+= reln.toSetter(reln.name, reln.type)
+          		      members+= reln.toGetter(reln.name, reln.type)
+          		     }
+        	  	  	
+          	  	  }
+          	  	  InteractionDef : {
+          	  	  	members+= reln.toMethod(reln.name,typeRef(Void::TYPE))[
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  }
+          	  	  	  body = reln.body
+          	  	  	]
+          	  	    if (reln.comitexpressions.size() > 0) {
+          	  	      members += reln.toMethod("_agr_"+reln.name,typeRef(Void::TYPE))[
+          	  	      	body = '''«FOR ce:reln.comitexpressions»
+          	  	      	    this.«ce.rol.getName()».setAgregOp("«ce.prop»",new «ce.agrfunc»(),«ce.usepreval»);
+           	  	      	  «ENDFOR»
+          	  	      	'''
+          	  	      ]
+          	  	    }
+          	  	  }
+          	  	}
+  		      }		    	
+  		    }
+         ]
+          	
+          	// -- Generate filters classes --
+          	for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  	  Filterdef : {
+          	  	  	val filterfqn = graphcname+"_"+reln.name
+          	  	  	acceptor.accept(modl.toClass(filterfqn))[
+          	  	  		
+          	  	  		val isAutoGraph = (meln.roles.get(0).type.equals(meln.roles.get(1).type))
+            var isCellGraph = false
+            var isCellGeomGraph = false
+            var testCell1 = false
+            var testCell2 = false
+            var testGeom1 = false
+            var testGeom2 = false
+            val rol1 = meln.roles.get(0).type
+            val rol2 = meln.roles.get(1).type
+           var graphType = 0 
+            for(e : rol1.eContents){
+            	switch (e){
+           	  	PropertyDef : {
+           			if(e.type.simpleName.equals('Cell')){
+           				testCell1 = true
+           			}
+           			if(e.type.simpleName.equals('Line') || e.type.simpleName.equals('MultiLine') ||
+           				e.type.simpleName.equals('Polygon') || e.type.simpleName.equals('MultiPolygon') ||
+           				e.type.simpleName.equals('Point') || e.type.simpleName.equals('MultiPoint') ||
+           				e.type.simpleName.equals('Ring')
+           			){
+           				testGeom1 = true
+           			}
+           		}
+           	}
+           	
+           }
+            for(e : rol2.eContents){
+           	switch (e){
+           		PropertyDef : {
+           			if(e.type.simpleName.equals('Cell')){
+           				testCell2 = true
+           			}
+           				if(e.type.simpleName.equals('Line') || e.type.simpleName.equals('MultiLine') ||
+           				e.type.simpleName.equals('Polygon') || e.type.simpleName.equals('MultiPolygon') ||
+           				e.type.simpleName.equals('Point') || e.type.simpleName.equals('MultiPoint') ||
+           				e.type.simpleName.equals('Ring')
+           			){
+           				testGeom2 = true
+           			}
+           		}
+           	}
+           	
+           }
+               
+     
+            if(testCell1 && testCell2){
+            	isCellGraph = true
+            }
+            if(testGeom1 && testCell2 || testGeom2 && testCell1){
+            	isCellGeomGraph = true
+            }
+                        var graphname = 'fr.ocelet.runtime.relation.impl.AutoGraph'
+            
+            if(!isAutoGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.DiGraph'
+            }
+            if(isCellGraph){
+            	if(isAutoGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.CellGraph'
+            	}else{
+            		graphname = 'fr.ocelet.runtime.relation.impl.DiCellGraph'
+            	}
+            }
+
+
+
+
+			 if(isCellGeomGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.GeometryCellGraph'
+            }
+        val graphTypeName = graphname 
+          			
+          			
+          		if(isCellGeomGraph){	
+          			       	val firstRole = meln.roles.get(0)                                 
+              	val secondRole = meln.roles.get(1)     
+               
+              	var tempcellType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              	var tempgeomType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              
+             	var tempCellName = firstRole.name
+              	var tempGeomName = secondRole.name
+              
+             	if(testCell2){
+              	
+              		tempcellType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              		tempCellName = secondRole.name
+            		tempgeomType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              		tempGeomName = firstRole.name
+              	}
+                      val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+                      val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+                      superTypes += typeRef("fr.ocelet.runtime.relation.EdgeFilter",firstRoleType,secondRoleType)
+                      for(p:reln.params){
+                      	val pfield = reln.toField(p.name,p.parameterType)
+                      	if (pfield != null) {
+          	  	          pfield.setFinal(false)
+          	  	          members += pfield
+          	  	        }
+                      }
+                      members += reln.toConstructor()[
+                      	for(p:reln.params) {
+                      	  parameters += reln.toParameter(p.name,p.parameterType)
+                        }
+                        body = '''
+                        	« FOR p : reln.params»
+								this.«p.name» = «p.name»;
+                        	« ENDFOR»
+
+                        '''
+                      ]                      
+          	  	  	  members += reln.toMethod("filter",typeRef("java.lang.Boolean"))[
+          	  	  		parameters += reln.toParameter(firstRole.name,firstRoleType)
+          	  	  		parameters += reln.toParameter(secondRole.name,secondRoleType)
+          	  	  		body = reln.body
+          	  	  	  ]
+          	  	  	  
+          	  	  	  }else if (isCellGraph){
+  		    				if(!isAutoGraph){
+  		    		
+  		    		
+  		    			val firstRole = meln.roles.get(0)
+       				 	val secondRole = meln.roles.get(1)      
+                      val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+                      val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+                      superTypes += typeRef("fr.ocelet.runtime.relation.EdgeFilter",firstRoleType,secondRoleType)
+                      for(p:reln.params){
+                      	val pfield = reln.toField(p.name,p.parameterType)
+                      	if (pfield != null) {
+          	  	          pfield.setFinal(false)
+          	  	          members += pfield
+          	  	        }
+                      }
+                      members += reln.toConstructor()[
+                      	for(p:reln.params) {
+                      	  parameters += reln.toParameter(p.name,p.parameterType)
+                        }
+                        body = '''
+                        	«FOR p : reln.params»
+                         	this.«p.name» = «p.name»;
+                         	«ENDFOR»
+                        '''
+                      ]                      
+          	  	  	  members += reln.toMethod("filter",typeRef("java.lang.Boolean"))[
+          	  	  		parameters += reln.toParameter(firstRole.name,firstRoleType)
+          	  	  		parameters += reln.toParameter(secondRole.name,secondRoleType)
+          	  	  		body = reln.body
+          	  	  	  ]
+  		    		
+  		    }else{
+  		    			
+  		    		  val firstRole = meln.roles.get(0)
+       				  val secondRole = meln.roles.get(1)      
+
+                      val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+                      val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+                      superTypes += typeRef("fr.ocelet.runtime.relation.EdgeFilter",firstRoleType,secondRoleType)
+                      
+                      for(p:reln.params){
+                      	
+                      	val pfield = reln.toField(p.name,p.parameterType)
+                      	
+                      	if (pfield != null) {
+          	  	          pfield.setFinal(false)
+          	  	          members += pfield
+          	  	        }
+                      }
+                      members += reln.toConstructor()[
+                      	for(p:reln.params) {
+                      	  parameters += reln.toParameter(p.name,p.parameterType)
+                        }
+                        body = '''
+							«FOR p : reln.params»
+                         	  this.«p.name» = «p.name»;
+                        	«ENDFOR»
+                        '''
+                      ]                      
+          	  	  	  members += reln.toMethod("filter", typeRef("java.lang.Boolean"))[
+          	  	  		parameters += reln.toParameter(firstRole.name,firstRoleType)
+          	  	  		parameters += reln.toParameter(secondRole.name,secondRoleType)
+          	  	  		body = reln.body
+          	  	  	  ]
+  		    			
+  		    	}
+  		    	
+  		    	
+  		    }else{
+  		    	
+  		    	if ((meln.roles.size >= 2) &&
+            	    (meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            	    (meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+       	            (meln.roles.get(0).type.fullyQualifiedName != null) &&
+            	    (meln.roles.get(1).type.fullyQualifiedName != null) &&
+            	    (meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+                    ) {
+                      val firstRole = meln.roles.get(0)
+                      val secondRole = meln.roles.get(1)
+                      val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+                      val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+                      superTypes += typeRef("fr.ocelet.runtime.relation.EdgeFilter",firstRoleType,secondRoleType)
+                      for(p:reln.params){
+                      	val pfield = reln.toField(p.name,p.parameterType)
+                      	if (pfield != null) {
+          	  	          pfield.setFinal(false)
+          	  	          members += pfield
+          	  	        }
+                      }
+                      members += reln.toConstructor()[
+                      	for(p:reln.params) {
+                      	  parameters += reln.toParameter(p.name,p.parameterType)
+                        }
+                        body = '''
+                        	«FOR p:reln.params»
+                        	 this.«p.name» = «p.name»;
+                        	 «ENDFOR»
+                        '''
+                      ]                      
+          	  	  	  members += reln.toMethod("filter",typeRef("java.lang.Boolean"))[
+          	  	  		parameters += reln.toParameter(firstRole.name,firstRoleType)
+          	  	  		parameters += reln.toParameter(secondRole.name,secondRoleType)
+          	  	  		body = reln.body
+          	  	  	  ]
+          	  	  	} // if roles are well defined
+  		    	}
+          	  	  	  
+          	  	  	]
+          	  
+          	  	  }
+           	  	}
+          	 }
+          	
+          	// -- Generate the interaction graph class --
+          	if	(typeRef(edgecname) != null) {
+          	acceptor.accept(modl.toClass(graphcname))[
+      		  documentation = meln.documentation        
+                              		 
+                              		 
+                    val isAutoGraph = (meln.roles.get(0).type.equals(meln.roles.get(1).type))
+            var isCellGraph = false
+            var isCellGeomGraph = false
+            var testCell1 = false
+            var testCell2 = false
+            var testGeom1 = false
+            var testGeom2 = false
+            val rol1 = meln.roles.get(0).type
+            val rol2 = meln.roles.get(1).type
+           var graphType = 0 
+            for(e : rol1.eContents){
+            	switch (e){
+           	  	PropertyDef : {
+           			if(e.type.simpleName.equals('Cell')){
+           				testCell1 = true
+           			}
+           			if(e.type.simpleName.equals('Line') || e.type.simpleName.equals('MultiLine') ||
+           				e.type.simpleName.equals('Polygon') || e.type.simpleName.equals('MultiPolygon') ||
+           				e.type.simpleName.equals('Point') || e.type.simpleName.equals('MultiPoint') ||
+           				e.type.simpleName.equals('Ring')
+           			){
+           				testGeom1 = true
+           			}
+           		}
+           	}
+           	
+           }
+            for(e : rol2.eContents){
+           	switch (e){
+           		PropertyDef : {
+           			if(e.type.simpleName.equals('Cell')){
+           				testCell2 = true
+           			}
+           				if(e.type.simpleName.equals('Line') || e.type.simpleName.equals('MultiLine') ||
+           				e.type.simpleName.equals('Polygon') || e.type.simpleName.equals('MultiPolygon') ||
+           				e.type.simpleName.equals('Point') || e.type.simpleName.equals('MultiPoint') ||
+           				e.type.simpleName.equals('Ring')
+           			){
+           				testGeom2 = true
+           			}
+           		}
+           	}
+           	
+           }
+               
+     
+            if(testCell1 && testCell2){
+            	isCellGraph = true
+            }
+            if(testGeom1 && testCell2 || testGeom2 && testCell1){
+            	isCellGeomGraph = true
+            }
+                        var graphname = 'fr.ocelet.runtime.relation.impl.AutoGraph'
+            
+            if(!isAutoGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.DiGraph'
+            }
+            if(isCellGraph){
+            	if(isAutoGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.CellGraph'
+            	}else{
+            		graphname = 'fr.ocelet.runtime.relation.impl.DiCellGraph'
+            	}
+            }
+
+
+
+
+			 if(isCellGeomGraph){
+            	graphname = 'fr.ocelet.runtime.relation.impl.GeometryCellGraph'
+            }
+        val graphTypeName = graphname 
+          			
+          			
+          		if(isCellGeomGraph){	
+          			       	val firstRole = meln.roles.get(0)                                 
+              	val secondRole = meln.roles.get(1)     
+               
+              	var tempcellType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              	var tempgeomType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              
+             	var tempCellName = firstRole.name
+              	var tempGeomName = secondRole.name
+              
+             	if(testCell2){
+              	
+              		tempcellType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              		tempCellName = secondRole.name
+            		tempgeomType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              		tempGeomName = firstRole.name
+              	}
+              	val cellType = tempcellType
+              	val geomType = tempgeomType
+              	val cellName = tempCellName
+              	val geomName = tempGeomName          		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+                              		 
+              superTypes += typeRef(graphTypeName, typeRef(edgecname), cellType, geomType)
+           //  else superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType, secondRoleType)
+
+              // Generate an empty constructor
+     		  members+= meln.toConstructor[	
+     		  	body = '''
+     		  	 super();
+     		    ''' 
+     		  ]
+
+             
+              val geomList = typeRef('fr.ocelet.runtime.ocltypes.List', geomType)
+              // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
+              members+= meln.toMethod("connect",typeRef(Void::TYPE))[
+              	parameters += meln.toParameter("grid",gridType)
+                parameters += meln.toParameter("geom",geomList)
+              	body = ''' 
+                   «typeRef(edgecname)» _gen_edge = new «meln.name+"_Edge"»(grid, geom);
+     		  	  setCompleteIteratorGeomCell(_gen_edge);
+              	'''
+              ]
+              
+           
+     		  
+     		  // Generate Properties, Interactions and Filters code on the graph level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	       	  	  InteractionDef : {
+                    members+=reln.toMethod(reln.name,typeRef(Void::TYPE))[
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  }
+                      body=''' 
+                      	setMode(2);
+                      	cleanOperator();
+                      	«listype» cvtList = ((«typeRef(edgecname)»)getEdge()).get_agr_«reln.name»();
+                      	 		if(cvtList != null){
+                      	 			for(«aggregType» cvt : cvtList) {
+                      	 				setCellOperator(cvt);
+                      	 			}
+                      	 		}
+                      	beginTransaction();
+                      	for(«typeRef(edgecname)» _edg_ : this){
+                      		_edg_.«reln.name»(«var ci = 0»«FOR p : reln.params»«IF ci > 0»,«ENDIF»«p.name»«{ci = 1; null}»«ENDFOR»);
+                      	   		«IF (reln.comitexpressions.size() > 0)»
+                      	 		«var test = false»
+                      	 		«FOR ce:reln.comitexpressions»
+                      	 			«IF !ce.rol.type.equals(cellType)»
+                      	 				«{test = true; null}»
+                      	 			«ENDIF»
+                      	 		«ENDFOR»
+          	  	      	   		«IF test = true»
+          	  	      	   		_edg_._agr_«reln.name»();
+                      	   		«ENDIF»
+                      	   «ENDIF»
+                      	}
+                      	endTransaction();
+                      '''
+                    ]
+          	  	  }
+          	  	  Filterdef : {
+          	  	  	members += reln.toMethod(reln.name,typeRef(graphcname.toString))[
+          	  	  	  for(p:reln.params) {
+                        parameters += reln.toParameter(p.name,p.parameterType)
+                      }
+                      
+                      body = '''
+                        «meln.name+"_"+reln.name» _filter = new «meln.name+"_"+reln.name»(
+                        «IF reln.params.size() > 0»
+                        	«FOR i:0..reln.params.size()-1»
+                        		«reln.params.get(i).name»
+                        		«IF i < (reln.params.size()-1)»
+                        			,
+                        		«ENDIF»
+                        	«ENDFOR»
+                        «ENDIF»
+                        );
+                        super.addFilter(_filter);
+                        return this;
+                      '''
+          	  	  	]
+          	  	  }
+ 		        }
+  		      }
+  		      
+  		      
+  		      }else if (isCellGraph){
+  		    	
+  		    	if(!isAutoGraph){
+  		    		
+  		    		val firstRole = meln.roles.get(0)
+        val secondRole = meln.roles.get(1)      
+              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              
+              superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType, secondRoleType)
+
+              // Generate an empty constructor
+     		  members+= meln.toConstructor[	
+     		  	body =  '''
+     		  		super();
+     		     '''
+     		  ]
+              // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
+              members+= meln.toMethod("connect",typeRef(Void::TYPE))[
+              	parameters += meln.toParameter("grid1",gridType)
+              parameters += meln.toParameter("grid2",gridType)
+              	body = '''
+              		
+                  super.setGrid(grid1, grid2);
+                   «typeRef(edgecname)» _gen_edge_ = new «meln.name+"_Edge"»(grid1, grid2);
+     		  	  setCompleteIteratorDiCell(_gen_edge_ );
+              	'''
+              ]
+     		  
+     		  // Generate Properties, Interactions and Filters code on the graph level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  	  RelPropertyDef : {
+                    members+=reln.toMethod("set"+reln.name.toFirstUpper,typeRef(Void::TYPE))[
+                      parameters+= reln.toParameter(reln.name,reln.type)	
+                      body= '''
+                      	for( «typeRef(edgecname)» _edg_ : this )
+                      	_edg_.set«reln.name.toFirstUpper»(«reln.name»);
+                      '''
+                    ]
+          	  	  }
+          	  	  InteractionDef : {
+                    members+=reln.toMethod(reln.name,typeRef(Void::TYPE))[
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  }
+                      body= '''
+                      	updateGrid();
+                      	cleanOperator();
+                      	«listype» cvtList = ((«typeRef(edgecname)»)getEdge()).get_agr_«reln.name»();
+                      	if(cvtList != null){
+                      		for(«aggregType» cvt : cvtList){
+                      	 		setCellOperator(cvt);
+                      		}
+                      	}
+                       	for(«typeRef(edgecname)» _edg_ : this) {
+                      	_edg_.«reln.name»(«var ci = 0»«FOR p : reln.params»«IF ci > 0»,«ENDIF»«p.name»«{ci = 1; null}»«ENDFOR»);
+                      	}
+                      '''
+                    ]
+          	  	  }
+          	  	  Filterdef : {
+          	  	  	members += reln.toMethod(reln.name,typeRef(graphcname.toString))[
+          	  	  	  for(p:reln.params) {
+                        parameters += reln.toParameter(p.name,p.parameterType)
+                      }
+                      body = '''
+                      	«meln.name+"_"+reln.name» _filter = new «meln.name+"_"+reln.name»
+                      	«IF reln.params.size() > 0»
+                      	«FOR i : 0..reln.params.size() - 1»	reln.params.get(i).name»«IF i < (reln.params.size()-1) »,«ENDIF»«ENDFOR»«ENDIF»;
+                        super.addFilter(_filter);
+                        return this;
+                      	
+                       '''
+          	  	  	]
+          	  	  }
+ 		        }
+  		      }
+  		    		
+  		    		
+  		    		}else{
+  		    			
+  		    			
+  		    			 val firstRole = meln.roles.get(0)
+        val secondRole = meln.roles.get(1)      
+
+              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              
+              
+              superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType)
+
+              // Generate an empty constructor
+     		  members+= meln.toConstructor[	
+     		  	body = '''
+     		  		 super();
+     		    '''
+     		  ]
+	
+              // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
+              members+= meln.toMethod("connect",typeRef(Void::TYPE))[
+              	parameters += meln.toParameter("grid",gridType)
+              
+              	body = '''
+              		
+              		
+                  super.setGrid(grid);
+                   «typeRef(edgecname)» _gen_edge_ = new «meln.name+"_Edge"»(grid);
+     		  	  setCompleteIteratorCell(_gen_edge_ );
+              	'''
+              ]
+              
+              	/* Generate method for generation graphs */
+              	 
+          		members += meln.toMethod("createHexagons",typeRef(Void::TYPE))[
+          			parameters += meln.toParameter("shp",typeRef("fr.ocelet.datafacer.ocltypes.Shapefile"))
+          			parameters += meln.toParameter("size",typeRef('java.lang.Double'))
+          			body = '''
+          				«firstRoleType» entity = new «firstRoleType»();
+          				«gridType» grid = createHexagon("«graphcname»",entity.getProps(), shp.getBounds(), size);
+          				
+          			    fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
+                  	 	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+                  	   	connect(grid);
+                  	   	setCellShapeType("HEXAGONAL");
+          			'''
+          		]
+          		
+          		members += meln.toMethod("createHexagons",typeRef(Void::TYPE))[
+          		parameters += meln.toParameter("size",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("minX",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("minY",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("maxX",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("maxY",typeRef('java.lang.Double'))
+          			
+          		body = '''
+          				«firstRoleType» entity = new «firstRoleType»();
+          				«gridType» grid =  createHexagon("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
+          				fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+                  	   	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+                  	    connect(grid);
+                  	   	setCellShapeType("HEXAGONAL");
+          			'''
+          		]
+          		
+          		members += meln.toMethod("createSquares",typeRef(Void::TYPE))[
+          			parameters += meln.toParameter("shp",typeRef("fr.ocelet.datafacer.ocltypes.Shapefile"))
+          			parameters += meln.toParameter("xRes",typeRef('java.lang.Double'))
+          			parameters += meln.toParameter("yRes",typeRef('java.lang.Double'))
+          			body = '''
+						«firstRoleType» entity = new «firstRoleType»();
+						«gridType» grid = createSquare("«graphcname»",entity.getProps(), shp.getBounds(), xRes, yRes);
+						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
+						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+						connect(grid);
+						setCellShapeType("QUADRILATERAL");
+          			'''
+          		]
+          		
+          		members += meln.toMethod("createSquares",typeRef(Void::TYPE))[
+          		parameters += meln.toParameter("xRes",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("yRes",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("minX",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("minY",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("maxX",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("maxY",typeRef('java.lang.Double'))
+          			
+          			body = '''
+						«firstRoleType» entity = new «firstRoleType»();
+						«gridType» grid = createSquare("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);
+						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+						connect(grid);
+						setCellShapeType("QUADRILATERAL");
+          			'''
+          		]
+          		
+          		members += meln.toMethod("createTriangles",typeRef(Void::TYPE))[
+          		parameters += meln.toParameter("shp",typeRef("fr.ocelet.datafacer.ocltypes.Shapefile"))
+          		parameters += meln.toParameter("size",typeRef('java.lang.Double'))
+          			body = '''
+						«firstRoleType» entity = new «firstRoleType»();
+						«gridType» grid = createTriangle("«graphcname»",entity.getProps(), shp.getBounds(), size);
+						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
+						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+						connect(grid);
+						setCellShapeType("TRIANGULAR");
+          			'''
+          		]
+          		
+          		members += meln.toMethod("createTriangles",typeRef(Void::TYPE))[
+          		parameters += meln.toParameter("size",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("minX",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("minY",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("maxX",typeRef('java.lang.Double'))
+          		parameters += meln.toParameter("maxY",typeRef('java.lang.Double'))
+          			
+          			body = '''
+						«firstRoleType» entity = new «firstRoleType»();
+						«gridType» grid = createTriangle("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
+						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+						connect(grid);
+						setCellShapeType("TRIANGULAR");
+          			'''
+          		]
+              
+              
+     		  
+     		  // Generate Properties, Interactions and Filters code on the graph level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  	  RelPropertyDef : {
+                    members+=reln.toMethod("set"+reln.name.toFirstUpper,typeRef(Void::TYPE))[
+                      parameters+= reln.toParameter(reln.name,reln.type)	
+                      body='''
+                      	
+                      	for(«typeRef(edgecname)» _edg_ : this)
+                      	_edg_.set«reln.name.toFirstUpper»(«reln.name»);
+                      '''
+                    ]
+          	  	  }
+          	  	  InteractionDef : {
+                    members+=reln.toMethod(reln.name,typeRef(Void::TYPE))[
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  }
+                      body= '''
+						setMode(0);
+						cleanOperator();
+						«listype» cvtList = ((«typeRef(edgecname)»)getEdge()).get_agr_«reln.name»();
+						if(cvtList != null){
+							for(«aggregType» cvt : cvtList){
+								setCellOperator(cvt);
+							} 
+						}
+						for(«typeRef(edgecname)» _edg_ : this) {
+							_edg_.«reln.name»(«var ci = 0»«FOR p:reln.params» «IF ci > 0»,«ENDIF»«p.name»«{ci = 1; null}»«ENDFOR»);
+						}
+                      '''
+                    ]
+          	  	  }
+          	  	  Filterdef : {
+          	  	  	members += reln.toMethod(reln.name,typeRef(graphcname.toString))[
+          	  	  	  for(p:reln.params) {
+                        parameters += reln.toParameter(p.name,p.parameterType)
+                      }
+                      body = '''
+                      	«meln.name+"_"+reln.name» _filter = new «meln.name+"_"+reln.name»(
+                      	«IF reln.params.size() > 0»
+                      		«FOR i : 0..reln.params.size() - 1»	
+                      			«reln.params.get(i).name»
+                      				«IF i < (reln.params.size()-1)»	
+                      					,
+                      				«ENDIF»
+                      			«ENDFOR»
+                      	«ENDIF»
+                      			);
+                      				
+                        super.addFilter(_filter);
+                        return this;
+                      '''
+          	  	  	]
+          	  	  }
+ 		        }
+  		      }
+  		    			
+  		    			
+  		    			
+  		    			}
+
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    }else{
+  		    	
+  		    	 if ((meln.roles.size >= 2) &&
+             (meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+             (meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+       	     (meln.roles.get(0).type.fullyQualifiedName != null) &&
+             (meln.roles.get(1).type.fullyQualifiedName != null) &&
+             (meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+             ) {
+              val firstRole = meln.roles.get(0)
+              val secondRole = meln.roles.get(1)
+              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              val rolset1 = meln.roles.get(0).name+"Set"
+              val rolset2 = meln.roles.get(1).name+"Set"
+              //val isAutoGraph = (meln.roles.get(0).type.equals(meln.roles.get(1).type))
+              //val graphTypeName = if(isAutoGraph) 'fr.ocelet.runtime.relation.impl.AutoGraph'
+                //                           else 'fr.ocelet.runtime.relation.impl.DiGraph'               		  
+             if (isAutoGraph) superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType)
+             else superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType, secondRoleType)
+
+              // Generate an empty constructor
+     		  members+= meln.toConstructor[	body = '''super();''' ]
+
+              // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
+              members+= meln.toMethod("connect",typeRef(edgecname))[
+              	parameters += meln.toParameter(firstRole.name,firstRoleType)
+              	parameters += meln.toParameter(secondRole.name,secondRoleType)
+                body = '''
+                if ((this.«rolset1» == null) || (!this.«rolset1».contains(«firstRole.name»))) add(«firstRole.name»);
+                «IF (!isAutoGraph)»
+                if ((this.«rolset2» == null) || (!this.«rolset2».contains(«secondRole.name»))) add(«secondRole.name»);
+                «ENDIF»
+                «val typ_edgecname = typeRef(edgecname)»
+                «typ_edgecname» _gen_edge_ = new «meln.name+"_Edge"»(this,«firstRole.name»,«secondRole.name»);
+                addEdge(_gen_edge_);
+                return _gen_edge_;
+                '''
+              ]
+              
+              members+= meln.toMethod("getLeftSet", typeRef("fr.ocelet.runtime.relation.RoleSet",firstRoleType))[
+              	body ='''return «rolset1»;'''
+              ]
+              
+              members+= meln.toMethod("getRightSet", typeRef("fr.ocelet.runtime.relation.RoleSet",secondRoleType))[
+              	body =''' 
+              	 «IF (isAutoGraph)»return «rolset1»;
+              	 «ELSE»return «rolset2»;
+              	 «ENDIF»
+              	'''
+               ]
+
+          	   members +=meln.toMethod("getComplete",typeRef(graphcname.toString)) [
+          			body='''return («meln.name»)super.getComplete();'''
+          	   ]
+
+               members += meln.toMethod("createEdge",typeRef(edgecname))[
+               	  parameters += firstRole.toParameter(firstRole.name,firstRoleType)
+               	  parameters += secondRole.toParameter(secondRole.name,secondRoleType)
+               	  body = ''' return new «meln.name+"_Edge"»(this,«firstRole.name»,«secondRole.name»);'''
+               ]
+
+
+              // -- Generate RoleSet fields, setters, getters and add+remove role functions --
+
+     		    val rsetype =  typeRef("fr.ocelet.runtime.relation.RoleSet",firstRoleType)
+     		  	val rsfield = meln.toField(rolset1,rsetype)
+     		  	if (rsfield != null) {
+     		  	  members += rsfield
+  		          members+= meln.toMethod('set'+rolset1.toFirstUpper, typeRef(Void::TYPE))[
+   		            parameters += firstRole.toParameter("croles",typeRef('java.util.Collection',firstRoleType))
+                    body='''
+     		          «val rsimplt = typeRef("fr.ocelet.runtime.relation.impl.RoleSetImpl",firstRoleType)»
+     		          this.«rolset1»=new «rsimplt»(croles);
+     		  	    '''
+   		  	      ]
+   		  	      
+   		  	      members+= meln.toMethod('get'+rolset1.toFirstUpper, rsetype)[
+   		  	      	body ='''return «rolset1»;'''
+   		  	      ]
+
+                  if(!isAutoGraph) {
+     		        val rsetype2 =  typeRef("fr.ocelet.runtime.relation.RoleSet",secondRoleType)
+     		  	    val rsfield2 = meln.toField(rolset2,rsetype2)
+     		  	    if (rsfield2 != null) {
+     		  	      members += rsfield2
+
+   		              members+= meln.toMethod('set'+rolset2.toFirstUpper, typeRef(Void::TYPE))[
+     		            parameters += secondRole.toParameter("croles",typeRef('java.util.Collection',secondRoleType))
+                        body='''
+                          «val rsimplt = typeRef("fr.ocelet.runtime.relation.impl.RoleSetImpl",secondRoleType)»
+                          this.«rolset2»=new «rsimplt»(croles);
+                        '''
+   		  	          ]
+   		  	      
+   		  	          members+= meln.toMethod('get'+rolset2.toFirstUpper, rsetype2)[
+   		  	      	    body ='''return «rolset2»;'''
+   		  	          ]
+                    }
+                  }
+   		  	      
+   		  	      members += meln.toMethod('add',typeRef(Void::TYPE))[
+   		  	      	parameters += meln.toParameter('role', firstRoleType)
+   		  	      	body = '''add«firstRoleType»(role);'''
+   		  	      ]
+
+   		  	      members += meln.toMethod('remove',typeRef(Void::TYPE))[
+   		  	      	parameters += meln.toParameter('role', firstRoleType)
+   		  	      	body = '''remove«firstRoleType»(role);'''
+   		  	      ]
+
+                  members += meln.toMethod('add'+firstRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	parameters += meln.toParameter('role',firstRoleType)
+   		  	      	body = '''
+   		  	      	  «val ltype = typeRef('java.util.HashSet',firstRoleType)»
+   		  	      	  if (this.«rolset1» == null) set«rolset1.toFirstUpper»( new «ltype»());
+   		  	      	  this.«rolset1».addRole(role);
+   		  	      	'''
+   		  	      ]
+
+   		  	      members += meln.toMethod('remove'+firstRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	parameters += meln.toParameter('role', firstRoleType)
+   		  	      	body = '''if (this.«rolset1» != null) this.«rolset1».removeRole(role);'''
+   		  	      ]
+ 		  	      
+   		  	      members += meln.toMethod('addAll'+firstRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	parameters += meln.toParameter('roles',typeRef('java.lang.Iterable',firstRoleType))
+   		  	      	body = '''
+   		  	      	  «val ltype = typeRef('java.util.HashSet',firstRoleType)»
+   		  	      	  if (this.«rolset1» == null) set«rolset1.toFirstUpper»( new «ltype»());
+   		  	      	  this.«rolset1».addRoles(roles);
+   		  	      	'''
+   		  	      ]
+
+                  members += meln.toMethod('removeAll'+firstRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	parameters += meln.toParameter('roles',typeRef('java.lang.Iterable',firstRoleType))
+   		  	      	body = '''if (this.«rolset1» != null) this.«rolset1».removeRoles(roles);'''
+   		  	      ]
+   		  	      
+   		  	      if (!isAutoGraph) {
+                    members += meln.toMethod('add'+secondRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	  parameters += meln.toParameter('role',secondRoleType)
+   		  	      	  body = '''
+   		  	      		«val ltype = typeRef('java.util.HashSet',secondRoleType)»
+   		  	      		if (this.«rolset2» == null) set«rolset2.toFirstUpper»( new «ltype»());
+   		  	      		this.«rolset2».addRole(role);
+   		  	      	  '''
+   		  	        ]
+
+   		  	        members += meln.toMethod('remove',typeRef(Void::TYPE))[
+   		  	      	  parameters += meln.toParameter('role', secondRoleType)
+   		  	      	  body = '''remove«secondRoleType»(role);'''
+   		  	        ]
+
+   		  	        members += meln.toMethod('add',typeRef(Void::TYPE))[
+   		  	      	  parameters += meln.toParameter('role', secondRoleType)
+   		  	      	  body = '''add«secondRoleType»(role);'''
+   		  	        ]
+
+   		  	        members += meln.toMethod('remove'+secondRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	  parameters += meln.toParameter('role', secondRoleType)
+   		  	      	  body = '''if (this.«rolset2» != null) this.«rolset2».removeRole(role);'''
+   		  	        ]
+
+   		  	        members += meln.toMethod('addAll'+secondRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	  parameters += meln.toParameter('roles',typeRef('java.lang.Iterable',secondRoleType))
+   		  	      	  body = '''
+   		  	      		«val rtype = typeRef('java.util.HashSet',secondRoleType)»
+   		  	      		if (this.«rolset2» == null) set«rolset2.toFirstUpper»( new «rtype»());
+   		  	      		this.«rolset2».addRoles(roles);
+   		  	      	  '''
+   		  	        ]
+
+                    members += meln.toMethod('removeAll'+secondRoleType.simpleName,typeRef(Void::TYPE))[
+   		  	      	  parameters += meln.toParameter('roles',typeRef('java.lang.Iterable',secondRoleType))
+   		  	      	  body = '''if (this.«rolset2» != null) this.«rolset2».removeRoles(roles);'''
+   		  	        ]
+   		  	      } // if roles are well defined
+   		  	   }
+   		     }
+     		  
+     		  // Generate Properties, Interactions and Filters code on the graph level
+    		  for (reln:meln.relelns){
+    		  	switch(reln) {
+          	  	  RelPropertyDef : {
+          	  	  	if (reln.name != null) {
+                    members+=reln.toMethod("set"+reln.name.toFirstUpper,typeRef(Void::TYPE))[
+                      parameters+= reln.toParameter(reln.name,reln.type)	
+                      body='''
+                      	«val typ_edgecname = typeRef(edgecname)»
+                      	beginTransaction();
+                      	for(«typ_edgecname» _edg_ : this)
+                      	  _edg_.set«reln.name.toFirstUpper»(«reln.name»);
+                      	endTransaction();
+                      '''
+                    ]}
+          	  	  }
+          	  	  InteractionDef : {
+          	  	  	if (reln.name != null) {
+                    members+=reln.toMethod(reln.name,typeRef(Void::TYPE))[
+          	  	  	  for(p:reln.params){
+          	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
+          	  	  	  }
+                      body='''
+                      	«val typ_edgecname = typeRef(edgecname)»
+                      	beginTransaction();
+                      	«var ci=0»
+                      	for(«typ_edgecname» _edg_ : this) {
+                      	  _edg_.«reln.name»(«FOR p:reln.params»«IF (ci++ > 0)»,«ENDIF»«p.name»«ENDFOR»);
+                      	 «IF (reln.comitexpressions.size() > 0)»
+                      	 _edg_._agr_«reln.name»();«ENDIF»
+                      	}
+                      	endTransaction();
+                      '''
+                    ]}
+          	  	  }
+          	  	  Filterdef : {
+          	  	  	if (reln.name != null) {
+          	  	  	members += reln.toMethod(reln.name,typeRef(graphcname.toString))[
+          	  	  	  for(p:reln.params) {
+                        parameters += reln.toParameter(p.name,p.parameterType)
+                      }
+                      body ='''
+                        «meln.name+"_"+reln.name» _filter = new «meln.name+"_"+reln.name»(«IF (reln.params.size() > 0)»«FOR i:0..(reln.params.size()-1)»«reln.params.get(i).name»«IF i < (reln.params.size()-1)»,«ENDIF»«ENDFOR»«ENDIF»);
+                        super.addFilter(_filter);
+                        return this;
+                      '''
+          	  	  	]}
+          	  	  }
+ 		        }
+  		      }
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	
+  		    	}
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+  		      
+     		]
+     	}
+	
+	
+          
+		}
 
       // ---- Relation ------------------------------------
-          Relation : {
+     /*  Relation : {
           	val graphcname = meln.fullyQualifiedName
           	val edgecname = graphcname+"_Edge"
             if (meln.roles.size > 2) println("Sorry, only graphs with two roles are supported by this version. The two first roles will be used and the others will be ignored.")
@@ -584,13 +2214,12 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
             var testCell2 = false
             var testGeom1 = false
             var testGeom2 = false
-               val rol1 = meln.roles.get(0).type
-              val rol2 = meln.roles.get(1).type
-            
-              print("test ok") 
-           for(e : rol1.eContents){
-           	switch (e){
-           		PropertyDef : {
+            val rol1 = meln.roles.get(0).type
+            val rol2 = meln.roles.get(1).type
+           var graphType = 0 
+            for(e : rol1.eContents){
+            	switch (e){
+           	  	PropertyDef : {
            			if(e.type.simpleName.equals('Cell')){
            				testCell1 = true
            			}
@@ -1077,7 +2706,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
      		     '''
      		  ]
               // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
-              members+= meln.toMethod("setGraph",typeRef(Void::TYPE))[
+              members+= meln.toMethod("connect",typeRef(Void::TYPE))[
               	parameters += meln.toParameter("grid1",gridType)
               parameters += meln.toParameter("grid2",gridType)
               	body = '''
@@ -1308,7 +2937,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
      		  ]
 	
               // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
-              members+= meln.toMethod("setGrid",typeRef(Void::TYPE))[
+              members+= meln.toMethod("connect",typeRef(Void::TYPE))[
               	parameters += meln.toParameter("grid",gridType)
               
               	body = '''
@@ -1320,7 +2949,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
               	'''
               ]
               
-              	/* Generate method for generation graphs */
+              	// Generate method for generation graphs 
               	 
           		members += meln.toMethod("createHexagons",typeRef(Void::TYPE))[
           			parameters += meln.toParameter("shp",typeRef("fr.ocelet.datafacer.ocltypes.Shapefile"))
@@ -1331,7 +2960,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				
           			    fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
                   	 	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	   	setGrid(grid);
+                  	   	connect(grid);
                   	   	setCellShapeType("HEXAGONAL");
           			'''
           		]
@@ -1348,7 +2977,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				«gridType» grid =  createHexagon("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
           				fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
                   	   	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	   	setGrid(grid);
+                  	    connect(grid);
                   	   	setCellShapeType("HEXAGONAL");
           			'''
           		]
@@ -1362,7 +2991,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				«gridType» grid = createSquare("«graphcname»",entity.getProps(), shp.getBounds(), xRes, yRes);
           				fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
                   	   	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	   	setGrid(grid);
+                  	   	connect(grid);
                   	   	setCellShapeType("QUADRILATERAL");
           			'''
           		]
@@ -1381,7 +3010,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				«gridType» grid = createSquare("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);
           			    fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
                   	    entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	    setGrid(grid);
+                  	    connect(grid);
                   	    setCellShapeType("QUADRILATERAL");
           			'''
           		]
@@ -1394,7 +3023,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				«gridType» grid = createTriangle("«graphcname»",entity.getProps(), shp.getBounds(), size);
           				fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
                   	   	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	   	setGrid(grid);
+                  	   	connect(grid);
                   	   	setCellShapeType("TRIANGULAR");
           			'''
           		]
@@ -1411,7 +3040,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				«gridType» grid = createTriangle("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
           			 	fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
                   	   	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	   	setGrid(grid);
+                  	   	connect(grid);
                   	   	setCellShapeType("TRIANGULAR");
           			'''
           		]
@@ -1487,13 +3116,13 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	acceptor.accept(modl.toClass(edgecname))[
           	  superTypes += typeRef('fr.ocelet.runtime.relation.OcltEdge')
 
-           /*   if ((meln.roles.size >= 2) &&
-            	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
-            	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
-       	        (meln.roles.get(0).type.fullyQualifiedName != null) &&
-            	(meln.roles.get(1).type.fullyQualifiedName != null) &&
-            	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
-                ) {*/
+           //   if ((meln.roles.size >= 2) &&
+            //	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
+            //	(meln.roles.get(0).type != null) && (meln.roles.get(1).type != null) &&
+       	     //   (meln.roles.get(0).type.fullyQualifiedName != null) &&
+            //	(meln.roles.get(1).type.fullyQualifiedName != null) &&
+            //	(meln.roles.get(0).name != null) && (meln.roles.get(1).name != null)
+             //   ) {
 
               val firstRole = meln.roles.get(0)
               val secondRole = meln.roles.get(1)
@@ -1855,7 +3484,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
      		}// if (typeref(edgecname != null)
   //   		} // if series testing uncomplete relation definition
           }
-		}
+		}*/
                       
        // ---- Structure -----------------------------------
           Strucdef : {

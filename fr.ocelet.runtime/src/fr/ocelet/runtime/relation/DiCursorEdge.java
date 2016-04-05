@@ -1,13 +1,9 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   DiCursorEdge.java
-
 package fr.ocelet.runtime.relation;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
 import fr.ocelet.runtime.geom.ocltypes.Cell;
+import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.raster.Grid;
@@ -32,18 +28,16 @@ public abstract class DiCursorEdge extends OcltEdge{
     private double r1YRes;
     private double xRes;
     private double yRes;
-    
     private int rXRes;
     private int rYRes;
-    
     private OcltRole r1;
     private OcltRole r2;
- 
-    
     private HashMap<String, CellAggregOperator> aggregMap = new HashMap<String, CellAggregOperator>();
     private boolean equalGrid = false;
     private GridCursor gridCursor;    
     private MultiResolutionManager mrm;
+    
+    
     public DiCursorEdge(Grid grid1, Grid grid2){
     
         x = 0;
@@ -77,31 +71,7 @@ public abstract class DiCursorEdge extends OcltEdge{
             grid = grid2;
           
         }
-        
-     /*if(globalGrid.getWidth() > grid.getWidth()){
-    	 xRes = globalGrid.getWidth() / grid.getWidth();
-    	
-     }else{
-    	 xRes = grid.getWidth() / globalGrid.getWidth();
-    	   
-     }
-   if(globalGrid.getHeight() > grid.getHeight()){
-	
-  	    yRes = globalGrid.getHeight() / grid.getHeight();
-     }else{
-    	    yRes = grid.getHeight() / globalGrid.getHeight();
-     }*/
-        /*xRes = globalGrid.getXRes() / grid.getXRes();
-   	    yRes = globalGrid.getYRes() / grid.getYRes();*/
-   	  
-   	  //  rXRes =(int) Math.round(xRes);
-   	  //  rYRes = (int)Math.round(yRes);
-   	    
-   	    
-   	   
-    //    setCursor();
         }
-     
     }
 
    
@@ -481,12 +451,59 @@ public abstract class DiCursorEdge extends OcltEdge{
         aggregMap.put(name, operator);
     }
 
-    public void setCellOperator(String name, AggregOperator<Double, List<Double>> operator){    
+   /* public void setCellOperator(String name, AggregOperator<Double, List<Double>> operator){    
         CellAggregOperator cao = new CellAggregOperator(operator, name);
         aggregMap.put(name, cao);
+    }*/
+    public void setCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps)
+    {
+        CellAggregOperator cao = new CellAggregOperator();
+        if(typeProps.get(name).equals("Double")){
+        	setAggregOpDouble(name, operator, false);
+        }else if(typeProps.get(name).equals("Integer")){
+        	setAggregOpInteger(name, operator, false);
+
+        }else if(typeProps.get(name).equals("Float")){
+        	setAggregOpFloat(name, operator, false);
+
+        }else if(typeProps.get(name).equals("Byte")){
+        	setAggregOpByte(name, operator, false);
+
+        }else if(typeProps.get(name).equals("Boolean")){
+        	setAggregOpBoolean(name, operator, false);
+
+        }
     }
-    
-    
+    public void setAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg, boolean val){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorDouble(agg);
+        aggregMap.put(name, cao);
+
+    }
+public void setAggregOpInteger(String name, AggregOperator<Integer, List<Integer>> agg, boolean val){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorInteger(agg);
+        aggregMap.put(name, cao);
+
+    }
+
+public void setAggregOpFloat(String name, AggregOperator<Float, List<Float>> agg, boolean val){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorFloat(agg);
+        aggregMap.put(name, cao);
+    }
+
+public void setAggregOpByte(String name, AggregOperator<Byte, List<Byte>> agg, boolean val){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorByte(agg);
+        aggregMap.put(name, cao);
+    }
+
+public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean>> agg, boolean val){
+        CellAggregOperator cao = new CellAggregOperator();
+        cao.setOperatorBoolean(agg);
+        aggregMap.put(name, cao);
+    }
     public void globalSynchronisation(){
     	for(int i = 0; i < globalGrid.getWidth(); i ++){
     		

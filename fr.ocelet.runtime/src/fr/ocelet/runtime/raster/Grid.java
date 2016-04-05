@@ -1,8 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   Grid.java
-
 package fr.ocelet.runtime.raster;
 
 import com.sun.media.jai.codecimpl.util.RasterFactory;
@@ -285,10 +280,149 @@ public class Grid {
 
     	
     }*/
+   
     
-    public void copy(ORaster raster){
+    public void  copy(ORaster raster, KeyMap<String, Integer> matchedBand){
     	
     	int[] rasterC = raster.worldToGrid(boundsX, boundsY);
+    	double[] rbounds = raster.worldBounds();
+    	
+    	Double[] scaledD = scalingDouble(worldBounds, raster.worldBounds());
+    	double[] scaledd = scalingdouble(worldBounds, raster.worldBounds());
+
+    	
+    	int[] rasterMin = raster.worldToGrid(scaledD[0],scaledD[3]);
+    	int[] gridMin = gridCoordinate(scaledd[0], scaledd[3]);
+    	int[] rasterMax = raster.worldToGrid(scaledD[2],scaledD[1]);
+    	int[] gridMax = gridCoordinate(scaledd[2], scaledd[1]);
+
+    		/*int[] r2 = gridCoordinate(boundsX, boundsY);
+    		int[] b = raster.getBounds();
+    		int diffX = rasterC[0] - r2[0];
+    		int diffY = rasterC[1] - r2[1];
+    		
+    		if(r2[0] < 0){
+    			diffX = rasterC[0];
+    		}
+    		
+    		if(r2[1] < 0){
+    			diffY = rasterC[1];
+    		}
+    		if(diffX < 0){
+    			diffX = 0;
+    		}
+    		
+    		if(diffY < 0){
+    			diffY = 0;
+    		}
+    		
+    		int exI = 0;
+    		int exJ = 0;
+    		System.out.println(width+" "+height);
+    	    	for(int i = 0; i < width; i ++){    		
+    		
+    		for(int j = 0; j < height; j ++){
+    			for(String name : matchedBand.keySet()){
+    			try{
+    				 this.raster.setSample(i + 2 + r2[0], j + 2 + r2[1], rasterProps.get(name), raster.getDoubleValue(i + diffX , j + diffY, matchedBand.get(name)));
+    			}catch (Exception e){
+    				
+    				
+    			}
+    			}    			
+    		}
+    	}*/
+    	
+    	int width = gridMax[0] - gridMin[0];
+    	int height = gridMax[1] - gridMin[1];
+    	for(int i = 0; i < width; i ++){
+    		for(int j = 0; j < height; j ++){
+    			for(String name : matchedBand.keySet()){
+    			try{
+    				 this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0] , j + rasterMin[1], matchedBand.get(name)));
+    			}catch (Exception e){
+    				
+    				e.printStackTrace();
+    				
+    				}
+    			}    			
+    		}
+    	}
+    }
+    public void copy(ORaster raster){
+    	
+    	
+    	int[] rasterC = raster.worldToGrid(boundsX, boundsY);
+    	double[] rbounds = raster.worldBounds();
+    	
+    	Double[] scaledD = scalingDouble(worldBounds, raster.worldBounds());
+    	double[] scaledd = scalingdouble(worldBounds, raster.worldBounds());
+
+    	
+    	int[] rasterMin = raster.worldToGrid(scaledD[0],scaledD[3]);
+    	int[] gridMin = gridCoordinate(scaledd[0], scaledd[3]);
+    	int[] rasterMax = raster.worldToGrid(scaledD[2],scaledD[1]);
+    	int[] gridMax = gridCoordinate(scaledd[2], scaledd[1]);
+
+    		/*int[] r2 = gridCoordinate(boundsX, boundsY);
+    		int[] b = raster.getBounds();
+    		int diffX = rasterC[0] - r2[0];
+    		int diffY = rasterC[1] - r2[1];
+    		
+    		if(r2[0] < 0){
+    			diffX = rasterC[0];
+    		}
+    		
+    		if(r2[1] < 0){
+    			diffY = rasterC[1];
+    		}
+    		if(diffX < 0){
+    			diffX = 0;
+    		}
+    		
+    		if(diffY < 0){
+    			diffY = 0;
+    		}
+    		
+    		int exI = 0;
+    		int exJ = 0;
+    		System.out.println(width+" "+height);
+    	    	for(int i = 0; i < width; i ++){    		
+    		
+    		for(int j = 0; j < height; j ++){
+    			for(String name : matchedBand.keySet()){
+    			try{
+    				 this.raster.setSample(i + 2 + r2[0], j + 2 + r2[1], rasterProps.get(name), raster.getDoubleValue(i + diffX , j + diffY, matchedBand.get(name)));
+    			}catch (Exception e){
+    				
+    				
+    			}
+    			}    			
+    		}
+    	}*/
+    	
+    	int width = gridMax[0] - gridMin[0];
+    	int height = gridMax[1] - gridMin[1];
+    	for(int i = 0; i < width; i ++){
+    		for(int j = 0; j < height; j ++){
+    			for(String name : rasterProps.keySet()){
+    			try{
+    				 this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0] , j + rasterMin[1], rasterProps.get(name)));
+    			}catch (Exception e){
+    				e.printStackTrace();
+
+    				
+    				}
+    			}    			
+    		}
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	/*int[] rasterC = raster.worldToGrid(boundsX, boundsY);
     		int[] r2 = gridCoordinate(boundsX, boundsY);
     		int[] b = raster.getBounds();
     		int diffX = rasterC[0] - r2[0];
@@ -324,7 +458,7 @@ public class Grid {
     			}
     			}    			
     		}
-    	}    	
+    	}    	*/
     }
     
     /*
@@ -943,7 +1077,6 @@ public class Grid {
     }
  
     public Double[] getWorldBounds(){
-    	System.out.println("bounds "+worldBounds[0]+ " "+worldBounds[1]+ "    "+worldBounds[2]+ " "+worldBounds[3]);
     	return worldBounds;
     }
     
@@ -1047,6 +1180,74 @@ public class Grid {
  		
  	}
  }
-    
-    
+    private double[] scalingdouble(Double[] bounds1, double[] bounds2){
+    	
+    	double[] scaled = new double[4];
+    	
+    	if(bounds1[0] < bounds2[0]){
+    		scaled[0] = bounds2[0];
+    	}else{
+    		scaled[0] = bounds1[0];
+
+    	}
+    	if(bounds1[1] < bounds2[1]){
+    		scaled[1] = bounds2[1];
+    	}else{
+    		scaled[1] = bounds1[1];
+
+    	}
+    	
+    	if(bounds1[2] > bounds2[2]){
+    		scaled[2] = bounds2[2];
+    	}else{
+    		scaled[2] = bounds1[2];
+
+    	}
+    	if(bounds1[3] > bounds2[3]){
+    		scaled[3] = bounds2[3];
+    	}else{
+    		scaled[3] = bounds1[3];
+
+    	}
+    	
+    	
+    	return scaled;
+    	
+    	
+    }
+    private Double[] scalingDouble(Double[] bounds1, double[] bounds2){
+    	
+    	Double[] scaled = new Double[4];
+    	
+    	if(bounds1[0] < bounds2[0]){
+    		scaled[0] = bounds2[0];
+    	}else{
+    		scaled[0] = bounds1[0];
+
+    	}
+    	if(bounds1[1] < bounds2[1]){
+    		scaled[1] = bounds2[1];
+    	}else{
+    		scaled[1] = bounds1[1];
+
+    	}
+    	
+    	if(bounds1[2] > bounds2[2]){
+    		scaled[2] = bounds2[2];
+    	}else{
+    		scaled[2] = bounds1[2];
+
+    	}
+    	if(bounds1[3] > bounds2[3]){
+    		scaled[3] = bounds2[3];
+    	}else{
+    		scaled[3] = bounds1[3];
+
+    	}
+    	
+    	
+    	return scaled;
+    	
+    	
+    }
 }

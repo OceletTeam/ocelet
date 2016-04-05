@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-// Source File Name:   GeomCellEdge.java
 
 package fr.ocelet.runtime.raster;
 
@@ -57,11 +53,11 @@ public abstract class GeomHexaCellEdge<R1 extends OcltRole, R2 extends OcltRole>
         aggregMap.put(name, operator);
     }
 
-    public void setCellOperator(String name, AggregOperator operator)
+   /* public void setCellOperator(String name, AggregOperator operator)
     {
         CellAggregOperator cao = new CellAggregOperator(operator, name);
         aggregMap.put(name, cao);
-    }
+    }*/
 
     public GeomHexaCellEdge(Grid grid, List<R2> geomEntities)
     {
