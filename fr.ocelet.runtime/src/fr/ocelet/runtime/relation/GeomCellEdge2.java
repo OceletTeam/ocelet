@@ -308,7 +308,53 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
     	
     	return lines;
     }
-    
+    private void setQuadrilateralCells(R2 r2, Polygon polygon,HashMap<Integer, Line> lines)
+   {
+   	
+       int bounds[] = grid.intBounds(polygon);
+       int index = 0;
+           for(int j = bounds[1] - 1; j <= bounds[3] + 1; j++){
+               Line l = lines.get(j);
+             
+               if(l.intersects(polygon)){
+               	
+               	try{
+               	MultiLine ml = l.multiLineIntersection(polygon);
+               	for(Line l2 : ml.asListOfLines()){
+               		Coordinate[] c = l2.getCoordinates();
+               		Coordinate c1 = c[0];
+               		Coordinate c2 = c[c.length - 1];
+           		
+               		int[] ix = grid.gridCoordinate(c1.x, c1.y);
+               		int[] ix2 = grid.gridCoordinate(c2.x, c2.y);
+               		
+               		int x1 = ix[0];
+               		int x2 = ix2[0];
+               		int temp1 = ix[0];
+               		int temp2 = ix2[0];
+               		
+               		if(x1 > x2){
+               			temp2 = ix[0];
+               			temp1 = ix2[0];
+               		}
+               		
+               		for(int x = temp1; x  < temp2; x ++){
+               			add((AbstractEntity)r2,x , j - 1);
+               		//	System.out.print(" "+x+" "+j+" |");
+               			index++;
+               		}
+               	}
+               }catch(Exception e){
+               		System.out.println("error");
+               	}
+               }
+           }
+       if(index == 0)
+       {
+           int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
+           add((AbstractEntity)r2, scaledCentroid[0], scaledCentroid[1]);
+       }
+   }
     private void setQuadrilateralCells(R2 r2, Polygon polygon,HashMap<Integer, Line> lines, HashMap<Integer, Integer> abs,
     		HashMap<Integer, Integer> ordo)
     {
@@ -653,7 +699,7 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
             OcltRole e = (OcltRole)r2;
             if(e.getSpatialType() instanceof Polygon){
                // setQuadrilateralCells(r2, (Polygon)e.getSpatialType());
-               // setQuadrilateralCells(r2, (Polygon)e.getSpatialType(), lines);
+              //  setQuadrilateralCells(r2, (Polygon)e.getSpatialType(), lines);
                 setQuadrilateralCells(r2, (Polygon)e.getSpatialType(), lines, abscisse, ordo);
             }
             if(e.getSpatialType() instanceof MultiPolygon)

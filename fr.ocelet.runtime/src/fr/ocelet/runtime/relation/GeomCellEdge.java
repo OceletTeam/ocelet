@@ -805,21 +805,21 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
     
     public void quadrilateralExtract(List<R2> list){
     	
-    	//HashMap<Integer, Line> lines = makeLines();
+    	HashMap<Integer, Line> lines = makeLines();
         for(R2 r2 : list){
         	
             OcltRole e = (OcltRole)r2;
             if(e.getSpatialType() instanceof Polygon){
-               //setQuadrilateralCells(r2, (Polygon)e.getSpatialType(), lines);
-               setQuadrilateralCells(r2, (Polygon)e.getSpatialType());
+              setQuadrilateralCells(r2, (Polygon)e.getSpatialType(), lines);
+               //setQuadrilateralCells(r2, (Polygon)e.getSpatialType());
             }
             if(e.getSpatialType() instanceof MultiPolygon)
             {
           
                 MultiPolygon mp = (MultiPolygon)e.getSpatialType();
                 for(int i = 0; i < mp.getNumGeometries(); i++){
-                 //   setQuadrilateralCells(r2, (Polygon)mp.getGeometryN(i), lines);
-                   setQuadrilateralCells(r2, (Polygon)mp.getGeometryN(i));
+                    setQuadrilateralCells(r2, (Polygon)mp.getGeometryN(i), lines);
+                  // setQuadrilateralCells(r2, (Polygon)mp.getGeometryN(i));
                 }
             }
             if(e.getSpatialType() instanceof Line)

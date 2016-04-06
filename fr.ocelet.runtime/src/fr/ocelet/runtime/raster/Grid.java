@@ -342,7 +342,7 @@ public class Grid {
     				 this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0] , j + rasterMin[1], matchedBand.get(name)));
     			}catch (Exception e){
     				
-    				e.printStackTrace();
+    				//e.printStackTrace();
     				
     				}
     			}    			
@@ -409,7 +409,7 @@ public class Grid {
     			try{
     				 this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0] , j + rasterMin[1], rasterProps.get(name)));
     			}catch (Exception e){
-    				e.printStackTrace();
+    				//e.printStackTrace();
 
     				
     				}

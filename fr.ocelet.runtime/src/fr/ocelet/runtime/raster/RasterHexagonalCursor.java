@@ -133,11 +133,6 @@ public class RasterHexagonalCursor extends RasterCursor {
 			 }
 		 }
 	}
-	
-		
-		 
-	
-	
 
 	 public boolean setEnd2(){
 	    
