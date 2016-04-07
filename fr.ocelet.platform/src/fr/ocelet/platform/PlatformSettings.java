@@ -40,7 +40,7 @@ import org.eclipse.core.runtime.Platform;
  */
 public class PlatformSettings {
 
-	public final static String version = "1.2.0 - Beta";
+	public final static String version = "Sulfur : 2.0.1.Alpha";
 
 	public final static int NORMAL = 0;
 	public final static int VERBOSE = 1;
