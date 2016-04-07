@@ -1,16 +1,27 @@
 <?xml version="1.0"?>
 <project name="ocelet_jargen" default="genjar" basedir="../../..">
 
+  <taskdef resource="org/pescuma/mergeservices/antlib.xml" classpath="plugins/_OCLTLIBS_/merge-services.jar" />	
+	
   <property name="model" value="_MODELNAME_"/>
   <property name="mainclass" value="_MAINCLASS_"/>
   <property name="classes.dir" location="workspace/${model}/bin/"/>
   <property name="destfile" location="_DESTFILE_"/>
   <property name="plugins.dir" location="plugins" />
+  <property name="services.jar" location="workspace/${model}/output/libs.jar" />
 
-  <target name="genjar">
+  <target name="mergejars">
+  	<merge-services dest="${services.jar}">
+  	  <fileset dir="${plugins.dir}">
+_JARFILES_
+  	  </fileset>
+  	</merge-services>
+  </target>
+	
+  <target name="genjar" depends="mergejars">
 	<jar basedir="${classes.dir}" destfile="${destfile}">
 	  <zipgroupfileset dir="${classes.dir}" includes="*.class" />
-_JARFILES_
+      <zipfileset src="${services.jar}" />
       <manifest>
         <attribute name="Class-Path" value="_CPATH_"/>
         <attribute name="Main-Class" value="${mainclass}"/>

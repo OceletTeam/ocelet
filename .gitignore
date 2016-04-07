@@ -7,4 +7,4 @@ worklog.*
 worknotes.*
 doc/gfx/
 xtend-gen
-*.xtendbin
+**/*.xtendbin
