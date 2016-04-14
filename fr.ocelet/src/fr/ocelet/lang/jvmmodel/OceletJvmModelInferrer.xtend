@@ -443,7 +443,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				'''
       		  				}else{
       		  					body= '''
-      		  					println("«enteln.name» type is not allowed for a cell entity");
+      		  					System.out.println("«enteln.name» type is not allowed for a cell entity");
       		  				'''
 
       		  				}
@@ -479,7 +479,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				'''
       		  				}else{
       		  					body= '''
-      		  					println("«enteln.name» type is not allowed for a cell entity");
+      		  					System.out.println("«enteln.name» type is not allowed for a cell entity");
       		  				'''
 
       		  				}
