@@ -79,6 +79,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       val packg = modl.getName()+"."
   
       // ---- Remplissage de la liste des scenarios et repérage du main ----
+      
       for(meln:modl.modelns) {
       	try {
           switch(meln) {
