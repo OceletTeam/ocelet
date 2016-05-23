@@ -339,7 +339,7 @@ public class Grid {
     		for(int j = 0; j < height; j ++){
     			for(String name : matchedBand.keySet()){
     			try{
-    				 this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0] , j + rasterMin[1], matchedBand.get(name)));
+    				 this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0], j + rasterMin[1], matchedBand.get(name)));
     			}catch (Exception e){
     				
     				//e.printStackTrace();
@@ -509,25 +509,25 @@ public class Grid {
     	xRes = raster.getXRes();
         yRes = raster.getYRes();
         Double[] newBounds = new Double[4];
-        newBounds[0] = bounds[0] - xRes;
-        newBounds[1] = bounds[1] - yRes;
-        newBounds[2] = bounds[2] + xRes;
-        newBounds[3] = bounds[3] + yRes;
+        newBounds[0] = bounds[0];
+        newBounds[1] = bounds[1];
+        newBounds[2] = bounds[2];
+        newBounds[3] = bounds[3];
        /* newBounds[0] = bounds[0];
         newBounds[1] = bounds[1];
         newBounds[2] = bounds[2];
         newBounds[3] = bounds[3];*/
         worldBounds = newBounds;
-        int cellWidth = (int)(Math.round( (newBounds[2] - newBounds[0]) / xRes )) + 4;
-        int cellHeight = (int)(Math.round( (newBounds[3] - newBounds[1]) / yRes )) + 4;
+        int cellWidth = (int)(Math.round( (newBounds[2] - newBounds[0]) / xRes ));
+        int cellHeight = (int)(Math.round( (newBounds[3] - newBounds[1]) / yRes ));
         minX = 0;
         minY = 0;
-        maxX = cellWidth - 4;
-        maxY = cellHeight - 4;
-        double newMinX = newBounds[0] - (2 * xRes);
-        double newMinY = newBounds[1] - (2 * yRes);
-        width = cellWidth - 4;
-        height = cellHeight - 4; 
+        maxX = cellWidth;
+        maxY = cellHeight;
+        double newMinX = newBounds[0];
+        double newMinY = newBounds[1];
+        width = cellWidth;
+        height = cellHeight; 
         boundsX = newBounds[0];
         boundsY = newBounds[3];
         this.raster = GridGenerator.createRaster(numBands, cellWidth, cellHeight);
@@ -559,16 +559,16 @@ public class Grid {
         newBounds[3] = bounds[3];
 
         worldBounds = newBounds;
-        int cellWidth = (int)(Math.round( (newBounds[2] - newBounds[0]) / xRes )) + 4;
-        int cellHeight = (int)(Math.round( (newBounds[3] - newBounds[1]) / yRes )) + 4;
+        int cellWidth = (int)(Math.round( (newBounds[2] - newBounds[0]) / xRes ));
+        int cellHeight = (int)(Math.round( (newBounds[3] - newBounds[1]) / yRes ));
         minX = 0;
         minY = 0;
-        maxX = cellWidth - 4;
-        maxY = cellHeight - 4;
-        double newMinX = newBounds[0] - (2 * xRes);
-        double newMinY = newBounds[1] - (2 * yRes);
-        width = cellWidth - 4;
-        height = cellHeight - 4; 
+        maxX = cellWidth;
+        maxY = cellHeight;
+        double newMinX = newBounds[0];
+        double newMinY = newBounds[1];
+        width = cellWidth;
+        height = cellHeight; 
         boundsX = newBounds[0];
         boundsY = newBounds[3];
         this.raster = GridGenerator.createRaster(numBands, cellWidth, cellHeight);
@@ -619,7 +619,7 @@ public class Grid {
     public void setInitCoordinate(){
     	  DirectPosition dp = null;
 		try {
-			dp = gridGeometry.gridToWorld(new GridCoordinates2D(minX + 2, minY + 2));
+			dp = gridGeometry.gridToWorld(new GridCoordinates2D(minX, minY));
 		} catch (TransformException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -634,13 +634,28 @@ public class Grid {
 
  
 
-    public int[] gridCoordinate(double x, double y)
-    {
-        int gCoord[] = new int[2];
+    public int[] gridCoordinate(double x, double y){
         
-        
-        
+    	int gCoord[] = new int[2];
         if(cellShapeType.equals("HEXAGONAL")){
+        	
+        	double l = Math.sin(Math.PI/3) * (xRes / 2);
+        	
+        	if(x%(xRes/2) == 0){
+        		
+        		gCoord[0] =  (int)Math.round(((4 * (x - initCoordinates.x)) / (3 * xRes)));
+        		
+        		gCoord[1] = (int)-Math.round(((y - initCoordinates.y) / (2 * l)));
+        		
+        	}else{
+        		gCoord[0] = (int) Math.round(((4 * (x - initCoordinates.x)) / (3 * xRes)));
+        		gCoord[1] = (int)- Math.round(( (y - initCoordinates.y + l) / ( 2 * l) )) ;
+        	}
+        	gCoord[0] = gCoord[0];
+        	gCoord[1] = gCoord[1];
+        	return gCoord;        	
+        }
+       /* if(cellShapeType.equals("TRIANGULAR")){
         	
         	double l = Math.sin(Math.PI/3) * (xRes / 2);
         	
@@ -657,15 +672,14 @@ public class Grid {
         	gCoord[0] = gCoord[0];
         	gCoord[1] = gCoord[1];
         	return gCoord;        	
-        }
-        
+        }*/
         try
         {
            // GridCoordinates2D gc = gridGeometry.worldToGrid(new DirectPosition2D(x - (2 * xRes), y + (2 * yRes)));
              GridCoordinates2D gc = gridGeometry.worldToGrid(new DirectPosition2D(x, y ));
 
-            gCoord[0] = gc.x - 2;
-            gCoord[1] = gc.y - 2;
+            gCoord[0] = gc.x;
+            gCoord[1] = gc.y;
         }
         catch(TransformException ex)
         {
@@ -696,11 +710,27 @@ public class Grid {
     	
     		return new Coordinate(dx, dy);
     	}
-    
+   /* if(cellShapeType.equals("TRIANGULAR")){
+    	
+    		double dx = initCoordinates.x;
+    		double dy = initCoordinates.y;
+    		
+    		dx = dx + x * (xRes / 2);
+    		if(x % 2 == 0){
+    			if( y % 2 == 0){
+    				dy = (initCoordinates.y * y) - (1/3  * xRes);
+    			}else{
+    				dy = (initCoordinates.y * y) + (1/3  * xRes);
+
+    			}
+    		}
+    	
+    		return new Coordinate(dx, dy);
+    	}*/
     
         try{
         
-            DirectPosition dp = gridGeometry.gridToWorld(new GridCoordinates2D(x + 2, y + 2));
+            DirectPosition dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
             return new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
         }
         catch(TransformException ex)
@@ -876,7 +906,7 @@ public class Grid {
        // Double value = null;
         //if(rasterProps.keySet().contains(name))
         //{
-            return raster.getSampleDouble(x + 2, y + 2, rasterProps.get(name));
+            return raster.getSampleDouble(x, y, rasterProps.get(name));
             //return value;
         //} else
         //{
@@ -889,7 +919,7 @@ public class Grid {
     {
     	
         //if(rasterProps.keySet().contains(name))
-            raster.setSample(x + 2, y + 2, rasterProps.get(name), value);
+            raster.setSample(x, y, rasterProps.get(name), value);
         //else
           //  initRaster.setSample(x + 2, y + 2, initRasterProps.get(name), value);
     }
@@ -954,8 +984,13 @@ public class Grid {
         return gridCellManager;
     }
     
-    public void initMrm(){
+    public void initMrm(int width){
     	mrm = new MultiResolutionManager(width, getPropertiesName());
+
+    }
+    
+    public void initMrm(int startX, int endX){
+    	mrm = new MultiResolutionManager(startX, endX, getPropertiesName());
 
     }
 

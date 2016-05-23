@@ -30,9 +30,11 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.ocltypes.List;
@@ -157,7 +159,40 @@ public class Polygon extends com.vividsolutions.jts.geom.Polygon implements Spat
 		}
 		return lp;
 	}
-	
+public List<Line> toSegments(){
+		
+		List<Line> lines = new List<Line>();
+		
+		Coordinate[] coordinates = this.getExteriorRing().getCoordinates();
+							
+			for(int j = 0; j < coordinates.length - 1; j ++){
+					
+				Coordinate[] coords = new Coordinate[2];
+				coords[0] = coordinates[j];
+				coords[1] = coordinates[j + 1];
+				CoordinateSequence cs = new CoordinateArraySequence(coords);
+				Line l = new Line(cs, this.getFactory());
+				lines.add(l);
+					
+			}
+				
+			for(int i = 0 ; i < this.getNumInteriorRing(); i ++){
+					
+				Coordinate[] innerCoordinates = this.getInteriorRingN(i).getCoordinates();
+				for(int j = 0; j < innerCoordinates.length - 1; j ++){
+						
+					Coordinate[] coords = new Coordinate[2];
+					coords[0] = innerCoordinates[j];
+					coords[1] = innerCoordinates[j + 1];
+					CoordinateSequence cs = new CoordinateArraySequence(coords);
+					Line l = new Line(cs, this.getFactory());
+					lines.add(l);
+						
+				}
+			}			
+		
+		return lines;		
+	}	
 	/********************************************************/
 	/***********************  UNION *************************/
 	/********************************************************/

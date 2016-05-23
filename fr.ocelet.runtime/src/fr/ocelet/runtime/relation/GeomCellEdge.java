@@ -496,7 +496,7 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
                	
                	
                }catch(Exception e){
-               		System.out.println("error");
+               		//System.out.println("error");
                	}
            	
                }
@@ -641,7 +641,7 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
             {
                 CellAggregOperator cao = (CellAggregOperator)aggregMap.get(name);
                
-                Double d = cao.apply(values, Double.valueOf(0.0D));
+                Double d = cao.apply(values, null);
                
                 grid.setCellValue(name, currentxKey, currentyKey, d);
                
@@ -649,9 +649,9 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
             {
              
                 if(values.size() > 1){
-                	grid.setCellValue(name, currentxKey, currentyKey, (Double)values.get((int)(Math.random() * values.size())));
+                	grid.setCellValue(name, currentxKey, currentyKey, values.get((int)(Math.random() * values.size())));
                 }else{
-                	grid.setCellValue(name, currentxKey, currentyKey, (Double)values.get(0));
+                	grid.setCellValue(name, currentxKey, currentyKey, values.get(0));
                 }
               
             }

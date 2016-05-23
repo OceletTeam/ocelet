@@ -3,6 +3,7 @@ package fr.ocelet.runtime.relation.impl;
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.geom.ocltypes.Line;
 import fr.ocelet.runtime.geom.ocltypes.MultiLine;
+import fr.ocelet.runtime.geom.ocltypes.MultiPoint;
 import fr.ocelet.runtime.geom.ocltypes.Polygon;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
@@ -216,7 +217,8 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
 	}
 
 	protected Grid createTriangle(String name, List<String> props,  Double[] bounds, double size){
-		return null;
+		return GridGenerator.triangularGrid(name, props, size, bounds);
+
 	}
 
 	protected Grid createTriangle(String name, List<String> props, double minX, double minY, double maxX, double maxY, double size){
@@ -266,27 +268,50 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
 	}
 	
 	
-	
-	 public KeyMap<Double[], List<Geometry>> isoLines(List<Double> range, String propertyName){
+	private Double[] getMinMaxValueOf(String propertyName){
+		
+		Double max = 0.0;
+		Double min = Double.POSITIVE_INFINITY;
+		for(int i = 0 ; i < grid.getWidth(); i ++){
+			for(int j = 0; j < grid.getHeight(); j ++){
+				Double gridVal = grid.getValue(propertyName, i, j);
+				if(gridVal > max)
+					max = gridVal;
+				if(gridVal < min)
+					min = gridVal;
+			}
+		}
+		return new Double[]{min, max};
+	}
+	public KeyMap<List<Double>, List<Geometry>> isoLines(Integer range, String propertyName){
 	    	
-	    	KeyMap<Double[], List<Geometry>> map = new KeyMap<Double[], List<Geometry>>();	    	
+	    	KeyMap<List<Double>, List<Geometry>> map = new KeyMap<List<Double>, List<Geometry>>();	    	
 	    	HashMap<Double[], Integer> indexed = new HashMap<Double[], Integer>();	    	
 	    	int[][] structure = new int[grid.getWidth()][grid.getHeight()];
 	    	int index = 0;
-	    	for(int i = 0; i < range.size() - 2; i = i + 2){
+	    	Double[] bounds = getMinMaxValueOf(propertyName);
+	    	int min = bounds[0].intValue();
+	    	int max = bounds[1].intValue();
+
+	    	int nbr = (max - min)/ range;
+	    	for(int i = min; i < max; i = i + range){
 	    		
-	    		indexed.put(new Double[]{range.get(i), range.get(i + 1)}, index);
+	    		indexed.put(new Double[]{(double)i , (double)i + range}, index);
 	    		
 	    		index ++;
 	    	}	       	
 	    	
 	    	for(Double[] d : indexed.keySet()){
-	    		
+	    		List<Double> dlist = new List<Double>();
+	    		dlist.add(d[0]);
+	    		dlist.add(d[1]);
+	    		System.out.println(dlist);
+
 	    		ArrayList<Line> geoms = new ArrayList<Line>();
 	    	    structure =	fillStructure(structure, d, propertyName);
 	    	    int[][] cells = toCells(structure);
 	    	    
-	    	    for(int x = 0; x < grid.getWidth() - 1 ; x ++){
+	    	    for(int x = 0; x < grid.getWidth() - 1; x ++){
 	    	    	
 	    	    	for(int y = 0 ; y < grid.getHeight() - 1; y ++){
 	    	    		Geometry iso = isoLine(cells[x][y], x, y);
@@ -299,7 +324,99 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
 	    	    			}else{
 	    	    		geoms.add((Line)iso);
 	    	    			}
-	    	    		//System.out.println(iso);
+	    	    		}
+	    	    	}
+	    	    }	    	    	    	  
+	    	    
+	    	  MultiLine ml = new MultiLine(geoms.toArray(new Line[geoms.size()]), SpatialManager.geometryFactory()); 
+	    	//  System.out.println(ml.union());
+	    	  Polygonizer polygonizer=new Polygonizer();
+	    	  polygonizer.add(ml);
+	    	 
+	    	    
+	    	   GeometryCollection gc = new GeometryCollection(geoms.toArray(new Geometry[geoms.size()]), SpatialManager.geometryFactory());
+	    	   System.out.println(gc);
+	    	   Geometry g = gc.buffer(0.0);
+	    	   System.out.println(g); 
+	    	    //System.out.println(g);
+	    	    List<Geometry> polys = new List<Geometry>();
+	    	    
+	    	    HashMap<Polygon, Polygon> pMap = new HashMap<Polygon, Polygon>();
+	    	    
+	    	    for(Object o : polygonizer.getPolygons()){
+	    	    	System.out.println(o);
+	    	    	if(o instanceof Geometry){
+	    	    		Polygon p = (Polygon)o;
+	    	    		LinearRing lr = new LinearRing(new CoordinateArraySequence(p.getExteriorRing().getCoordinates()), SpatialManager.geometryFactory());
+	    	    		Polygon np = new Polygon(lr, null, SpatialManager.geometryFactory());
+	    	    		pMap.put(p, np);
+	    	    		polys.add((Geometry)o);
+		    		}
+		    	  }
+	    	    
+	    	    List<Geometry> temp = new List<Geometry>();
+	    	    for(Geometry g1 : polys){
+	    	    	temp.add(g1);
+	    	    }
+	    	    
+	    	    for(Geometry p1 : polys){
+	    	    	
+	    	    	for(Geometry p2 : polys){
+	    	    			    	    		
+	    	    		if(!p1.equals(p2)){
+	    	    			
+	    	    			if(pMap.get(p1).contains(p2)){
+	    	    				temp.remove(p2);
+	    	    			}
+	    	    			if(pMap.get(p2).contains(p1)){
+	    	    				temp.remove(p1);
+	    	    			}	    	    	
+	    	    		}
+	    	    	}
+	    	    }
+	    	    map.put(dlist, temp);	   	    	    	    
+	    	}	    		    	    		  	    	
+	    	return map;	    	
+	    }
+	
+	 public KeyMap<List<Double>, List<Geometry>> isoLines(List<Double> range, String propertyName){
+	    	
+	    	KeyMap<List<Double>, List<Geometry>> map = new KeyMap<List<Double>, List<Geometry>>();	    	
+	    	HashMap<Double[], Integer> indexed = new HashMap<Double[], Integer>();	    	
+	    	int[][] structure = new int[grid.getWidth()][grid.getHeight()];
+	    	int index = 0;
+	    	for(int i = 0; i < range.size() - 2; i = i + 2){
+	    		
+	    		indexed.put(new Double[]{range.get(i), range.get(i + 1)}, index);
+	    		
+	    		index ++;
+	    	}	       	
+	    	
+	    	for(Double[] d : indexed.keySet()){
+	    		
+	    		
+	    		List<Double> dlist = new List<Double>();
+	    		dlist.add(d[0]);
+	    		dlist.add(d[1]);
+	    		System.out.println(dlist);
+	    		ArrayList<Line> geoms = new ArrayList<Line>();
+	    	    structure =	fillStructure(structure, d, propertyName);
+	    	    int[][] cells = toCells(structure);
+	    	    
+	    	    for(int x = 0; x < grid.getWidth() ; x ++){
+	    	    	
+	    	    	for(int y = 0 ; y < grid.getHeight(); y ++){
+	    	    		Geometry iso = isoLine(cells[x][y], x, y);
+	    	    		
+	    	    		if(iso != null){
+	    	    			if(iso instanceof MultiLine){
+	    	    				for(int i = 0; i < iso.getNumGeometries(); i ++){
+	    	    					geoms.add((Line)iso.getGeometryN(i));
+	    	    				}
+	    	    			}else{
+	    	    		geoms.add((Line)iso);
+	    	    			}
+	    	    		System.out.println(iso);
 	    	    		}
 	    	    	}
 	    	    }	    	    	    	  
@@ -349,25 +466,23 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
 	    	    		}
 	    	    	}
 	    	    }
-	    	    map.put(d, temp);	   	    	    	    
+	    	    map.put(dlist, temp);	   	    	    	    
 	    	}	    		    	    		  	    	
 	    	return map;	    	
 	    }
 	 
 	 private int[][] fillStructure(int[][] structure,Double[] d, String propertyName){
-		 
 		 for(int i = 0; i < grid.getWidth(); i ++){
-			 
 			 for(int j = 0; j < grid.getHeight(); j ++){
 				 
 				 Double val = grid.getValue(propertyName, i, j);
-					
 	    	    		if(val >= d[0] && val < d[1]){
 	    	    		
 	    	    			structure[i][j] = 1;
 	    	    		}else{
 	    	    			structure[i][j] = 0;
-	    	     }		    	    					 
+	    	     }
+	    	    		
 			 }		 
 		}
 		 return structure;
@@ -377,9 +492,10 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
 	    	
 	    	int[][] cells = new int[grid.getWidth() - 1][grid.getHeight() - 1];    	
 	    	
-	    	for(int y = 0; y < grid.getHeight() - 1; y ++){
+	    	for(int x = 0; x < grid.getWidth() - 1; x ++){	    	
+	    		System.out.println();
+	    		for(int y = 0; y < grid.getHeight() - 1; y ++){
 	    		
-	    			for(int x = 0; x < grid.getWidth() - 1; x ++){	    		 
     		 
 	    				int finalVal = 0;	   		 
 	    				int val1 = structure[x][y];
@@ -401,7 +517,7 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
 	    				}
 	    				cells[x][y] = finalVal;
         			 
-    		 
+	    				System.out.print(finalVal+"\t");
 	    			}
 	    	}
 	    		

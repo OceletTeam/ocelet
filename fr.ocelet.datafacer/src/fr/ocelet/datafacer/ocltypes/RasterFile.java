@@ -56,7 +56,7 @@ public class RasterFile{
     
     
     protected Grid createGrid(List<String> properties, Shapefile shp, String gridName){
-    	grid = GridGenerator.squareGrid(gridName, properties, raster.getXRes(), raster.getYRes(), shp.getBounds());
+    	grid = GridGenerator.squareGridFrom(gridName, properties, raster,raster.getXRes(), raster.getYRes(), shp.getBounds());
         fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
         grid.copy(raster, propMatched);
         return grid;

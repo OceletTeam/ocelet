@@ -88,12 +88,15 @@ public class Cell implements SpatialType{
    
     private Coordinate[] createCoordinates(){
     	
-    	
+    	if(type == null){
+    		return quadriCoordinate();
+    	}
     	if(type.equals("HEXAGONAL")){
     		return hexagonalCoordinate();
     	}
-    	if(type.equals("QUADRILATERAL")){
-    		return quadriCoordinate();
+    	
+    	if(type.equals("TRIANGULAR")){
+    		return triangularCoordinate();
     	}
     	return null;
     }
@@ -151,6 +154,70 @@ public class Cell implements SpatialType{
     	return coords;
     	
     	
+    }
+    
+    
+    private Coordinate[] triangularCoordinate(){
+    		
+    	if(x % 2 == 0){
+    		if(y % 2 == 0){
+    			return triangularTopCoordinate();
+    		}else{
+    			return triangularDownCoordinate();
+    		}
+    	}else{
+    		if(y % 2 == 0){
+    			return triangularDownCoordinate();
+    		}else{
+    			return triangularTopCoordinate();
+    		}
+    	}
+    }
+    
+    private Coordinate[] triangularTopCoordinate(){
+    	
+    	Coordinate[] coords = new Coordinate[4];
+    	
+    	
+    	Coordinate c = getCoord(x, y);
+    	double dx = c.x;
+    	double dy = c.y;
+    	
+    	
+    	
+
+    	
+    	double l = Math.sin(Math.PI/3) * (xRes / 2);
+    	
+    	coords[0] = new Coordinate(dx, dy - xRes / 2);
+    	coords[1] = new Coordinate(dx + xRes / 2, dy - xRes / 3);
+    	coords[2] = new Coordinate(dx - xRes / 2, dy- xRes / 3);
+    	coords[3] = new Coordinate(dx, dy - xRes / 2);
+
+    	return coords;
+    }
+    
+    private Coordinate[] triangularDownCoordinate(){
+    	
+    	Coordinate[] coords = new Coordinate[4];
+    	
+    	
+    	Coordinate c = getCoord(x, y);
+    	double dx = c.x;
+    	double dy = c.y;
+    	
+    	
+    	
+
+    	
+    	double l = Math.sin(Math.PI/3) * (xRes / 2);
+    	
+    	coords[0] = new Coordinate(dx, dy + xRes / 2);
+    	coords[1] = new Coordinate(dx + xRes / 2, dy + xRes / 3);
+    	coords[2] = new Coordinate(dx - xRes / 2, dy+ xRes / 3);
+    	coords[3] = new Coordinate(dx, dy + xRes / 2);
+
+    	return coords;
     }
     
     public Polygon toPolygon(){

@@ -254,10 +254,10 @@ public class ORaster {
         WritableRaster r;
         if(minX > 2 && minY > 2)
         {
-            r = getRaster().createCompatibleWritableRaster(minX - 2, minY - 2, (maxX - minX) + 4, (maxY - minY) + 4);
-            for(int i = minX - 2; i < maxX + 2; i++)
+            r = getRaster().createCompatibleWritableRaster(minX, minY, (maxX - minX), (maxY - minY));
+            for(int i = minX; i < maxX; i++)
             {
-                for(int j = minY - 2; j < maxY + 2; j++)
+                for(int j = minY; j < maxY; j++)
                 {
                     for(int b = 0; b < iRaster.getNumBands(); b++)
                         r.setSample(i, j, b, iRaster.getSampleDouble(i, j, b));
@@ -267,7 +267,7 @@ public class ORaster {
 
         } else
         {
-            r = getRaster().createCompatibleWritableRaster(minX - 2, minY - 2, maxX - minX + 4, maxY - minY + 4);
+            r = getRaster().createCompatibleWritableRaster(minX, minY, maxX - minX, maxY - minY);
             for(int i = minX; i < maxX; i++)
             {
                 for(int j = minY; j < maxY; j++)
@@ -287,8 +287,8 @@ public class ORaster {
 
     public WritableRaster createRaster(int numBand, int width, int height)
     {
-        java.awt.image.DataBuffer db2 = new DataBufferDouble(1, numBand);
-        SampleModel sample = RasterFactory.createBandedSampleModel(4, width + 4, height + 4, numBand);
+        java.awt.image.DataBuffer db2 = new DataBufferDouble(width * height, numBand);
+        SampleModel sample = RasterFactory.createBandedSampleModel(4, width, height, numBand);
         Raster r = Raster.createRaster(sample, db2, null);
         return r.createCompatibleWritableRaster();
     }
@@ -305,7 +305,7 @@ public double[] worldBounds(){
 	int[] bounds = getBounds();
 	
 	double[] min = gridToWorld(bounds[0], bounds[1]);
-	double[] max = gridToWorld(bounds[2] - 1, bounds[3] - 1);
+	double[] max = gridToWorld(bounds[2], bounds[3] - 1);
 
 
 	double minX = min[0];
@@ -323,9 +323,11 @@ return worldBounds;
 }
     public int[] getBounds()
     {
+    	
         Raster raster = getRaster();
+        
         int bounds[] = {
-            raster.getMinX(), raster.getMinY(), raster.getWidth() + raster.getMinX(), raster.getMinY() + raster.getHeight()
+            raster.getMinX(), raster.getMinY(), raster.getWidth() + raster.getMinX() - 1, raster.getMinY() + raster.getHeight() - 1
         };
         return bounds;
     }

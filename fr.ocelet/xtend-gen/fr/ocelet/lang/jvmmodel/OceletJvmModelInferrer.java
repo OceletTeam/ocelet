@@ -1095,7 +1095,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       StringConcatenationClient _client_5 = new StringConcatenationClient() {
                                         @Override
                                         protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                          _builder.append("println(\"");
+                                          _builder.append("System.out.println(\"");
                                           String _name = ((PropertyDef)enteln_1).getName();
                                           _builder.append(_name, "");
                                           _builder.append(" type is not allowed for a cell entity\");");
@@ -1211,11 +1211,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       StringConcatenationClient _client_5 = new StringConcatenationClient() {
                                         @Override
                                         protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                          _builder.append("println(\"");
+                                          _builder.append("System.out.println(\"");
                                           String _name = ((PropertyDef)enteln_1).getName();
                                           _builder.append(_name, "");
                                           _builder.append(" type is not allowed for a cell entity\");");
                                           _builder.newLineIfNotEmpty();
+                                          _builder.append("return null;");
+                                          _builder.newLine();
                                         }
                                       };
                                       this._jvmTypesBuilder.setBody(it_1, _client_5);
