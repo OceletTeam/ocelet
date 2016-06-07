@@ -87,12 +87,12 @@ import java.util.*;
 			if(grid1.getXRes() * grid1.getYRes() < grid2.getXRes() * grid2.getYRes()){        	
 				globalGrid = grid2;
 				grid = grid1;
-				
+
 			} else {
 
 				globalGrid = grid1;
 				grid = grid2;
-				
+
 			}
 		}
 	}
@@ -230,7 +230,7 @@ import java.util.*;
 	}
 
 
-	
+
 
 	private double[] scalingdouble(Double[] bounds1, Double[] bounds2){
 
@@ -371,7 +371,7 @@ import java.util.*;
 		}
 	}
 
-	
+
 }*/
 
 
@@ -417,13 +417,13 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 	public DiCursorEdge(Grid grid1, Grid grid2){
 
-		
+
 
 		Double[] grid1Bounds = grid1.getWorldBounds();
 		Double[] grid2Bounds =  grid2.getWorldBounds();
-		
+
 		double[] scaled = scalingdouble(grid1Bounds, grid2Bounds);
-		
+
 		/*System.out.println("BOUNDS");
 		System.out.println(grid1Bounds[0]+" "+grid1Bounds[2]+" "+grid1Bounds[1]+" "+grid1Bounds[3]);
 		System.out.println(grid2Bounds[0]+" "+grid2Bounds[2]+" "+grid2Bounds[1]+" "+grid2Bounds[3]);
@@ -436,7 +436,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 		int[] grid2Min = grid2.gridCoordinate(scaled[0],scaled[3]);
 		int[] grid2Max = grid2.gridCoordinate(scaled[2],scaled[1]);
-		
+
 
 		if(grid1.getWidth() == grid2.getWidth() && grid1.getHeight() == grid2.getHeight()) {
 
@@ -459,51 +459,117 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 
 		}else{
-			if(grid1.getXRes() * grid1.getYRes() < grid2.getXRes() * grid2.getYRes()){        	
-				globalGrid = grid2;
-				startX = grid2Min[0];
-				startY = grid2Min[1];
-				endX = grid2Max[0];
-				endY = grid2Max[1];
+				/*if(grid1.getXRes() * grid1.getYRes() < grid2.getXRes() * grid2.getYRes()){        	
+					globalGrid = grid2;
+					startX = grid2Min[0];
+					startY = grid2Min[1];
+					endX = grid2Max[0];
+					endY = grid2Max[1];
 
-				grid = grid1;
-				startX2 = grid1Min[0];
-				startY2 = grid1Min[1];
-				endX2 = grid1Max[0];
-				endY2 = grid1Max[1];
+					grid = grid1;
+					startX2 = grid1Min[0];
+					startY2 = grid1Min[1];
+					endX2 = grid1Max[0];
+					endY2 = grid1Max[1];
 
-			} else {
+				} else {
 
-				globalGrid = grid1;
-				startX = grid1Min[0];
-				startY = grid1Min[1];
-				endX = grid1Max[0];
-				endY = grid1Max[1];
-				grid = grid2;
-				startX2 = grid2Min[0];
-				startY2 = grid2Min[1];
-				endX2 = grid2Max[0];
-				endY2 = grid2Max[1];
+					globalGrid = grid1;
+					startX = grid1Min[0];
+					startY = grid1Min[1];
+					endX = grid1Max[0];
+					endY = grid1Max[1];
+					grid = grid2;
+					startX2 = grid2Min[0];
+					startY2 = grid2Min[1];
+					endX2 = grid2Max[0];
+					endY2 = grid2Max[1];
 
-			}
-			x = startX;
-			y = startY;
-			x2 = -1;
-			y2 = -1;       
+				}*/
+			if(grid1.getWidth() < grid2.getWidth()){        	
+					globalGrid = grid1;
+					startX = grid1Min[0];
+					startY = grid1Min[1];
+					endX = grid1Max[0];
+					endY = grid1Max[1];
+					grid = grid2;
+					startX2 = grid2Min[0];
+					startY2 = grid2Min[1];
+					endX2 = grid2Max[0];
+					endY2 = grid2Max[1];
+
+				} else {
+
+					
+					globalGrid = grid2;
+					startX = grid2Min[0];
+					startY = grid2Min[1];
+					endX = grid2Max[0];
+					endY = grid2Max[1];
+
+					grid = grid1;
+					startX2 = grid1Min[0];
+					startY2 = grid1Min[1];
+					endX2 = grid1Max[0];
+					endY2 = grid1Max[1];
+
+					
+					
+				}
 
 		}
-		
-		/*System.out.println("GLOBAL : "+startX+" "+startY+" "+endX+" "+endY);
+		rescale();
+		x = startX;
+		y = startY;
+		x2 = -1;
+		y2 = -1;       
+
+	/*	System.out.println("GLOBAL : "+startX+" "+startY+" "+endX+" "+endY);
 		System.out.println("normal : "+startX2+" "+startY2+" "+endX2+" "+endY2);
-*/
+		*/ 
 	}
 
+	private void rescale(){
+		if(startX < 0){
+			startX = 0;
+		}
+		if(startY < 0){
+			startY = 0;
+		}
+		if(startY2 < 0){
+			startY2 = 0;
+		}
+		if(startX2 < 0){
+			startX2 = 0;
+		}
+		if(endX > globalGrid.getWidth()){
+			endX = globalGrid.getWidth();
+		}
+		if(endY > globalGrid.getHeight()){
+			endY = globalGrid.getHeight();
+		}
+
+		if(endX2 > grid.getWidth()){
+			endX2 = grid.getWidth();
+		}
+
+		if(endY2 > grid.getHeight()){
+			endY2 = grid.getHeight();
+		}
+	}
 	protected String getCellType(){
 		return null;
 	}
 	public void updateRoleInfo(){	
 
+		Cell cell1 = (Cell)getRole(new Integer(0)).getSpatialType();
 		int numGrid = ((Cell)getRole(new Integer(0)).getSpatialType()).getNumGrid();
+		cell1.setType(GridManager.getInstance().get(numGrid).getCellShapeType());
+		
+		Cell cell2 = (Cell)getRole(new Integer(1)).getSpatialType();
+		int numGrid2 = ((Cell)getRole(new Integer(1)).getSpatialType()).getNumGrid();
+		cell2.setType(GridManager.getInstance().get(numGrid2).getCellShapeType());
+
 
 		if ( GridManager.getInstance().get(numGrid).equals(globalGrid)){
 			r1 = getRole(new Integer(0));
@@ -512,6 +578,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		}else{
 			r1 = getRole(new Integer(1));
 			r2 = getRole(new Integer(0));
+			
 		}
 	}
 
@@ -593,7 +660,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		}else{
 
 			if(x2 == -1 && y2 == -1){
-				globalGrid.initMrm(endX - startX);
+				globalGrid.initMrm(startX, endX);
 				mrm = globalGrid.getMrm();
 				x2 = startX2;
 				y2 = startY2;
@@ -631,7 +698,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 	}
 
 
-	
+
 
 	private double[] scalingdouble(Double[] bounds1, Double[] bounds2){
 
@@ -769,6 +836,6 @@ public abstract class DiCursorEdge extends OcltEdge{
 		}
 	}
 
-	
+
 }
 

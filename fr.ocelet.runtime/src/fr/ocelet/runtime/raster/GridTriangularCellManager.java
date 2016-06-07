@@ -20,7 +20,7 @@ public class GridTriangularCellManager extends GridCellManager{
   public void reset(){
   
 	  validateAll();
-     
+	  
       y = 0;
       for(int i = 0; i < grid.getWidth(); i++){
       	

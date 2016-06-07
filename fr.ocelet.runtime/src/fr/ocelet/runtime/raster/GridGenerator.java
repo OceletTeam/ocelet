@@ -142,10 +142,10 @@ public class GridGenerator {
 		int cellHeight = (int) (Math.round(height / (yRes)));	
 		
 		//System.out.println(cellWidth+" "+cellHeight+" total : "+cellWidth * cellHeight);
-		double newMinX = nminX - xRes / 2;
-		double newMinY = nminY - xRes / 2;
-		double newMaxX = newMinX + (cellWidth * xRes) + (xRes / 2);
-		double newMaxY = newMinY + (cellHeight * yRes) + (xRes / 2);
+		double newMinX = nminX;
+		double newMinY = nminY;
+		double newMaxX = newMinX + (cellWidth * xRes);
+		double newMaxY = newMinY + (cellHeight * yRes);
 		
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);

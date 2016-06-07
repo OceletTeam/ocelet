@@ -89,7 +89,12 @@ public class Cell implements SpatialType{
     private Coordinate[] createCoordinates(){
     	
     	if(type == null){
+    		type = GridManager.getInstance().get(numGrid).getCellShapeType();
+    		//return quadriCoordinate();
+    	}
+    	if(type.equals("QUADRILATERAL")){
     		return quadriCoordinate();
+
     	}
     	if(type.equals("HEXAGONAL")){
     		return hexagonalCoordinate();

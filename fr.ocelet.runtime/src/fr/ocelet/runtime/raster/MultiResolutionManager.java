@@ -12,7 +12,7 @@ public class MultiResolutionManager {
     private int start;
     private int end;
     
-    public MultiResolutionManager(int width, ArrayList<String> properties){
+   /* public MultiResolutionManager(int width, ArrayList<String> properties){
     	this.width = width + 1;
     	this.properties = properties;
     	init();
@@ -56,5 +56,53 @@ public class MultiResolutionManager {
     }
    public ArrayList<String> getProperties(){
 	   return properties;
+   }*/
+   
+   public MultiResolutionManager(int width, ArrayList<String> properties){
+    	this.width = width + 1;
+    	this.properties = properties;
+    	init();
+    }
+    
+    public MultiResolutionManager(int start, int end, ArrayList<String> properties){
+    	this.start = start;
+    	this.end = end;
+    	this.width = end - start + 1;
+    	this.properties = properties;
+    	init();
+    }
+    
+    public void add(int x, String name, Double value){
+        get(x).add(name, value);       
+    }
+    
+    public CellValues get(int x){
+    	
+    	return globalLine[x - start];
+    }
+    public void init(){
+    	globalLine = new CellValues[width];
+    	for(int i = 0; i < width; i ++){
+    		globalLine[i] = new CellValues();
+    		for(String name : properties){
+    			globalLine[i].set(name);
+    		}
+    	}
+    }
+    public void clear(String name){
+    	for(int i = 0; i < width; i ++){
+    		globalLine[i].clear(name);
+    	}
+    }
+    public void clear(){
+    	for(int i = 0; i < width; i ++){
+    		for(String name : properties){
+    			globalLine[i].clear(name);
+    		}
+    	}
+    }
+   public ArrayList<String> getProperties(){
+	   return properties;
    }
+   
 }

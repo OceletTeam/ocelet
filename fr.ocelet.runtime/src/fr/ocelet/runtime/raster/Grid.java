@@ -333,8 +333,8 @@ public class Grid {
     		}
     	}*/
     	
-    	int width = gridMax[0] - gridMin[0];
-    	int height = gridMax[1] - gridMin[1];
+    	int width = gridMax[0] - gridMin[0] + 1;
+    	int height = gridMax[1] - gridMin[1] + 1;
     	for(int i = 0; i < width; i ++){
     		for(int j = 0; j < height; j ++){
     			for(String name : matchedBand.keySet()){
