@@ -88,11 +88,12 @@ public class Color extends java.awt.Color {
 		lc.add(this);
 		double p = 1 / ((double) (nbSteps - 1));
 		for (int i = 1; i < (nbSteps - 1); i++) {
-			int r, g, b;
+			int r, g, b, a;
 			r = getCompLevel(getRed(), c2.getRed(), p * i);
 			g = getCompLevel(getGreen(), c2.getGreen(), p * i);
 			b = getCompLevel(getBlue(), c2.getBlue(), p * i);
-			lc.add(new Color(r, g, b));
+			a = getCompLevel(getAlpha(), c2.getAlpha(),p*i);
+			lc.add(new Color(r, g, b, a));
 		}
 		lc.add(c2);
 		return lc;
