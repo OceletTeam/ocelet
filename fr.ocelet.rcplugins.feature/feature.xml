@@ -2,7 +2,7 @@
 <feature
       id="fr.ocelet.rcplugins.feature"
       label="fr.ocelet.rcplugins.feature"
-      version="2.0.1.alpha">
+      version="2.0.2.alpha">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -286,20 +286,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.eclipse.core.runtime.compatibility"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.core.runtime.compatibility.registry"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
 
    <plugin
          id="org.eclipse.core.variables"
@@ -1405,14 +1391,6 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.google.inject.multibindings"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
    <plugin

@@ -178,7 +178,7 @@ public class Miscutils {
 	 */
 	public static void removeFile(String filepath) {
 		File f = new File(filepath);
-		if (f.exists()) f.delete();
+		if (f.exists()) if (!f.delete()) System.out.println("removeFile : the file "+filepath+" could not be removed.");
 		while(f.exists()){System.err.print('.');}
 	}
 
