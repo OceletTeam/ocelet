@@ -48,7 +48,6 @@
 	<classpathentry exported="true" kind="lib" path="gt-wms-9.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="gt-wps-9.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="gt-xml-9.4.jar"/>
-	<classpathentry exported="true" kind="lib" path="h2-1.1.119.jar"/>
 	<classpathentry exported="true" kind="lib" path="hsqldb-1.8.0.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="imageio-ext-arcgrid-1.1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="imageio-ext-gdal-bindings-1.9.2.jar"/>

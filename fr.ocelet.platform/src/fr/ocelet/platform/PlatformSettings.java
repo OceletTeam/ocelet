@@ -22,6 +22,7 @@
 package fr.ocelet.platform;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -40,7 +41,7 @@ import org.eclipse.core.runtime.Platform;
  */
 public class PlatformSettings {
 
-	public final static String version = "Sulfur : 2.0.2.Alpha";
+	public final static String version = "Sulfur : 2.0.3.Alpha";
 
 	public final static int NORMAL = 0;
 	public final static int VERBOSE = 1;
@@ -93,7 +94,8 @@ public class PlatformSettings {
 				}
 			});
 		} catch (IOException e1) {
-			System.err.println("Could not read the fr.ocelet.libs bundle, Ocelet may not be installed correctly or has been corrupted.");
+			System.err.println(
+					"Could not read the fr.ocelet.libs bundle, Ocelet may not be installed correctly or has been corrupted.");
 		}
 		spsb.append("</classpath>");
 

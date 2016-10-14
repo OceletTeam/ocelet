@@ -122,6 +122,8 @@ public class ExJarGen extends ModelCmdHandler {
 				StringBuffer filesets = new StringBuffer();
 				while ((cpline = brcp.readLine()) != null) {
 					int deb = cpline.lastIndexOf("plugins/");
+					 // in case the .classpath was generated on an alien-file-separator based system .. 
+					if (deb < 0) deb = cpline.lastIndexOf("plugins"+File.separator);
 					int fin = cpline.lastIndexOf(".jar");
 					if ((deb > 0) && (fin > 0)) {
 						String cpjar = cpline.substring(deb + 8, fin + 4);
