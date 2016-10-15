@@ -103,7 +103,24 @@ public abstract class Shapefile extends GtDatafacer
 	 */
 	public void setFileName(String shpFileName) {
 		sourceFile = new File(FileUtils.applyOutput(shpFileName));
-
+setDatastore();
+//		try {
+//			// Open a datastore that uses our own geometry factory
+//			datastore = new OcltShapefileDataStore(sourceFile.toURI().toURL());
+//			String typeName = datastore.getTypeNames()[0];
+//			if (sourceFile.exists()) {
+//			FeatureSource source = datastore.getFeatureSource(typeName);
+//				bounds[0] = source.getBounds().getMinX();
+//				bounds[1] = source.getBounds().getMinY();
+//				bounds[2] = source.getBounds().getMaxX();
+//				bounds[3] = source.getBounds().getMaxY();
+//			}
+//		} catch (IOException e) {
+//			System.out.println(ERR_HEADER + "Failed to open the shapefile " + sourceFile);
+//		}
+	}
+	
+	protected void setDatastore() {
 		try {
 			// Open a datastore that uses our own geometry factory
 			datastore = new OcltShapefileDataStore(sourceFile.toURI().toURL());
@@ -277,6 +294,7 @@ public abstract class Shapefile extends GtDatafacer
 		Miscutils.removeFile(rootName + ".shx");
 		Miscutils.removeFile(rootName + ".shp");
 		Miscutils.removeFile(rootName + ".dbf");
+		setDatastore(); // needed to be able to write again content after removing the files.
 	}
 
 	@Override
