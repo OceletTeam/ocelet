@@ -60,14 +60,14 @@ import fr.ocelet.runtime.util.FileUtils;
  * @author Pascal Degenne - Initial contribution
  *
  */
-public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
-		OutputDatafacer, Iterator<InputDataRecord> {
+public abstract class Shapefile extends GtDatafacer
+		implements InputDatafacer, OutputDatafacer, Iterator<InputDataRecord> {
 
 	private final String ERR_HEADER = "Datafacer Shapefile: ";
 	protected ShapefileDataStore datastore;
 
 	protected File sourceFile;
-	 protected Double bounds[] = new Double[4];
+	protected Double bounds[] = new Double[4];
 	/**
 	 * If true, overwrite means that existing files with the same name will be
 	 * overwritten
@@ -107,15 +107,16 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 		try {
 			// Open a datastore that uses our own geometry factory
 			datastore = new OcltShapefileDataStore(sourceFile.toURI().toURL());
-			  String typeName = datastore.getTypeNames()[0];
-	            FeatureSource source = datastore.getFeatureSource(typeName);
-	            bounds[0] = source.getBounds().getMinX();
-	            bounds[1] = source.getBounds().getMinY();
-	            bounds[2] = source.getBounds().getMaxX();
-	            bounds[3] = source.getBounds().getMaxY();
+			String typeName = datastore.getTypeNames()[0];
+			if (sourceFile.exists()) {
+			FeatureSource source = datastore.getFeatureSource(typeName);
+				bounds[0] = source.getBounds().getMinX();
+				bounds[1] = source.getBounds().getMinY();
+				bounds[2] = source.getBounds().getMaxX();
+				bounds[3] = source.getBounds().getMaxY();
+			}
 		} catch (IOException e) {
-			System.out.println(ERR_HEADER + "Failed to open the shapefile "
-					+ sourceFile);
+			System.out.println(ERR_HEADER + "Failed to open the shapefile " + sourceFile);
 		}
 	}
 
@@ -133,7 +134,8 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	 * If true, overwrite means that existing files with the same name will be
 	 * overwritten
 	 * 
-	 * @param ov The new overwrite value
+	 * @param ov
+	 *            The new overwrite value
 	 */
 	public void setOverwrite(Boolean ov) {
 		this.overwrite = ov;
@@ -166,9 +168,8 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 		try {
 			odr = new ShapefileDataRec(createFeature(getSimpleFeatureType()));
 		} catch (IOException e) {
-			System.out
-					.println(getErrHeader()
-							+ " Failed to create a record before writing to the datafacer. Please check the datafacer declaration.");
+			System.out.println(getErrHeader()
+					+ " Failed to create a record before writing to the datafacer. Please check the datafacer declaration.");
 			return null;
 		}
 		return odr;
@@ -190,33 +191,27 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 		try {
 			SimpleFeatureType sft = datastore.getSchema();
 			sb.append("Shapefile : " + sft.getTypeName() + "\n");
-			sb.append("  Contains " + getFeatureSource().getCount(new Query())
-					+ " records. \n");
+			sb.append("  Contains " + getFeatureSource().getCount(new Query()) + " records. \n");
 			CoordinateReferenceSystem crs = sft.getCoordinateReferenceSystem();
 			if (crs != null)
-				sb.append("  Coordinate reference system : " + crs.getName()
-						+ "\n");
+				sb.append("  Coordinate reference system : " + crs.getName() + "\n");
 			ReferencedEnvelope bounds = getFeatureSource().getBounds();
-			sb.append("  Bounds : " + bounds.getMinX() + " " + bounds.getMinY()
-					+ " , " + bounds.getMaxX() + " " + bounds.getMaxY() + " \n");
+			sb.append("  Bounds : " + bounds.getMinX() + " " + bounds.getMinY() + " , " + bounds.getMaxX() + " "
+					+ bounds.getMaxY() + " \n");
 
 			int nbat = sft.getAttributeCount();
 			if (nbat == 1)
 				sb.append("  Description of the only attribute :" + "\n");
 			else
-				sb.append("  Description of the " + nbat + " attributes :"
-						+ "\n");
+				sb.append("  Description of the " + nbat + " attributes :" + "\n");
 			int adx = 0;
 			for (AttributeDescriptor ad : sft.getAttributeDescriptors())
-				sb.append("   [" + (1 + adx++) + "] : " + ad.getName()
-						+ " : \t" + ad.getType().getBinding().getSimpleName()
-						+ "\n");
+				sb.append("   [" + (1 + adx++) + "] : " + ad.getName() + " : \t"
+						+ ad.getType().getBinding().getSimpleName() + "\n");
 		} catch (IOException e) {
-			System.out.println(ERR_HEADER + "Failed to open the shapefile "
-					+ sourceFile);
+			System.out.println(ERR_HEADER + "Failed to open the shapefile " + sourceFile);
 		} catch (NullPointerException e) {
-			System.out.println(ERR_HEADER + "Failed to open the shapefile "
-					+ sourceFile);
+			System.out.println(ERR_HEADER + "Failed to open the shapefile " + sourceFile);
 		}
 		return sb.toString();
 	}
@@ -251,9 +246,7 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 				}
 				sfiterator = featureCollection.features();
 			} catch (IOException e) {
-				System.out
-						.println(ERR_HEADER
-								+ "Problem while attempting to read the shapefile's content.");
+				System.out.println(ERR_HEADER + "Problem while attempting to read the shapefile's content.");
 			}
 		}
 		return sfiterator.hasNext();
@@ -280,10 +273,10 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	@Override
 	public void remove() {
 		String rootName = sourceFile.getPath().substring(0, sourceFile.getPath().indexOf(".shp"));
-		Miscutils.removeFile(rootName+".prj");
-		Miscutils.removeFile(rootName+".shx");
-		Miscutils.removeFile(rootName+".shp");
-		Miscutils.removeFile(rootName+".dbf");
+		Miscutils.removeFile(rootName + ".prj");
+		Miscutils.removeFile(rootName + ".shx");
+		Miscutils.removeFile(rootName + ".shp");
+		Miscutils.removeFile(rootName + ".dbf");
 	}
 
 	@Override
@@ -313,26 +306,26 @@ public abstract class Shapefile extends GtDatafacer implements InputDatafacer,
 	public void close() {
 		datastore.dispose();
 	}
-	
-	public Double[] getBounds(){
-	    
-        return bounds;
-    }
 
-	public Polygon getEnveloppe(){
-		
+	public Double[] getBounds() {
+
+		return bounds;
+	}
+
+	public Polygon getEnveloppe() {
+
 		Coordinate[] coordinates = new Coordinate[5];
-		
+
 		coordinates[0] = new Coordinate(bounds[0], bounds[1]);
-		coordinates[1] =new Coordinate(bounds[0], bounds[3]);
+		coordinates[1] = new Coordinate(bounds[0], bounds[3]);
 		coordinates[2] = new Coordinate(bounds[2], bounds[3]);
-		coordinates[3] =new Coordinate(bounds[2], bounds[1]);
+		coordinates[3] = new Coordinate(bounds[2], bounds[1]);
 		coordinates[4] = coordinates[0];
-		
+
 		CoordinateSequence cs = new CoordinateArraySequence(coordinates);
 		LinearRing lr = new LinearRing(cs, SpatialManager.geometryFactory());
 		return new Polygon(lr, null, SpatialManager.geometryFactory());
-		
+
 	}
 
 }
