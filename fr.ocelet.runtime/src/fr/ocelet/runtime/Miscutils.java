@@ -46,8 +46,7 @@ import fr.ocelet.runtime.ocltypes.List;
  */
 public class Miscutils {
 
-	private static DecimalFormatSymbols dfs = new DecimalFormatSymbols(
-			new Locale("en"));
+	private static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("en"));
 
 	/**
 	 * Number formatter
@@ -65,8 +64,7 @@ public class Miscutils {
 			NumberFormat formatter = new DecimalFormat(pattern, dfs);
 			return formatter.format(n);
 		} catch (IllegalArgumentException e) {
-			System.err.println("Could not format the number " + n + " : "
-					+ e.getMessage());
+			System.err.println("Could not format the number " + n + " : " + e.getMessage());
 			return "" + n;
 		}
 	}
@@ -130,56 +128,70 @@ public class Miscutils {
 		File df = new File(dirpath);
 		Boolean done = df.mkdirs();
 		if (!done)
-			System.err
-					.println("Sorry the directory "
-							+ dirpath
-							+ " could not be created. Please check its name and your rights for the destination path.");
+			System.err.println("Sorry the directory " + dirpath
+					+ " could not be created. Please check its name and your rights for the destination path.");
 		return done;
 	}
 
-	
 	/**
 	 * Deletes a directory and all its content. Without warning. Use with
 	 * caution.
 	 * 
-	 * @param dirpath Path of the directory to be removed
+	 * @param dirpath
+	 *            Path of the directory to be removed
 	 */
 	public static void removeDir(String dirpath) {
 		Path dir = Paths.get(dirpath);
 		try {
 			Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
 				@Override
-				public FileVisitResult visitFile(Path file,
-						BasicFileAttributes attrs) throws IOException {
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 					Files.delete(file);
 					return FileVisitResult.CONTINUE;
 				}
 
 				@Override
-				public FileVisitResult postVisitDirectory(Path dir,
-						IOException exc) throws IOException {
+				public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
 					Files.delete(dir);
 					return FileVisitResult.CONTINUE;
 				}
 			});
 		} catch (IOException e) {
-			System.err
-					.println("Sorry the directory "
-							+ dirpath
-							+ " could not be deleted. Please check its name and your rights for that operation.");
+			System.err.println("Sorry the directory " + dirpath
+					+ " could not be deleted. Please check its name and your rights for that operation.");
 		}
 	}
 
-	
 	/**
 	 * Deletes a file. Without warning. Use with caution.
 	 * 
-	 * @param filepath The file to be removed
+	 * @param filepath
+	 *            The file to be removed
 	 */
 	public static void removeFile(String filepath) {
 		File f = new File(filepath);
-		if (f.exists()) if (!f.delete()) System.out.println("removeFile : the file "+filepath+" could not be removed.");
-		while(f.exists()){System.err.print('.');}
+		if (f.exists()) {
+			// renameTo() is a trick to check is file is locked
+			if (!f.renameTo(f))
+				System.out.println("removeFile : the file " + filepath
+						+ " could not be removed, it is probably locked by another program.");
+			else if (!f.delete())
+				System.out.println("removeFile : the file " + filepath + " could not be removed.");
+		}
+		while (f.exists()) {
+			System.err.print('.');
+		}
+	}
+	
+	/**
+	 * Checks if a file is locked
+	 * If the file does not exist, we consider is it not locked
+	 * @param filepath
+	 * @return true if the file is locked
+	 */
+	public static boolean isLocked(String filepath) {
+		File f = new File(filepath);
+		return ((f.exists()) && (!f.renameTo(f))); // most reliable trick we found so far ...
 	}
 
 }
