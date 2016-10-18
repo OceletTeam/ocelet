@@ -332,6 +332,16 @@ public class KmlExport implements Datafacer {
 			this.filename = FileUtils.applyOutput(newFileName);
 	}
 
+   public void hideFolder(String folname) {
+	   KmlFolder kf = getFolder(folname);
+	   kf.setVisibility(false);
+   }	
+	
+   public void showFolder(String folname) {
+	   KmlFolder kf = getFolder(folname);
+	   kf.setVisibility(true);
+   }	
+	
 	public void remove() {
 		Miscutils.removeFile(filename);
 	}

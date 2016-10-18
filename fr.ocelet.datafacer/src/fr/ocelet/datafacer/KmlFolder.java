@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 import de.micromata.opengis.kml.v_2_2_0.AltitudeMode;
 import de.micromata.opengis.kml.v_2_2_0.Document;
+import de.micromata.opengis.kml.v_2_2_0.Feature;
 import de.micromata.opengis.kml.v_2_2_0.Folder;
 import de.micromata.opengis.kml.v_2_2_0.Link;
 import de.micromata.opengis.kml.v_2_2_0.Location;
@@ -69,7 +70,7 @@ public class KmlFolder {
 		this.fold = doc.createAndAddFolder();
 		fold.withName(label);
 	}
-
+	
 	/**
 	 * Adds a KML Extruded Label (see
 	 * https://kml-samples.googlecode.com/svn/trunk
@@ -220,6 +221,15 @@ public class KmlFolder {
 						height);
 		}
 	}
+	
+	
+	public void setVisibility(boolean value) {
+		this.fold.setVisibility(value);
+		for (Feature f:this.fold.getFeature()) {
+		  f.setVisibility(value);
+		}
+	}
+	
 
 	private void addPoint(Placemark pm, Point point, double height) {
 		de.micromata.opengis.kml.v_2_2_0.Point kmlpoint = pm
