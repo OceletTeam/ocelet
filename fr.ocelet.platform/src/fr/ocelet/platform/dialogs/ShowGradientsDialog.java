@@ -127,12 +127,19 @@ public class ShowGradientsDialog extends TitleAreaDialog {
 			this.gradient = gr;
 			addPaintListener(new PaintListener() {
 				public void paintControl(PaintEvent pe) {
+					Color cwhite = new Color(pe.gc.getDevice(),255,255,255);
+					for (int rx = 0; rx < 8; rx++) {
+					  pe.gc.setBackground(cwhite);
+					  pe.gc.fillRectangle(rx*32, 1, 16, 16);
+					  pe.gc.fillRectangle((16+rx*32), 16, 16, 16);
+					}
 					List<fr.ocelet.runtime.ocltypes.Color> lc = gradient
 							.toColorList(256);
 					int i = 0;
 					for (fr.ocelet.runtime.ocltypes.Color col : lc) {
 						pe.gc.setForeground(new Color(pe.gc.getDevice(), col
 								.getRed(), col.getGreen(), col.getBlue()));
+						pe.gc.setAlpha(col.getAlpha());
 						pe.gc.drawLine(i, 0, i, 32);
 						i++;
 					}
