@@ -21,6 +21,8 @@
 
 package fr.ocelet.platform.dialogs;
 
+import java.util.TreeMap;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -45,20 +47,20 @@ import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.styling.Gradient;
 
 /**
- * An information dialog that displays all the available
- * color gradients defined in config/gradients.ocg
+ * An information dialog that displays all the available color gradients defined
+ * in config/gradients.ocg
  * 
  * @author Pascal Degenne - Initial contribution
  */
 public class ShowGradientsDialog extends TitleAreaDialog {
 
-	private static KeyMap<String, Gradient> gkm;
+	private static TreeMap<String, Gradient> gkm;
 	private String projName;
 
-	public ShowGradientsDialog(Shell parentShell,
-			KeyMap<String, Gradient> gmap, String projname) {
+	public ShowGradientsDialog(Shell parentShell, KeyMap<String, Gradient> gmap, String projname) {
 		super(parentShell);
-		gkm = gmap;
+		// We are using a TreeMap to sort gradients on their name
+		gkm = new TreeMap<String, Gradient>(gmap);
 		this.projName = projname;
 	}
 
@@ -66,22 +68,19 @@ public class ShowGradientsDialog extends TitleAreaDialog {
 	public void create() {
 		super.create();
 		setTitle("Available color gradients for " + projName);
-		setMessage("These gradients are defined in config/gradients.ocg.",
-				IMessageProvider.INFORMATION);
+		setMessage("These gradients are defined in config/gradients.ocg.", IMessageProvider.INFORMATION);
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
-		ScrolledComposite scontainer = new ScrolledComposite(area, SWT.V_SCROLL
-				| SWT.H_SCROLL | SWT.BORDER);
+		ScrolledComposite scontainer = new ScrolledComposite(area, SWT.V_SCROLL | SWT.H_SCROLL | SWT.BORDER);
 		scontainer.setLayout(new FillLayout());
-		scontainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true,
-				1, 1));
+		scontainer.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true, 1, 1));
 		Composite container = new Composite(scontainer, SWT.NONE);
 		container.setLayout(new GridLayout(3, false));
-		container
-				.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		container.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+
 		for (Gradient gr : gkm.values())
 			addGradientRef(container, gr);
 		scontainer.setContent(container);
@@ -101,8 +100,7 @@ public class ShowGradientsDialog extends TitleAreaDialog {
 
 	// Overriden to remove the Cancel button.
 	@Override
-	protected Button createButton(Composite parent, int id, String label,
-			boolean defaultButton) {
+	protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
 		if (id == IDialogConstants.CANCEL_ID)
 			return null;
 		return super.createButton(parent, id, label, defaultButton);
@@ -127,18 +125,16 @@ public class ShowGradientsDialog extends TitleAreaDialog {
 			this.gradient = gr;
 			addPaintListener(new PaintListener() {
 				public void paintControl(PaintEvent pe) {
-					Color cwhite = new Color(pe.gc.getDevice(),255,255,255);
+					Color cwhite = new Color(pe.gc.getDevice(), 255, 255, 255);
 					for (int rx = 0; rx < 8; rx++) {
-					  pe.gc.setBackground(cwhite);
-					  pe.gc.fillRectangle(rx*32, 1, 16, 16);
-					  pe.gc.fillRectangle((16+rx*32), 16, 16, 16);
+						pe.gc.setBackground(cwhite);
+						pe.gc.fillRectangle(rx * 32, 1, 16, 16);
+						pe.gc.fillRectangle((16 + rx * 32), 16, 16, 16);
 					}
-					List<fr.ocelet.runtime.ocltypes.Color> lc = gradient
-							.toColorList(256);
+					List<fr.ocelet.runtime.ocltypes.Color> lc = gradient.toColorList(256);
 					int i = 0;
 					for (fr.ocelet.runtime.ocltypes.Color col : lc) {
-						pe.gc.setForeground(new Color(pe.gc.getDevice(), col
-								.getRed(), col.getGreen(), col.getBlue()));
+						pe.gc.setForeground(new Color(pe.gc.getDevice(), col.getRed(), col.getGreen(), col.getBlue()));
 						pe.gc.setAlpha(col.getAlpha());
 						pe.gc.drawLine(i, 0, i, 32);
 						i++;
