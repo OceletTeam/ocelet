@@ -133,7 +133,7 @@ public class Date {
 	}
 
 	public void setMonth(int m) {
-		gc.set(Calendar.MONTH, m);
+		gc.set(Calendar.MONTH, m-1);
 	}
 
 	public int getYear() {
