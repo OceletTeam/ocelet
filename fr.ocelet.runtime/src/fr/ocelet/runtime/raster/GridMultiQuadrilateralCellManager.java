@@ -2,6 +2,7 @@ package fr.ocelet.runtime.raster;
 
 import java.util.ArrayList;
 
+import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.CellValues;
 
 public class GridMultiQuadrilateralCellManager extends GridCellManager {
@@ -39,14 +40,26 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
             
             for(String name : properties){
            
+                List<Double> values = cv.getValues(name);
                 
                 if(aggregMap.containsKey(name)){
                 
-                    if(!cv.getValues(name).isEmpty())
-                        grid.setCellValue(name, i, y, aggregMap.get(name).apply(cv.getValues(name), 0.0));
+                    if(!values.isEmpty()){
+                    	
+                    	Double d;
+                    	CellAggregOperator cao = aggregMap.get(name);
+                    	if(cao.preval() == false){
+                    		d = cao.apply(values, null);
+                    	}else{
+                    		d = cao.apply(values, grid.getDoubleValue(name, i, y));
+                    	}
+                    	
+                        grid.setCellValue(name, i, y, d);
+                    	
+                    }
                 } else if(!cv.getValues(name).isEmpty()){
                 
-                    grid.setCellValue(name, i, y, (Double)cv.getValues(name).get((int)(Math.random() * (double)cv.getValues(name).size())));
+                    grid.setCellValue(name, i, y, cv.getValues(name).get((int)(Math.random() * (double)cv.getValues(name).size())));
                 }
             }
 

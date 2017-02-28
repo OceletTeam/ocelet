@@ -71,8 +71,8 @@ public class CompleteIteratorGeomCell<E extends OcltEdge, R1 extends OcltRole, R
   }
 
    public Iterator<R1> getCellIterator(){
-	  return null;//((GeomCellEdge)geomCellEdge).getCells();
-   }
+		  return ((GeomCellEdge)geomCellEdge).getCells();
+	   }
   
    public E getEdge(){
 	   return geomCellEdge;

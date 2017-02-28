@@ -166,15 +166,15 @@ public class Cell implements SpatialType{
     		
     	if(x % 2 == 0){
     		if(y % 2 == 0){
-    			return triangularTopCoordinate();
-    		}else{
     			return triangularDownCoordinate();
+    		}else{
+    			return triangularTopCoordinate();
     		}
     	}else{
     		if(y % 2 == 0){
-    			return triangularDownCoordinate();
-    		}else{
     			return triangularTopCoordinate();
+    		}else{
+    			return triangularDownCoordinate();
     		}
     	}
     }
@@ -187,17 +187,14 @@ public class Cell implements SpatialType{
     	Coordinate c = getCoord(x, y);
     	double dx = c.x;
     	double dy = c.y;
+    	double sqr = Math.sqrt(3);
+    	double h = yRes * sqr/2;
     	
     	
-    	
-
-    	
-    	double l = Math.sin(Math.PI/3) * (xRes / 2);
-    	
-    	coords[0] = new Coordinate(dx, dy - xRes / 2);
-    	coords[1] = new Coordinate(dx + xRes / 2, dy - xRes / 3);
-    	coords[2] = new Coordinate(dx - xRes / 2, dy- xRes / 3);
-    	coords[3] = new Coordinate(dx, dy - xRes / 2);
+    	coords[0] = new Coordinate(dx, dy + 2 * h / 3);
+    	coords[1] = new Coordinate(dx + xRes / 2, dy - h / 3);
+    	coords[2] = new Coordinate(dx - xRes / 2, dy- h / 3);
+    	coords[3] =  coords[0];
 
     	return coords;
     }
@@ -208,19 +205,16 @@ public class Cell implements SpatialType{
     	
     	
     	Coordinate c = getCoord(x, y);
-    	double dx = c.x;
+    double dx = c.x;
     	double dy = c.y;
+    	double sqr = Math.sqrt(3);
+    	double h = yRes * sqr/2;
     	
     	
-    	
-
-    	
-    	double l = Math.sin(Math.PI/3) * (xRes / 2);
-    	
-    	coords[0] = new Coordinate(dx, dy + xRes / 2);
-    	coords[1] = new Coordinate(dx + xRes / 2, dy + xRes / 3);
-    	coords[2] = new Coordinate(dx - xRes / 2, dy+ xRes / 3);
-    	coords[3] = new Coordinate(dx, dy + xRes / 2);
+    	coords[0] = new Coordinate(dx, dy - 2 * h / 3);
+    	coords[1] = new Coordinate(dx + xRes / 2, dy + h / 3);
+    	coords[2] = new Coordinate(dx - xRes / 2, dy +  h / 3);
+    	coords[3] =  coords[0];
 
     	return coords;
     }

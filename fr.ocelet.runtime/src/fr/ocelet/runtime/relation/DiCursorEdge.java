@@ -2,6 +2,7 @@ package fr.ocelet.runtime.relation;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
+import fr.ocelet.runtime.entity.AbstractEntity;
 import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
@@ -9,6 +10,7 @@ import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.raster.Grid;
 import fr.ocelet.runtime.raster.GridManager;
 import fr.ocelet.runtime.raster.MultiResolutionManager;
+import fr.ocelet.runtime.relation.regularedges.DiRegularCellsEdgeManager;
 
 import java.util.*;
 
@@ -413,10 +415,75 @@ public abstract class DiCursorEdge extends OcltEdge{
 	private HashMap<String, CellAggregOperator> aggregMap = new HashMap<String, CellAggregOperator>();
 	private boolean equalGrid = false;
 	private MultiResolutionManager mrm;
+	private DiRegularCellsEdgeManager edges = new DiRegularCellsEdgeManager();
+	
+	public abstract KeyMap<String, String> getEdgeProperties();
 
+	public void setIntegerPropertySize(int size){
+		edges.setIntegerPropertySize(size, grid, globalGrid);
+	}
+	public void setBooleanPropertySize(int size){
+		edges.setBooleanPropertySize(size, grid, globalGrid);
+	}
+	public void setDoublePropertySize(int size){
+		edges.setDoublePropertySize(size, grid, globalGrid);
+	}
+	
+	public void setDoubleProperty(int property, Double value){
+		edges.setDoubleValue(x2, y2, property, value);
+	}
+	public void setIntegerProperty(int property, Integer value){
+		edges.setIntegerValue(x2, y2, property, value);
+	}
+	public void setBooleanProperty(int property, Boolean value){
+		edges.setBooleanValue(x2, y2, property, value);
+	}
+	
+	public Double getDoubleProperty(int property){
+		return edges.getDoubleValue(x2, y2, property);
+	}
+	
+	public Integer getIntegerProperty(int property){
+		return edges.getIntegerValue(x2, y2, property);
+	}
+	public Boolean getBooleanProperty(int property){
+		return edges.getBooleanValue(x2, y2, property);
+	}
+	
+	private void initEdgeProperty(){
+		
+		KeyMap<String, String> properties = getEdgeProperties();
+		int doubleIndex = 0;
+		int integerIndex = 0;
+		int booleanIndex = 0;
+		
+		for(String name : properties.keySet()){
+			
+			if(properties.get(name).equals("Double")){
+				doubleIndex++;
+			}
+			if(properties.get(name).equals("Integer")){
+				integerIndex++;
+			}
+			if(properties.get(name).equals("Boolean")){
+				booleanIndex++;
+			}
+		}
+		
+		setIntegerPropertySize(integerIndex);
+		setBooleanPropertySize(booleanIndex);
+		setDoublePropertySize(doubleIndex);
+	}
+	public DiCursorEdge(List<? extends AbstractEntity> r1List, List<? extends AbstractEntity> r2List){   //Grid grid1, Grid grid2){
 
-	public DiCursorEdge(Grid grid1, Grid grid2){
+		AbstractEntity ae1 = (AbstractEntity)r1List.get(0);
+		Cell cell1 = (Cell)ae1.getSpatialType();
+		
+		AbstractEntity ae2 = (AbstractEntity)r2List.get(0);
+		Cell cell2 = (Cell)ae2.getSpatialType();
 
+		Grid grid1 = GridManager.getInstance().get(cell1.getNumGrid());
+		Grid grid2 = GridManager.getInstance().get(cell2.getNumGrid());
 
 
 		Double[] grid1Bounds = grid1.getWorldBounds();
@@ -436,10 +503,10 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 		int[] grid2Min = grid2.gridCoordinate(scaled[0],scaled[3]);
 		int[] grid2Max = grid2.gridCoordinate(scaled[2],scaled[1]);
-
-
+		
+		
 		if(grid1.getWidth() == grid2.getWidth() && grid1.getHeight() == grid2.getHeight()) {
-
+			
 			globalGrid = grid1;
 			startX = 0;
 			startY = 0;
@@ -457,6 +524,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			x2 = startX2;
 			y2 = startY2;       
 
+			//System.out.println(endX+" "+endY+" "+endX2+" "+endY2);
 
 		}else{
 				/*if(grid1.getXRes() * grid1.getYRes() < grid2.getXRes() * grid2.getYRes()){        	
@@ -486,6 +554,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 					endY2 = grid2Max[1];
 
 				}*/
+			
 			if(grid1.getWidth() < grid2.getWidth()){        	
 					globalGrid = grid1;
 					startX = grid1Min[0];
@@ -516,13 +585,17 @@ public abstract class DiCursorEdge extends OcltEdge{
 					
 					
 				}
+			//System.out.println("ELSE "+endX+" "+endY+" "+endX2+" "+endY2);
+
 
 		}
-		rescale();
+				rescale();
 		x = startX;
 		y = startY;
 		x2 = -1;
 		y2 = -1;       
+		initEdgeProperty();
+
 
 	/*	System.out.println("GLOBAL : "+startX+" "+startY+" "+endX+" "+endY);
 		System.out.println("normal : "+startX2+" "+startY2+" "+endX2+" "+endY2);
@@ -636,6 +709,12 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 
 	public void next(){
+		/*System.out.println("TYPE "+equalGrid);
+		System.out.println(globalGrid.getWidth()+" "+globalGrid.getHeight());
+		System.out.println("GLOBAL "+startX+" "+startY+" "+endX+" "+endY);
+		System.out.println(grid.getWidth()+" "+grid.getHeight());
+		System.out.println("LESSER "+startX2+" "+startY2+" "+endX2+" "+endY2);*/
+
 		//System.out.println(grid.getWidth()+" "+grid.getHeight()+"  "+globalGrid.getWidth()+"   "+globalGrid.getHeight());
 		//System.out.println(x+"  "+y+"  "+x2+" "+y2);
 		if(equalGrid){
@@ -815,9 +894,14 @@ public abstract class DiCursorEdge extends OcltEdge{
 						// .println("Size "+i+" "+y+" "+ values.size() +" "+name);
 						if(aggregMap.keySet().contains(name)){
 
-							CellAggregOperator cao = (CellAggregOperator)aggregMap.get(name);                   
-							Double d = cao.apply(values, null);                  
-							globalGrid.setCellValue(name, i, y, d);
+							CellAggregOperator cao = aggregMap.get(name);   
+							Double d;
+							if(cao.preval() == false){
+							 d = cao.apply(values, null);
+							}else{
+								d = cao.apply(values, globalGrid.getDoubleValue(name, i, y));
+							}
+							//globalGrid.setCellValue(name, i, y, d);
 							//   globalGrid.cleanOperator();
 
 						} else{

@@ -7,12 +7,14 @@ import fr.ocelet.runtime.relation.AggregOperator;
 public class CellAggregOperator{
 private Operator aggregOperator;
     private String name;
+    private Boolean preval = false;
 
     public CellAggregOperator(){
     }
 
 
-    public void setCellOperator(AggregOperator operator, KeyMap<String, String> typeProps){
+    public void setCellOperator(AggregOperator operator, KeyMap<String, String> typeProps, Boolean preval){
+    	this.preval = preval;
     	if(typeProps.get(name).equals("Double")){
         	setOperatorDouble(operator);
         }else if(typeProps.get(name).equals("Integer")){
@@ -67,6 +69,10 @@ private Operator aggregOperator;
     public String getName()
     {
         return name;
+    }
+    
+    public Boolean preval(){
+    	return preval;
     }
 
     public Double apply(List<Double> values, Double val)

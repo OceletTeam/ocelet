@@ -61,9 +61,11 @@ public class OceletLabelProvider extends XbaseLabelProvider {
   protected Object doGetImage(final Object eln) {
     Object _switchResult = null;
     boolean _matched = false;
-    if (eln instanceof Agregdef) {
-      _matched=true;
-      _switchResult = "outline/gif/agreg.gif";
+    if (!_matched) {
+      if (eln instanceof Agregdef) {
+        _matched=true;
+        _switchResult = "outline/gif/agreg.gif";
+      }
     }
     if (!_matched) {
       if (eln instanceof ConstructorDef) {
@@ -177,14 +179,26 @@ public class OceletLabelProvider extends XbaseLabelProvider {
   protected Object doGetText(final Object eln) {
     String _switchResult = null;
     boolean _matched = false;
-    if (eln instanceof Agregdef) {
-      if (((!Objects.equal(((Agregdef)eln).getName(), null)) && (!Objects.equal(((Agregdef)eln).getType(), null)))) {
-        _matched=true;
+    if (!_matched) {
+      if (eln instanceof Agregdef) {
+        boolean _and = false;
         String _name = ((Agregdef)eln).getName();
-        String _plus = (_name + "() returns ");
-        JvmTypeReference _type = ((Agregdef)eln).getType();
-        String _simpleName = _type.getSimpleName();
-        _switchResult = (_plus + _simpleName);
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          JvmTypeReference _type = ((Agregdef)eln).getType();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((Agregdef)eln).getName();
+          String _plus = (_name_1 + "() returns ");
+          JvmTypeReference _type_1 = ((Agregdef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
+          _switchResult = (_plus + _simpleName);
+        }
       }
     }
     if (!_matched) {
@@ -254,24 +268,44 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof Parameter) {
-        if (((!Objects.equal(((Parameter)eln).getName(), null)) && (!Objects.equal(((Parameter)eln).getPtype(), null)))) {
-          _matched=true;
-          String _name = ((Parameter)eln).getName();
-          String _plus = (_name + " is ");
+        boolean _and = false;
+        String _name = ((Parameter)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
           JvmTypeReference _ptype = ((Parameter)eln).getPtype();
-          String _simpleName = _ptype.getSimpleName();
+          boolean _notEquals_1 = (!Objects.equal(_ptype, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((Parameter)eln).getName();
+          String _plus = (_name_1 + " is ");
+          JvmTypeReference _ptype_1 = ((Parameter)eln).getPtype();
+          String _simpleName = _ptype_1.getSimpleName();
           _switchResult = (_plus + _simpleName);
         }
       }
     }
     if (!_matched) {
       if (eln instanceof PropertyDef) {
-        if (((!Objects.equal(((PropertyDef)eln).getName(), null)) && (!Objects.equal(((PropertyDef)eln).getType(), null)))) {
-          _matched=true;
-          String _name = ((PropertyDef)eln).getName();
-          String _plus = (_name + " is ");
+        boolean _and = false;
+        String _name = ((PropertyDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
           JvmTypeReference _type = ((PropertyDef)eln).getType();
-          String _simpleName = _type.getSimpleName();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((PropertyDef)eln).getName();
+          String _plus = (_name_1 + " is ");
+          JvmTypeReference _type_1 = ((PropertyDef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
           _switchResult = (_plus + _simpleName);
         }
       }
@@ -284,12 +318,22 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof RelPropertyDef) {
-        if (((!Objects.equal(((RelPropertyDef)eln).getName(), null)) && (!Objects.equal(((RelPropertyDef)eln).getType(), null)))) {
-          _matched=true;
-          String _name = ((RelPropertyDef)eln).getName();
-          String _plus = (_name + " is ");
+        boolean _and = false;
+        String _name = ((RelPropertyDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
           JvmTypeReference _type = ((RelPropertyDef)eln).getType();
-          String _simpleName = _type.getSimpleName();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((RelPropertyDef)eln).getName();
+          String _plus = (_name_1 + " is ");
+          JvmTypeReference _type_1 = ((RelPropertyDef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
           _switchResult = (_plus + _simpleName);
         }
       }
@@ -316,22 +360,42 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof ServiceDef) {
-        if (((!Objects.equal(((ServiceDef)eln).getName(), null)) && (!Objects.equal(((ServiceDef)eln).getType(), null)))) {
-          _matched=true;
-          String _name = ((ServiceDef)eln).getName();
-          String _plus = (_name + "() returns ");
+        boolean _and = false;
+        String _name = ((ServiceDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
           JvmTypeReference _type = ((ServiceDef)eln).getType();
-          String _simpleName = _type.getSimpleName();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((ServiceDef)eln).getName();
+          String _plus = (_name_1 + "() returns ");
+          JvmTypeReference _type_1 = ((ServiceDef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
           _switchResult = (_plus + _simpleName);
         }
       }
     }
     if (!_matched) {
       if (eln instanceof ServiceDef) {
-        if (((!Objects.equal(((ServiceDef)eln).getName(), null)) && Objects.equal(((ServiceDef)eln).getType(), null))) {
+        boolean _and = false;
+        String _name = ((ServiceDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          JvmTypeReference _type = ((ServiceDef)eln).getType();
+          boolean _equals = Objects.equal(_type, null);
+          _and = _equals;
+        }
+        if (_and) {
           _matched=true;
-          String _name = ((ServiceDef)eln).getName();
-          _switchResult = (_name + "()");
+          String _name_1 = ((ServiceDef)eln).getName();
+          _switchResult = (_name_1 + "()");
         }
       }
     }
@@ -347,34 +411,64 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof StrucVarDef) {
-        if (((!Objects.equal(((StrucVarDef)eln).getName(), null)) && (!Objects.equal(((StrucVarDef)eln).getType(), null)))) {
-          _matched=true;
-          String _name = ((StrucVarDef)eln).getName();
-          String _plus = (_name + " is ");
+        boolean _and = false;
+        String _name = ((StrucVarDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
           JvmTypeReference _type = ((StrucVarDef)eln).getType();
-          String _simpleName = _type.getSimpleName();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((StrucVarDef)eln).getName();
+          String _plus = (_name_1 + " is ");
+          JvmTypeReference _type_1 = ((StrucVarDef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
           _switchResult = (_plus + _simpleName);
         }
       }
     }
     if (!_matched) {
       if (eln instanceof StrucFuncDef) {
-        if (((!Objects.equal(((StrucFuncDef)eln).getName(), null)) && (!Objects.equal(((StrucFuncDef)eln).getType(), null)))) {
-          _matched=true;
-          String _name = ((StrucFuncDef)eln).getName();
-          String _plus = (_name + "() returns ");
+        boolean _and = false;
+        String _name = ((StrucFuncDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
           JvmTypeReference _type = ((StrucFuncDef)eln).getType();
-          String _simpleName = _type.getSimpleName();
+          boolean _notEquals_1 = (!Objects.equal(_type, null));
+          _and = _notEquals_1;
+        }
+        if (_and) {
+          _matched=true;
+          String _name_1 = ((StrucFuncDef)eln).getName();
+          String _plus = (_name_1 + "() returns ");
+          JvmTypeReference _type_1 = ((StrucFuncDef)eln).getType();
+          String _simpleName = _type_1.getSimpleName();
           _switchResult = (_plus + _simpleName);
         }
       }
     }
     if (!_matched) {
       if (eln instanceof StrucFuncDef) {
-        if (((!Objects.equal(((StrucFuncDef)eln).getName(), null)) && Objects.equal(((StrucFuncDef)eln).getType(), null))) {
+        boolean _and = false;
+        String _name = ((StrucFuncDef)eln).getName();
+        boolean _notEquals = (!Objects.equal(_name, null));
+        if (!_notEquals) {
+          _and = false;
+        } else {
+          JvmTypeReference _type = ((StrucFuncDef)eln).getType();
+          boolean _equals = Objects.equal(_type, null);
+          _and = _equals;
+        }
+        if (_and) {
           _matched=true;
-          String _name = ((StrucFuncDef)eln).getName();
-          _switchResult = (_name + "()");
+          String _name_1 = ((StrucFuncDef)eln).getName();
+          _switchResult = (_name_1 + "()");
         }
       }
     }

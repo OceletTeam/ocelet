@@ -86,40 +86,32 @@ public class Grid {
 	    public GridGeometry2D getGridGeometry(){
 	    	return gridGeometry;
 	    }
-    public void setXRes(double xRes)
-    {
+    public void setXRes(double xRes){
         this.xRes = xRes;
     }
 
-    public void setYRes(double yRes)
-    {
+    public void setYRes(double yRes){
        
         this.yRes = yRes;
     }
 
-    public Double getXRes()
-    {
-       
+    public Double getXRes(){
         return xRes;
     }
 
-    public Double getYRes()
-    {
+    public Double getYRes(){
         return yRes;
     }
 
-    public int getMinX()
-    {
+    public int getMinX(){
         return minX;
     }
 
-    public int getMinY()
-    {
+    public int getMinY(){
         return minY;
     }
 
-    public int getMaxX()
-    {
+    public int getMaxX(){
         return maxX;
     }
 
@@ -128,13 +120,11 @@ public class Grid {
         return maxY;
     }
 
-    public void setGridCellManager(GridCellManager gridCellManager)
-    {
+    public void setGridCellManager(GridCellManager gridCellManager){
         this.gridCellManager = gridCellManager;
     }
 
-    public void setRaster(WritableRaster raster)
-    {
+    public void setRaster(WritableRaster raster){
         this.raster = raster;
     }
 
@@ -143,8 +133,7 @@ public class Grid {
         initRaster = raster;
     }*/
 
-    public void setMode(int mode)
-    {
+    public void setMode(int mode){
         this.mode = mode;
         if(mode == modeTemp){
         	ts = tempSetter;
@@ -162,14 +151,12 @@ public class Grid {
         }
     }
 
-    public void addProp(String name, String band)
-    {
+    public void addProp(String name, String band){
         int numBand = Integer.valueOf(band).intValue();
         rasterProps.put(name, Integer.valueOf(numBand));
     }
 
-    public void setFinalProperties(List<String> props)
-    {
+    public void setFinalProperties(List<String> props){
     	ArrayList<Integer> indexes = new ArrayList<Integer>();
     	for(String name : rasterProps.keySet()){
     		indexes.add(rasterProps.get(name));
@@ -189,8 +176,7 @@ public class Grid {
           // raster = createRaster(rasterProps.keySet().size(), width + 4, height + 4);
     }
 
-    public int getPropBand(String name)
-    {
+    public int getPropBand(String name){
         //if(initRasterProps.keySet().contains(name))
           //  return ((Integer)initRasterProps.get(name)).intValue();
         //else
@@ -199,7 +185,6 @@ public class Grid {
 
     public Grid(int width, int height, GridGeometry2D gridGeometry){
     
-        //initRasterProps = new HashMap<String, Integer>();
         rasterProps = new HashMap<String, Integer>();
         pos1 = new int[2];
         pos2 = new int[2];
@@ -216,7 +201,6 @@ public class Grid {
 
     public Grid(int minX, int minY, int maxX, int maxY, GridGeometry2D gridGeometry2D)
     {
-    	//initRasterProps = new HashMap<String, Integer>();
     	 this.ts = normSetter;
         rasterProps = new HashMap<String, Integer>();      
         gridGeometry = gridGeometry2D;
@@ -239,7 +223,6 @@ public class Grid {
     
     public Grid(double minX, double minY, double maxX, double maxY, int totalY, GridGeometry2D gridGeometry2D){
     	 this.ts = normSetter;
-    	//initRasterProps = new HashMap<String, Integer>();
         rasterProps = new HashMap<String, Integer>();     
         gridGeometry = gridGeometry2D;
         worldBounds = new Double[]{minX, minY, maxX, maxY};
@@ -257,35 +240,11 @@ public class Grid {
         setInitCoordinate();
     }
 
-   /* public Grid(Double bounds[], GridGeometry2D gridGeometry, int xRes, int yRes){
-        worldBounds = bounds;
-    	initRasterProps = new HashMap<String, Integer>();
-        rasterProps = new HashMap<String, Integer>();
-        this.gridGeometry = gridGeometry;
-        this.xRes = xRes;
-        this.yRes = yRes;
-        
-        int rXRes = (int)Math.round(xRes);
-        int rYRes = (int)Math.round(yRes);
-        
-        width = (int) Math.round((bounds[2] - bounds[0]) / rXRes);
-        height = (int) Math.round((bounds[3] - bounds[1]) / rYRes);
        
-        double maxX = bounds[0] + (width * xRes);
-        double maxY = bounds[1] + (height * yRes);
-        
-       int[] gridCoord = gridCoordinate(bounds[0], bounds[3]);
-                
-       initRaster = GridGenerator.createRaster(initRasterProps.keySet().size(), width, height);
-
-    	
-    }*/
-   
-    
     public void  copy(ORaster raster, KeyMap<String, Integer> matchedBand){
     	
-    	int[] rasterC = raster.worldToGrid(boundsX, boundsY);
-    	double[] rbounds = raster.worldBounds();
+    	/*int[] rasterC = raster.worldToGrid(boundsX, boundsY);
+    	double[] rbounds = raster.worldBounds();*/
     	
     	Double[] scaledD = scalingDouble(worldBounds, raster.worldBounds());
     	double[] scaledd = scalingdouble(worldBounds, raster.worldBounds());
@@ -332,14 +291,24 @@ public class Grid {
     			}    			
     		}
     	}*/
+    	//System.out.println("GRID : "+gridMin[0]+" "+gridMin[1]+" Raster : "+rasterMin[0]+" "+rasterMin[1]);
+    	//int width = gridMax[0] - gridMin[0];// + 1;
+    	//int height = gridMax[1] - gridMin[1];// + 1;
     	
-    	int width = gridMax[0] - gridMin[0] + 1;
-    	int height = gridMax[1] - gridMin[1] + 1;
     	for(int i = 0; i < width; i ++){
     		for(int j = 0; j < height; j ++){
     			for(String name : matchedBand.keySet()){
     			try{
-    				 this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0], j + rasterMin[1], matchedBand.get(name)));
+    				 
+    				//this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0], j + rasterMin[1], matchedBand.get(name)));
+    			Coordinate worlds = this.gridCoordinate(i, j);
+    				int[] convert = raster.worldToGrid(worlds.x, worlds.y);
+    			//double[] rW = raster.gridToWorld(i, j);	
+    				/*if(i != convert[0] || j != convert[1]){
+    					System.out.println("convert : "+worlds);
+    					System.out.println("world : "+rW[0]+", "+rW[1]);
+    				}*/
+    				this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));
     			}catch (Exception e){
     				
     				//e.printStackTrace();
@@ -416,94 +385,9 @@ public class Grid {
     			}    			
     		}
     	}
-    	
-    	
-    	
-    	
-    	
-    	
-    	/*int[] rasterC = raster.worldToGrid(boundsX, boundsY);
-    		int[] r2 = gridCoordinate(boundsX, boundsY);
-    		int[] b = raster.getBounds();
-    		int diffX = rasterC[0] - r2[0];
-    		int diffY = rasterC[1] - r2[1];
-    		
-    		if(r2[0] < 0){
-    			diffX = rasterC[0];
-    		}
-    		
-    		if(r2[1] < 0){
-    			diffY = rasterC[1];
-    		}
-    		if(diffX < 0){
-    			diffX = 0;
-    		}
-    		
-    		if(diffY < 0){
-    			diffY = 0;
-    		}
-    		
-    	//System.out.println(width +" "+height+" total : "+width * height);	
-    		int exI = 0;
-    		int exJ = 0;
-    	    	for(int i = 0; i < width; i ++){    		
-    		
-    		for(int j = 0; j < height; j ++){
-    			for(String name : rasterProps.keySet()){
-    			try{
-    				 this.raster.setSample(i + 2 + r2[0], j + 2 + r2[1], rasterProps.get(name), raster.getDoubleValue(i + diffX , j + diffY, rasterProps.get(name)));
-    			}catch (Exception e){
-    				
-    				
-    			}
-    			}    			
-    		}
-    	}    	*/
     }
     
-    /*
- public void copy(ORaster raster){
-    	
-    	int[] rasterC = raster.worldToGrid(boundsX, boundsY);
-    		int[] r2 = gridCoordinate(boundsX, boundsY);
-    		int[] b = raster.getBounds();
-    		int diffX = rasterC[0] - r2[0];
-    		int diffY = rasterC[1] - r2[1];
-    		
-    		if(r2[0] < 0){
-    			diffX = rasterC[0];
-    		}
-    		
-    		if(r2[1] < 0){
-    			diffY = rasterC[1];
-    		}
-    		if(diffX < 0){
-    			diffX = 0;
-    		}
-    		
-    		if(diffY < 0){
-    			diffY = 0;
-    		}
-    		
-    	//System.out.println(width +" "+height+" total : "+width * height);	
-    		int exI = 0;
-    		int exJ = 0;
-    	    	for(int i = 0; i < width; i ++){    		
-    		
-    		for(int j = 0; j < height; j ++){
-    			for(String name : rasterProps.keySet()){
-    			try{
-    				 this.raster.setSample(i + 2 + r2[0], j + 2 + r2[1], rasterProps.get(name), raster.getDoubleValue(i + diffX , j + diffY, rasterProps.get(name)));
-    			}catch (Exception e){
-    				
-    				
-    			}
-    			}    			
-    		}
-    	}    	
-    }*/
-    
-    
+        
     public void setData(Double[] bounds,  ORaster raster, int numBands){
     	
     	xRes = raster.getXRes();
@@ -582,8 +466,7 @@ public class Grid {
         
         setInitCoordinate();
     }
-    public Grid(Double bounds[], GridGeometry2D gridGeometry, ORaster raster)
-    {
+    public Grid(Double bounds[], GridGeometry2D gridGeometry, ORaster raster){
     	 this.ts = normSetter;
     	//initRasterProps = new HashMap<String, Integer>();
         rasterProps = new HashMap<String, Integer>();
@@ -655,24 +538,40 @@ public class Grid {
         	gCoord[1] = gCoord[1];
         	return gCoord;        	
         }
-       /* if(cellShapeType.equals("TRIANGULAR")){
+        if(cellShapeType.equals("TRIANGULAR")){
         	
-        	double l = Math.sin(Math.PI/3) * (xRes / 2);
-        	
-        	if(x%(xRes/2) == 0){
-        		
-        		gCoord[0] = (int) ((4 * (x - initCoordinates.x)) / (3 * xRes));
-        		
-        		gCoord[1] = (int)-((y - initCoordinates.y) / (2 * l));
-        		
-        	}else{
-        		gCoord[0] = (int) ((4 * (x - initCoordinates.x)) / (3 * xRes));
-        		gCoord[1] = (int)- ( (y - initCoordinates.y + l) / ( 2 * l) ) ;
-        	}
-        	gCoord[0] = gCoord[0];
-        	gCoord[1] = gCoord[1];
-        	return gCoord;        	
-        }*/
+        	double dx = x - initCoordinates.x;
+        	double dy =  y - initCoordinates.y;
+        	double sqr = Math.sqrt(3);
+    		int fX = 0;
+    				int fY = 0;
+    				
+    			fX = (int)Math.round((dx - (xRes/2)) * (2/xRes));	
+    		//dx = dx + x * (xRes / 2);
+    		if(x % (xRes/2) == 0){ 
+    			if( y % (yRes/2) == 0){
+    				
+    				fY = (int)Math.round(dy - ((1/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
+    					
+    			}else{
+    				fY = (int)Math.round(dy - ((2/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
+
+    			}
+    		}else{
+    			if( y % (yRes/2) == 0){
+    				fY = (int)Math.round(dy - ((2/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
+
+    			}else{
+    				fY = (int)Math.round(dy - ((1/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
+
+
+    			}
+    		}
+    		gCoord[0] = fX;
+        	gCoord[1] = fY;
+
+    		
+        }
         try
         {
            // GridCoordinates2D gc = gridGeometry.worldToGrid(new DirectPosition2D(x - (2 * xRes), y + (2 * yRes)));
@@ -710,23 +609,36 @@ public class Grid {
     	
     		return new Coordinate(dx, dy);
     	}
-   /* if(cellShapeType.equals("TRIANGULAR")){
+    if(cellShapeType.equals("TRIANGULAR")){
     	
-    		double dx = initCoordinates.x;
-    		double dy = initCoordinates.y;
+    		double xInit = initCoordinates.x;
+    		double yInit = initCoordinates.y;
     		
-    		dx = dx + x * (xRes / 2);
-    		if(x % 2 == 0){
+    		double dx = (x * xRes/2) + xRes/2;
+    		double dy = 0.0;
+    		//dx = dx + x * (xRes / 2);
+    		if(x % 2 == 0){ 
     			if( y % 2 == 0){
-    				dy = (initCoordinates.y * y) - (1/3  * xRes);
+    				dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3) / 2) * yRes ) / 3;
     			}else{
-    				dy = (initCoordinates.y * y) + (1/3  * xRes);
+    				dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3)) * yRes ) / 3;
+
+    			}
+    		}else{
+    			if( y % 2 == 0){
+    				
+    				dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3)) * yRes ) / 3;
+    			}else{
+    				dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3) / 2) * yRes ) / 3;
+
 
     			}
     		}
-    	
+    		dx = dx+ xInit;
+    		dy = yInit - dy;
+    		
     		return new Coordinate(dx, dy);
-    	}*/
+    	}
     
         try{
         
@@ -740,8 +652,7 @@ public class Grid {
         return null;
     }
 
-    public Coordinate[] cboundary(Polygon polygon)
-    {
+    public Coordinate[] cboundary(Polygon polygon){
         Coordinate bounds[] = new Coordinate[2];
         double minX = Double.POSITIVE_INFINITY;
         double minY = Double.POSITIVE_INFINITY;
@@ -767,8 +678,7 @@ public class Grid {
         return bounds;
     }
 
-    public Coordinate[] cboundary(Line line)
-    {
+    public Coordinate[] cboundary(Line line){
         Coordinate bounds[] = new Coordinate[2];
         double minX = Double.POSITIVE_INFINITY;
         double minY = Double.POSITIVE_INFINITY;
@@ -776,8 +686,7 @@ public class Grid {
         double maxY = 0;
         Coordinate acoordinate[];
         int j = (acoordinate = line.getCoordinates()).length;
-        for(int i = 0; i < j; i++)
-        {
+        for(int i = 0; i < j; i++){
             Coordinate c = acoordinate[i];
             if(c.x < minX)
                 minX = c.x;
@@ -794,8 +703,7 @@ public class Grid {
         return bounds;
     }
 
-    public int[] intBounds(Polygon polygon)
-    {
+    public int[] intBounds(Polygon polygon){
         int bounds[] = new int[4];
         Coordinate cBounds[] = cboundary(polygon);
         
@@ -825,8 +733,7 @@ public class Grid {
         return bounds;
     }
 
-    public int[] intBounds(Line line)
-    {
+    public int[] intBounds(Line line){
         int bounds[] = new int[4];
         Coordinate cBounds[] = cboundary(line);
         int gridCoord1[] = gridCoordinate(cBounds[0].x, cBounds[0].y);
@@ -838,71 +745,44 @@ public class Grid {
         return bounds;
     }
 
-    public int reverse(int y)
-    {
+    public int reverse(int y){
         return height - y;
     }
 
-    public void setMaxX(int maxX)
-    {
+    public void setMaxX(int maxX){
         this.maxX = maxX;
     }
 
-    public void setMaxY(int maxY)
-    {
+    public void setMaxY(int maxY){
         this.maxY = maxY;
     }
 
-    public int getWidth()
-    {
+    public int getWidth(){
         return width;
     }
 
-    public int getHeight()
-    {
+    public int getHeight(){
         return height;
     }
 
-    public void setWidth(int width)
-    {
+    public void setWidth(int width){
         this.width = width;
     }
 
-    public void setHeight(int height)
-    {
+    public void setHeight(int height){
         this.height = height;
     }
     
     
-    public Double getDoubleValue(String name, int x, int y)
-    {
-       
-       // if(rasterProps.keySet().contains(name)){
-        
+    public Double getDoubleValue(String name, int x, int y){
           return raster.getSampleDouble(x, y, rasterProps.get(name));
-           
-      //  } else{
-        
-         //    return initRaster.getSampleDouble(x + minX, y + minY, initRasterProps.get(name));
-           
-       // }
     }
     
     public Integer getIntegerValue(String name, int x, int y){
-    
-       
-      //  if(rasterProps.keySet().contains(name)){
-        
             return raster.getSample(x, y, rasterProps.get(name));
-          
-        //} else {
-        //    return  initRaster.getSample(x + minX, y + minY, initRasterProps.get(name));
-          
-        //}
     }
 
-    public Double getValue(String name, int x, int y)
-    {
+    public Double getValue(String name, int x, int y){
        // Double value = null;
         //if(rasterProps.keySet().contains(name))
         //{
@@ -915,8 +795,7 @@ public class Grid {
         //}
     }
 
-    public void setCellValue(String name, int x, int y, Double value)
-    {
+    public void setCellValue(String name, int x, int y, Double value){
     	
         //if(rasterProps.keySet().contains(name))
             raster.setSample(x, y, rasterProps.get(name), value);
@@ -924,54 +803,42 @@ public class Grid {
           //  initRaster.setSample(x + 2, y + 2, initRasterProps.get(name), value);
     }
 
-    public WritableRaster getRaster()
-    {
+    public WritableRaster getRaster(){
         return raster;
     }
 
  
 
-    public int[] getPos1()
-    {
+    public int[] getPos1(){
         return pos1;
     }
 
-    public void setPos1(int pos1[])
-    {
+    public void setPos1(int pos1[]){
         this.pos1 = pos1;
     }
 
-    public int[] getPos2()
-    {
+    public int[] getPos2(){
         return pos2;
     }
 
-    public void setPos2(int pos2[])
-    {
+    public void setPos2(int pos2[]){
         this.pos2 = pos2;
     }
 
-    public void setPos1(int x, int y)
-    {
+    public void setPos1(int x, int y){
         pos1[0] = x;
         pos1[1] = y;
     }
 
-    public void setPos2(int x, int y)
-    {
+    public void setPos2(int x, int y){
         pos2[0] = x;
         pos2[1] = y;
     }
 
-    public ArrayList<String> getPropertiesName()
-    {
+    public ArrayList<String> getPropertiesName(){
     	
         ArrayList<String> names = new ArrayList<String>();
         
-        //for(String name : initRasterProps.keySet()){
-        	//names.add(name);
-        
-        //}
         for(String name : rasterProps.keySet()){
         	names.add(name);
         	
@@ -979,19 +846,16 @@ public class Grid {
         return names;
     }
 
-    public GridCellManager getGridCellManager()
-    {
+    public GridCellManager getGridCellManager(){
         return gridCellManager;
     }
     
     public void initMrm(int width){
     	mrm = new MultiResolutionManager(width, getPropertiesName());
-
     }
     
     public void initMrm(int startX, int endX){
     	mrm = new MultiResolutionManager(startX, endX, getPropertiesName());
-
     }
 
     public MultiResolutionManager getMrm(){
@@ -1000,49 +864,15 @@ public class Grid {
     private void addMrmValue(String name, int x, Double value){
     	mrm.add(x, name, value);
     }
-    public void addTempValue(String name, int x, int y, Double value)
-    {
+    public void addTempValue(String name, int x, int y, Double value){
         gridCellManager.add(x, y, name, value);
     }
 
-    /*public CellValues[] getCellValuesToSynchro()
-    {
-        return gridCellManager.getValues();
-    }*/
-
-    public void setValue(String name, int x, int y, Double value)
-    {
-    	
+    public void setValue(String name, int x, int y, Double value){
     	ts.setValue(name, x, y, value);
-       /* if(mode == modeTemp){
-        	
-            addTempValue(name, x, y, value);
-        }
-        if(mode == modeNorm){
-        	
-            setCellValue(name, x, y, value);
-        }
-        if(mode == modeGeom){
-        
-            if(geomTempVal.keySet().contains(name)){
-            
-                geomTempVal.get(name).add(value);
-             
-            } else
-            {
-                List<Double> values = new List<Double>();
-                values.add(value);
-        
-                geomTempVal.put(name, values);
-            }
-        }
-        if(mode == 4){
-        	addMrmValue(name, x, value);
-        }*/
     }
 
-    public List<Double> getGeomTempValues(String name)
-    {
+    public List<Double> getGeomTempValues(String name){
         return geomTempVal.get(name);
     }
     
@@ -1050,8 +880,7 @@ public class Grid {
     	geomTempVal.get(name).clear();
     }
 
-    public Set<String> getTempName()
-    {
+    public Set<String> getTempName(){
         return geomTempVal.keySet();
     }
 
@@ -1063,18 +892,15 @@ public class Grid {
 
     }
 
-    public void setAggregOp(CellAggregOperator cao)
-    {
+    public void setAggregOp(CellAggregOperator cao){
         gridCellManager.addOperator(cao, cao.getName());
     }
 
-    public void cleanOperator()
-    {
+    public void cleanOperator(){
         gridCellManager.clearAggregMap();
     }
 
-    public int[] intBounds(Double bounds[])
-    {
+    public int[] intBounds(Double bounds[]){
         int gridCoord1[] = gridCoordinate(bounds[0].doubleValue(), bounds[1].doubleValue());
         int gridCoord2[] = gridCoordinate(bounds[2].doubleValue(), bounds[3].doubleValue());
         
@@ -1139,35 +965,6 @@ public class Grid {
     	this.raster = raster;
     }
     
-    
-    
-    /*
-      if(mode == modeTemp){
-        	
-            addTempValue(name, x, y, value);
-        }
-        if(mode == modeNorm){
-        	
-            setCellValue(name, x, y, value);
-        }
-        if(mode == modeGeom){
-        
-            if(geomTempVal.keySet().contains(name)){
-            
-                geomTempVal.get(name).add(value);
-             
-            } else
-            {
-                List<Double> values = new List<Double>();
-                values.add(value);
-        
-                geomTempVal.put(name, values);
-            }
-        }
-        if(mode == 4){
-        	addMrmValue(name, x, value);
-        }
-     */
     public abstract class TypeSetter{
     	
     	public abstract void setValue(String name, int x, int y, Double value);
@@ -1186,7 +983,6 @@ public class Grid {
     	
     	public void setValue(String name, int x, int y, Double value){
     		setCellValue(name, x, y, value);
-    		
     	}
     }
  
@@ -1194,17 +990,12 @@ public class Grid {
  	
  	public void setValue(String name, int x, int y, Double value){
  		  if(geomTempVal.keySet().contains(name)){
- 	            
               geomTempVal.get(name).add(value);
-           
-          } else
-          {
+          } else {
               List<Double> values = new List<Double>();
               values.add(value);
-      
               geomTempVal.put(name, values);
           }
- 		
  	}
  }
  
@@ -1212,7 +1003,6 @@ public class Grid {
  	
  	public void setValue(String name, int x, int y, Double value){
  		addMrmValue(name, x, value);
- 		
  	}
  }
     private double[] scalingdouble(Double[] bounds1, double[] bounds2){
@@ -1223,7 +1013,6 @@ public class Grid {
     		scaled[0] = bounds2[0];
     	}else{
     		scaled[0] = bounds1[0];
-
     	}
     	if(bounds1[1] < bounds2[1]){
     		scaled[1] = bounds2[1];
@@ -1231,7 +1020,6 @@ public class Grid {
     		scaled[1] = bounds1[1];
 
     	}
-    	
     	if(bounds1[2] > bounds2[2]){
     		scaled[2] = bounds2[2];
     	}else{
@@ -1242,13 +1030,8 @@ public class Grid {
     		scaled[3] = bounds2[3];
     	}else{
     		scaled[3] = bounds1[3];
-
     	}
-    	
-    	
     	return scaled;
-    	
-    	
     }
     private Double[] scalingDouble(Double[] bounds1, double[] bounds2){
     	
@@ -1258,31 +1041,22 @@ public class Grid {
     		scaled[0] = bounds2[0];
     	}else{
     		scaled[0] = bounds1[0];
-
     	}
     	if(bounds1[1] < bounds2[1]){
     		scaled[1] = bounds2[1];
     	}else{
     		scaled[1] = bounds1[1];
-
     	}
-    	
     	if(bounds1[2] > bounds2[2]){
     		scaled[2] = bounds2[2];
     	}else{
     		scaled[2] = bounds1[2];
-
     	}
     	if(bounds1[3] > bounds2[3]){
     		scaled[3] = bounds2[3];
     	}else{
     		scaled[3] = bounds1[3];
-
     	}
-    	
-    	
     	return scaled;
-    	
-    	
     }
 }

@@ -1,11 +1,11 @@
 package fr.ocelet.runtime.raster;
 
+import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.CellValues;
 
 public class GridTriangularCellManager extends GridCellManager{
 
 	private CellValues firstLine[];
-	  private CellValues midLine[];
 	    private CellValues nextLine[];
 	  
 	  
@@ -25,7 +25,6 @@ public class GridTriangularCellManager extends GridCellManager{
       for(int i = 0; i < grid.getWidth(); i++){
       	
       	for(String name : properties){
-      		midLine[i].clear(name);
       		nextLine[i].clear(name);
       		firstLine[i].clear(name);
       	}
@@ -38,16 +37,13 @@ public class GridTriangularCellManager extends GridCellManager{
   public void init(){
   
       firstLine = new CellValues[grid.getWidth()];
-      midLine = new CellValues[grid.getWidth()];
       nextLine = new CellValues[grid.getWidth()];
       for(int i = 0; i < grid.getWidth(); i++){
       
-    	  midLine[i] = new CellValues();
           firstLine[i] = new CellValues();
           nextLine[i] = new CellValues();
           for(String name : properties){
           	nextLine[i].set(name);
-          	midLine[i].set(name);
           	firstLine[i].set(name);
           }
          
@@ -60,12 +56,11 @@ public class GridTriangularCellManager extends GridCellManager{
   public void increment(){
 	  
 	  //System.out.println(" increment "+y);
-	  if(y > 0)
+	//  if(y > 0)
       validate();
 	  
       CellValues temp[] = firstLine;
-      firstLine = midLine;
-      midLine = nextLine;
+      firstLine = nextLine;
       nextLine = temp;
       for(int i = 0; i < grid.getWidth(); i++){
       
@@ -73,26 +68,26 @@ public class GridTriangularCellManager extends GridCellManager{
       		nextLine[i].clear(name);
       	}       
       }     
+      y++;
   }
   
   
 
   @Override
   public CellValues get(int x, int y){
-	  
-      if(y + 1== this.y){
+	//  System.out.println("CELLVALUES "+x+"  "+y+"  "+this.y);
+      if(y== this.y){
     	//  System.out.println("FIRST ");
           return firstLine[x];
       }
-      if(y == this.y){
+      if(y - 1 == this.y){
     	  
     	//  System.out.println("MID ");
-          return midLine[x];
-      }
-      if(y - 1 == this.y){
-    	//  System.out.println("NEXT ");
           return nextLine[x];
       }
+      /*if(y - 1 == this.y){
+          return nextLine[x];
+      }*/
       
           return null;
   }
@@ -135,13 +130,14 @@ public class GridTriangularCellManager extends GridCellManager{
 		      
 	        //  CellValues cv = firstLine[i];
 	          CellValues cv2 = firstLine[i];
-	          CellValues cv3 = midLine[i];
+	          CellValues cv3 = nextLine[i];
 	          
 	          for(String name : properties){
 	         
 	              
 	              if(aggregMap.containsKey(name)){
 	              
+	            	  CellAggregOperator cao = aggregMap.get(name);
 	               /*   if(!cv.getValues(name).isEmpty()){	                	 
 	              
 	                      grid.setCellValue(name, i, y - 1, aggregMap.get(name).apply(cv.getValues(name), 0.0));	                    
@@ -150,13 +146,24 @@ public class GridTriangularCellManager extends GridCellManager{
 	                  if(!cv2.getValues(name).isEmpty()){	  
 	                /*	  System.out.println(i+" "+(y - 1));
 	              System.out.println(" CV2 "+cv2);*/
-	                      grid.setCellValue(name, i, y - 1, aggregMap.get(name).apply(cv2.getValues(name), 0.0));	                    
+	                	  if(cao.preval() == false){
+	                		  grid.setCellValue(name, i, y, cao.apply(cv2.getValues(name), null));
+	                	  }else{
+	                		 grid.setCellValue(name, i, y, cao.apply(cv2.getValues(name), grid.getDoubleValue(name, i, y)));
+ 
+	                	  }
 	                  }
 
 	                  if(!cv3.getValues(name).isEmpty()){
 	                	/*  System.out.println(i+" "+(y ));
 	                	  System.out.println(" CV2 "+cv3);*/
-	                      grid.setCellValue(name, i, y, aggregMap.get(name).apply(cv3.getValues(name), 0.0));	                    
+	                	  if(cao.preval() == false){
+	                		  grid.setCellValue(name, i, y + 1, cao.apply(cv3.getValues(name), null));
+	                	  }else{
+	                		 grid.setCellValue(name, i, y + 1, cao.apply(cv3.getValues(name), grid.getDoubleValue(name, i, y + 1)));
+ 
+	                	  }
+	                      //grid.setCellValue(name, i, y + 1, aggregMap.get(name).apply(cv3.getValues(name), null));	                    
 	                  }
 	                  
 	              } else {
@@ -165,15 +172,13 @@ public class GridTriangularCellManager extends GridCellManager{
 	                  
 	              }*/
 	            	  if(!cv2.getValues(name).isEmpty()){
-		                  grid.setCellValue(name, i, y - 1, (Double)cv2.getValues(name).get((int)(Math.random() * (double)cv2.getValues(name).size())));
+		                  grid.setCellValue(name, i, y, cv2.getValues(name).get((int)(Math.random() * cv2.getValues(name).size())));
 		                  
 		              }
 	            	  if(!cv3.getValues(name).isEmpty()){
-		                  grid.setCellValue(name, i, y , (Double)cv3.getValues(name).get((int)(Math.random() * (double)cv3.getValues(name).size())));
-		                  
+		                  grid.setCellValue(name, i, y + 1 , cv3.getValues(name).get((int)(Math.random() * cv3.getValues(name).size())));
 		              }
-	              
-	          }
+	              }
 	          }
 
 	      }
@@ -188,19 +193,26 @@ public class GridTriangularCellManager extends GridCellManager{
           CellValues cv = firstLine[i];
           
           for(String name : properties){
-              
-              if(aggregMap.containsKey(name)){
-            	 
-                  if(!cv.getValues(name).isEmpty()){
-                	 
-               	 
-                	 //System.out.println(" CV1 "+cv);
-                      grid.setCellValue(name, i, y - 1, aggregMap.get(name).apply(cv.getValues(name), 0.0));
-                     
-                  }
+             List<Double> values = cv.getValues(name);
+                
+                if(aggregMap.containsKey(name)){
+                
+                    if(!values.isEmpty()){
+                    	
+                    	Double d;
+                    	CellAggregOperator cao = aggregMap.get(name);
+                    	if(cao.preval() == false){
+                    		d = cao.apply(values, null);
+                    	}else{
+                    		d = cao.apply(values, grid.getDoubleValue(name, i, y));
+                    	}
+                    	
+                        grid.setCellValue(name, i, y, d);
+                    	
+                    }
               } else if(!cv.getValues(name).isEmpty()){
               
-                  grid.setCellValue(name, i, y - 1, (Double)cv.getValues(name).get((int)(Math.random() * (double)cv.getValues(name).size())));
+                  grid.setCellValue(name, i, y, (Double)cv.getValues(name).get((int)(Math.random() * (double)cv.getValues(name).size())));
               }
           }
 

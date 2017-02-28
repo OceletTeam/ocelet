@@ -1,8 +1,12 @@
 package fr.ocelet.runtime.relation;
 
+import fr.ocelet.runtime.entity.AbstractEntity;
+import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.*;
+import fr.ocelet.runtime.relation.regularedges.MultiCellEdgesManager;
+import fr.ocelet.runtime.relation.regularedges.SimpleCellEdgesManager;
 
 import java.io.PrintStream;
 
@@ -12,116 +16,181 @@ import java.io.PrintStream;
 public abstract class CursorEdge extends OcltEdge {
 
 
-	 protected int x;
-	    protected int y;
-	    protected int x2;
-	    protected int y2;
-	    private int numGrid;
-	    protected Grid grid;
-	    private int direction;
-	    private boolean state;
-	    private GridCellManager gridManager;
-	    private int index;
-	    private RasterCursor cursor;
-	    public static String TYPE_QUADRILATERAL = "QUADRILATERAL";
-	    public static String TYPE_HEXAGONAL = "HEXAGONAL";
-	    public static String TYPE_TRIANGULAR = "TRIANGULAR";
-	    
-	    
-	    public String getCellType(){
-	    	
-	    	if(cursor instanceof RasterHexagonalCursor){
-	    		return TYPE_HEXAGONAL;
-	    	}
-	    	
-	    	if(cursor instanceof RasterQuadrilateralCursor){
-	    		return TYPE_QUADRILATERAL;
-	    	}
-	    	
-	    	if(cursor instanceof RasterTriangularCursor){
-	    		return TYPE_TRIANGULAR;
-	    	}
-	    	return null;
-	    }
-	    
-	    public void extendedMoore(int n){
-	    	GridManager.getInstance().get(numGrid).extendedMoore(n);
-	    	RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(numGrid);
-	    	rmqc.setSize(n, 0);
-	    	cursor = rmqc;
-	    }
-	    public void extendedCircularMoore(int n){
-	    	GridManager.getInstance().get(numGrid).extendedMoore(n);
-	    	RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(numGrid);
-	    	rmqc.setSize(n, 1);
-	    	cursor = rmqc;
-	    }
-	    public void setCursorType(String type){
-	    	 gridManager = grid.getGridCellManager();
-	    	
-	    	if(type.equals(TYPE_HEXAGONAL)){
-	    	
-	    		cursor = new RasterHexagonalCursor(numGrid);
-	    	}
-	    	
-	    	if(type.equals(TYPE_QUADRILATERAL)){
-	    		
-	    		cursor = new RasterQuadrilateralCursor(numGrid);
-	    	}
-	    	
-	    	if(type.equals(TYPE_TRIANGULAR)){
-	    		
-	    		cursor = new RasterTriangularCursor(numGrid);
-	    	}
-	    	
-	    }
-    public CursorEdge(int numGrid){
-    	
-    
-    this.numGrid = numGrid;
-    cursor = new RasterQuadrilateralCursor(numGrid);
-        x = 0;
-        y = 0;
-        x2 = 0;
-        y2 = 0;
-        direction = 0;
-        state = true;
-        index = 0;
-        grid = GridManager.getInstance().get(numGrid);
-        gridManager = grid.getGridCellManager();
-        update();
-    }
+	protected int x;
+	protected int y;
+	protected int x2;
+	protected int y2;
+	private int numGrid;
+	protected Grid grid;
+	private int direction;
+	private boolean state;
+	private GridCellManager gridManager;
+	private int index;
+	private RasterCursor cursor;
+	public static String TYPE_QUADRILATERAL = "QUADRILATERAL";
+	public static String TYPE_HEXAGONAL = "HEXAGONAL";
+	public static String TYPE_TRIANGULAR = "TRIANGULAR";
+	
+	
+	
+	private SimpleCellEdgesManager edges = new SimpleCellEdgesManager();
+	
+	public abstract KeyMap<String, String> getEdgeProperties();
+	private void initEdgeProperty(){
+		
+		KeyMap<String, String> properties = getEdgeProperties();
+		int doubleIndex = 0;
+		int integerIndex = 0;
+		int booleanIndex = 0;
+		
+		for(String name : properties.keySet()){
+			
+			if(properties.get(name).equals("Double")){
+				doubleIndex++;
+			}
+			if(properties.get(name).equals("Integer")){
+				integerIndex++;
+			}
+			if(properties.get(name).equals("Boolean")){
+				booleanIndex++;
+			}
+		}
+		
+		setIntegerPropertySize(integerIndex);
+		setBooleanPropertySize(booleanIndex);
+		setDoublePropertySize(doubleIndex);
+	}
+	public void setIntegerPropertySize(int size){
+		edges.addIntegerEdge(size, grid, 0);
+	}
+	public void setBooleanPropertySize(int size){
+		edges.addBooleanEdge(size, grid, 0);
+	}
+	public void setDoublePropertySize(int size){
+		edges.addDoubleEdge(size, grid, 0);
+	}
+	
+	public void setDoubleProperty(int property, Double value){
+		edges.setDoubleValue(x, y, x2, y2, property, value);
+	}
+	public void setIntegerProperty(int property, Integer value){
+		edges.setIntegerValue(x, y, x2, y2, property, value);
+	}
+	public void setBooleanProperty(int property, Boolean value){
+		edges.setBooleanValue(x, y, x2, y2, property, value);
+	}
+	
+	public Double getDoubleProperty(int property){
+		return edges.getDoubleValue(x , y, x2, y2, property);
+	}
+	
+	public Integer getIntegerProperty(int property){
+		return edges.getIntegerValue(x, y, x2, y2, property);
+	}
+	public Boolean getBooleanProperty(int property){
+		return edges.getBooleanValue(x, y, x2, y2, property);
+	}
 
-    public CursorEdge(Grid grid){
-    
-    	this.numGrid = GridManager.getInstance().getIndex(grid);
-        cursor = new RasterQuadrilateralCursor(numGrid);
-        x = 0;
-        y = 0;
-        x2 = 0;
-        y2 = 0;
-        direction = 0;
-        state = true;
-        index = 0;
-        this.grid = grid;
-        gridManager = grid.getGridCellManager();
-    }
+	public String getCellType(){
 
-    public abstract void update();
+		if(cursor instanceof RasterHexagonalCursor){
+			return TYPE_HEXAGONAL;
+		}
 
-    public boolean hasNext(){
-    
-    	
-    	if(!cursor.hasNext()){
-    		
-    		update();
-    		cursor.reset();    		
-    		return false;
-    	}
-    	return true;
-    	
-    	
-      /*  if(x == grid.getWidth() - 2 && y == grid.getHeight() - 1 && x2 == grid.getWidth() - 1 && y2 == grid.getHeight() - 1)
+		if(cursor instanceof RasterQuadrilateralCursor){
+			return TYPE_QUADRILATERAL;
+		}
+
+		if(cursor instanceof RasterTriangularCursor){
+			return TYPE_TRIANGULAR;
+		}
+		return null;
+	}
+
+	public void extendedMoore(int n){
+		GridManager.getInstance().get(numGrid).extendedMoore(n);
+		RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(numGrid);
+		rmqc.setSize(n, 0);
+		cursor = rmqc;
+	}
+	public void extendedCircularMoore(int n){
+		GridManager.getInstance().get(numGrid).extendedMoore(n);
+		RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(numGrid);
+		rmqc.setSize(n, 1);
+		cursor = rmqc;
+	}
+	public void setCursorType(String type){
+		gridManager = grid.getGridCellManager();
+
+		if(type.equals(TYPE_HEXAGONAL)){
+
+			cursor = new RasterHexagonalCursor(numGrid);
+		}
+
+		if(type.equals(TYPE_QUADRILATERAL)){
+
+			cursor = new RasterQuadrilateralCursor(numGrid);
+		}
+
+		if(type.equals(TYPE_TRIANGULAR)){
+
+			cursor = new RasterTriangularCursor(numGrid);
+		}
+
+	}
+	public CursorEdge(int numGrid){
+
+
+		this.numGrid = numGrid;
+		cursor = new RasterQuadrilateralCursor(numGrid);
+		x = 0;
+		y = 0;
+		x2 = 0;
+		y2 = 0;
+		direction = 0;
+		state = true;
+		index = 0;
+		grid = GridManager.getInstance().get(numGrid);
+		gridManager = grid.getGridCellManager();
+		initEdgeProperty();
+		update();
+	}
+
+	public CursorEdge(List<? extends AbstractEntity> list){
+
+		AbstractEntity ae = (AbstractEntity)list.get(0);
+		Cell cell = (Cell)ae.getSpatialType();
+
+		this.numGrid = cell.getNumGrid();//GridManager.getInstance().getIndex(grid);
+		cursor = new RasterQuadrilateralCursor(numGrid);
+		x = 0;
+		y = 0;
+		x2 = 0;
+		y2 = 0;
+		direction = 0;
+		state = true;
+		index = 0;
+		this.grid = GridManager.getInstance().get(numGrid);
+		gridManager = grid.getGridCellManager();
+		initEdgeProperty();
+
+	}
+
+	public abstract void update();
+
+	public boolean hasNext(){
+
+
+		if(!cursor.hasNext()){
+
+			update();
+			cursor.reset();    		
+			return false;
+		}
+		return true;
+
+
+		/*  if(x == grid.getWidth() - 2 && y == grid.getHeight() - 1 && x2 == grid.getWidth() - 1 && y2 == grid.getHeight() - 1)
         {
             x = 0;
             y = 0;
@@ -135,404 +204,404 @@ public abstract class CursorEdge extends OcltEdge {
         {
             return true;
         }*/
-    }
+	}
 
-    public void next(){
-    	cursor.next();
-    	x = cursor.getX();
-    	y = cursor.getY();
-    	x2 = cursor.getX2();
-    	y2 = cursor.getY2();
-    
-    	update();
-    
-    /*
+	public void next(){
+		cursor.next();
+		x = cursor.getX();
+		y = cursor.getY();
+		x2 = cursor.getX2();
+		y2 = cursor.getY2();
+
+		update();
+
+		/*
         while(!setEnd2()) ;
         update();*/
-    }
+	}
 
-    public void move()
-    {
-        if(x == grid.getWidth() - 1){
-        
-            index++;
-            x = 0;
-            y++;
-            gridManager.increment();
-        } else {
-        
-            x++;
-        }
-    }
+	public void move()
+	{
+		if(x == grid.getWidth() - 1){
 
-    public boolean isRight(){
-    
-        return direction == 0;
-    }
+			index++;
+			x = 0;
+			y++;
+			gridManager.increment();
+		} else {
 
-    public boolean isRightDown()
-    {
-        return direction == 1;
-    }
+			x++;
+		}
+	}
 
-    public boolean isDown()
-    {
-        return direction == 2;
-    }
+	public boolean isRight(){
 
-    public boolean isDownLeft()
-    {
-        return direction == 3;
-    }
+		return direction == 0;
+	}
 
-    public boolean isLeft()
-    {
-        return direction == 4;
-    }
+	public boolean isRightDown()
+	{
+		return direction == 1;
+	}
 
-    public boolean isUpLeft()
-    {
-        return direction == 5;
-    }
+	public boolean isDown()
+	{
+		return direction == 2;
+	}
 
-    public boolean isUp()
-    {
-        return direction == 6;
-    }
+	public boolean isDownLeft()
+	{
+		return direction == 3;
+	}
 
-    public boolean isUpRight()
-    {
-        return direction == 7;
-    }
+	public boolean isLeft()
+	{
+		return direction == 4;
+	}
 
-    public void increment()
-    {
-        if(direction == 7)
-        {
-            direction = 0;
-            move();
-        } else
-        {
-            direction++;
-        }
-    }
+	public boolean isUpLeft()
+	{
+		return direction == 5;
+	}
 
-    public boolean inbounds(int x, int y)
-    {
-        return x >= 0 && y >= 0 && x < grid.getWidth() && y < grid.getHeight();
-    }
+	public boolean isUp()
+	{
+		return direction == 6;
+	}
 
-    public boolean state()
-    {
-        return state;
-    }
+	public boolean isUpRight()
+	{
+		return direction == 7;
+	}
 
-    public boolean setEnd()
-    {
-        if(isRight())
-        {
-            increment();
-            if(inbounds(x + 1, y))
-            {
-                x2 = x + 1;
-                y2 = y;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isRightDown())
-        {
-            increment();
-            if(inbounds(x + 1, y + 1))
-            {
-                x2 = x + 1;
-                y2 = y + 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isDown())
-        {
-            increment();
-            if(inbounds(x, y + 1))
-            {
-                x2 = x;
-                y2 = y + 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isDownLeft())
-        {
-            increment();
-            if(inbounds(x - 1, y + 1))
-            {
-                x2 = x - 1;
-                y2 = y + 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isLeft())
-        {
-            increment();
-            if(inbounds(x - 1, y))
-            {
-                x2 = x - 1;
-                y2 = y;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isUpLeft())
-        {
-            increment();
-            if(inbounds(x - 1, y - 1))
-            {
-                x2 = x - 1;
-                y2 = y - 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isUp())
-        {
-            increment();
-            if(inbounds(x, y - 1))
-            {
-                x2 = x;
-                y2 = y - 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isUpRight())
-        {
-            increment();
-            if(inbounds(x + 1, y - 1))
-            {
-                x2 = x + 1;
-                y2 = y - 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        } else
-        {
-            return false;
-        }
-    }
+	public void increment()
+	{
+		if(direction == 7)
+		{
+			direction = 0;
+			move();
+		} else
+		{
+			direction++;
+		}
+	}
 
-    public int[] getEndPos()
-    {
-        return (new int[] {
-            x2, y2
-        });
-    }
+	public boolean inbounds(int x, int y)
+	{
+		return x >= 0 && y >= 0 && x < grid.getWidth() && y < grid.getHeight();
+	}
 
-    public int[] getFirstPos()
-    {
-        return (new int[] {
-            x, y
-        });
-    }
+	public boolean state()
+	{
+		return state;
+	}
 
-    public OcltRole getEnd()
-    {
-        return (OcltRole)gridManager.get(x2, y2);
-    }
+	public boolean setEnd()
+	{
+		if(isRight())
+		{
+			increment();
+			if(inbounds(x + 1, y))
+			{
+				x2 = x + 1;
+				y2 = y;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isRightDown())
+		{
+			increment();
+			if(inbounds(x + 1, y + 1))
+			{
+				x2 = x + 1;
+				y2 = y + 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isDown())
+		{
+			increment();
+			if(inbounds(x, y + 1))
+			{
+				x2 = x;
+				y2 = y + 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isDownLeft())
+		{
+			increment();
+			if(inbounds(x - 1, y + 1))
+			{
+				x2 = x - 1;
+				y2 = y + 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isLeft())
+		{
+			increment();
+			if(inbounds(x - 1, y))
+			{
+				x2 = x - 1;
+				y2 = y;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isUpLeft())
+		{
+			increment();
+			if(inbounds(x - 1, y - 1))
+			{
+				x2 = x - 1;
+				y2 = y - 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isUp())
+		{
+			increment();
+			if(inbounds(x, y - 1))
+			{
+				x2 = x;
+				y2 = y - 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isUpRight())
+		{
+			increment();
+			if(inbounds(x + 1, y - 1))
+			{
+				x2 = x + 1;
+				y2 = y - 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		} else
+		{
+			return false;
+		}
+	}
 
-    public OcltRole getFirst()
-    {
-        return (OcltRole)gridManager.get(x, y);
-    }
+	public int[] getEndPos()
+	{
+		return (new int[] {
+				x2, y2
+		});
+	}
 
-    public void clearProperties()
-    {
-        gridManager.clearProperties();
-    }
+	public int[] getFirstPos()
+	{
+		return (new int[] {
+				x, y
+		});
+	}
 
-    public int[] getPos1()
-    {
-        return (new int[] {
-            x, y
-        });
-    }
+	public OcltRole getEnd()
+	{
+		return (OcltRole)gridManager.get(x2, y2);
+	}
 
-    public int[] getPos2()
-    {
-        return (new int[] {
-            x2, y2
-        });
-    }
+	public OcltRole getFirst()
+	{
+		return (OcltRole)gridManager.get(x, y);
+	}
 
-    public void setCellOperator(CellAggregOperator operator)
-    {
-        gridManager.addOperator(operator, operator.getName());
-    }
+	public void clearProperties()
+	{
+		gridManager.clearProperties();
+	}
 
-    public void setCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps)
-    {
-        CellAggregOperator cao = new CellAggregOperator();
-        if(typeProps.get(name).equals("Double")){
-        	setAggregOpDouble(name, operator, false);
-        }else if(typeProps.get(name).equals("Integer")){
-        	setAggregOpInteger(name, operator, false);
+	public int[] getPos1()
+	{
+		return (new int[] {
+				x, y
+		});
+	}
 
-        }else if(typeProps.get(name).equals("Float")){
-        	setAggregOpFloat(name, operator, false);
+	public int[] getPos2()
+	{
+		return (new int[] {
+				x2, y2
+		});
+	}
 
-        }else if(typeProps.get(name).equals("Byte")){
-        	setAggregOpByte(name, operator, false);
+	public void setCellOperator(CellAggregOperator operator)
+	{
+		gridManager.addOperator(operator, operator.getName());
+	}
 
-        }else if(typeProps.get(name).equals("Boolean")){
-        	setAggregOpBoolean(name, operator, false);
+	public void setCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps, Boolean preval)
+	{
+		CellAggregOperator cao = new CellAggregOperator();
+		if(typeProps.get(name).equals("Double")){
+			setAggregOpDouble(name, operator, preval);
+		}else if(typeProps.get(name).equals("Integer")){
+			setAggregOpInteger(name, operator, preval);
 
-        }
-    }
-    public void setAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg, boolean val){
-        CellAggregOperator cao = new CellAggregOperator();
-        cao.setOperatorDouble(agg);
-        gridManager.addOperator(cao, name);
-    }
-public void setAggregOpInteger(String name, AggregOperator<Integer, List<Integer>> agg, boolean val){
-        CellAggregOperator cao = new CellAggregOperator();
-        cao.setOperatorInteger(agg);
-        gridManager.addOperator(cao, name);
-    }
+		}else if(typeProps.get(name).equals("Float")){
+			setAggregOpFloat(name, operator, preval);
 
-public void setAggregOpFloat(String name, AggregOperator<Float, List<Float>> agg, boolean val){
-        CellAggregOperator cao = new CellAggregOperator();
-        cao.setOperatorFloat(agg);
-        gridManager.addOperator(cao, name);
-    }
+		}else if(typeProps.get(name).equals("Byte")){
+			setAggregOpByte(name, operator, preval);
 
-public void setAggregOpByte(String name, AggregOperator<Byte, List<Byte>> agg, boolean val){
-        CellAggregOperator cao = new CellAggregOperator();
-        cao.setOperatorByte(agg);
-        gridManager.addOperator(cao, name);
-    }
+		}else if(typeProps.get(name).equals("Boolean")){
+			setAggregOpBoolean(name, operator, preval);
 
-public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean>> agg, boolean val){
-        CellAggregOperator cao = new CellAggregOperator();
-        cao.setOperatorBoolean(agg);
-        gridManager.addOperator(cao, name);
-    }
+		}
+	}
+	public void setAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorDouble(agg);
+		gridManager.addOperator(cao, name);
+	}
+	public void setAggregOpInteger(String name, AggregOperator<Integer, List<Integer>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorInteger(agg);
+		gridManager.addOperator(cao, name);
+	}
 
-    public void cleanOperator()
-    {
-        gridManager.clearAggregMap();
-    }
+	public void setAggregOpFloat(String name, AggregOperator<Float, List<Float>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorFloat(agg);
+		gridManager.addOperator(cao, name);
+	}
 
-    public void increment2()
-    {
-        if(direction == 3)
-        {
-            direction = 0;
-            move();
-        } else
-        {
-            direction++;
-        }
-    }
+	public void setAggregOpByte(String name, AggregOperator<Byte, List<Byte>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorByte(agg);
+		gridManager.addOperator(cao, name);
+	}
 
-    public boolean setEnd2()
-    {
-        if(isRight())
-        {
-            increment2();
-            if(inbounds(x + 1, y))
-            {
-                x2 = x + 1;
-                y2 = y;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isRightDown())
-        {
-            increment2();
-            if(inbounds(x + 1, y + 1))
-            {
-                x2 = x + 1;
-                y2 = y + 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isDown())
-        {
-            increment2();
-            if(inbounds(x, y + 1))
-            {
-                x2 = x;
-                y2 = y + 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        }
-        if(isDownLeft())
-        {
-            increment2();
-            if(inbounds(x - 1, y + 1))
-            {
-                x2 = x - 1;
-                y2 = y + 1;
-                return true;
-            } else
-            {
-                return false;
-            }
-        } else
-        {
-            return false;
-        }
-    }
-    
-    @Override
-    public OcltRole getRole(int arg){
-    	return null;
-    }
+	public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorBoolean(agg);
+		gridManager.addOperator(cao, name);
+	}
 
-   public abstract void updateCellType();
-   
-   
-   public int getX(){
-	   return x;
-   }
-   
-   public int getY(){
-	   return y;
-   }
-   
-   public int getY2(){
-	   return y2;
-   }
-   
-   public int getX2(){
-	   return x2;
-   }
-   
-   
+	public void cleanOperator()
+	{
+		gridManager.clearAggregMap();
+	}
+
+	public void increment2()
+	{
+		if(direction == 3)
+		{
+			direction = 0;
+			move();
+		} else
+		{
+			direction++;
+		}
+	}
+
+	public boolean setEnd2()
+	{
+		if(isRight())
+		{
+			increment2();
+			if(inbounds(x + 1, y))
+			{
+				x2 = x + 1;
+				y2 = y;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isRightDown())
+		{
+			increment2();
+			if(inbounds(x + 1, y + 1))
+			{
+				x2 = x + 1;
+				y2 = y + 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isDown())
+		{
+			increment2();
+			if(inbounds(x, y + 1))
+			{
+				x2 = x;
+				y2 = y + 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		}
+		if(isDownLeft())
+		{
+			increment2();
+			if(inbounds(x - 1, y + 1))
+			{
+				x2 = x - 1;
+				y2 = y + 1;
+				return true;
+			} else
+			{
+				return false;
+			}
+		} else
+		{
+			return false;
+		}
+	}
+
+	@Override
+	public OcltRole getRole(int arg){
+		return null;
+	}
+
+	public abstract void updateCellType();
+
+
+	public int getX(){
+		return x;
+	}
+
+	public int getY(){
+		return y;
+	}
+
+	public int getY2(){
+		return y2;
+	}
+
+	public int getX2(){
+		return x2;
+	}
+
+
 }

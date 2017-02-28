@@ -154,12 +154,15 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                     }
   					if ('RasterFile'.equals(''+meln.storetype)) { 
                  // if (Class::forName('fr.ocelet.daatafacer.RasterFile').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {
-
-                 		val tabType = typeRef('fr.ocelet.runtime.raster.Grid')
+						//val tabType = typeRef('fr.ocelet.runtime.ocltypes.List','fr.ocelet.runtime.raster.Grid')
+                 		val gridType = typeRef('fr.ocelet.runtime.raster.Grid')
+                 		val tabType = typeRef('fr.ocelet.runtime.ocltypes.List',entype)
                   		members += meln.toMethod('readAll'+entname,tabType)[
                   		body='''
+                  		
+								«entname» entity = new «entname»();
 							if(grid == null){
-								grid = new Grid(getWidth(), getHeight(), getGridGeometry());
+								grid = new «gridType»(getWidth(), getHeight(), getGridGeometry());
                   	  			«FOR mp:matchdef.matchprops»
                   	  	  		«val eproptype = propmap.get(mp.prop)»
                  	  	  			«IF eproptype != null»
@@ -168,11 +171,13 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  	    			«ENDIF»
                   	  	  			«ENDIF»
                   	  			«ENDFOR»
-                  				«entname» entity = new «entname»();
 								createGrid(entity.getProps(), "«entname»Grid");
 								entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+								
 								}
-							return grid;
+								List<«entname»> entityList = new List<«entname»>();
+								entityList.add(entity);
+							return entityList;
                   		  	'''
                   		]                  	
                   	  	members += meln.toMethod('readAll'+entname,tabType)[
@@ -181,6 +186,8 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  	parameters += meln.toParameter('maxX', typeRef('java.lang.Integer'))
                   	  	parameters += meln.toParameter('maxY', typeRef('java.lang.Integer'))
                   	  	body='''                 
+                  			«entname» entity = new «entname»(); 
+
                   			if(grid == null){
 							grid = new Grid(minX, minY, maxX, maxY, getGridGeometry());
                   	 		«FOR mp:matchdef.matchprops»
@@ -191,19 +198,23 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  	    		«ENDIF»
                   	  	  		«ENDIF»
                   	  		«ENDFOR»
-							«entname» entity = new «entname»(); 
-							grid.setInitRaster(raster.getRaster(minX, minY, maxX, maxY));
+														grid.setInitRaster(raster.getRaster(minX, minY, maxX, maxY));
 							grid.setFinalProperties(entity.getProps());
 							grid.setRes(raster);
 							fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
 							entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
 							}
-						return grid;
+								List<«entname»> entityList = new List<«entname»>();
+								entityList.add(entity);
+							return entityList;
+
                   	  	'''
                   	]
                    	members += meln.toMethod('readAll'+entname,tabType)[
                   	parameters += meln.toParameter('shp', typeRef('fr.ocelet.datafacer.ocltypes.Shapefile'))
                   	body='''
+                  	«entname» entity = new «entname»();
+
                   	if(grid == null){
                   
                   	«FOR mp:matchdef.matchprops»
@@ -214,11 +225,13 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	«ENDIF»
                   	«ENDIF»
                   	«ENDFOR»
-                  	«entname» entity = new «entname»();
-                  	this.grid = createGrid(entity.getProps(), shp, 	"«entname»Grid");
+                  	                  	this.grid = createGrid(entity.getProps(), shp, 	"«entname»Grid");
                     entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
                   	}
-                    return grid;
+					List<«entname»> entityList = new List<«entname»>();
+					entityList.add(entity);
+					return entityList;
+
                     '''
                   ]
              }else if('TemporalSeriesFile'.equals(''+meln.storetype)) { 
@@ -773,6 +786,11 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
               	val cellName = tempCellName
               	val geomName = tempGeomName
               	
+              	 val cellList1 = typeRef('fr.ocelet.runtime.ocltypes.List', cellType)
+
+				val cellListName = cellName+"s"
+				val geomNames = geomName+"s"
+              	
           		superTypes += typeRef('fr.ocelet.runtime.relation.GeomCellEdge', cellType, geomType)            
           	    if ((meln.roles.size >= 2) &&
             	(meln.roles.get(0)!=null) && (meln.roles.get(1)!=null) &&
@@ -797,10 +815,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			}          		
           		
           			members+= meln.toConstructor[
-          			parameters += meln.toParameter("grid", typeRef("fr.ocelet.runtime.raster.Grid"))
-          			parameters += meln.toParameter("geom", typeRef("fr.ocelet.runtime.ocltypes.List", geomType))
+          			parameters += meln.toParameter(cellListName, cellList1)
+          			parameters += meln.toParameter(geomNames, typeRef("fr.ocelet.runtime.ocltypes.List", geomType))
           			body = '''
-          			  super(grid, geom);  
+          			  super(«cellListName», «geomNames»);  
           			  this.«cellName» = new «cellType»();
           			  «cellName».updateCellInfo(getCellType());
           		  '''
@@ -824,9 +842,16 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		]
           		}
      		  // Generate Properties and Interactions on the edge level
+     		  
+     		  val HashMap<String, JvmTypeReference> typeProps = <String, JvmTypeReference>newHashMap()
+
     		  for (reln:meln.relelns){
     		  	switch(reln) {
-          	  
+          		  RelPropertyDef : {
+          		  	typeProps.put(reln.name, reln.type)
+        	  	  	
+          	  	  }
+
           	  	  InteractionDef : {
           	  	  	members+= reln.toMethod(reln.name,typeRef(Void::TYPE))[
           	  	  	  for(p:reln.params){
@@ -845,7 +870,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	      	  	«IF ce.rol.type.fullyQualifiedName.toString.equals(cellType.qualifiedName.toString)»
           	  	      	  		«aggregType» cvt«index» = new «aggregType»();
 								cvt«index».setName("«ce.prop»"); 
-								cvt«index».setCellOperator(new  «ce.agrfunc»(), «cellName».getTypeProps());
+								cvt«index».setCellOperator(new  «ce.agrfunc»(), «cellName».getTypeProps(), «ce.usepreval»);
 								cvtList.add(cvt«index»);
           	  	      	  	 	«{index = index + 1; null}»
           	  	      	  	«ENDIF»
@@ -877,8 +902,82 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	 }
           	  }
   		    }
+  		    var indexDouble = 0
+  		     	var indexInteger = 0
+  		     	var indexBoolean = 0
+
+  		     for(String name : typeProps.keySet){
+  		     	
+  		     		if(typeProps.get(name).simpleName.equals("Double")){
+  		     				
+  		     		val index = indexDouble
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setDoubleProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Double'))[
+							
+          	  	      	body = '''
+          	  	      		return getDoubleProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexDouble = indexDouble + 1;
+  		     	}
+  		     	if(typeProps.get(name).simpleName.equals("Integer")){	
+  		     	  val index = indexInteger
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setIntegerProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Integer'))[
+							
+          	  	      	body = '''
+          	  	      		return getIntegerProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexInteger = indexInteger + 1; 
+          	  	}
+  		     	if(typeProps.get(name).simpleName.equals("Boolean")){	
+  		     	  val index = indexBoolean
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setBooleanProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Boolean'))[
+							
+          	  	      	body = '''
+          	  	      		return getBooleanProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexBoolean = indexBoolean + 1;  	
+          	  	   }
+
+
+  		     }
+  		      
+  		      members += meln.toMethod("getEdgeProperties",typeRef('fr.ocelet.runtime.ocltypes.KeyMap',
+  		      	typeRef('java.lang.String'), typeRef('java.lang.String')))[
+          	  	      	body = '''
+							KeyMap<String, String> properties = new KeyMap<String, String>();	
+          	  	      		«FOR name : typeProps.keySet»
+							properties.put("«name»","«typeProps.get(name).simpleName»");
+							«ENDFOR» 
+							return properties;         	  	      		
+          	  	      	'''
+          	  	      	]
+          	  	      	//typeProps.clear();
   		    
   		    }else if (isCellGraph){
+  		    	
   		    	
   		    	if(!isAutoGraph){
   		    		 superTypes += typeRef('fr.ocelet.runtime.relation.DiCursorEdge')
@@ -894,6 +993,11 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
        		  val secondRole = meln.roles.get(1)      
               val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
               val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              val cellList1 = typeRef('fr.ocelet.runtime.ocltypes.List', firstRoleType)
+              val cellList2 = typeRef('fr.ocelet.runtime.ocltypes.List', secondRoleType)
+
+				val firstName = firstRole.name+"s"
+				val secondName = secondRole.name+"s"
           		
           	  var jvmField = meln.toField(firstRole.name, firstRoleType)
           	    if (jvmField != null) {
@@ -909,11 +1013,11 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		}          		
           		
           		members+= meln.toConstructor[
-          			parameters += meln.toParameter("grid1",typeRef("fr.ocelet.runtime.raster.Grid"))
-          			parameters += meln.toParameter("grid2",typeRef("fr.ocelet.runtime.raster.Grid"))
+          			parameters += meln.toParameter(firstName,cellList1)
+          			parameters += meln.toParameter(secondName,cellList2)
           			
           			body = ''' 
-          			  super(grid1, grid2);
+          			  super(«firstName», «secondName»);
           			  «firstRole.name» = new «firstRoleType»();
           			  «secondRole.name» = new «secondRoleType»();
           			  «firstRole.name».updateCellInfo(getCellType());
@@ -953,8 +1057,17 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		]
           		//}
      		  // Generate Properties and Interactions on the edge level
+     		  val HashMap<String, JvmTypeReference> typeProps = <String, JvmTypeReference>newHashMap()
+
     		  for (reln:meln.relelns){
     		  	switch(reln) {
+    		  		
+    		  		RelPropertyDef : {
+            	    typeProps.put(reln.name, reln.type)
+
+        	  	  	
+          	  	  }
+
           	  	  InteractionDef : {
           	  	  	
           	  	  	
@@ -984,7 +1097,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	      		«FOR ce : reln.comitexpressions»
 								«aggregType» cvt«index» = new «aggregType»();	
 								cvt«index».setName("«ce.prop»"); 
-								cvt«index».setCellOperator(new «ce.agrfunc»(), «firstRole.name».getTypeProps());
+								cvt«index».setCellOperator(new «ce.agrfunc»(), «firstRole.name».getTypeProps(), «ce.usepreval»);
 								cvtList.add(cvt«index»);
           	  	      	  	 	«{index = index + 1; null}»
 							«ENDFOR»
@@ -1001,7 +1114,79 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	  }
           	  	}
   		      }
-  		    		
+  		    		var indexDouble = 0
+  		     	var indexInteger = 0
+  		     	var indexBoolean = 0
+
+  		     for(String name : typeProps.keySet){
+  		     	
+  		     		if(typeProps.get(name).simpleName.equals("Double")){
+  		     				
+  		     		val index = indexDouble
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setDoubleProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Double'))[
+							
+          	  	      	body = '''
+          	  	      		return getDoubleProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexDouble = indexDouble + 1;
+  		     	}
+  		     	if(typeProps.get(name).simpleName.equals("Integer")){	
+  		     	  val index = indexInteger
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setIntegerProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Integer'))[
+							
+          	  	      	body = '''
+          	  	      		return getIntegerProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexInteger = indexInteger + 1; 
+          	  	}
+  		     	if(typeProps.get(name).simpleName.equals("Boolean")){	
+  		     	  val index = indexBoolean
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setBooleanProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Boolean'))[
+							
+          	  	      	body = '''
+          	  	      		return getBooleanProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexBoolean = indexBoolean + 1;  		     	}
+
+
+  		     }
+  		      
+  		      members += meln.toMethod("getEdgeProperties",typeRef('fr.ocelet.runtime.ocltypes.KeyMap',
+  		      	typeRef('java.lang.String'), typeRef('java.lang.String')))[
+          	  	      	body = '''
+							KeyMap<String, String> properties = new KeyMap<String, String>();	
+          	  	      		«FOR name : typeProps.keySet»
+							properties.put("«name»","«typeProps.get(name).simpleName»");
+							«ENDFOR» 
+							return properties;         	  	      		
+          	  	      	'''
+          	  	      	]
+          	  	      //	typeProps.clear();
+
   		    		}else{
   		    			
   		    			superTypes += typeRef('fr.ocelet.runtime.relation.CursorEdge')
@@ -1016,6 +1201,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
               val secondRole = meln.roles.get(1)
               val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
               val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+               val cellList = typeRef('fr.ocelet.runtime.ocltypes.List', firstRoleType)
+				val firstName = firstRole.name+"s"
+				val secondName = secondRole.name+"s"
           		
           	  var jvmField = meln.toField(firstRole.name, firstRoleType)
           	    if (jvmField != null) {
@@ -1031,9 +1219,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		}          		
           		
           		members+= meln.toConstructor[
-          			parameters += meln.toParameter("igr",typeRef("fr.ocelet.runtime.raster.Grid"))
+          			parameters += meln.toParameter(firstName,cellList)
           			body = '''
-          				super(igr);
+          				super(«firstName»);
           			    «firstRole.name» = new «firstRoleType»();
           			    «secondRole.name» = new «secondRoleType»();
           			    «firstRole.name».updateCellInfo(getCellType());
@@ -1067,8 +1255,16 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		]
           		//}
      		  // Generate Properties and Interactions on the edge level
+     		  val HashMap<String, JvmTypeReference> typeProps = <String, JvmTypeReference>newHashMap()
+
     		  for (reln:meln.relelns){
     		  	switch(reln) {
+    		  		
+    		  		RelPropertyDef : {
+            	    typeProps.put(reln.name, reln.type)
+
+        	  	  	
+          	  	  }
           	  	  InteractionDef : {          	  	  	          	  	  	
           	  	  	
           	  	  	members+= reln.toMethod(reln.name,typeRef(Void::TYPE))[
@@ -1096,7 +1292,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 							«aggregType» cvt«index» = new «aggregType»();
 							cvt«index».setName("«ce.prop»"); 
 							
-							cvt«index».setCellOperator(new «ce.agrfunc»(), «firstRole.name».getTypeProps());
+							cvt«index».setCellOperator(new «ce.agrfunc»(), «firstRole.name».getTypeProps(), «ce.usepreval»);
 							cvtList.add(cvt«index»);
           	  	      	  	«{index = index + 1; null}»
            	  	      	  «ENDFOR»
@@ -1113,6 +1309,79 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	  }
           	  	}
   		      }
+  		     	var indexDouble = 0
+  		     	var indexInteger = 0
+  		     	var indexBoolean = 0
+
+  		     for(String name : typeProps.keySet){
+  		     	
+  		     		if(typeProps.get(name).simpleName.equals("Double")){
+  		     				
+  		     		val index = indexDouble
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setDoubleProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Double'))[
+							
+          	  	      	body = '''
+          	  	      		return getDoubleProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexDouble = indexDouble + 1;
+  		     	}
+  		     	if(typeProps.get(name).simpleName.equals("Integer")){	
+  		     	  val index = indexInteger
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setIntegerProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Integer'))[
+							
+          	  	      	body = '''
+          	  	      		return getIntegerProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexInteger = indexInteger + 1; 
+          	  	}
+  		     	if(typeProps.get(name).simpleName.equals("Boolean")){	
+  		     	  val index = indexBoolean
+  		     	 	members += meln.toMethod('set'+name.toFirstUpper,typeRef(Void::TYPE))[
+  		     	  	parameters += meln.toParameter('value', typeProps.get(name))
+							
+          	  	      	body = '''
+          	  	      		setBooleanProperty(«index», value);
+          	  	      	'''
+          	  	      	]
+          	  	    members += meln.toMethod('get'+name.toFirstUpper,typeRef('java.lang.Boolean'))[
+							
+          	  	      	body = '''
+          	  	      		return getBooleanProperty(«index»);
+          	  	      	'''
+          	  	      	]
+          	  	      	indexBoolean = indexBoolean + 1;  		     	}
+
+
+  		     }
+  		      
+  		      members += meln.toMethod("getEdgeProperties",typeRef('fr.ocelet.runtime.ocltypes.KeyMap',
+  		      	typeRef('java.lang.String'), typeRef('java.lang.String')))[
+  		      		   	body = '''
+							KeyMap<String, String> properties = new KeyMap<String, String>();	
+          	  	      		«FOR name : typeProps.keySet»
+							properties.put("«name»","«typeProps.get(name).simpleName»");
+							«ENDFOR» 
+							return properties;         	  	      		
+          	  	      	'''
+          	  	      	]
+          	  	      //	typeProps.clear();
+
   		    }
   		    	
   		  }else{
@@ -1559,12 +1828,15 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 
              
               val geomList = typeRef('fr.ocelet.runtime.ocltypes.List', geomType)
+              val cellList = typeRef('fr.ocelet.runtime.ocltypes.List', cellType)
+				val firstName = cellName+"s"
+				val secondName = geomName+"s"
               // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
               members+= meln.toMethod("connect",typeRef(Void::TYPE))[
-              	parameters += meln.toParameter("grid",gridType)
-                parameters += meln.toParameter("geom",geomList)
+              	parameters += meln.toParameter(firstName,cellList)
+                parameters += meln.toParameter(secondName,geomList)
               	body = ''' 
-                   «typeRef(edgecname)» _gen_edge = new «meln.name+"_Edge"»(grid, geom);
+                   «typeRef(edgecname)» _gen_edge = new «meln.name+"_Edge"»(«firstName», «secondName»);
      		  	  setCompleteIteratorGeomCell(_gen_edge);
               	'''
               ]
@@ -1637,11 +1909,14 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
   		    	
   		    	if(!isAutoGraph){
   		    		
-  		    		val firstRole = meln.roles.get(0)
-        val secondRole = meln.roles.get(1)      
-              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
-              val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
-              
+  		    	val firstRole = meln.roles.get(0)
+        		val secondRole = meln.roles.get(1)      
+              	val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
+              	val secondRoleType = typeRef(secondRole.type.fullyQualifiedName.toString)
+              val firstCellList = typeRef('fr.ocelet.runtime.ocltypes.List', firstRoleType)
+              val secondCellList = typeRef('fr.ocelet.runtime.ocltypes.List', secondRoleType)
+				val firstName = firstRole.name+"s"
+				val secondName = secondRole.name+"s"
               superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType, secondRoleType)
 
               // Generate an empty constructor
@@ -1650,15 +1925,22 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
      		  		super();
      		     '''
      		  ]
+     		  
+              
+     		  
+     		  
+     		  
               // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
               members+= meln.toMethod("connect",typeRef(Void::TYPE))[
-              	parameters += meln.toParameter("grid1",gridType)
-              parameters += meln.toParameter("grid2",gridType)
+              /*	parameters += meln.toParameter("grid1",gridType)
+              	parameters += meln.toParameter("grid2",gridType)*/
+              	parameters += meln.toParameter(firstName,firstCellList)
+              	parameters += meln.toParameter(secondName, secondCellList)
               	body = '''
               		
-                  super.setGrid(grid1, grid2);
-                   «typeRef(edgecname)» _gen_edge_ = new «meln.name+"_Edge"»(grid1, grid2);
-     		  	  setCompleteIteratorDiCell(_gen_edge_ );
+              		super.setGrid(«firstName», «secondName»);
+                   «typeRef(edgecname)» _gen_edge_ = new «meln.name+"_Edge"»(«firstName», «secondName»);
+                		setCompleteIteratorDiCell(_gen_edge_ );
               	'''
               ]
      		  
@@ -1716,11 +1998,13 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
   		    		}else{
   		    			
   		    			
-  		    			 val firstRole = meln.roles.get(0)
-        val secondRole = meln.roles.get(1)      
+  		    	val firstRole = meln.roles.get(0)
+  		    	val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
 
-              val firstRoleType = typeRef(firstRole.type.fullyQualifiedName.toString)
-              
+				val firstCellList = typeRef('fr.ocelet.runtime.ocltypes.List', firstRoleType)
+				val firstName = firstRole.name
+				val getEntity = "get"+firstRoleType.simpleName+"s"
+                            
               
               superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType)
 
@@ -1730,16 +2014,28 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
      		  		 super();
      		    '''
      		  ]
-	
-              // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
-              members+= meln.toMethod("connect",typeRef(Void::TYPE))[
-              	parameters += meln.toParameter("grid",gridType)
+				members+= meln.toMethod(getEntity, firstCellList)[
               
               	body = '''
               		
               		
-                  super.setGrid(grid);
-                   «typeRef(edgecname)» _gen_edge_ = new «meln.name+"_Edge"»(grid);
+                  «firstRoleType» entity = new «firstRoleType»();
+          				
+                  	 	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getIndex(getGrid()));
+                  	 	«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+                  	 	return array;
+              	'''
+              ]
+              // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
+              members+= meln.toMethod("connect",typeRef(Void::TYPE))[
+              	parameters += meln.toParameter(firstName, firstCellList)
+              
+              	body = '''
+              		
+              		
+                  super.setGrid(«firstName»);
+                   «typeRef(edgecname)» _gen_edge_ = new «meln.name+"_Edge"»(«firstName»);
      		  	  setCompleteIteratorCell(_gen_edge_ );
               	'''
               ]
@@ -1755,7 +2051,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				
           			    fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
                   	 	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	   	connect(grid);
+                  	 	«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+                  	   	connect(array);
                   	   	setCellShapeType("HEXAGONAL");
           			'''
           		]
@@ -1772,7 +2070,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				«gridType» grid =  createHexagon("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
           				fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
                   	   	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-                  	    connect(grid);
+                  	   	«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+
+                  	    connect(array);
                   	   	setCellShapeType("HEXAGONAL");
           			'''
           		]
@@ -1786,7 +2087,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						«gridType» grid = createSquare("«graphcname»",entity.getProps(), shp.getBounds(), xRes, yRes);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-						connect(grid);
+						«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+
+						connect(array);
 						setCellShapeType("QUADRILATERAL");
           			'''
           		]
@@ -1804,7 +2108,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						«gridType» grid = createSquare("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-						connect(grid);
+						«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+
+						connect(array);
 						setCellShapeType("QUADRILATERAL");
           			'''
           		]
@@ -1817,7 +2124,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						«gridType» grid = createTriangle("«graphcname»",entity.getProps(), shp.getBounds(), size);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-						connect(grid);
+						«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+
+						connect(array);
 						setCellShapeType("TRIANGULAR");
           			'''
           		]
@@ -1834,7 +2144,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						«gridType» grid = createTriangle("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-						connect(grid);
+						«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+
+						connect(array);
 						setCellShapeType("TRIANGULAR");
           			'''
           		]

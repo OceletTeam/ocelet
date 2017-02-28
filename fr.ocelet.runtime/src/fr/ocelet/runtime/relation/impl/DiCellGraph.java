@@ -1,7 +1,11 @@
 package fr.ocelet.runtime.relation.impl;
 
+import fr.ocelet.runtime.entity.AbstractEntity;
+import fr.ocelet.runtime.geom.ocltypes.Cell;
+import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.raster.Grid;
+import fr.ocelet.runtime.raster.GridManager;
 import fr.ocelet.runtime.relation.*;
 
 import java.util.Iterator;
@@ -16,39 +20,39 @@ implements DiGraphInterface<E, R1, R2> {
     
     }
 
-    public void setGrid(Grid grid1, Grid grid2){
-    
-        this.grid1 = grid1;
-        this.grid2 = grid2;
-    }
+    public void setGrid(List<R1> r1List, List<R2> r2List){
+    	
+    	AbstractEntity r1 = (AbstractEntity)r1List.get(0);
+    	AbstractEntity r2 = (AbstractEntity)r2List.get(0);
+    	
+    	Cell c1 = (Cell)r1.getSpatialType();
+    	Cell c2 = (Cell)r2.getSpatialType();
+        this.grid1 = GridManager.getInstance().get(c1.getNumGrid());
+        this.grid2 = GridManager.getInstance().get(c2.getNumGrid());   
+        }
 
     public void setCompleteIteratorDiCell(E e){
     
         completeIteratorDiCell = new CompleteIteratorDiCell<E, R1, R2>(this, e);
     }
 
-    public void beginTransaction()
-    {
+    public void beginTransaction(){
     }
 
-    public void abortTransaction()
-    {
+    public void abortTransaction(){
+    }
+    
+    public void endTransaction(){
     }
 
-    public void endTransaction()
-    {
+    public void disconnect(OcltEdge ocltedge){
     }
 
-    public void disconnect(OcltEdge ocltedge)
-    {
+    public void disconnect(Iterable iterable){
+    	
     }
 
-    public void disconnect(Iterable iterable)
-    {
-    }
-
-    public int size()
-    {
+    public int size(){
         return 0;
     }
 
