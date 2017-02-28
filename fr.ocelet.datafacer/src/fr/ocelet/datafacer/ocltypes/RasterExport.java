@@ -1,11 +1,15 @@
 package fr.ocelet.datafacer.ocltypes;
 
 import fr.ocelet.datafacer.Datafacer;
+import fr.ocelet.runtime.entity.AbstractEntity;
+import fr.ocelet.runtime.geom.ocltypes.Cell;
+import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.Grid;
 import fr.ocelet.runtime.raster.ORaster;
 import fr.ocelet.runtime.relation.OcltRole;
 import fr.ocelet.runtime.util.FileUtils;
 import fr.ocelet.runtime.raster.GridGenerator;
+import fr.ocelet.runtime.raster.GridManager;
 
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -30,15 +34,22 @@ public class RasterExport implements Datafacer{
 		return null;
 	}
 	
-	public void export(Grid grid, String path, String epsgCode, String... names){
-    	
+	public void export(List<? extends AbstractEntity> entities, String path, String epsgCode, String... names){
+		
+		AbstractEntity ae = entities.get(0);
+    	Cell cell = (Cell)ae.getSpatialType();
+    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
 		GeneralParameterValue paramValues[] = null; //getInitialParameters();
         File file = new File(FileUtils.applyOutput(path));
         GeoTiffWriter writer = null;
         Double[] wBounds = grid.getWorldBounds();
          
+ 		//Envelope2D env = GridGenerator.createEnvelope(wBounds[0], wBounds[1],
+ 		//wBounds[0]+ (grid.getWidth() * grid.getXRes()), wBounds[1] + (grid.getHeight() * grid.getYRes()));
+ 		
  		Envelope2D env = GridGenerator.createEnvelope(wBounds[0], wBounds[1],
- 		wBounds[0]+ (grid.getWidth() * grid.getXRes()), wBounds[1] + (grid.getHeight() * grid.getYRes()));
+ 		wBounds[2], wBounds[3]);
+ 		env = grid.getEnv();
  		WritableRaster raster = GridGenerator.createRaster(names.length, grid.getWidth(), grid.getHeight());
  		CoordinateReferenceSystem crs = null;
 		try {
@@ -88,8 +99,11 @@ public class RasterExport implements Datafacer{
     	
     }
     
-    public void export(Grid grid, String path, String epsgCode){
-    	 
+    public void export(List<? extends AbstractEntity> entities, String path, String epsgCode){
+    	 AbstractEntity ae = entities.get(0);
+    	Cell cell = (Cell)ae.getSpatialType();
+    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
+
  GeneralParameterValue paramValues[] = null; //getInitialParameters();
     	 
          File file = new File(FileUtils.applyOutput(path));

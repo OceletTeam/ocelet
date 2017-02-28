@@ -1,5 +1,7 @@
 package fr.ocelet.datafacer.ocltypes;
 
+import fr.ocelet.runtime.entity.AbstractEntity;
+import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.Grid;
@@ -7,6 +9,8 @@ import fr.ocelet.runtime.raster.ORaster;
 import fr.ocelet.runtime.relation.OcltRole;
 import fr.ocelet.runtime.util.FileUtils;
 import fr.ocelet.runtime.raster.GridGenerator;
+import fr.ocelet.runtime.raster.GridManager;
+
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
@@ -29,11 +33,21 @@ public class RasterFile{
 	private KeyMap<String, Integer> propMatched = new KeyMap<String, Integer>();
 
     public RasterFile(String fileName){
-    
+    	try{
         raster = new ORaster(FileUtils.applyOutput(fileName));
-   
+    	}catch(Exception e){
+    		
+    	}
     }
-
+    
+    public void setFileName(String fileName){
+    	try{
+        raster = new ORaster(FileUtils.applyOutput(fileName));
+    	}catch(Exception e){
+    		
+    	}
+    }
+    
     public int getWidth(){
         return raster.getMaxPixel(0);
     }
@@ -56,14 +70,18 @@ public class RasterFile{
     
     
     protected Grid createGrid(List<String> properties, Shapefile shp, String gridName){
-    	grid = GridGenerator.squareGridFrom(gridName, properties, raster,raster.getXRes(), raster.getYRes(), shp.getBounds());
+    	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), shp.getBounds());
         fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
         grid.copy(raster, propMatched);
         return grid;
     }
     
     protected void createGrid(List<String> properties, String gridName){
-    	
+    	grid = GridGenerator.squareGridFrom(gridName, properties, raster);
+        fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+        grid.copy(raster, propMatched);
+        
+
     }
     
     protected void createGrid(List<String> properties, String gridName, int minX, int minY, int maxX, int maxY){
@@ -71,8 +89,14 @@ public class RasterFile{
     }
     
     
-    public void export(Grid grid, String path, String epsgCode, String... names){
+    public void export(List<? extends AbstractEntity> entities, String path, String epsgCode, String... names){
     	
+    	
+    	
+    	
+    	AbstractEntity ae = entities.get(0);
+    	Cell cell = (Cell)ae.getSpatialType();
+    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
  GeneralParameterValue paramValues[] = null; //getInitialParameters();
     	 
          File file = new File(FileUtils.applyOutput(path));
@@ -140,8 +164,11 @@ public class RasterFile{
     	
     }
     
-    public void export(Grid grid, String path, String epsgCode){
-    	 
+    public void export(List<? extends AbstractEntity> entities, String path, String epsgCode){
+    	 AbstractEntity ae = entities.get(0);
+    	Cell cell = (Cell)ae.getSpatialType();
+    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
+
  GeneralParameterValue paramValues[] = null; //getInitialParameters();
     	 
          File file = new File(FileUtils.applyOutput(path));

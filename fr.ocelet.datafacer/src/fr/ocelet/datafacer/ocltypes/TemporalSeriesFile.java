@@ -36,17 +36,17 @@ public abstract class TemporalSeriesFile {
 	      	File file = new File(FileUtils.applyOutput(path));
 	        names = file.list();
 	        File[] files = file.listFiles();
-ArrayList<String> tempNames = new ArrayList<String>();
-for(File f : files){
-	if(!f.isDirectory()){
-		tempNames.add(f.getName());
+	        ArrayList<String> tempNames = new ArrayList<String>();
+	        for(File f : files){
+	        	if(!f.isDirectory()){
+	        		tempNames.add(f.getName());
 
-	}
-}
-Collections.sort(tempNames);
-	names = tempNames.toArray(new String[tempNames.size()]);
-	      init();
-	    }
+	        	}
+	        }
+	        Collections.sort(tempNames);
+	        names = tempNames.toArray(new String[tempNames.size()]);
+	        init();
+	  }
 
 	    public void setProperties(Grid grid1, OcltRole ocltrole){
 	    
@@ -162,6 +162,21 @@ Collections.sort(tempNames);
 	    	}
 	    }
 	    
+	    public void setDirectory(String fileName){
+	    	 path = fileName;
+	      	File file = new File(FileUtils.applyOutput(path));
+	        names = file.list();
+	        File[] files = file.listFiles();
+	        ArrayList<String> tempNames = new ArrayList<String>();
+	        for(File f : files){
+	        	if(!f.isDirectory()){
+	        		tempNames.add(f.getName());
+
+	        	}
+	        }
+	        Collections.sort(tempNames);
+	        names = tempNames.toArray(new String[tempNames.size()]);
+	    }
 	    public abstract void currentGrid();
 	    
 	    public abstract void init();
