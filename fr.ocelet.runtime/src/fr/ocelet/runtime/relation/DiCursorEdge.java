@@ -901,7 +901,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							}else{
 								d = cao.apply(values, globalGrid.getDoubleValue(name, i, y));
 							}
-							//globalGrid.setCellValue(name, i, y, d);
+							globalGrid.setCellValue(name, i, y, d);
 							//   globalGrid.cleanOperator();
 
 						} else{

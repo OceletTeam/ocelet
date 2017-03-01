@@ -111,14 +111,26 @@ public class GridQuadriCellManager extends GridCellManager{
             
             for(String name : properties){
            
+                List<Double> values = cv.getValues(name);
                 
                 if(aggregMap.containsKey(name)){
                 
-                    if(!cv.getValues(name).isEmpty())
-                        grid.setCellValue(name, i, y, aggregMap.get(name).apply(cv.getValues(name), 0.0));
+                    if(!values.isEmpty()){
+                    	
+                    	Double d;
+                    	CellAggregOperator cao = aggregMap.get(name);
+                    	if(cao.preval() == false){
+                    		d = cao.apply(values, null);
+                    	}else{
+                    		d = cao.apply(values, grid.getDoubleValue(name, i, y));
+                    	}
+                    	
+                        grid.setCellValue(name, i, y, d);
+                    	
+                    }              
                 } else if(!cv.getValues(name).isEmpty()){
                 
-                    grid.setCellValue(name, i, y, (Double)cv.getValues(name).get((int)(Math.random() * (double)cv.getValues(name).size())));
+                    grid.setCellValue(name, i, y, values.get((int)(Math.random() * values.size())));
                 }
             }
 
@@ -134,14 +146,21 @@ public class GridQuadriCellManager extends GridCellManager{
             
             for(String name : properties){
            
-                
+                CellAggregOperator cao = aggregMap.get(name);
                 if(aggregMap.containsKey(name)){
                 
-                    if(!cv.getValues(name).isEmpty())
-                        grid.setCellValue(name, i, y, aggregMap.get(name).apply(cv.getValues(name), 0.0));
+                    if(!cv.getValues(name).isEmpty()){
+                    	if(cao.preval() == false){
+	                		 grid.setCellValue(name, i, y, cao.apply(cv.getValues(name), null));	                    
+  
+	                	  }else{
+	                		  grid.setCellValue(name, i, y , cao.apply(cv.getValues(name), grid.getDoubleValue(name, i, y)));	                    
+
+	                	  }
+                    }
                 } else if(!cv.getValues(name).isEmpty()){
                 
-                    grid.setCellValue(name, i, y, (Double)cv.getValues(name).get((int)(Math.random() * (double)cv.getValues(name).size())));
+                    grid.setCellValue(name, i, y, cv.getValues(name).get((int)(Math.random() * cv.getValues(name).size())));
                 }
             }
 
