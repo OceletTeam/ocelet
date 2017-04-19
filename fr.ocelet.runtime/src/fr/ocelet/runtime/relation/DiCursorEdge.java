@@ -754,7 +754,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 					Coordinate c = grid.gridCoordinate(x2, y2);
 					int[] c2 = globalGrid.gridCoordinate(c.x, c.y);
-					if(c2[1] != y){
+					if(c2[1] > y + 0.75){
 						globalSynchronisation();
 						//y = c2[1];
 						y = y + 1;
@@ -883,7 +883,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 	}
 	public void globalSynchronisation(){
 		try{
-			for(int i = 0; i < endX; i ++){
+			for(int i = startX; i < endX; i ++){
 
 				CellValues cv = mrm.get(i); 
 				for(String name : mrm.getProperties()){
@@ -917,6 +917,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 			}
 		}catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 

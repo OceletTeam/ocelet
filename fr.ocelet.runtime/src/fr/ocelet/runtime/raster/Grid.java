@@ -922,7 +922,7 @@ public class Grid {
     
     public void setCellShapeType(String type){
     	this.cellShapeType = type;
-    	this.gridCellManager = GridCellFactory.create(this);
+    	this.gridCellManager = GridCellFactory.create(type, this);
     }
    public void extendedMoore(int n){
 	   GridMultiQuadrilateralCellManager gmqcm = new GridMultiQuadrilateralCellManager(this);

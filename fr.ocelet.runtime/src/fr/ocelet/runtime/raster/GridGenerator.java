@@ -84,11 +84,10 @@ public class GridGenerator {
 
 		double l = Math.sin(Math.PI/3) * (size * 2);
 		//int cellWidth = (int)(Math.round(width / (size * 2))) + 4;
-		int cellWidth = (int)(Math.round(((width / 2) * l) + ((width / 2) * size))) + 4;
+		int cellWidth = (int)(Math.round(((width / 2)  / l) + ((width / 2) / size)));
 
 		int cellHeight = (int) (Math.round(height / (l))) + 4;	
-		cellWidth = cellWidth + (cellWidth / 4) + 4;
-
+		//cellWidth = cellWidth + (cellWidth / 4) + 4;
 		double newMinX = minX - (4 * size);
 		double newMinY = minY - (4 * size);
 
@@ -102,6 +101,7 @@ public class GridGenerator {
 		grid.setYRes((int)(l));
 		grid.setWorldBounds(new Double[]{nminX, nminY, nmaxX, nmaxY});
 		grid.setEnv(env);
+		grid.setCellShapeType("HEXAGONAL");
 		return grid;
 
 
@@ -148,7 +148,6 @@ public class GridGenerator {
 		double newMinY = nminY;
 		double newMaxX = newMinX + (cellWidth * xRes);
 		double newMaxY = newMinY + (cellHeight * yRes);
-
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
@@ -218,7 +217,20 @@ public class GridGenerator {
 		
 		
 		
-		
+		if(lowerCorner[0] < minX && lowerCorner[1] < minY && upperCorner[0] > maxX && upperCorner[1] > maxY){
+			
+			int[] coordMin = raster.worldToGrid(minX, maxY);
+			int[] coordMax = raster.worldToGrid(maxX, minY);
+			
+			double[] minDouble = raster.gridToWorld(coordMin[0], coordMax[1]);
+			double[] maxDouble = raster.gridToWorld(coordMax[0], coordMin[1]);
+
+			nminX = minDouble[0];
+			nminY = minDouble[1];
+			nmaxX = maxDouble[0];
+			nmaxY = maxDouble[1];
+			
+		}else{
 		
 		
 		
@@ -272,6 +284,7 @@ public class GridGenerator {
 		}
 
 		if(upperCorner[1] > maxY){
+			
 			double init = Math.abs(upperCorner[1]);
 			double shp = Math.abs(maxY);
 			double gap = 0;
@@ -286,7 +299,7 @@ public class GridGenerator {
 		}else{
 			nmaxY = maxY;
 		}
-		
+		}
 		
 		/*if(lowerCorner[1] < minY){
 			int gap =(int) Math.round((minY - lowerCorner[1]) / yRes);
@@ -311,20 +324,20 @@ public class GridGenerator {
 			nmaxY = maxY;
 		}*/
 		//System.out.println("NEW "+nminX+" "+nminY+" "+nmaxX+" "+nmaxY );
-		double newMinX = nminX;
-		double newMinY = nminY;
-		double newMaxX = nmaxX;// newMinX + (cellWidth * xRes);
-		double newMaxY = nmaxY;//newMinY + (cellHeight * yRes);
+		double newMinX = nminX - 2*xRes;
+		double newMinY = nminY - 2*yRes;
+		double newMaxX = nmaxX + 2* xRes;// newMinX + (cellWidth * xRes);
+		double newMaxY = nmaxY + 2* yRes;//newMinY + (cellHeight * yRes);
 
-		double width = nmaxX - nminX;
-		double height = nmaxY - nminY;
+		double width = newMaxX - newMinX;
+		double height = newMaxY - newMinY;
 
 		int cellWidth = (int)(Math.round((width) / xRes));
 		int cellHeight = (int) (Math.round((height) / yRes));	
 		//newMinX = newMinX - xRes / 2;
 		//newMinY = newMinY - xRes / 2;
-		newMaxX = newMinX + cellWidth * xRes;
-		newMaxY = newMinY + cellHeight * yRes;
+		//newMaxX = newMinX + cellWidth * xRes;
+		//newMaxY = newMinY + cellHeight * yRes;
 
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		WritableRaster newRaster = createRaster(index, cellWidth, cellHeight);
