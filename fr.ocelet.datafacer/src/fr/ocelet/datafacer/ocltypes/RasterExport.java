@@ -98,6 +98,71 @@ public class RasterExport implements Datafacer{
          writer.dispose();
     	
     }
+	
+	public void exportLongInt(List<? extends AbstractEntity> entities, String path, String epsgCode, String... names){
+		
+		AbstractEntity ae = entities.get(0);
+    	Cell cell = (Cell)ae.getSpatialType();
+    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
+		GeneralParameterValue paramValues[] = null; //getInitialParameters();
+        File file = new File(FileUtils.applyOutput(path));
+        GeoTiffWriter writer = null;
+        Double[] wBounds = grid.getWorldBounds();
+         
+ 		//Envelope2D env = GridGenerator.createEnvelope(wBounds[0], wBounds[1],
+ 		//wBounds[0]+ (grid.getWidth() * grid.getXRes()), wBounds[1] + (grid.getHeight() * grid.getYRes()));
+ 		
+ 		Envelope2D env = GridGenerator.createEnvelope(wBounds[0], wBounds[1],
+ 		wBounds[2], wBounds[3]);
+ 		env = grid.getEnv();
+ 		WritableRaster raster = GridGenerator.createRasterInt(names.length, grid.getWidth(), grid.getHeight());
+ 		CoordinateReferenceSystem crs = null;
+		try {
+			crs = CRS.decode(epsgCode);
+		} catch (NoSuchAuthorityCodeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FactoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 		env.setCoordinateReferenceSystem(crs);
+ 		for(int i = 0; i < grid.getWidth(); i ++){
+ 			
+ 			for(int j = 0; j < grid.getHeight(); j ++){
+ 				
+ 				for(int n = 0 ; n < names.length; n ++){
+ 					raster.setSample(i, j, n, grid.getValue(names[n], i, j).longValue());
+ 					//System.out.println( grid.getValue(names[n], i, j));
+ 				}
+ 			}
+ 		}
+ 	 		
+         try{
+             writer = new GeoTiffWriter(file);
+         }
+         catch(IOException ex){
+         
+        	 ex.printStackTrace();
+         }
+         	GridCoverage2D cov = (new GridCoverageFactory()).create(path, raster, env);
+        
+         try{
+             writer.write(cov, paramValues);
+         }
+         catch(IllegalArgumentException ex){
+        	 ex.printStackTrace();
+         }
+         catch(IOException ex){
+        	 ex.printStackTrace();
+         }
+         catch(IndexOutOfBoundsException ex){
+        	 ex.printStackTrace();
+         }
+         System.out.println((new StringBuilder("Raster File created in : ")).append(path).toString());
+         writer.dispose();
+    	
+    }
     
     public void export(List<? extends AbstractEntity> entities, String path, String epsgCode){
     	 AbstractEntity ae = entities.get(0);

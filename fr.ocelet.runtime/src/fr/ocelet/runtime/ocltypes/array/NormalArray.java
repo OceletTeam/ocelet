@@ -9,6 +9,11 @@ public class NormalArray<T> extends ArrayInterface<T> {
 
 	
 			
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public NormalArray(){
 		
 	}

@@ -57,7 +57,7 @@ import fr.ocelet.runtime.ocltypes.array.NormalArray;
 
 
 @SuppressWarnings("serial")
-public class List<T> extends ArrayInterface<T> {
+public class List<T> extends ArrayList<T> {
 
 
 	private ArrayInterface<T> observer;
@@ -188,6 +188,8 @@ public class List<T> extends ArrayInterface<T> {
 		public void swap(int i, int j) {
 			ai.swap(i,  j);
 		}
+		
+		
 
 
 		public <U> List<U> of(U... u) {
@@ -202,6 +204,8 @@ public class List<T> extends ArrayInterface<T> {
 		public T get(int index) {			
 			return ai.get(index);
 		}
+		
+		
 
 
 	}
@@ -264,6 +268,16 @@ public class List<T> extends ArrayInterface<T> {
 	public boolean remove(Object o){
 		return observer.remove(o);
 	}
+	
+	/*@Override
+	public List<T> sort(){
+		List<T> list = new List<T>();
+		for(T t : observer){
+			list.add(t);
+		}
+		Collections.sort(list);
+		return (List<T>)observer.sort();
+	}*/
 	
 	
 

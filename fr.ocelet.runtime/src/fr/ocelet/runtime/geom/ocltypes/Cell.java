@@ -145,17 +145,24 @@ public class Cell implements SpatialType{
     	
 
     	
-  	double l = Math.sin(Math.PI/3) * (xRes / 2);
+  	//double l = Math.sin(Math.PI/3) * (xRes / 2);
     	
-    	coords[0] = new Coordinate(dx + xRes / 2, dy);
-    	coords[1] = new Coordinate(dx + xRes/4, dy - l);
-    	coords[2] = new Coordinate(dx - xRes/4, dy- l);
+    	/*coords[0] = new Coordinate(dx + xRes / 2, dy);
+    	coords[1] = new Coordinate(dx + xRes/4, dy - yRes);
+    	coords[2] = new Coordinate(dx - xRes/4, dy- yRes);
     	coords[3] = new Coordinate(dx - xRes/2, dy);
-    	coords[4] = new Coordinate(dx - xRes/4, dy + l);
-    	coords[5] = new Coordinate(dx + xRes/4, dy + l);
-    	coords[6] = new Coordinate(dx + xRes/2, dy);
+    	coords[4] = new Coordinate(dx - xRes/4, dy + yRes);
+    	coords[5] = new Coordinate(dx + xRes/4, dy + yRes);
+    	coords[6] = new Coordinate(dx + xRes/2, dy);*/
     	
-    	
+    	coords[0] = new Coordinate(dx + xRes, dy);
+    	coords[1] = new Coordinate(dx + xRes/2, dy - yRes);
+    	coords[2] = new Coordinate(dx - xRes/2, dy- yRes);
+    	coords[3] = new Coordinate(dx - xRes, dy);
+    	coords[4] = new Coordinate(dx - xRes/2, dy + yRes);
+    	coords[5] = new Coordinate(dx + xRes/2, dy + yRes);
+    	coords[6] = new Coordinate(dx + xRes, dy);
+
     	return coords;
     	
     	

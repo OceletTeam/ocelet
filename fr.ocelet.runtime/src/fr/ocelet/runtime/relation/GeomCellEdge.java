@@ -419,10 +419,9 @@ private void setHexagonalCells(R2 r2, Polygon polygon){
        	 // Point point = null;
        
        	Point 	point = Point.xy(Double.valueOf(c.x), Double.valueOf(c.y));
-       	
-       		
-           if(polygon.distance(point) < grid.getXRes() / 2)
-           {
+       	//System.out.println(point);
+           if(polygon.contains(point)){
+           
                add(r2, i, j);
                index++;
            }
@@ -542,7 +541,7 @@ private void setQuadrilateralCells(R2 r2, Polygon polygon,HashMap<Integer, Line>
           	
           	try{
           	MultiLine ml = l.multiLineIntersection(polygon);
-          
+          	//System.out.println(ml);
          
           	for(Line l2 : ml.asListOfLines()){
           		Coordinate[] c = l2.getCoordinates();
@@ -584,7 +583,7 @@ private void setQuadrilateralCells(R2 r2, Polygon polygon,HashMap<Integer, Line>
   if(index == 0)
   {
       int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
-      add(r2, scaledCentroid[0], scaledCentroid[1]);
+            add(r2, scaledCentroid[0], scaledCentroid[1]);
   }
 } 
 

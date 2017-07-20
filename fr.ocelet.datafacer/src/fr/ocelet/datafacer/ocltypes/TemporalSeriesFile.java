@@ -91,7 +91,7 @@ public abstract class TemporalSeriesFile {
 	    }
 	    
 	    public boolean hasNext(){
-	    	if(index < names.length){
+	    	if(index < names.length - 1){
 	    		return true;
 	    	}
 	    	return false;

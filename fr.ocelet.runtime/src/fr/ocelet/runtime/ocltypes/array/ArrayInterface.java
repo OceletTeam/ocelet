@@ -1,6 +1,7 @@
 package fr.ocelet.runtime.ocltypes.array;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fr.ocelet.runtime.ocltypes.List;
 
@@ -64,7 +65,7 @@ public class ArrayInterface<T> extends ArrayList<T>{
 	 * randomness. All permutations occur with approximately equal likelihood.
 	 */
 	public void shuffle(){
-		this.shuffle();
+		Collections.shuffle(this);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class ArrayInterface<T> extends ArrayList<T>{
 	 * @param distance
 	 */
 	public void rotate(int distance){
-		this.rotate(distance);
+		Collections.rotate(this,distance);
 	}
 
 	/**
@@ -91,9 +92,14 @@ public class ArrayInterface<T> extends ArrayList<T>{
 	 *            the index of the other element to be swapped.
 	 */
 	public void swap(int i, int j){
-		this.swap(i, j);
+		Collections.swap(this,i, j);
 	}
 	
+	
+	
+/*public ArrayInterface<T> sort(){
+	Collections.sort(this);
+	}*/
 	/*public T get(int index){
 		return this.get(index);
 	}*/
