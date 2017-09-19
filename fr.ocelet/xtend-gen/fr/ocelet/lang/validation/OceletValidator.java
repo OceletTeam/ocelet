@@ -59,33 +59,27 @@ public class OceletValidator extends AbstractOceletValidator {
     final Matchtype mt = match.getMtype();
     boolean propfound = false;
     boolean _matched = false;
-    if (!_matched) {
-      if (mt instanceof Entity) {
-        _matched=true;
-        EList<EntityElements> _entelns = ((Entity)mt).getEntelns();
-        for (final EntityElements eln : _entelns) {
-          boolean _matched_1 = false;
-          if (!_matched_1) {
-            if (eln instanceof PropertyDef) {
-              _matched_1=true;
-              String _name = ((PropertyDef)eln).getName();
-              String _prop = mdef.getProp();
-              int _compareTo = _name.compareTo(_prop);
-              boolean _equals = (_compareTo == 0);
-              if (_equals) {
-                propfound = true;
-              }
-            }
+    if (mt instanceof Entity) {
+      _matched=true;
+      EList<EntityElements> _entelns = ((Entity)mt).getEntelns();
+      for (final EntityElements eln : _entelns) {
+        boolean _matched_1 = false;
+        if (eln instanceof PropertyDef) {
+          _matched_1=true;
+          int _compareTo = ((PropertyDef)eln).getName().compareTo(mdef.getProp());
+          boolean _equals = (_compareTo == 0);
+          if (_equals) {
+            propfound = true;
           }
         }
-        if ((!propfound)) {
-          String _name = ((Entity)mt).getName();
-          String _plus = ("The entity " + _name);
-          String _plus_1 = (_plus + " has no property named ");
-          String _prop = mdef.getProp();
-          String _plus_2 = (_plus_1 + _prop);
-          this.error(_plus_2, OceletPackage.Literals.MDEF__PROP);
-        }
+      }
+      if ((!propfound)) {
+        String _name = ((Entity)mt).getName();
+        String _plus = ("The entity " + _name);
+        String _plus_1 = (_plus + " has no property named ");
+        String _prop = mdef.getProp();
+        String _plus_2 = (_plus_1 + _prop);
+        this.error(_plus_2, OceletPackage.Literals.MDEF__PROP);
       }
     }
     if (!_matched) {
@@ -94,16 +88,12 @@ public class OceletValidator extends AbstractOceletValidator {
         EList<StrucEln> _strucelns = ((Strucdef)mt).getStrucelns();
         for (final StrucEln eln : _strucelns) {
           boolean _matched_1 = false;
-          if (!_matched_1) {
-            if (eln instanceof StrucVarDef) {
-              _matched_1=true;
-              String _name = ((StrucVarDef)eln).getName();
-              String _prop = mdef.getProp();
-              int _compareTo = _name.compareTo(_prop);
-              boolean _equals = (_compareTo == 0);
-              if (_equals) {
-                propfound = true;
-              }
+          if (eln instanceof StrucVarDef) {
+            _matched_1=true;
+            int _compareTo = ((StrucVarDef)eln).getName().compareTo(mdef.getProp());
+            boolean _equals = (_compareTo == 0);
+            if (_equals) {
+              propfound = true;
             }
           }
         }
@@ -131,12 +121,9 @@ public class OceletValidator extends AbstractOceletValidator {
       EList<Parampart> _paramparts_1 = parameter.getParamparts();
       for (final Parampart pp : _paramparts_1) {
         boolean _matched = false;
-        if (!_matched) {
-          if (pp instanceof Paramdefa) {
-            _matched=true;
-            String _pardefa = ((Paramdefa)pp).getPardefa();
-            sdef = _pardefa;
-          }
+        if (pp instanceof Paramdefa) {
+          _matched=true;
+          sdef = ((Paramdefa)pp).getPardefa();
         }
         if (!_matched) {
           if (pp instanceof Rangevals) {

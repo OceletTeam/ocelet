@@ -2,7 +2,7 @@
 <feature
       id="fr.ocelet.rcplugins.feature"
       label="fr.ocelet.rcplugins.feature"
-      version="2.0.3.alpha">
+      version="2.0.6.beta">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -149,20 +149,6 @@
 
    <plugin
          id="org.apache.log4j"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.lucene.analysis"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.lucene.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1367,13 +1353,6 @@
 
    <plugin
          id="org.eclipse.ui.trace"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.commons.lang.source"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -1,4 +1,3 @@
-
 package fr.ocelet.runtime.raster;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+
 
 // Referenced classes of package fr.ocelet.runtime.relation:
 //            OcltEdge, OcltRole, AggregOperator
