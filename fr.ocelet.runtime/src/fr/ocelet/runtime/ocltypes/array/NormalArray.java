@@ -129,12 +129,26 @@ public class NormalArray<T> extends ArrayInterface<T> {
 		return las;
 	}
 	
+	@Override
+	public void removeRange(int fromIndex, int toIndex){
+		super.removeRange(fromIndex, toIndex);
+	}
+	
 	/*@Override
 	public T get(int index){
 		return super.get(index);
+	}
+	
+	@Override
+	public boolean add(T value){
+		System.out.println("NORMAL ADD");
+		return super.add(value);
+	}
+	
+	@Override
+	public T set(int index, T element){
+		return super.set(index,  element);
 	}*/
-	
-	
 	
 	
 	

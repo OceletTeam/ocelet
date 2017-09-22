@@ -269,6 +269,24 @@ public class List<T> extends ArrayList<T> {
 		return observer.remove(o);
 	}
 	
+	@Override
+	public T set(int index, T element){
+		return observer.set(index, element);
+	}
+	@Override
+	protected void removeRange(int fromIndex, int toIndex){
+		observer.removeRange(fromIndex, toIndex);
+	}
+	@Override
+	public List<T> subList(int fromIndex, int toIndex){
+		java.util.List<T> newList = observer.subList(fromIndex, toIndex);
+		List<T> l = new List<T>();
+		for(T t : newList){
+			l.add(t);
+		}
+		return l;
+	}
+	
 	/*@Override
 	public List<T> sort(){
 		List<T> list = new List<T>();

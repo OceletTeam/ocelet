@@ -96,6 +96,9 @@ public class ArrayInterface<T> extends ArrayList<T>{
 	}
 	
 	
+	public void removeRange(int fromIndex, int toIndex){
+		
+	}
 	
 /*public ArrayInterface<T> sort(){
 	Collections.sort(this);
