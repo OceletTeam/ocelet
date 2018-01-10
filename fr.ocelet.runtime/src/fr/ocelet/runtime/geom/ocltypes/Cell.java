@@ -98,6 +98,9 @@ public class Cell implements SpatialType{
     
     public void setNumGrid(int numGrid){
     	this.numGrid = numGrid;
+    	this.xRes = GridManager.getInstance().get(numGrid).getXRes();
+    	this.yRes = GridManager.getInstance().get(numGrid).getYRes();
+    	this.type =GridManager.getInstance().get(numGrid).getCellShapeType();
     }
   
     

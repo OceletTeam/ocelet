@@ -754,8 +754,8 @@ public class Grid {
 		int bounds[] = new int[4];
 		Coordinate cBounds[] = cboundary(polygon);
 		
-		int gridCoord1[] = gridCoordinate(cBounds[0].x, cBounds[1].y);
-		int gridCoord2[] = gridCoordinate(cBounds[1].x, cBounds[0].y);
+		int[] gridCoord1 = gridCoordinate(cBounds[0].x, cBounds[1].y);
+		int[] gridCoord2 = gridCoordinate(cBounds[1].x, cBounds[0].y);
 
 			
 
@@ -778,6 +778,8 @@ public class Grid {
 			bounds[2] = gridCoord2[0];
 			bounds[3] = gridCoord2[1];
 		}
+		
+		
 		
 			//System.out.println("bounds "+gridCoord1[0]+" "+gridCoord1[1]+" "+gridCoord2[0]+" "+gridCoord2[1]);
 		return bounds;
