@@ -55,16 +55,17 @@ public class List<T> extends ArrayList<T> {
 		observer.addFill(numberOfObjects, value);
 
 	}
-
+	
 	public boolean addU(T obj) {
 		return observer.addU(obj);
 
 	}
-
-	public boolean addAll(List<T> list) {
+	@Override
+	public boolean addAll(Collection<? extends T> list) {
 		return observer.addAll(list);//super.addAll((Collection<? extends T>)list);
 	}
-
+	
+	
 	public int frequency(T obj) {
 		return observer.frequency(obj);
 		//return Collections.frequency(this, obj);
@@ -111,7 +112,8 @@ public class List<T> extends ArrayList<T> {
 		@Override
 		public boolean add(T value){
 			instanciate(value);
-			return ai.add(value);
+			
+			return observer.add(value);
 		}
 		
 		public void instanciate(T value){
@@ -134,19 +136,18 @@ public class List<T> extends ArrayList<T> {
 
 		public void addFill(int numberOfObjects, T value) {
 			instanciate(value);
-			ai.addFill(numberOfObjects, value);	
+			observer.addFill(numberOfObjects, value);	
 		}
 
 		public boolean addU(T obj) {
 			instanciate(obj);
-			return ai.addU(obj);
+			return observer.addU(obj);
 		}
-
-		public boolean addAll(List<T> list) {
+		@Override
+		public boolean addAll(Collection<? extends T> list) {
 			if(list.size() > 0)
-				instanciate(list.get(0));
-			return ai.addAll(list);
-			//return super.addAll((Collection<? extends T>)list);
+				instanciate(((List<T>)list).get(0));
+			 return ai.addAll(list);
 		}
 
 
@@ -270,6 +271,11 @@ public class List<T> extends ArrayList<T> {
 			l.add(t);
 		}
 		return l;
+	}
+	
+	@Override
+	public Object[] toArray(){
+		return observer.toArray();
 	}
 	
 	/*@Override

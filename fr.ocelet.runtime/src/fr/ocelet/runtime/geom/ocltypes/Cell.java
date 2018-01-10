@@ -1,3 +1,26 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
+
+
+
 package fr.ocelet.runtime.geom.ocltypes;
 
 import org.geotools.coverage.grid.GridCoordinates2D;
@@ -156,11 +179,11 @@ public class Cell implements SpatialType{
     	coords[6] = new Coordinate(dx + xRes/2, dy);*/
     	
     	coords[0] = new Coordinate(dx + xRes, dy);
-    	coords[1] = new Coordinate(dx + xRes/2, dy - yRes);
-    	coords[2] = new Coordinate(dx - xRes/2, dy- yRes);
+    	coords[1] = new Coordinate(dx + xRes/2, dy - yRes / 2);
+    	coords[2] = new Coordinate(dx - xRes/2, dy- yRes / 2);
     	coords[3] = new Coordinate(dx - xRes, dy);
-    	coords[4] = new Coordinate(dx - xRes/2, dy + yRes);
-    	coords[5] = new Coordinate(dx + xRes/2, dy + yRes);
+    	coords[4] = new Coordinate(dx - xRes/2, dy + yRes / 2);
+    	coords[5] = new Coordinate(dx + xRes/2, dy + yRes / 2);
     	coords[6] = new Coordinate(dx + xRes, dy);
 
     	return coords;
@@ -195,12 +218,12 @@ public class Cell implements SpatialType{
     	double dx = c.x;
     	double dy = c.y;
     	double sqr = Math.sqrt(3);
-    	double h = yRes * sqr/2;
-    	
-    	
-    	coords[0] = new Coordinate(dx, dy + 2 * h / 3);
-    	coords[1] = new Coordinate(dx + xRes / 2, dy - h / 3);
-    	coords[2] = new Coordinate(dx - xRes / 2, dy- h / 3);
+    	double h = xRes * sqr / 6;
+		double h2 = xRes * sqr / 3;
+
+		coords[0] = new Coordinate(dx, dy + h2);
+		coords[1] = new Coordinate(dx + xRes / 2, dy - h);
+		coords[2] = new Coordinate(dx - xRes / 2, dy- h);
     	coords[3] =  coords[0];
 
     	return coords;
@@ -215,12 +238,11 @@ public class Cell implements SpatialType{
     double dx = c.x;
     	double dy = c.y;
     	double sqr = Math.sqrt(3);
-    	double h = yRes * sqr/2;
-    	
-    	
-    	coords[0] = new Coordinate(dx, dy - 2 * h / 3);
-    	coords[1] = new Coordinate(dx + xRes / 2, dy + h / 3);
-    	coords[2] = new Coordinate(dx - xRes / 2, dy +  h / 3);
+    	double h = xRes * sqr / 6;
+		double h2 = xRes * sqr / 3;
+		coords[0] = new Coordinate(dx, dy - h2);
+		coords[1] = new Coordinate(dx + xRes / 2, dy + h);
+		coords[2] = new Coordinate(dx - xRes / 2, dy +  h);
     	coords[3] =  coords[0];
 
     	return coords;

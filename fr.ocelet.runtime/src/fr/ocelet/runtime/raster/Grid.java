@@ -1,3 +1,24 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
+
 package fr.ocelet.runtime.raster;
 
 import com.sun.media.jai.codecimpl.util.RasterFactory;
@@ -78,87 +99,9 @@ public class Grid {
 	private NormSetter normSetter = new NormSetter();
 	private GeomSetter geomSetter = new GeomSetter();
 	private MrmSetter mrmSetter = new MrmSetter();
+	private Double[] worldBoundsPrime;
 
 
-	public void setEnv(Envelope2D env){
-		this.env = env;
-	}
-	public Envelope2D getEnv(){
-		return env;
-	}
-
-	public GridGeometry2D getGridGeometry(){
-		return gridGeometry;
-	}
-	public void setXRes(double xRes){
-		this.xRes = xRes;
-	}
-
-	public void setYRes(double yRes){
-
-		this.yRes = yRes;
-	}
-
-	public Double getXRes(){
-		return xRes;
-	}
-
-	public Double getYRes(){
-		return yRes;
-	}
-
-	public int getMinX(){
-		return minX;
-	}
-
-	public int getMinY(){
-		return minY;
-	}
-
-	public int getMaxX(){
-		return maxX;
-	}
-
-	public int getMaxY()
-	{
-		return maxY;
-	}
-
-	public void setGridCellManager(GridCellManager gridCellManager){
-		this.gridCellManager = gridCellManager;
-	}
-
-	public void setRaster(WritableRaster raster){
-		this.raster = raster;
-	}
-
-	/*  public void setInitRaster(WritableRaster raster)
-    {
-        initRaster = raster;
-    }*/
-
-	public void setMode(int mode){
-		this.mode = mode;
-		if(mode == modeTemp){
-			ts = tempSetter;
-		}
-		if(mode == modeNorm){
-
-			ts = normSetter; 
-		}
-		if(mode == modeGeom){
-
-			ts = geomSetter;
-		}
-		if(mode == 4){
-			ts = mrmSetter;
-		}
-	}
-
-	public void addProp(String name, String band){
-		int numBand = Integer.valueOf(band).intValue();
-		rasterProps.put(name, Integer.valueOf(numBand));
-	}
 
 	public void setFinalProperties(List<String> props){
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -175,15 +118,9 @@ public class Grid {
 				index++;
 			}
 		}      
-
-		//if(!rasterProps.keySet().isEmpty())
-		// raster = createRaster(rasterProps.keySet().size(), width + 4, height + 4);
 	}
 
 	public int getPropBand(String name){
-		//if(initRasterProps.keySet().contains(name))
-		//  return ((Integer)initRasterProps.get(name)).intValue();
-		//else
 		return ((Integer)rasterProps.get(name)).intValue();
 	}
 
@@ -247,72 +184,16 @@ public class Grid {
 
 	public void  copy(ORaster raster, KeyMap<String, Integer> matchedBand){
 
-		/*int[] rasterC = raster.worldToGrid(boundsX, boundsY);
-    	double[] rbounds = raster.worldBounds();*/
-
-		Double[] scaledD = scalingDouble(worldBounds, raster.worldBounds());
-		double[] scaledd = scalingdouble(worldBounds, raster.worldBounds());
-
-
-		int[] rasterMin = raster.worldToGrid(scaledD[0],scaledD[3]);
-		int[] gridMin = gridCoordinate(scaledd[0], scaledd[3]);
-		int[] rasterMax = raster.worldToGrid(scaledD[2],scaledD[1]);
-		int[] gridMax = gridCoordinate(scaledd[2], scaledd[1]);
-
-		/*int[] r2 = gridCoordinate(boundsX, boundsY);
-    		int[] b = raster.getBounds();
-    		int diffX = rasterC[0] - r2[0];
-    		int diffY = rasterC[1] - r2[1];
-
-    		if(r2[0] < 0){
-    			diffX = rasterC[0];
-    		}
-
-    		if(r2[1] < 0){
-    			diffY = rasterC[1];
-    		}
-    		if(diffX < 0){
-    			diffX = 0;
-    		}
-
-    		if(diffY < 0){
-    			diffY = 0;
-    		}
-
-    		int exI = 0;
-    		int exJ = 0;
-    	    	for(int i = 0; i < width; i ++){    		
-
-    		for(int j = 0; j < height; j ++){
-    			for(String name : matchedBand.keySet()){
-    			try{
-    				 this.raster.setSample(i + 2 + r2[0], j + 2 + r2[1], rasterProps.get(name), raster.getDoubleValue(i + diffX , j + diffY, matchedBand.get(name)));
-    			}catch (Exception e){
-
-
-    			}
-    			}    			
-    		}
-    	}*/
-		//int width = gridMax[0] - gridMin[0];// + 1;
-		//int height = gridMax[1] - gridMin[1];// + 1;
-
 		for(int i = 0; i < width; i ++){
 			for(int j = 0; j < height; j ++){
 				for(String name : matchedBand.keySet()){
 					try{
 
-						//this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0], j + rasterMin[1], matchedBand.get(name)));
 						Coordinate worlds = this.gridCoordinate(i, j);
 						int[] convert = raster.worldToGrid(worlds.x, worlds.y);
-						//double[] rW = raster.gridToWorld(i, j);	
-						/*if(i != convert[0] || j != convert[1]){
-    				}*/
 						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));
 					}catch (Exception e){
-
 						//e.printStackTrace();
-
 					}
 				}    			
 			}
@@ -320,55 +201,11 @@ public class Grid {
 	}
 	public void copy(ORaster raster){
 
-
-		int[] rasterC = raster.worldToGrid(boundsX, boundsY);
-		double[] rbounds = raster.worldBounds();
-
 		Double[] scaledD = scalingDouble(worldBounds, raster.worldBounds());
 		double[] scaledd = scalingdouble(worldBounds, raster.worldBounds());
-
-
 		int[] rasterMin = raster.worldToGrid(scaledD[0],scaledD[3]);
 		int[] gridMin = gridCoordinate(scaledd[0], scaledd[3]);
-		int[] rasterMax = raster.worldToGrid(scaledD[2],scaledD[1]);
 		int[] gridMax = gridCoordinate(scaledd[2], scaledd[1]);
-
-		/*int[] r2 = gridCoordinate(boundsX, boundsY);
-    		int[] b = raster.getBounds();
-    		int diffX = rasterC[0] - r2[0];
-    		int diffY = rasterC[1] - r2[1];
-
-    		if(r2[0] < 0){
-    			diffX = rasterC[0];
-    		}
-
-    		if(r2[1] < 0){
-    			diffY = rasterC[1];
-    		}
-    		if(diffX < 0){
-    			diffX = 0;
-    		}
-
-    		if(diffY < 0){
-    			diffY = 0;
-    		}
-
-    		int exI = 0;
-    		int exJ = 0;
-    	    	for(int i = 0; i < width; i ++){    		
-
-    		for(int j = 0; j < height; j ++){
-    			for(String name : matchedBand.keySet()){
-    			try{
-    				 this.raster.setSample(i + 2 + r2[0], j + 2 + r2[1], rasterProps.get(name), raster.getDoubleValue(i + diffX , j + diffY, matchedBand.get(name)));
-    			}catch (Exception e){
-
-
-    			}
-    			}    			
-    		}
-    	}*/
-
 		int width = gridMax[0] - gridMin[0];
 		int height = gridMax[1] - gridMin[1];
 		for(int i = 0; i < width; i ++){
@@ -378,14 +215,11 @@ public class Grid {
 						this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0] , j + rasterMin[1], rasterProps.get(name)));
 					}catch (Exception e){
 						//e.printStackTrace();
-
-
 					}
 				}    			
 			}
 		}
 	}
-
 
 	public void setData(Double[] bounds,  ORaster raster, int numBands){
 
@@ -396,10 +230,6 @@ public class Grid {
 		newBounds[1] = bounds[1];
 		newBounds[2] = bounds[2];
 		newBounds[3] = bounds[3];
-		/* newBounds[0] = bounds[0];
-        newBounds[1] = bounds[1];
-        newBounds[2] = bounds[2];
-        newBounds[3] = bounds[3];*/
 		worldBounds = newBounds;
 		int cellWidth = (int)(Math.round( (newBounds[2] - newBounds[0]) / xRes ));
 		int cellHeight = (int)(Math.round( (newBounds[3] - newBounds[1]) / yRes ));
@@ -431,11 +261,6 @@ public class Grid {
 		yRes = raster.getYRes();
 		Double[] newBounds = new Double[4];
 		double[] bounds = raster.worldBounds();
-
-		/*   newBounds[0] = bounds[0] - xRes;
-        newBounds[1] = bounds[1] - yRes;
-        newBounds[2] = bounds[2] + xRes;
-        newBounds[3] = bounds[3] + yRes;*/
 		newBounds[0] = bounds[0];
 		newBounds[1] = bounds[1];
 		newBounds[2] = bounds[2];
@@ -480,16 +305,10 @@ public class Grid {
 		worldBounds =bounds;
 		xRes = raster.getXRes();
 		yRes = raster.getYRes();
-
-
 		width = (int)(Math.round( (bounds[2] - bounds[0]) / xRes ));
 		height = (int)(Math.round( (bounds[2] - bounds[0]) / xRes ));
-		// maxX = minX + width;
-		// maxY = minY + height;
-
 		width = maxX - minX;
 		height = maxY - minY;
-
 		setInitCoordinate();
 
 	}
@@ -513,72 +332,185 @@ public class Grid {
 		xRes = raster.getXRes();
 		yRes = raster.getYRes();
 	}
+
+	private Coordinate[] triangularCoordinate(int x, int y){
+		if(x % 2 == 0){
+			if(y % 2 == 0){
+				return triangularDownCoordinate(x, y);
+			}else{
+				return triangularTopCoordinate(x, y);
+			}
+		}else{
+			if(y % 2 == 0){
+				return triangularTopCoordinate(x, y);
+			}else{
+				return triangularDownCoordinate(x, y);
+			}
+		}
+	}
+
+	private Coordinate[] triangularTopCoordinate(int x, int y){
+
+		Coordinate[] coords = new Coordinate[4];
+		DirectPosition dp = null;
+		try {
+		 dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			
+		}
+		/*Coordinate c = gridCoordinate(x, y);
+		double dx = c.x;
+		double dy = c.y;*/
+		
+		Coordinate c = new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
+		c = gridCoordinate(x, y);
+		//System.out.println("DP TOP "+c);
+		//double dx = ((c.x - initCoordinates.x) / 2) + initCoordinates.x;// -xRes;
+		double dx = (c.x + initCoordinates.x + (xRes / 2)) / 2;
+		dx =  worldBounds[0]+ (((c.x - worldBounds[0]) * (worldBounds[2] - worldBounds[0])) / (worldBoundsPrime[2] - worldBounds[0]));
+		dx = c.x;
+		//double dx = c.x;
+		double dy = c.y;
+		double sqr = Math.sqrt(3);
+		double h = xRes * sqr / 6;
+		double h2 = xRes * sqr / 3;
+
+		coords[0] = new Coordinate(dx, dy + h2);
+		coords[1] = new Coordinate(dx + xRes / 2, dy - h);
+		coords[2] = new Coordinate(dx - xRes / 2, dy- h);
+		coords[3] =  coords[0];
+
+		return coords;
+	}
+
+	private Coordinate[] triangularDownCoordinate(int x, int y){
+
+		Coordinate[] coords = new Coordinate[4];
+
+		//Coordinate c = gridCoordinate(x, y);
+				
+		
+		DirectPosition dp = null;
+		try {
+		 dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		/*Coordinate c = gridCoordinate(x, y);
+		double dx = c.x;
+		double dy = c.y;*/
+		
+		Coordinate c = new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
+		//System.out.println("DP Down "+c);
+		c = gridCoordinate(x, y);
+		//double dx = ((c.x - initCoordinates.x) / 2) + initCoordinates.x;// - xRes;
+		double dx = (c.x + initCoordinates.x + (xRes / 2)) / 2;
+		dx = worldBounds[0] + (((c.x - worldBounds[0]) * (worldBounds[2] - worldBounds[0])) / (worldBoundsPrime[2] - worldBounds[0]));
+		dx = c.x;
+		double dy = c.y;
+
+		double sqr = Math.sqrt(3);
+		double h = xRes * sqr / 6;
+		double h2 = xRes * sqr / 3;
+		coords[0] = new Coordinate(dx, dy - h2);
+		coords[1] = new Coordinate(dx + xRes / 2, dy + h);
+		coords[2] = new Coordinate(dx - xRes / 2, dy +  h);
+		coords[3] =  coords[0];
+
+		return coords;
+	}
+
 	private Coordinate[] hexagonalCoordinate(int x, int y){
-
-
 		Coordinate c = gridCoordinate(x, y);
 		double dx = c.x;
 		double dy = c.y;
-
-
 		Coordinate[] coords= new Coordinate[7];
-
-
-
-		//double l = Math.sin(Math.PI/3) * (xRes / 2);
-
-		/*coords[0] = new Coordinate(dx + xRes / 2, dy);
-    	coords[1] = new Coordinate(dx + xRes/4, dy - yRes);
-    	coords[2] = new Coordinate(dx - xRes/4, dy- yRes);
-    	coords[3] = new Coordinate(dx - xRes/2, dy);
-    	coords[4] = new Coordinate(dx - xRes/4, dy + yRes);
-    	coords[5] = new Coordinate(dx + xRes/4, dy + yRes);
-    	coords[6] = new Coordinate(dx + xRes/2, dy);*/
-
 		coords[0] = new Coordinate(dx + xRes, dy);
-		coords[1] = new Coordinate(dx + xRes/2, dy - yRes);
-		coords[2] = new Coordinate(dx - xRes/2, dy- yRes);
+		coords[1] = new Coordinate(dx + xRes/2, dy - yRes / 2);
+		coords[2] = new Coordinate(dx - xRes/2, dy- yRes / 2);
 		coords[3] = new Coordinate(dx - xRes, dy);
-		coords[4] = new Coordinate(dx - xRes/2, dy + yRes);
-		coords[5] = new Coordinate(dx + xRes/2, dy + yRes);
+		coords[4] = new Coordinate(dx - xRes/2, dy + yRes / 2);
+		coords[5] = new Coordinate(dx + xRes/2, dy + yRes / 2);
 		coords[6] = new Coordinate(dx + xRes, dy);
-
 		return coords;
-
-
 	}
-	private int[] hexagonalWorldToGrid(double x, double y){
 
+	private int[] triangularWorldToGrid(double x, double y){
+		
 		int[] gCoord = new int[2];
-
 		GridCoordinates2D gc = null;
+		
+		double xP = worldBounds[0] + (((x - worldBounds[0]) * (worldBoundsPrime[2] - worldBounds[0])) / (worldBounds[2] - worldBounds[0]))
+				-  xRes / 2;
+		
+		//xP =((worldBoundsPrime[2] - worldBounds[0]) * x) / (worldBounds[2] - worldBounds[0]);
 		try{
 
-			gc = gridGeometry.worldToGrid(new DirectPosition2D(x, y ));
+			gc = gridGeometry.worldToGrid(new DirectPosition2D(xP, y ));
 		}catch(TransformException ex){
 
 			ex.printStackTrace();
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
+		
+		gCoord[0] = gc.x;
+		/*if(gc.x > 2){
+			gCoord[0] = gc.x - 2;
+		}*/
+		gCoord[1] = gc.y;
+	//	System.out.println("gCoord "+gCoord[0]+" "+gCoord[1]);
+		Coordinate[] coord = new Coordinate[]{new Coordinate(x, y)};
+		CoordinateSequence pointSequence = new CoordinateArraySequence(coord);
+		Point point = new Point(pointSequence, SpatialManager.geometryFactory());
 
-		boolean gridType = false;
+
+		Coordinate[] coords = triangularCoordinate(gCoord[0], gCoord[1]);
+		CoordinateSequence cs = new CoordinateArraySequence(coords);
+		LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
+		Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+		//return gCoord;
+		if(poly.contains(point)){
+			return gCoord;
+		}else{
+			if(gCoord[0] - 1 >= 0 && gCoord[1] < height){
+				if(x < poly.getCentroid().getX())
+					return new int[]{gCoord[0] - 1, gCoord[1]};
+
+							}
+			if(gCoord[0] + 1 < width && gCoord[1] < height){
+				if(x > poly.getCentroid().getX())
+					return new int[]{gCoord[0] + 1, gCoord[1]};
+
+			}
+		}
+		return gCoord;
+		//return null;
+	}
+		/*coords = triangularCoordinate(gCoord[0] - 1, gCoord[1]);
+				cs = new CoordinateArraySequence(coords);
+				lr = new LinearRing(cs,SpatialManager.geometryFactory());
+				poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+				
+				if(poly.contains(point)){
+					return new int[]{gCoord[0] - 1, gCoord[1]};
+				}*/
+
+	private int[] hexagonalWorldToGrid(double x, double y){
+
+		int[] gCoord = new int[2];
+		GridCoordinates2D gc = null;
+		try{
+			gc = gridGeometry.worldToGrid(new DirectPosition2D(x, y ));
+		}catch(TransformException ex){
+			ex.printStackTrace();
+			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
+		}
 		gCoord[0] = gc.x;
 		gCoord[1] = gc.y;
-
-		Integer gridX = null;
-		Integer gridY = null;
-
-		double hWidth = 2 * xRes;
-		double rWidth = 1.5 * xRes;
-		double height  = 2 * yRes;
-		double eWidth = 0.5 * xRes;
-
-		int gridModX = (int)(x - initCoordinates.x) % (int)rWidth;
-		int gridModY = (int)(y - initCoordinates.y) % (int)height;
-
-		double m = eWidth / yRes;
-
-
 		Coordinate[] coord = new Coordinate[]{new Coordinate(x, y)};
 		CoordinateSequence pointSequence = new CoordinateArraySequence(coord);
 		Point point = new Point(pointSequence, SpatialManager.geometryFactory());
@@ -586,11 +518,8 @@ public class Grid {
 		if(gCoord[0] % 2 == 0){
 
 			Coordinate[] coords = hexagonalCoordinate(gCoord[0], gCoord[1]);
-
 			CoordinateSequence cs = new CoordinateArraySequence(coords);
-
 			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
-
 			Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
 			if(poly.contains(point)){
 				return gCoord;
@@ -618,42 +547,37 @@ public class Grid {
 					if(poly.contains(point)){
 						return new int[]{gCoord[0] - 1, gCoord[1] - 1};
 					}
-					
-					
 				}
-					
-				
 			}
-			
 			return null;
 
 		}else{
-			
+
 			Coordinate[] coords = hexagonalCoordinate(gCoord[0], gCoord[1]);
 
-				CoordinateSequence cs = new CoordinateArraySequence(coords);
+			CoordinateSequence cs = new CoordinateArraySequence(coords);
 
-				LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
+			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
-				Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-				if(poly.contains(point)){
-					return new int[]{gCoord[0], gCoord[1]};
-				}
+			Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+			if(poly.contains(point)){
+				return new int[]{gCoord[0], gCoord[1]};
+			}
 			if(gCoord[0] -1 >=0 && gCoord[1] < height - 1){
-				 coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1]);
+				coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1]);
 
-				 cs = new CoordinateArraySequence(coords);
+				cs = new CoordinateArraySequence(coords);
 
-				 lr = new LinearRing(cs,SpatialManager.geometryFactory());
+				lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
-				 poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+				poly = new Polygon(lr, null,SpatialManager.geometryFactory());
 				if(poly.contains(point)){
 					return new int[]{gCoord[0] - 1, gCoord[1]};
 				}
-				
+
 			}
 			if(gCoord[1] - 1 >= 0 ){
-				 coords = hexagonalCoordinate(gCoord[0], gCoord[1] - 1);
+				coords = hexagonalCoordinate(gCoord[0], gCoord[1] - 1);
 
 				cs = new CoordinateArraySequence(coords);
 
@@ -664,62 +588,8 @@ public class Grid {
 					return new int[]{gCoord[0], gCoord[1] - 1};
 				}
 			}
-			
-		return null;	
-			
-			
-
+			return null;	
 		}
-
-
-		/*if(gCoord[0] % 2 == 0){
-
-        	gridX = gCoord[0];
-        	gridY = gCoord[1];
-
-        	if(gridModX < eWidth - gridModY * m){
-        		gridX = gCoord[0] - 1;
-        		gridY = gCoord[1] - 1;
-        	}
-
-        	if(gridModX < (-eWidth + gridModY * m)){
-        		gridX = gCoord[0];
-        		gridY = gCoord[1] - 1;
-        	}
-        }else{
-
-        	if(gridModY >= yRes){
-        		if(gridModX < 2 * eWidth - gridModY * m){
-        			gridX = gCoord[0];
-        			gridY = gCoord[1] - 1;
-
-        		}
-
-
-        	}
-
-        	if(gridModY < yRes){
-        		if(gridModX < gridModY * m){
-        			gridX = gCoord[0];
-        			gridY = gCoord[1] - 1;
-        		}else{
-        			gridX = gCoord[0] - 1;
-        			gridY = gCoord[1];
-        		}
-        	}
-        }*/
-
-		/*Coordinate c = gridCoordinate(gCoord[0], gCoord[1]);
-        if(c.distance(new Coordinate(x, y)) > xRes){
-        	return null;
-        }*/
-		/*if(gridX == null || gridY == null || gridX < 0 || gridX > width - 1 || gridY < 0 || gridY > height - 1){
-			return null;
-		}
-
-		gCoord[0] = gridX;
-		gCoord[1] = gridY;
-		return gCoord;*/
 	}
 
 
@@ -728,97 +598,9 @@ public class Grid {
 		int gCoord[] = new int[2];
 		if(cellShapeType.equals("HEXAGONAL")){
 			return hexagonalWorldToGrid(x, y);
-			/*
-        	GridCoordinates2D gc = null;
-        	try{
-
-             gc = gridGeometry.worldToGrid(new DirectPosition2D(x, y ));
-        	}catch(TransformException ex){
-
-
-        		ex.printStackTrace();
-        		// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
-        	}
-
-        	if(gCoord[0] % 2 != 0){
-        		if(y <= worldBounds[3])
-        		try{
-
-             gc = gridGeometry.worldToGrid(new DirectPosition2D(x, y + yRes));
-        	}catch(TransformException ex){
-
-
-        		ex.printStackTrace();
-        		// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
-        	}
-        	}
-            gCoord[0] = gc.x;
-            gCoord[1] = gc.y;
-            double wy;
-            double wx;
-
-            //Coordinate c = gridCoordinate(gCoord[0], gCoord[1]);
-           // Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
-           // Coordinate c = new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
-
-            Coordinate c = gridCoordinate(gCoord[0], gCoord[1]);
-            if(gCoord[0] % 2 == 0){
-
-            Coordinate scaled = new Coordinate(x , y);
-
-
-            		if(scaled.distance(c) > xRes){
-
-            		return null;
-            	}
-
-
-
-            }else{
-
-            	Coordinate scaled = new Coordinate(x , y);
-            	if(scaled.distance(c) > xRes){
-
-            		return null;
-            	}
-            }
-
-
-
-        	return gCoord;  */      	
 		}
 		if(cellShapeType.equals("TRIANGULAR")){
-
-			double dx = x - initCoordinates.x;
-			double dy =  y - initCoordinates.y;
-			double sqr = Math.sqrt(3);
-			int fX = 0;
-			int fY = 0;
-
-			fX = (int)Math.round((dx - (xRes/2)) * (2/xRes));	
-			//dx = dx + x * (xRes / 2);
-			if(x % (xRes/2) == 0){ 
-				if( y % (yRes/2) == 0){
-
-					fY = (int)Math.round(dy - ((1/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
-
-				}else{
-					fY = (int)Math.round(dy - ((2/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
-
-				}
-			}else{
-				if( y % (yRes/2) == 0){
-					fY = (int)Math.round(dy - ((2/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
-
-				}else{
-					fY = (int)Math.round(dy - ((1/3) * (yRes * sqr / 2)) / ( sqr * yRes / 2));
-
-
-				}
-			}
-			gCoord[0] = fX;
-			gCoord[1] = fY;
-
+			return triangularWorldToGrid(x, y);
 
 		}
 		try{
@@ -835,94 +617,82 @@ public class Grid {
 		}
 		return gCoord;
 	}
+	private Coordinate hexagonalGridToWorld(int x, int y){
+		double dx = initCoordinates.x ;
+		double dy = initCoordinates.y;
+
+		DirectPosition dc = null;
+		try {
+			dc = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
+		} catch (InvalidGridGeometryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		double dist = xRes - (xRes / 2 + xRes / 4);
+
+		if((x%2) == 0){
+
+			dx = dc.getCoordinate()[0] + dist;
+			dy = dc.getCoordinate()[1];
+			/*dx = dx + ((x  * xRes )) + ((x  * xRes )/ 2);
+    	    		dy = dy + (2 * y  * yRes);*/
+
+		}else{
+			dx = dc.getCoordinate()[0] + dist;
+			dy = dc.getCoordinate()[1] - yRes / 2;
+
+
+			/*dx = dx + ((3 *x * xRes) / 2);
+    	    		dy = dy + (2 * yRes*y ) + yRes ;*/
+		}
+		return new Coordinate(dx, dy);
+
+	}
+	private Coordinate triangularGridToWorld(int x, int y){
+		double xInit = initCoordinates.x;
+		double yInit = worldBounds[3];//- ((Math.sqrt(3) * xRes ) / 6);;
+
+		double dx = (x * xRes/2) + xRes/2;
+		double dy = yInit;//0.0;
+		if(x % 2 == 0){ 
+			if( y % 2 == 0){
+				dy = y * (yRes) + ((Math.sqrt(3) * xRes ) / 6);
+			}else{
+				dy = y * (yRes) + ((Math.sqrt(3) * xRes ) / 3);
+			}
+		}else{
+			if( y % 2 == 0){
+				dy = y * (yRes) + ((Math.sqrt(3) * xRes ) / 3);
+			}else{
+				dy = y * (yRes) + ((Math.sqrt(3) * xRes ) / 6);
+			}
+
+
+		}
+		dx = dx+ xInit;
+		dy = yInit - dy;
+		return new Coordinate(dx, dy);
+
+	}
 
 	public Coordinate gridCoordinate(int x, int y){
 
 		if(cellShapeType.equals("HEXAGONAL")){
-
-			double dx = initCoordinates.x;
-			double dy = initCoordinates.y;
-			/*double l = Math.sin(Math.PI/3) * (xRes / 2);
-
-    		if((x%2) == 0){
-
-    	    		dx = dx + ((x  * xRes )/ 2) + ((x  * xRes )/ 4);
-    	    		dy = dy - (2 * y  * l);
-
-    	    	}else{
-
-
-    	    		dx = dx + ((3 *x * xRes) / 4);
-    	    		dy = dy - (2 * l*y ) - l ;
-    	    	}*/
-			DirectPosition dc = null;
-			try {
-				dc = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
-			} catch (InvalidGridGeometryException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TransformException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			double dist = xRes - (xRes / 2 + xRes / 4);
-
-			if((x%2) == 0){
-
-				dx = dc.getCoordinate()[0] + dist;
-				dy = dc.getCoordinate()[1];
-				/*dx = dx + ((x  * xRes )) + ((x  * xRes )/ 2);
-    	    		dy = dy + (2 * y  * yRes);*/
-
-			}else{
-				dx = dc.getCoordinate()[0] + dist;
-				dy = dc.getCoordinate()[1] - yRes;
-
-
-				/*dx = dx + ((3 *x * xRes) / 2);
-    	    		dy = dy + (2 * yRes*y ) + yRes ;*/
-			}
-			return new Coordinate(dx, dy);
+			return hexagonalGridToWorld(x, y);
 		}
 		if(cellShapeType.equals("TRIANGULAR")){
-
-			double xInit = initCoordinates.x;
-			double yInit = initCoordinates.y;
-
-			double dx = (x * xRes/2) + xRes/2;
-			double dy = 0.0;
-			//dx = dx + x * (xRes / 2);
-			if(x % 2 == 0){ 
-				if( y % 2 == 0){
-					dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3) / 2) * yRes ) / 3;
-				}else{
-					dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3)) * yRes ) / 3;
-
-				}
-			}else{
-				if( y % 2 == 0){
-
-					dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3)) * yRes ) / 3;
-				}else{
-					dy = y * ((Math.sqrt(3)/ 2) * yRes ) + ((Math.sqrt(3) / 2) * yRes ) / 3;
-
-
-				}
-			}
-			dx = dx+ xInit;
-			dy = yInit - dy;
-
-			return new Coordinate(dx, dy);
+			return triangularGridToWorld(x, y);
 		}
 
 		try{
 			DirectPosition dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
-			
 			return new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
 		}
-		catch(TransformException ex)
-		{
-			
+		catch(TransformException ex){
+
 			//ex.printStackTrace();
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -933,8 +703,8 @@ public class Grid {
 		Coordinate bounds[] = new Coordinate[2];
 		double minX = Double.POSITIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY;
-		double maxX = 0;
-		double maxY = 0;
+		double maxX = Double.NEGATIVE_INFINITY;
+		double maxY = Double.NEGATIVE_INFINITY;
 		Coordinate acoordinate[];
 		int j = (acoordinate = polygon.getExteriorRing().getCoordinates()).length;
 		for(int i = 0; i < j; i++)
@@ -959,8 +729,8 @@ public class Grid {
 		Coordinate bounds[] = new Coordinate[2];
 		double minX = Double.POSITIVE_INFINITY;
 		double minY = Double.POSITIVE_INFINITY;
-		double maxX = 0;
-		double maxY = 0;
+		double maxX = Double.NEGATIVE_INFINITY;
+		double maxY = Double.NEGATIVE_INFINITY;
 		Coordinate acoordinate[];
 		int j = (acoordinate = line.getCoordinates()).length;
 		for(int i = 0; i < j; i++){
@@ -983,10 +753,11 @@ public class Grid {
 	public int[] intBounds(Polygon polygon){
 		int bounds[] = new int[4];
 		Coordinate cBounds[] = cboundary(polygon);
+		
 		int gridCoord1[] = gridCoordinate(cBounds[0].x, cBounds[1].y);
 		int gridCoord2[] = gridCoordinate(cBounds[1].x, cBounds[0].y);
 
-
+			
 
 		if(gridCoord1 == null){
 			bounds[0] = 0;
@@ -999,43 +770,16 @@ public class Grid {
 		}
 
 		if(gridCoord2 == null){
-			bounds[2] = width;
-			bounds[3] = height; 
+			bounds[2] = width - 1;
+			bounds[3] = height - 1; 
 		}else{
 
 
 			bounds[2] = gridCoord2[0];
 			bounds[3] = gridCoord2[1];
 		}
-		/* if(cBounds[0].x < initCoordinates.x){
-        	bounds[0] = 0;
-        }else{
-
-        }
-        if(cBounds[0].x < initCoordinates.x){
-        	bounds[0] = 0;
-        }
-        if(cBounds[0].x < initCoordinates.x){
-        	bounds[0] = 0;
-        }
-        if(cBounds[0].x < initCoordinates.x){
-        	bounds[0] = 0;
-        }*/
-
-		if(bounds[0] < 0){
-			bounds[0] = 0;
-		}
-		if(bounds[1] < 0){
-			bounds[1] = 0;
-		}
-
-		if(bounds[2] > width - 1){
-			bounds[2] = width - 1;
-		}
-
-		if(bounds[3] > height - 1){
-			bounds[3] = height - 1;
-		}
+		
+			//System.out.println("bounds "+gridCoord1[0]+" "+gridCoord1[1]+" "+gridCoord2[0]+" "+gridCoord2[1]);
 		return bounds;
 	}
 
@@ -1368,4 +1112,83 @@ public class Grid {
 		}
 		return scaled;
 	}
+	public void setEnv(Envelope2D env){
+		this.env = env;
+	}
+	public Envelope2D getEnv(){
+		return env;
+	}
+
+	public GridGeometry2D getGridGeometry(){
+		return gridGeometry;
+	}
+	public void setXRes(double xRes){
+		this.xRes = xRes;
+	}
+
+	public void setYRes(double yRes){
+
+		this.yRes = yRes;
+	}
+
+	public Double getXRes(){
+		return xRes;
+	}
+
+	public Double getYRes(){
+		return yRes;
+	}
+
+	public int getMinX(){
+		return minX;
+	}
+
+	public int getMinY(){
+		return minY;
+	}
+
+	public int getMaxX(){
+		return maxX;
+	}
+
+	public int getMaxY()
+	{
+		return maxY;
+	}
+
+	public void setGridCellManager(GridCellManager gridCellManager){
+		this.gridCellManager = gridCellManager;
+	}
+
+	public void setRaster(WritableRaster raster){
+		this.raster = raster;
+	}
+
+	public void setMode(int mode){
+		this.mode = mode;
+		if(mode == modeTemp){
+			ts = tempSetter;
+		}
+		if(mode == modeNorm){
+
+			ts = normSetter; 
+		}
+		if(mode == modeGeom){
+
+			ts = geomSetter;
+		}
+		if(mode == 4){
+			ts = mrmSetter;
+		}
+	}
+
+	public void addProp(String name, String band){
+		int numBand = Integer.valueOf(band).intValue();
+		rasterProps.put(name, Integer.valueOf(numBand));
+	}
+
+	public void setworldboundsPrime(Double[] worldBoundsPrime){
+		this.worldBoundsPrime = worldBoundsPrime;
+	}
+
 }

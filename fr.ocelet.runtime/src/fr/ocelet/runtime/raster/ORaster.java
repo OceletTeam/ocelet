@@ -1,3 +1,23 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
 package fr.ocelet.runtime.raster;
 
 import com.sun.media.jai.codecimpl.util.RasterFactory;
@@ -56,12 +76,13 @@ public class ORaster {
         range = new int[4];
         cpt = 0;
         AbstractGridFormat format = GridFormatFinder.findFormat(file);
+        
         reader = format.getReader(file);
         bounds[0] = getMinimum(0);
         bounds[1] = getMinimum(1);
         bounds[2] = getMaximum(0);
         bounds[3] = getMaximum(1);
-            						   
+          
         setPixelsize();
     }
 
@@ -201,8 +222,8 @@ public class ORaster {
     	 Grid grid = new Grid(bounds, gridGeom, this);
         
          setPixelsize();
-         grid.setXRes((int)pX);
-         grid.setYRes((int)pY);
+         grid.setXRes(pX);
+         grid.setYRes(pY);
          return grid;
     }
     private void zoneRaster(Raster raster, int x, int y, int width, int height)
@@ -561,6 +582,7 @@ return worldBounds;
 
     public int getMinPixel(int dimension)
     {
+    	
         return reader.getOriginalGridRange().getLow().getCoordinateValue(dimension);
     }
 
@@ -571,6 +593,8 @@ return worldBounds;
 
     public double rangeFactor(int dim)
     {
+    	
+    	
         double range = getMaximum(dim) - getMinimum(dim);
         double pxRange = getMaxPixel(dim) - getMinPixel(dim);
         return range / pxRange;
@@ -578,8 +602,44 @@ return worldBounds;
 
     private void setPixelsize()
     {
-        pX = rangeFactor(0);
-        pY = rangeFactor(1);
+    	Raster r = getRaster();
+    	int h = r.getHeight();
+    	int w = r.getWidth();
+    	int minX = r.getMinX();
+    	int minY = r.getMinX();
+    			DirectPosition px1 = null;
+    	DirectPosition px2 = null;
+    	try {
+			px1 = geometry2D.gridToWorld(new GridCoordinates2D(minX, minY));
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			px2 = geometry2D.gridToWorld(new GridCoordinates2D(minX + 1 , minY + 1));
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	//System.out.println("pix diff "+(px2.getCoordinate()[0] - px1.getCoordinate()[0])+" "+(px1.getCoordinate()[1] - px2.getCoordinate()[1]));
+
+    	double x = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
+    	double y = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
+    	double x2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
+    	double y2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
+    	
+    	double xRes = (x2 - x) / r.getWidth();
+    	double yRes = (y2 - y) / r.getHeight();
+    	Integer precision = 10000;
+    	Integer scaleX = (int)Math.round(xRes * precision);
+    	Integer scaleY = (int)Math.round(yRes * precision);
+    	double lx = scaleX.doubleValue() / precision.doubleValue();
+    	double ly = scaleY.doubleValue() / precision.doubleValue();
+    	//System.out.println("scaling res "+xRes+" "+yRes);
+    	pX = xRes;
+    	pY =yRes;
+
     }
 
     public int[] scaledCoordinate(double x, double y)

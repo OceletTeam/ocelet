@@ -1,3 +1,23 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
 package fr.ocelet.runtime.raster;
 
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -42,32 +62,6 @@ public class GridGenerator {
 
 	public static Grid hexagonalGrid(String name, List<String> props, double size, double minX, double minY, double maxX, double maxY){
 
-
-
-
-		/*HashMap<String, Integer> initProps = new HashMap<String, Integer>();
-
-		int index = 0;
-		for(String s : props){
-			initProps.put(s, index);
-			index ++;
-		}
-
-
-		double width = maxX - minX;
-		double height = maxY - minY;
-		int cellWidth = (int)(width / (size * 2));
-		int cellHeight = (int) (height / (size * 2));
-		Envelope2D env = createEnvelope(minX, minY, maxX, maxY);
-		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
-		GridCoverage2D coverage =  createCoverage(name, raster, env);
-		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
-		grid.setInitRasterProperties(initProps);
-		grid.setInitRaster(raster);
-		grid.setXRes((int)(size * 2));
-		grid.setYRes((int)(size * 2));*/
-
-		//Grid grid = new Grid();
 		HashMap<String, Integer> initProps = new HashMap<String, Integer>();
 
 		int index = 0;
@@ -76,40 +70,25 @@ public class GridGenerator {
 			index ++;
 		}
 
-		//double l = Math.sin(Math.PI/3) * size;
-		
 		double rectangleWidth = size + size / 2;
 		double rectangleHeight = 2 * Math.sqrt( size * size - (size / 2) * (size / 2));
-		
-		
-		
-		//double l = Math.sqrt( (size * size) - ((size / 2) * (size / 2)));
-		double nminX = minX - rectangleWidth;
-		double nminY = minY - rectangleHeight;
-		double nmaxX = maxX + rectangleWidth;
-		double nmaxY = maxY + rectangleHeight;
-
+		double nminX = minX - 2 * rectangleWidth;
+		double nminY = minY - 2 * rectangleHeight;
+		double nmaxX = maxX + 2 * rectangleWidth;
+		double nmaxY = maxY + 2 * rectangleHeight;
 		double width = nmaxX - nminX;
 		double height = nmaxY - nminY;
-		
-		
 		int col = (int) Math.round(width / rectangleWidth);
 		int row = (int) Math.round(height / rectangleHeight);
+		if(row % 2 != 0){
+			row++;
+		}
 		
 		width = col * rectangleWidth;
 		height = row * rectangleHeight;
-
 		nmaxX = nminX + width;
 		nmaxY = nminY + height;
-
-		//int cellWidth = (int)(Math.round(width / (size * 2))) + 4;
-		//int cellWidth = (int)(Math.round(((width / 2)  / (2 * size)) + ((width / 2) / size)));
-		//int cellWidth = iWidth;
-
-		//int cellHeight = (int) (Math.round(height / (2 * l)));	
-		//cellWidth = cellWidth + (cellWidth / 4) + 4;
-		
-
+		double hexaMinY = nminY - rectangleHeight / 2;
 		Envelope2D env = createEnvelope(nminX, nminY, nmaxX, nmaxY);
 		WritableRaster raster = createRaster(index, col, row);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
@@ -117,55 +96,11 @@ public class GridGenerator {
 		grid.setRasterProperties(initProps);
 		grid.setRaster(raster);
 		grid.setXRes(size);
-		grid.setYRes(rectangleHeight / 2);
-		grid.setWorldBounds(new Double[]{nminX, nminY, nmaxX + size / 2, nmaxY});
+		grid.setYRes(rectangleHeight);
+		grid.setWorldBounds(new Double[]{nminX, hexaMinY, nmaxX + size / 2, nmaxY});
 		grid.setEnv(env);
 		grid.setCellShapeType("HEXAGONAL");
-		
-
-		
-		
-	/*	HashMap<String, Integer> initProps = new HashMap<String, Integer>();
-
-		int index = 0;
-		for(String s : props){
-			initProps.put(s, index);
-			index ++;
-		}
-
-		double nminX = minX - size * 2;
-		double nminY = minY - size * 2;
-		double nmaxX = maxX + size * 2;
-		double nmaxY = maxY +size * 2;
-
-		double width = nmaxX - nminX;
-		double height = nmaxY - nminY;
-
-		double l = Math.sin(Math.PI/3) * (size * 2);
-		//int cellWidth = (int)(Math.round(width / (size * 2))) + 4;
-		int cellWidth = (int)(Math.round(((width / 2)  / l) + ((width / 2) / size)));
-
-		int cellHeight = (int) (Math.round(height / (l))) + 4;	
-		//cellWidth = cellWidth + (cellWidth / 4) + 4;
-		double newMinX = minX - (4 * size);
-		double newMinY = minY - (4 * size);
-
-		Envelope2D env = createEnvelope(newMinX, newMinY, newMinX + (cellWidth * size * 2), newMinY + (cellHeight * l));
-		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
-		GridCoverage2D coverage =  createCoverage(name, raster, env);
-		Grid grid = new Grid(cellWidth - 4, cellHeight - 4, coverage.getGridGeometry());
-		grid.setRasterProperties(initProps);
-		grid.setRaster(raster);
-		grid.setXRes((int)(size * 2));
-		grid.setYRes((int)(l));
-		grid.setWorldBounds(new Double[]{nminX, nminY, nmaxX, nmaxY});
-		grid.setEnv(env);
-		grid.setCellShapeType("HEXAGONAL");
-		
-		System.out.println("Hxagonal grid :"+cellWidth+" "+cellHeight);*/
 		return grid;
-
-
 	}
 
 	public static Grid squareGrid(String name, List<String> props, double xRes, double yRes,Double[] bounds){	
@@ -174,14 +109,12 @@ public class GridGenerator {
 		double minY = bounds[1];
 		double maxX = bounds[2];
 		double maxY = bounds[3];
-
 		return squareGrid(name, props, xRes, yRes, minX, minY, maxX, maxY);
 
 	}
 	public static Grid squareGrid(String name, List<String> props, double xRes, double yRes, double minX, double minY, double maxX, double maxY){
 
 
-		//Grid grid = new Grid();
 		HashMap<String, Integer> initProps = new HashMap<String, Integer>();
 
 		int index = 0;
@@ -189,22 +122,15 @@ public class GridGenerator {
 			initProps.put(s, index);
 			index ++;
 		}
-		/*double nminX = minX - xRes;
-			double nminY = minY - yRes;
-			double nmaxX = maxX + xRes;
-			double nmaxY = maxY +yRes;
-		 */
-		double nminX = minX;
-		double nminY = minY;
+		double nminX = minX - xRes;
+		double nminY = minY - yRes;
 		double nmaxX = maxX;
 		double nmaxY = maxY;
 		double width = nmaxX - nminX;
 		double height = nmaxY - nminY;
 
-		int cellWidth = (int)(Math.round(width / (xRes)));
-		int cellHeight = (int) (Math.round(height / (yRes)));	
-
-		//System.out.println(cellWidth+" "+cellHeight+" total : "+cellWidth * cellHeight);
+		int cellWidth = (int)(Math.round(width / (xRes))) + 2;
+		int cellHeight = (int) (Math.round(height / (yRes))) + 2;	
 		double newMinX = nminX;
 		double newMinY = nminY;
 		double newMaxX = newMinX + (cellWidth * xRes);
@@ -217,29 +143,16 @@ public class GridGenerator {
 		grid.setRaster(raster);
 		grid.setXRes(xRes);
 		grid.setYRes(yRes);
-
 		grid.setWorldBounds(new Double[]{newMinX, newMinY, newMaxX, newMaxY});
 		grid.setEnv(env);
-		/*System.out.println("CREATE GRID");
-		Coordinate min = grid.gridCoordinate(0, 0);
-		System.out.println(newMinX+"   "+newMinY);
-		System.out.println(min+"    "+grid.gridCoordinate(min.x, min.y)[0]+"  "+grid.gridCoordinate(min.x, min.y)[1]);
-		System.out.println();
-		Coordinate max = grid.gridCoordinate(cellWidth - 1, cellHeight - 1);
-		System.out.println((cellWidth - 1)+"  "+(cellHeight - 1));
-		System.out.println(min+"    "+grid.gridCoordinate(max.x, max.y)[0]+"  "+grid.gridCoordinate(max.x, max.y)[1]);
-		System.out.println();*/
-
 		grid.setCellShapeType("QUADRILATERAL");
 
 		return grid;
-
 
 	}
 	public static Grid squareGridFromShp(String name, List<String> props,ORaster raster, double xRes, double yRes, double minX, double minY, double maxX, double maxY){
 
 
-		//Grid grid = new Grid();
 		HashMap<String, Integer> initProps = new HashMap<String, Integer>();
 
 		int index = 0;
@@ -247,169 +160,181 @@ public class GridGenerator {
 			initProps.put(s, index);
 			index ++;
 		}
-		/*double nminX = minX - xRes;
-			double nminY = minY - yRes;
-			double nmaxX = maxX + xRes;
-			double nmaxY = maxY +yRes;
-		 */
 
-
-		int[] rasterCoordMin = new int[]{raster.getMinPixel(0), raster.getMinPixel(1)};
+		DirectPosition dpLow = raster.getGridGeometry().getEnvelope().getLowerCorner();
+		DirectPosition dpUp = raster.getGridGeometry().getEnvelope().getUpperCorner();
+		double[] lowerCorner = dpLow.getCoordinate();
+		double[] upperCorner = dpUp.getCoordinate();
+		
+		/*int[] rasterCoordMin = new int[]{raster.getMinPixel(0), raster.getMinPixel(1)};
 		int[] rasterCoordMax = new int[]{raster.getMaxPixel(0), raster.getMaxPixel(1)};
 
 		double[] rasterWorldMin = new double[]{raster.getMinimum(0), raster.getMinimum(1)};
 		double[] rasterWorldMax = new double[]{raster.getMaximum(0), raster.getMaximum(1)};
+		int[] tabmin = raster.worldToGrid(minX, maxY);
+		int[] tabmax = raster.worldToGrid(maxX, minY);
 
-		DirectPosition dpLow = raster.getGridGeometry().getEnvelope().getLowerCorner();
-		DirectPosition dpUp = raster.getGridGeometry().getEnvelope().getUpperCorner();
-		//raster.worldToGrid(minX, minY);
-		//raster.worldToGrid(maxX, maxY);
-		double[] lowerCorner = dpLow.getCoordinate();
-		double[] upperCorner = dpUp.getCoordinate();
+		Envelope2D envtest = raster.getGridGeometry().getEnvelope2D();
+		System.out.println("getMinPixel "+rasterCoordMin[0]+" "+rasterCoordMin[1]);
+		System.out.println("getMaxPixel "+rasterCoordMax[0]+" "+rasterCoordMax[1]);
 
-	/*	System.out.println("lower "+lowerCorner[0]+" "+lowerCorner[1]);
+		System.out.println("getMinimum "+rasterWorldMin[0]+" "+rasterWorldMin[1]);
+		System.out.println("getMaximum "+rasterWorldMax[0]+" "+rasterWorldMax[1]);
+
+
+		System.out.println("lower "+lowerCorner[0]+" "+lowerCorner[1]);
 		System.out.println("upper "+upperCorner[0]+" "+upperCorner[1]);
-		System.out.println(" "+minX+" "+minY+" "+maxX+" "+maxY );*/
+		System.out.println("min max  "+minX+" "+minY+" "+maxX+" "+maxY );
+		System.out.println("rectangle "+envtest.x+" "+envtest.y+" "+envtest.width+" "+envtest.y);
+		System.out.println(tabmin[0]+" "+tabmin[1]);
+		System.out.println(tabmax[0]+" "+tabmax[1]);
+		System.out.println("res "+xRes+" "+yRes);
+		double[] ocoord = raster.gridToWorld(0, 0);
+		System.out.println("0 grid "+ocoord[0]+" "+ocoord[1]);
+		System.out.println("bip");
+		System.out.println("rescale "+(ocoord[0] -(xRes / 2))+" "+(ocoord[1]+(yRes / 2)));*/
 		double nminX = lowerCorner[0];
 		double nminY = lowerCorner[1];
 		double nmaxX = upperCorner[0];
 		double nmaxY = upperCorner[1];
-		
-		
-		
-		
-		
-		if(lowerCorner[0] < minX && lowerCorner[1] < minY && upperCorner[0] > maxX && upperCorner[1] > maxY){
-			
-			int[] coordMin = raster.worldToGrid(minX, maxY);
-			int[] coordMax = raster.worldToGrid(maxX, minY);
-			
-			double[] minDouble = raster.gridToWorld(coordMin[0], coordMax[1]);
-			double[] maxDouble = raster.gridToWorld(coordMax[0], coordMin[1]);
 
-			nminX = minDouble[0];
-			nminY = minDouble[1];
-			nmaxX = maxDouble[0];
-			nmaxY = maxDouble[1];
-			
-		}else{
-		
-		
-		
-		
-		if(lowerCorner[0] < minX){
-			
-			double init = Math.abs(lowerCorner[0]);
-			double shp = Math.abs(minX);
-			int gap = 0;
-			if(lowerCorner[0] < 0 && minX < 0){
-				
-				gap = (int)Math.round((init - shp) / xRes);
-			}else{
-				gap = (int)Math.round((minX - lowerCorner[0]) / xRes);
-			}
+		double finalMinX = minX;
+		double finalMinY = minY;
+		double finalMaxX = maxX;
+		double finalMaxY = maxY;
 
-			nminX = nminX + gap * xRes;
-		}else{
-			nminX = minX;
-		}
-		if(lowerCorner[1] < minY){
-			double init = Math.abs(lowerCorner[1]);
-			double shp = Math.abs(minY);
-			int gap = 0;
-			if(lowerCorner[1] < 0 && minY < 0){
-				
-				gap = (int)Math.round((init - shp) / yRes);
-			}else{
-				gap = (int)Math.round((minY - lowerCorner[1]) / yRes);
-			}
+		boolean testMinX = false;
+		boolean testMinY = false;
+		boolean testMaxX = false;
+		boolean testMaxY = false;
 
-			nminY = nminY + gap * yRes;
-		}else{
-			nminY = minY;
+		if(lowerCorner[0] > minX){
+
+			double diff = minX - lowerCorner[0];
+
+			int resDiff = (int)Math.round(diff / xRes);
+
+			double rescale = resDiff * xRes;
+			finalMinX = lowerCorner[0] - rescale;
+			testMinX = true;
 		}
 
-		if(upperCorner[0] > maxX){
-			double init = Math.abs(upperCorner[0]);
-			double shp = Math.abs(maxX);
-			int gap = 0;
-			if(upperCorner[0] < 0 && maxX < 0){
-				
-				gap = (int)Math.round((shp - init) / xRes);
-			}else{
-				gap = (int)Math.round((upperCorner[0] - maxX) / xRes);
-			}
 
-			nmaxX = nmaxX - gap * xRes;
-		}else{
-			nmaxX = maxX;
+
+
+		if(lowerCorner[1] > minY){
+
+			double diff = minY - lowerCorner[1];
+
+			int resDiff = (int)Math.round(diff / yRes);
+
+			double rescale = resDiff * yRes;
+			finalMinY = lowerCorner[1] - rescale;
+			testMinY = true;
 		}
 
-		if(upperCorner[1] > maxY){
-			
-			double init = Math.abs(upperCorner[1]);
-			double shp = Math.abs(maxY);
-			double gap = 0;
-			if(upperCorner[1] < 0 && maxY < 0){
-				
-				gap = (int)Math.round((shp - init) / yRes);
-			}else{
-				gap = (int)Math.round((upperCorner[1] - maxY) / yRes);
-			}
-			nmaxY = nmaxY - gap * yRes;
+		if(upperCorner[0] < maxX){
 
-		}else{
-			nmaxY = maxY;
-		}
-		}
-		
-		/*if(lowerCorner[1] < minY){
-			int gap =(int) Math.round((minY - lowerCorner[1]) / yRes);
-			nminY = nminY + gap * yRes;
-		}else{
-			nminY = minY;
+			double diff = maxX - upperCorner[0];			
+			int resDiff = (int)Math.round(diff / xRes);			
+			double rescale = resDiff * xRes;
+			finalMaxX = upperCorner[0] + rescale;
+			testMaxX = true;
 		}
 
-		if(upperCorner[0] > maxX){
-			int gap =(int) Math.round((upperCorner[0] - maxX) / xRes);
-			nmaxX = nmaxX - gap * xRes;
-		}else{
-			nmaxX = maxX;
+		if(upperCorner[1] < maxY){
+
+			double diff = maxY - upperCorner[1];
+
+			int resDiff = (int)Math.round(diff / yRes);
+
+			double rescale = resDiff * yRes;
+			finalMaxY = upperCorner[1] + rescale;
+			testMaxY = true;
 		}
 
-		if(upperCorner[1] > maxY){
-			int gap =(int) Math.round((upperCorner[1] - maxY) / yRes);
 
-			nmaxY = nmaxY - gap * yRes;
+		//Testing if raster coord is out of shapefile description
 
-		}else{
-			nmaxY = maxY;
-		}*/
-		//System.out.println("NEW "+nminX+" "+nminY+" "+nmaxX+" "+nmaxY );
-		double newMinX = nminX - 2*xRes;
-		double newMinY = nminY - 2*yRes;
-		double newMaxX = nmaxX + 2* xRes;// newMinX + (cellWidth * xRes);
-		double newMaxY = nmaxY + 2* yRes;//newMinY + (cellHeight * yRes);
+		//lower corner :
+		if(testMinX == false && testMinY == false){
+			int[] minGridCoordFromShp = raster.worldToGrid(minX, minY);
+			double[] minCoordFromShp = raster.gridToWorld(minGridCoordFromShp[0], minGridCoordFromShp[1]);
+			finalMinX = minCoordFromShp[0];
+			finalMinY = minCoordFromShp[1];
+
+		}
+
+		if(testMinX == false && testMinY == true){
+			int[] minGridCoordFromShp = raster.worldToGrid(minX, finalMinY);
+			double[] minCoordFromShp = raster.gridToWorld(minGridCoordFromShp[0], minGridCoordFromShp[1]);
+			finalMinX = minCoordFromShp[0];
+			finalMinY = minCoordFromShp[1];
+
+
+		}
+
+		if(testMinX == true && testMinY == false){
+			int[] minGridCoordFromShp = raster.worldToGrid(finalMinX, minY);
+			double[] minCoordFromShp = raster.gridToWorld(minGridCoordFromShp[0], minGridCoordFromShp[1]);
+			finalMinX = minCoordFromShp[0];
+			finalMinY = minCoordFromShp[1];
+
+		}
+
+		//upper corner :
+
+		if(testMaxX == false && testMaxY == false){
+			int[] maxGridCoordFromShp = raster.worldToGrid(maxX, maxY);
+			double[] maxCoordFromShp = raster.gridToWorld(maxGridCoordFromShp[0], maxGridCoordFromShp[1]);
+			finalMaxX = maxCoordFromShp[0];
+			finalMaxY = maxCoordFromShp[1];
+
+		}
+
+		if(testMinX == false && testMinY == true){
+			int[] maxGridCoordFromShp = raster.worldToGrid(maxX, finalMaxY);
+			double[] maxCoordFromShp = raster.gridToWorld(maxGridCoordFromShp[0], maxGridCoordFromShp[1]);
+			finalMaxX = maxCoordFromShp[0];
+			finalMaxY = maxCoordFromShp[1];
+
+
+		}
+
+		if(testMinX == true && testMinY == false){
+			int[] maxGridCoordFromShp = raster.worldToGrid(finalMaxY, maxY);
+			double[] maxCoordFromShp = raster.gridToWorld(maxGridCoordFromShp[0], maxGridCoordFromShp[1]);
+			finalMaxX = maxCoordFromShp[0];
+			finalMaxY = maxCoordFromShp[1];
+
+		}
+
+		nminX = finalMinX - xRes / 2 - 2*xRes;
+		nminY = finalMinY - yRes / 2 - 2 * yRes;
+		nmaxX = finalMaxX + xRes / 2 + 2 * xRes;
+		nmaxY = finalMaxY + yRes / 2 + 2 * yRes;
+
+
+		double newMinX = nminX;// - 2*xRes;
+		double newMinY = nminY; // - 2*yRes;
+		double newMaxX = nmaxX; // + 2* xRes;// newMinX + (cellWidth * xRes);
+		double newMaxY = nmaxY; // + 2* yRes;//newMinY + (cellHeight * yRes);
 
 		double width = newMaxX - newMinX;
 		double height = newMaxY - newMinY;
 
 		int cellWidth = (int)(Math.round((width) / xRes));
 		int cellHeight = (int) (Math.round((height) / yRes));	
-		
-		width = cellWidth * xRes;
+
+		/*width = cellWidth * xRes;
 		height = cellHeight * yRes;
-		
+
 		newMaxX = newMinX + width;
-		newMaxY = newMinY + height;
-		//newMinX = newMinX - xRes / 2;
-		//newMinY = newMinY - xRes / 2;
-		//newMaxX = newMinX + cellWidth * xRes;
-		//newMaxY = newMinY + cellHeight * yRes;
+		newMaxY = newMinY + height;*/
 
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		WritableRaster newRaster = createRaster(index, cellWidth, cellHeight);
-		GridCoverage2D coverage =  createCoverage(name, newRaster, env);
+		GridCoverage2D coverage =  createCoverage(name, newRaster, env);		
 		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
 		grid.setRasterProperties(initProps);
 		grid.setRaster(newRaster);
@@ -418,7 +343,7 @@ public class GridGenerator {
 
 		grid.setWorldBounds(new Double[]{newMinX, newMinY, newMaxX, newMaxY});
 		grid.setEnv(env);
-grid.setCellShapeType("QUADRILATERAL");
+		grid.setCellShapeType("QUADRILATERAL");
 
 
 		return grid;
@@ -427,7 +352,6 @@ grid.setCellShapeType("QUADRILATERAL");
 	}
 
 	public static Grid squareGridFromShp(String name, List<String> props,ORaster raster, double xRes, double yRes,Double[] bounds){	
-
 		double minX = bounds[0];
 		double minY = bounds[1];
 		double maxX = bounds[2];
@@ -457,7 +381,7 @@ grid.setCellShapeType("QUADRILATERAL");
 		}
 		Envelope2D env = initRaster.getGridGeometry().getEnvelope2D();
 
-			int[] rasterCoordMin = new int[]{initRaster.getMinPixel(0), initRaster.getMinPixel(1)};
+		int[] rasterCoordMin = new int[]{initRaster.getMinPixel(0), initRaster.getMinPixel(1)};
 		int[] rasterCoordMax = new int[]{initRaster.getMaxPixel(0), initRaster.getMaxPixel(1)};
 
 		double[] rasterWorldMin = new double[]{initRaster.getMinimum(0), initRaster.getMinimum(1)};
@@ -466,25 +390,18 @@ grid.setCellShapeType("QUADRILATERAL");
 		double nminY = rasterWorldMin[1];
 		double nmaxX = rasterWorldMax[0];
 		double nmaxY = rasterWorldMax[1];
-		nminX = env.getMinX()-initRaster.getXRes() / 2;
-		nminY = env.getMinY() - initRaster.getYRes() / 2;
-		nmaxX = env.getMaxX() + initRaster.getXRes() / 2;
-		nmaxY = env.getMaxY() + initRaster.getYRes() / 2;
+		nminX = env.getMinX();
+		nminY = env.getMinY();
+		nmaxX = env.getMaxX();
+		nmaxY = env.getMaxY();
 
-		double width = nmaxX - nminX;
-		double height = nmaxY - nminY;
 
-		int cellWidth = rasterCoordMax[0] - rasterCoordMin[0] + 1;
-		int cellHeight = rasterCoordMax[1] - rasterCoordMin[1] + 1;		
-		//System.out.println(cellWidth+" "+cellHeight+" total : "+cellWidth * cellHeight);
-		double newMinX = nminX;
-		double newMinY = nminY;
-		double newMaxX = nmaxX;
-		double newMaxY = nmaxY;
+		int cellWidth = rasterCoordMax[0] - rasterCoordMin[0];
+		int cellHeight = rasterCoordMax[1] - rasterCoordMin[1];		
 		cellWidth =initRaster.getWritableRaster().getWidth();
-		
+
 		cellHeight = initRaster.getWritableRaster().getHeight();
-				WritableRaster raster = createRaster(index, cellWidth, cellHeight);
+		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
 		//coverage = initRaster.getGridGeometry().getc
 		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
@@ -492,7 +409,7 @@ grid.setCellShapeType("QUADRILATERAL");
 		grid.setRaster(raster);
 		grid.setXRes(initRaster.getXRes());
 		grid.setYRes(initRaster.getYRes());
-	
+
 		grid.setWorldBounds(new Double[]{nminX, nminY, nmaxX, nmaxY});
 		grid.setEnv(env);
 		grid.setCellShapeType("QUADRILATERAL");
@@ -506,11 +423,6 @@ grid.setCellShapeType("QUADRILATERAL");
 
 	public static Grid triangularGrid(String name, List<String> props, double size, double minX, double minY, double maxX, double maxY){
 
-
-
-
-
-		//Grid grid = new Grid();
 		HashMap<String, Integer> initProps = new HashMap<String, Integer>();
 
 		int index = 0;
@@ -519,21 +431,30 @@ grid.setCellShapeType("QUADRILATERAL");
 			index ++;
 		}
 
-		double nminX = minX;
-		double nminY = minY;
-		double nmaxX = maxX;
-		double nmaxY = maxY;
-
+		double l = (Math.sqrt(3) / 2) * size;
+		
+		l = (Math.sqrt(3) * size / 3) + (Math.sqrt(3) * size / 6); 
+		double nminX = minX   - 2 * size;
+		double nminY = minY - (2 * l);
+		double nmaxX = maxX  + 2 * size;
+		double nmaxY = maxY +  2 * l;
+		
+		
 		double width = (nmaxX - nminX);
 		double height = (nmaxY - nminY);
-
-		double l = Math.sqrt(3) / 2 * size;
-		int cellWidth = (int)(Math.round((width * 2 / size)) - 1);
+		int upNbr = (int)Math.round(width / size);
+		
+		int cellWidth = 0;
+		if(upNbr % 2 == 0){
+			cellWidth = upNbr + upNbr - 1;
+		}else{
+			cellWidth = upNbr + upNbr + 1;
+		}
 		int cellHeight = (int) (Math.round(height / l));	
 
-		if(cellWidth % 2 == 0){
+		/*if(cellWidth % 2 == 0){
 			cellWidth++;
-		}
+		}*/
 
 		if(cellHeight % 2 == 0){
 			cellHeight++;
@@ -541,19 +462,25 @@ grid.setCellShapeType("QUADRILATERAL");
 
 		double newMinX = nminX;
 		double newMinY = nminY;
-		double newMaxX = newMinX + ((cellWidth /2 + 1) * size);
-		double newMaxY = newMinY + (cellHeight * l);
+		double newMaxX = newMinX + ((cellWidth-1) * size / 2) + size;
+		double newMaxY = newMinY + (cellHeight * l);// + (Math.sqrt(3) * size) / 3;
+;
+		double squareMinY = newMinY;// - l /2 + ((Math.sqrt(3) * size) / 6);
+		double newSquareMaxY = squareMinY + (cellHeight * l);
+		double squareMaxX = nminX + (cellWidth * size);
 		//cellWidth = cellWidth + (cellWidth / 4);
 
-		Envelope2D env = createEnvelope(newMinX, newMinY, newMaxX, newMaxY);
+		Envelope2D env = createEnvelope(nminX, squareMinY, squareMaxX, newSquareMaxY);
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
 		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
+		
 		grid.setRasterProperties(initProps);
 		grid.setRaster(raster);
 		grid.setXRes(size);
-		grid.setYRes(size);
+		grid.setYRes(l);
 		grid.setWorldBounds(new Double[]{newMinX, newMinY, newMaxX, newMaxY});
+		grid.setworldboundsPrime(new Double[]{nminX, squareMinY, squareMaxX, newSquareMaxY});
 		grid.setEnv(env);
 		grid.setCellShapeType("TRIANGULAR");
 
@@ -627,7 +554,7 @@ grid.setCellShapeType("QUADRILATERAL");
 		return nr.createCompatibleWritableRaster(); 
 
 	}
-	
+
 	public static WritableRaster createRasterInt(int numBand, int cellWidth, int cellHeight){
 
 		java.awt.image.DataBuffer db2 = new DataBufferInt(0, numBand);
@@ -639,13 +566,19 @@ grid.setCellShapeType("QUADRILATERAL");
 	}
 
 
-	public static Envelope2D createEnvelope(double minX, double minY, double width, double height){
+	public static Envelope2D createEnvelope(double minX, double minY, double maxX, double maxY){
 
 
-		DirectPosition2D dpMin = new DirectPosition2D(width, height);
-		DirectPosition2D dpMax = new DirectPosition2D(minX, minY);
+		DirectPosition2D dpMin = new DirectPosition2D(minX, minY);
+		DirectPosition2D dpMax = new DirectPosition2D(maxX, maxY);
 		Envelope2D envelope = new Envelope2D(dpMin , dpMax);
 
 		return envelope;
+	}
+
+	private static double roundValue(double value, Integer precision){
+		Integer scale = (int)Math.round(value * precision);
+		return scale.doubleValue() / precision.doubleValue();
+
 	}
 }

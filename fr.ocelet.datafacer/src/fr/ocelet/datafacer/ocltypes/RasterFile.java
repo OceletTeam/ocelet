@@ -1,12 +1,13 @@
 package fr.ocelet.datafacer.ocltypes;
 
 import fr.ocelet.runtime.entity.AbstractEntity;
+import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.geom.ocltypes.Cell;
+import fr.ocelet.runtime.geom.ocltypes.Polygon;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.Grid;
 import fr.ocelet.runtime.raster.ORaster;
-import fr.ocelet.runtime.relation.OcltRole;
 import fr.ocelet.runtime.util.FileUtils;
 import fr.ocelet.runtime.raster.GridGenerator;
 import fr.ocelet.runtime.raster.GridManager;
@@ -14,8 +15,6 @@ import fr.ocelet.runtime.raster.GridManager;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -28,10 +27,15 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+
 public class RasterFile{
 	
 	private KeyMap<String, Integer> propMatched = new KeyMap<String, Integer>();
-
+	
     public RasterFile(String fileName){
     	try{
         raster = new ORaster(FileUtils.applyOutput(fileName));
@@ -39,7 +43,21 @@ public class RasterFile{
     		
     	}
     }
-    
+   
+    public Polygon getBoundaries(){
+    	Coordinate[] coordinates = new Coordinate[5];
+    	Double[] bounds = grid.getWorldBounds();
+		coordinates[0] = new Coordinate(bounds[0], bounds[1]);
+		coordinates[1] = new Coordinate(bounds[0], bounds[3]);
+		coordinates[2] = new Coordinate(bounds[2], bounds[3]);
+		coordinates[3] = new Coordinate(bounds[2], bounds[1]);
+		coordinates[4] = coordinates[0];
+
+		CoordinateSequence cs = new CoordinateArraySequence(coordinates);
+		LinearRing lr = new LinearRing(cs, SpatialManager.geometryFactory());
+		return new Polygon(lr, null, SpatialManager.geometryFactory());
+
+    }
     public void setFileName(String fileName){
     	try{
         raster = new ORaster(FileUtils.applyOutput(fileName));

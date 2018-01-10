@@ -1,5 +1,26 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
 package fr.ocelet.runtime.ocltypes.array;
 
+import java.util.Collection;
 import java.util.Collections;
 
 import fr.ocelet.runtime.entity.AbstractEntity;
@@ -11,8 +32,8 @@ import fr.ocelet.runtime.raster.GridManager;
 import java.util.Iterator;
 public class CellArray<T> extends ArrayInterface<T>{
 
-	
-	
+
+
 	/**
 	 * 
 	 */
@@ -22,10 +43,13 @@ public class CellArray<T> extends ArrayInterface<T>{
 	private int width;
 	private int height;
 	private Cell cell;
-	
+	private boolean start = true;
+
 	public CellArray(T ae){
 		this.ae = ae;
 		this.cell = (Cell)((AbstractEntity)ae).getSpatialType();
+		cell.setX(0);
+		cell.setY(0);
 		this.grid = GridManager.getInstance().get(cell.getNumGrid());
 		this.width = grid.getWidth();
 		this.height = grid.getHeight();
@@ -40,21 +64,21 @@ public class CellArray<T> extends ArrayInterface<T>{
 	 */
 	@Override
 	public void addFill(int numberOfObjects, T value) {
-		
+
 	}
-	
+
 	@Override
 	public T get(int index){
 		int xPos = Math.round(index / width);
-		
+
 		int yPos = Math.round(index % width);
-		
+
 		if(xPos > 0){
 			this.cell.set(xPos, 0);
 		}else{
 			this.cell.set(xPos, yPos);
 		}
-		
+
 		return ae;
 	}
 
@@ -71,15 +95,15 @@ public class CellArray<T> extends ArrayInterface<T>{
 		else
 			return false;
 	}
-	
+
 	/**
 	 * Appends all of the elements in the specified List to the end of this list
 	 * 
 	 * @return true if the list could be changed as expected
 	 */
 	@Override
-	public boolean addAll(List<T> list) {
-		return super.addAll((List<? extends T>)list);
+	public boolean addAll(Collection<? extends T> list){
+		return false;
 	}
 
 	/**
@@ -144,41 +168,81 @@ public class CellArray<T> extends ArrayInterface<T>{
 	 * @return A new Initialized List
 	 */
 	public static <U> List<U> of(U... u) {
-		
-		
-		
+
+
+
 		return null;
 	}
-	
+
 	public Grid getGrid(){
 		return grid;
 	}
-@Override
+	@Override
 	public Iterator<T> iterator(){
 		return new CellIterator();
 	}
-	
-	public class CellIterator implements Iterator<T>{
+	/*public abstract class Nexter<T extends AbstractEntity>{
+
+		public abstract T next();
+
+
+	}
+	public class Changer<T extends AbstractEntity>{
+
+
+		public Nexter<T> nexter;
+		public T next(){
+			return nexter.next();
+		}
+	}
+	public class FisrtNexter<T extends AbstractEntity> extends Nexter{
 
 		@Override
-		public boolean hasNext() {
-			if(cell.getX() == width - 1 && cell.getY() == height - 1){
-				cell.set(0, 0);
-			return false;
+		public T next(){
+			cell.setX(0);
+			cell.setY(0);
+			return ae;
 		}
-		return true;
-		}
+	}
 
+	public class AfeterNexter extends Nexter<T>{
 		@Override
-		public T next() {
-			
+		public T next(){
 			if(cell.getX() == width - 1){
 				cell.setX(0);
 				cell.setY(cell.getY() + 1);
 			}else{
 				cell.setX(cell.getX() + 1);
 			}
-		return ae;			
+			return ae;
+			}
+	}*/
+	public class CellIterator implements Iterator<T>{
+
+		@Override
+		public boolean hasNext() {
+			if(cell.getX() == width - 1 && cell.getY() == height - 1){
+				cell.set(0, 0);
+				start = true;
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		public T next() {
+			if(start){
+				cell.set(0, 0);
+				start = false;
+			}else{
+				if(cell.getX() == width - 1){
+					cell.setX(0);
+					cell.setY(cell.getY() + 1);
+				}else{
+					cell.setX(cell.getX() + 1);
+				}
+			}
+			return ae;			
 		}	
 	}
 }

@@ -1,6 +1,28 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2016
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
 package fr.ocelet.runtime.ocltypes.array;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 
 import fr.ocelet.runtime.ocltypes.List;
@@ -52,12 +74,19 @@ public class NormalArray<T> extends ArrayInterface<T> {
 	 * 
 	 * @return true if the list could be changed as expected
 	 */
-	@Override
+	/*@Override
 	public boolean addAll(List<T> list) {
-		return super.addAll((List<? extends T>)list);
+		System.out.println("ADD ALL");
+		return addAll((List<? extends T>)list);
 		//return super.addAll((Collection<? extends T>)list);
+	}*/
+	@Override
+	public boolean addAll(Collection<? extends T> list) {
+		//return Collections.addAll(list, list.toArray(list.get(0)));
+		//Collections.addAll(this, Arrays.asList(list.toArrays()));
+		//this.addAll(list)
+		return super.addAll((Collection<? extends T>)list);
 	}
-
 	/**
 	 * @return The number of elements in the List equal to the specified object
 	 * @param obj
@@ -134,6 +163,10 @@ public class NormalArray<T> extends ArrayInterface<T> {
 		super.removeRange(fromIndex, toIndex);
 	}
 	
+	@Override
+	public Object[] toArray(){
+		return super.toArray();
+	}
 	/*@Override
 	public T get(int index){
 		return super.get(index);
