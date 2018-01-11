@@ -480,14 +480,22 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 			for(int i = bounds[0]; i < bounds[2]; i ++){
 
-				Coordinate c = grid.gridCoordinate(i, j);
+				Coordinate c = null;
+				try {
+					c = grid.gridCoordinate(i, j);
+				}catch(Exception e) {
+					
+				}
+				if(c != null) {
+					
+				
 				CoordinateSequence seq = new CoordinateArraySequence(new Coordinate[]{c});
 				Point p = new Point(seq, SpatialManager.geometryFactory());
 				if(polygon.distance(p) < grid.getXRes() / 2){
 					add(r2, i, j );
 					index++;
 				}
-
+				}
 			}
 
 
@@ -498,9 +506,18 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 		if(index == 0)
 		{
-			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
-			if(scaledCentroid != null)      
+			int scaledCentroid[] = null;
+			try{
+				scaledCentroid = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
+			}catch(Exception e) {
+				
+			}
+			if(scaledCentroid != null) {
+				if(scaledCentroid[0] < grid.getWidth() && scaledCentroid[0] >= 0 && scaledCentroid[1] < grid.getHeight() && scaledCentroid[1] >=0) {
 				add(r2, scaledCentroid[0], scaledCentroid[1]);
+				}
+				
+			}
 		}
 	} 
 

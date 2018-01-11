@@ -768,13 +768,13 @@ public class Grid {
 		int[] gridCoord2 = null;
 		
 		try {
-		gridCoordinate(cBounds[0].x, cBounds[1].y);
+		gridCoord1 = gridCoordinate(cBounds[0].x, cBounds[1].y);
 		}catch(Exception e) {
 			
 		}
 		
 		try {
-		gridCoordinate(cBounds[1].x, cBounds[0].y);
+		gridCoord2 = gridCoordinate(cBounds[1].x, cBounds[0].y);
 		}catch(Exception e) {
 			
 		}
@@ -797,6 +797,7 @@ public class Grid {
 			bounds[2] = gridCoord2[0];
 			bounds[3] = gridCoord2[1];
 		}
+		
 		
 		
 		

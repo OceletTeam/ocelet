@@ -98,7 +98,9 @@ public class SpatialManager {
 				// produce a mt.
 
 				CoordinateReferenceSystem destCRS = CRS.decode(epsgCode);
-				mt = CRS.findMathTransform(crs, destCRS, true);
+				if(!destCRS.toString().equals(crs.toString())){
+					mt = CRS.findMathTransform(crs, destCRS, true);
+				}
 			} catch (NoSuchAuthorityCodeException e) {
 				// e.printStackTrace();
 				System.out.println(ERR_HEADER
@@ -128,11 +130,14 @@ public class SpatialManager {
 			CoordinateReferenceSystem tgcrs, String ERR_HEADER)
 			throws FactoryException {
 		MathTransform mt = null;
-		if (crs == null)
+		if (crs == null){
 			crs = tgcrs;
-		else
+		}else{
+			if(!tgcrs.toString().equals(crs.toString()))
 			mt = CRS.findMathTransform(crs, tgcrs, true);
-		return mt;
+		}
+			return mt;
+		
 	}
 	
 public static Line lineTransform(Geometry geometry){
