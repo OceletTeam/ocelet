@@ -190,20 +190,63 @@ public class Grid {
 		setInitCoordinate();
 	}
 
-
+	private Double[] scale(ORaster raster) {
+		
+		Double[] rBounds = raster.getWorldBounds();
+		Double[] scaled = new Double[4];
+		if(worldBounds[0] < rBounds[0]) {
+			scaled[0] = rBounds[0];
+		}else {
+			scaled[0] = worldBounds[0];
+		}
+		
+		if(worldBounds[1] < rBounds[1]) {
+			scaled[1] = rBounds[1];
+		}else {
+			scaled[1] = worldBounds[1];
+		}
+		
+		if(worldBounds[2] > rBounds[2]) {
+			scaled[2] = rBounds[2];
+		}else {
+			scaled[2] = worldBounds[2];
+		}
+		
+		if(worldBounds[3] > rBounds[3]) {
+			scaled[3] = rBounds[3];
+		}else {
+			scaled[3] = worldBounds[3];
+		}
+		
+		return scaled;
+	}
 	public void  copy(ORaster raster, KeyMap<String, Integer> matchedBand){
 
-		for(int i = 0; i < width; i ++){
-			for(int j = 0; j < height; j ++){
+		Double[] scaled = scale(raster);
+		int[] gridScaled = new int[4];
+		int[] rasterBounds = new int[4];
+		
+		int[] gridMin = gridCoordinate(scaled[0] + xRes / 2, scaled[3] -  yRes / 2);
+		int[] gridMax = gridCoordinate(scaled[2] - xRes / 2, scaled[1] + yRes / 2);
+		
+		int[] rasterMin = raster.worldToGrid(scaled[0]+ xRes /2, scaled[3] - yRes / 2);
+		int[] rasterMax = raster.worldToGrid(scaled[2]- xRes / 2, scaled[1]+ yRes / 2);
+		
+		int diffX = rasterMin[0] - gridMin[0];
+		int diffY = rasterMin[1] - gridMin[1];
+		
+		for(int i = gridMin[0]; i < gridMax[0]; i ++){
+			for(int j = gridMin[1]; j < gridMax[1]; j ++){
 				for(String name : matchedBand.keySet()){
-					try{
+					//try{
 
-						Coordinate worlds = this.gridCoordinate(i, j);
+						/*Coordinate worlds = this.gridCoordinate(i, j);
 						int[] convert = raster.worldToGrid(worlds.x, worlds.y);
-						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));
-					}catch (Exception e){
+						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));*/
+						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(i + diffX, j + diffY, matchedBand.get(name)));
+					//}catch (Exception e){
 						//e.printStackTrace();
-					}
+					//}
 				}    			
 			}
 		}
