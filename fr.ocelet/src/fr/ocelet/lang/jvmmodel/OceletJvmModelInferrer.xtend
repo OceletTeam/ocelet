@@ -237,6 +237,57 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 
                     '''
                   ]
+                   	members += meln.toMethod('readAll'+entname,tabType)[
+                  	parameters += meln.toParameter('geometries', typeRef('fr.ocelet.runtime.ocltypes.List', typeRef('com.vividsolutions.jts.geom.Geometry')))
+                  	body='''
+                  	«entname» entity = new «entname»();
+
+                  	if(grid == null){
+                  
+                  	«FOR mp:matchdef.matchprops»
+                  	«val eproptype = propmap.get(mp.prop)»
+                 	«IF eproptype != null»
+                  	«IF mp.colname != null»
+						addProperty("«mp.prop»",«mp.colname»);
+                  	«ENDIF»
+                  	«ENDIF»
+                  	«ENDFOR»
+                  	                  	this.grid = createGrid(entity.getProps(), geometries, 	"«entname»Grid");
+                    entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+                    entity.updateCellInfo("QUADRILATERAL");
+                  	}
+					List<«entname»> entityList = new List<«entname»>();
+					entityList.add(entity);
+					return entityList;
+
+                    '''
+                  ]
+                  
+                       	members += meln.toMethod('readAll'+entname,tabType)[
+                  	parameters += meln.toParameter('geometry',  typeRef('com.vividsolutions.jts.geom.Geometry'))
+                  	body='''
+                  	«entname» entity = new «entname»();
+
+                  	if(grid == null){
+                  
+                  	«FOR mp:matchdef.matchprops»
+                  	«val eproptype = propmap.get(mp.prop)»
+                 	«IF eproptype != null»
+                  	«IF mp.colname != null»
+						addProperty("«mp.prop»",«mp.colname»);
+                  	«ENDIF»
+                  	«ENDIF»
+                  	«ENDFOR»
+                  	                  	this.grid = createGrid(entity.getProps(), geometry, 	"«entname»Grid");
+                    entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
+                    entity.updateCellInfo("QUADRILATERAL");
+                  	}
+					List<«entname»> entityList = new List<«entname»>();
+					entityList.add(entity);
+					return entityList;
+
+                    '''
+                  ]
              }else if('TemporalSeriesFile'.equals(''+meln.storetype)) { 
              	
              	

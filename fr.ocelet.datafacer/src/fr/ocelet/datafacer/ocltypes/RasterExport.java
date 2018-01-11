@@ -61,6 +61,7 @@ public class RasterExport implements Datafacer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
  		env.setCoordinateReferenceSystem(crs);
  		for(int i = 0; i < grid.getWidth(); i ++){
  			

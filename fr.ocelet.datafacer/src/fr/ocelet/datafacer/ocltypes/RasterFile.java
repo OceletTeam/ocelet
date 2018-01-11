@@ -19,6 +19,7 @@ import java.io.IOException;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.CRS;
@@ -29,19 +30,31 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
 public class RasterFile{
 	
 	private KeyMap<String, Integer> propMatched = new KeyMap<String, Integer>();
-	
+	private CoordinateReferenceSystem crs;
     public RasterFile(String fileName){
     	try{
         raster = new ORaster(FileUtils.applyOutput(fileName));
     	}catch(Exception e){
     		
     	}
+    }
+    
+    public RasterFile(String fileName, String epsg) {
+    	try{
+            raster = new ORaster(FileUtils.applyOutput(fileName));
+        	}catch(Exception e){
+        		
+        	}
+    	
+    	setCrs(epsg);
+    	raster.setCRS(crs);
     }
    
     public Polygon getBoundaries(){
@@ -58,6 +71,32 @@ public class RasterFile{
 		return new Polygon(lr, null, SpatialManager.geometryFactory());
 
     }
+    
+    /**
+	 * Decodes the EPSG String to obtain the corresponding CRS and obtains a
+	 * MathTransform if the model's CRS is different.
+	 * 
+	 * @param epsg
+	 *            The coordinate system in text format. Ex: "EPSG:4326"
+	 */
+	protected void setCrs(String epsgCode) {
+		try {
+			crs = CRS.decode(epsgCode);
+			Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, 
+					Boolean.TRUE);
+			
+
+		
+			
+		} catch (NoSuchAuthorityCodeException e) {
+			System.out.println("Unknown EPSG code : "
+					+ epsgCode);
+		} catch (FactoryException e) {
+			System.out.println(
+					"Failed to build the coordinate system :" + epsgCode);
+			e.printStackTrace();
+		}
+	}
     public void setFileName(String fileName){
     	try{
         raster = new ORaster(FileUtils.applyOutput(fileName));
@@ -89,6 +128,20 @@ public class RasterFile{
     
     protected Grid createGrid(List<String> properties, Shapefile shp, String gridName){
     	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), shp.getBounds());
+        fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+        grid.copy(raster, propMatched);
+        return grid;
+    }
+    
+    protected Grid createGrid(List<String> properties, List<Geometry> geometries, String gridName){
+    	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBounds(geometries));
+        fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+        grid.copy(raster, propMatched);
+        return grid;
+    }
+    
+    protected Grid createGrid(List<String> properties, Geometry geometry, String gridName){
+    	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBounds(geometry));
         fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
         grid.copy(raster, propMatched);
         return grid;
@@ -182,6 +235,81 @@ public class RasterFile{
     	
     }
     
+    private Polygon getBounds(List<Geometry> geometries) {
+    	
+    	double minX = Double.POSITIVE_INFINITY;
+    	double minY = Double.POSITIVE_INFINITY;
+    	double maxX = Double.NEGATIVE_INFINITY;
+    	double maxY = Double.NEGATIVE_INFINITY;
+    	
+    	for(Geometry g : geometries) {
+    		
+    		for(Coordinate c : g.getCoordinates()) {
+    			if(c.x > maxX) {
+    				maxX = c.x;
+    			}
+    			if(c.y > maxY) {
+    				maxY = c.x;
+    			}
+    			
+    			if(c.x < minX) {
+    				minX = c.x;
+    			}
+    			if(c.x < minY) {
+    				minY = c.x;
+    			}
+    			
+    		}
+    	}
+    	
+    	Coordinate[] coords = new Coordinate[5];
+    	CoordinateSequence cs = new CoordinateArraySequence(coords);
+    	LinearRing lr = new LinearRing(cs, SpatialManager.geometryFactory());
+    	Polygon env = new Polygon(lr, null, SpatialManager.geometryFactory());
+    	return env;
+    	
+    }
+    
+    private Polygon getBounds(Geometry geometry) {
+    	
+    	double minX = Double.POSITIVE_INFINITY;
+    	double minY = Double.POSITIVE_INFINITY;
+    	double maxX = Double.NEGATIVE_INFINITY;
+    	double maxY = Double.NEGATIVE_INFINITY;
+    	
+    	
+    		
+    		for(Coordinate c : geometry.getCoordinates()) {
+    			if(c.x > maxX) {
+    				maxX = c.x;
+    			}
+    			if(c.y > maxY) {
+    				maxY = c.y;
+    			}
+    			
+    			if(c.x < minX) {
+    				minX = c.x;
+    			}
+    			if(c.x < minY) {
+    				minY = c.y;
+    			}
+    			
+    		}
+    	
+    	
+    	Coordinate[] coords = new Coordinate[5];
+    	coords[0] = new Coordinate(minX, minY);
+    	coords[1] = new Coordinate(maxX, minY);
+    	coords[2] = new Coordinate(maxX, maxY);
+    	coords[3] = new Coordinate(minX, maxY);
+    	coords[4] = new Coordinate(minX, minY);
+    	
+    	CoordinateSequence cs = new CoordinateArraySequence(coords);
+    	LinearRing lr = new LinearRing(cs, SpatialManager.geometryFactory());
+    	Polygon env = new Polygon(lr, null, SpatialManager.geometryFactory());
+    	return env;
+    	
+    }
     public void export(List<? extends AbstractEntity> entities, String path, String epsgCode){
     	 AbstractEntity ae = entities.get(0);
     	Cell cell = (Cell)ae.getSpatialType();

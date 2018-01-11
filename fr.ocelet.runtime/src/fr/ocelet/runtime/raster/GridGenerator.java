@@ -24,6 +24,7 @@ import org.geotools.coverage.grid.GridCoverageFactory;
 import com.sun.media.jai.codecimpl.util.RasterFactory;
 import com.vividsolutions.jts.geom.Coordinate;
 
+import fr.ocelet.runtime.geom.ocltypes.Polygon;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.OcltRole;
 
@@ -42,6 +43,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GridGenerator {
 
@@ -136,6 +138,56 @@ public class GridGenerator {
 		double newMaxX = newMinX + (cellWidth * xRes);
 		double newMaxY = newMinY + (cellHeight * yRes);
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
+		//env.setCoordinateReferenceSystem();
+		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
+		GridCoverage2D coverage =  createCoverage(name, raster, env);
+		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
+		grid.setRasterProperties(initProps);
+		grid.setRaster(raster);
+		grid.setXRes(xRes);
+		grid.setYRes(yRes);
+		grid.setWorldBounds(new Double[]{newMinX, newMinY, newMaxX, newMaxY});
+		grid.setEnv(env);
+		grid.setCellShapeType("QUADRILATERAL");
+
+		return grid;
+
+	}
+	
+	public static Grid readSquareGrid(String name, List<String> props,CoordinateReferenceSystem crs, double xRes, double yRes,Double[] bounds){	
+
+		double minX = bounds[0];
+		double minY = bounds[1];
+		double maxX = bounds[2];
+		double maxY = bounds[3];
+		return readSquareGrid(name, props, crs,xRes, yRes, minX, minY, maxX, maxY);
+
+	}
+	public static Grid readSquareGrid(String name, List<String> props, CoordinateReferenceSystem crs,double xRes, double yRes, double minX, double minY, double maxX, double maxY){
+
+
+		HashMap<String, Integer> initProps = new HashMap<String, Integer>();
+
+		int index = 0;
+		for(String s : props){
+			initProps.put(s, index);
+			index ++;
+		}
+		double nminX = minX - xRes;
+		double nminY = minY - yRes;
+		double nmaxX = maxX;
+		double nmaxY = maxY;
+		double width = nmaxX - nminX;
+		double height = nmaxY - nminY;
+
+		int cellWidth = (int)(Math.round(width / (xRes))) + 2;
+		int cellHeight = (int) (Math.round(height / (yRes))) + 2;	
+		double newMinX = nminX;
+		double newMinY = nminY;
+		double newMaxX = newMinX + (cellWidth * xRes);
+		double newMaxY = newMinY + (cellHeight * yRes);
+		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
+		//env.setCoordinateReferenceSystem();
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
 		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
@@ -340,9 +392,10 @@ public class GridGenerator {
 		grid.setRaster(newRaster);
 		grid.setXRes(xRes);
 		grid.setYRes(yRes);
-
+		env.setCoordinateReferenceSystem(raster.getCRS());
 		grid.setWorldBounds(new Double[]{newMinX, newMinY, newMaxX, newMaxY});
 		grid.setEnv(env);
+		grid.setCRS(raster.getCRS());
 		grid.setCellShapeType("QUADRILATERAL");
 
 
@@ -356,6 +409,18 @@ public class GridGenerator {
 		double minY = bounds[1];
 		double maxX = bounds[2];
 		double maxY = bounds[3];
+
+		return squareGridFromShp(name, props,raster, xRes, yRes, minX, minY, maxX, maxY);
+
+	}
+	
+	public static Grid squareGridFromShp(String name, List<String> props,ORaster raster, double xRes, double yRes,Polygon polygon){	
+		
+		Coordinate[] coords = polygon.getCoordinates();
+		double minX = coords[0].x;
+		double minY =  coords[0].y;
+		double maxX =  coords[2].x;
+		double maxY =  coords[2].y;
 
 		return squareGridFromShp(name, props,raster, xRes, yRes, minX, minY, maxX, maxY);
 
@@ -379,8 +444,10 @@ public class GridGenerator {
 			initProps.put(s, index);
 			index ++;
 		}
-		Envelope2D env = initRaster.getGridGeometry().getEnvelope2D();
-
+		Envelope2D targetEnv = initRaster.getGridGeometry().getEnvelope2D();
+		Envelope2D env = createEnvelope(targetEnv.getMinX(), targetEnv.getMinY(),targetEnv.getMaxX(), targetEnv.getMaxY());
+		//env.setCoordinateReferenceSystem(initRaster.getCRS());
+	
 		int[] rasterCoordMin = new int[]{initRaster.getMinPixel(0), initRaster.getMinPixel(1)};
 		int[] rasterCoordMax = new int[]{initRaster.getMaxPixel(0), initRaster.getMaxPixel(1)};
 
@@ -399,7 +466,7 @@ public class GridGenerator {
 		int cellWidth = rasterCoordMax[0] - rasterCoordMin[0];
 		int cellHeight = rasterCoordMax[1] - rasterCoordMin[1];		
 		cellWidth =initRaster.getWritableRaster().getWidth();
-
+		
 		cellHeight = initRaster.getWritableRaster().getHeight();
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
@@ -412,6 +479,7 @@ public class GridGenerator {
 
 		grid.setWorldBounds(new Double[]{nminX, nminY, nmaxX, nmaxY});
 		grid.setEnv(env);
+		grid.setCRS(initRaster.getCRS());
 		grid.setCellShapeType("QUADRILATERAL");
 
 		return grid;

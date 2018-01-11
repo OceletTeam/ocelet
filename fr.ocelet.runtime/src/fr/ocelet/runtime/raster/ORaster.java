@@ -53,6 +53,7 @@ import org.geotools.referencing.CRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 // Referenced classes of package fr.ocelet.runtime.raster:
@@ -70,6 +71,7 @@ public class ORaster {
     private AbstractGridCoverage2DReader reader;
     private GridGeometry2D geometry2D;
     private Double[] bounds = new Double[4];
+    private CoordinateReferenceSystem crs;
 
     public ORaster(File file){
     
@@ -84,6 +86,14 @@ public class ORaster {
         bounds[3] = getMaximum(1);
           
         setPixelsize();
+    }
+    
+    public void setCRS(CoordinateReferenceSystem crs) {
+    	this.crs = crs;
+    }
+    
+    public CoordinateReferenceSystem getCRS() {
+    	return crs;
     }
 
     public ORaster(String path){

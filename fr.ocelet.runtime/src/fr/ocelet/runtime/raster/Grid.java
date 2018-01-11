@@ -58,6 +58,7 @@ import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.opengis.geometry.DirectPosition;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
@@ -100,6 +101,7 @@ public class Grid {
 	private GeomSetter geomSetter = new GeomSetter();
 	private MrmSetter mrmSetter = new MrmSetter();
 	private Double[] worldBoundsPrime;
+	private CoordinateReferenceSystem crs;
 
 
 
@@ -120,6 +122,13 @@ public class Grid {
 		}      
 	}
 
+	public void setCRS(CoordinateReferenceSystem crs) {
+		this.crs = crs;
+	}
+	
+	public CoordinateReferenceSystem getCRS() {
+		return crs;
+	}
 	public int getPropBand(String name){
 		return ((Integer)rasterProps.get(name)).intValue();
 	}
@@ -754,11 +763,21 @@ public class Grid {
 		int bounds[] = new int[4];
 		Coordinate cBounds[] = cboundary(polygon);
 		
-		int[] gridCoord1 = gridCoordinate(cBounds[0].x, cBounds[1].y);
-		int[] gridCoord2 = gridCoordinate(cBounds[1].x, cBounds[0].y);
-
+		
+		int[] gridCoord1 = null;
+		int[] gridCoord2 = null;
+		
+		try {
+		gridCoordinate(cBounds[0].x, cBounds[1].y);
+		}catch(Exception e) {
 			
-
+		}
+		
+		try {
+		gridCoordinate(cBounds[1].x, cBounds[0].y);
+		}catch(Exception e) {
+			
+		}
 		if(gridCoord1 == null){
 			bounds[0] = 0;
 			bounds[1] = 0; 
