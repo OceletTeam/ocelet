@@ -88,7 +88,7 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
 
 	@Override
 	public void init() {
-	if(size > 1){
+	if(size > 0){
 		for(int i = 0; i < size + 1; i ++){
 			CellValues[] cv = new CellValues[grid.getWidth()];
 			cvArray.add(cv);
