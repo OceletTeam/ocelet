@@ -32,6 +32,7 @@ import fr.ocelet.lang.ocelet.Parameter;
 import fr.ocelet.lang.ocelet.Parampart;
 import fr.ocelet.lang.ocelet.PropertyDef;
 import fr.ocelet.lang.ocelet.Rangevals;
+import fr.ocelet.lang.ocelet.RelPropertyDef;
 import fr.ocelet.lang.ocelet.StrucEln;
 import fr.ocelet.lang.ocelet.StrucVarDef;
 import fr.ocelet.lang.ocelet.Strucdef;
@@ -48,6 +49,39 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  */
 @SuppressWarnings("all")
 public class OceletValidator extends AbstractOceletValidator {
+  /**
+   * Property names must not begin with an uppercase letter
+   */
+  @Check
+  public void checkPropertyNameLowercase(final PropertyDef pdef) {
+    boolean _isUpperCase = Character.isUpperCase(pdef.getName().charAt(0));
+    if (_isUpperCase) {
+      this.error("The name of a property must not begin with an upper case character. Thank you.", OceletPackage.Literals.ENTITY_ELEMENTS__NAME);
+    }
+  }
+  
+  /**
+   * Property names must not begin with an uppercase letter
+   */
+  @Check
+  public void checkRelPropertyNameLowercase(final RelPropertyDef rpdef) {
+    boolean _isUpperCase = Character.isUpperCase(rpdef.getName().charAt(0));
+    if (_isUpperCase) {
+      this.error("The name of a property must not begin with an upper case character. Thank you.", OceletPackage.Literals.REL_ELEMENTS__NAME);
+    }
+  }
+  
+  /**
+   * Structure variable  names must not begin with an uppercase letter
+   */
+  @Check
+  public void checkStrucVarNameLowercase(final StrucVarDef svd) {
+    boolean _isUpperCase = Character.isUpperCase(svd.getName().charAt(0));
+    if (_isUpperCase) {
+      this.error("The variable name of a structure must not begin with an upper case character. Thank you.", OceletPackage.Literals.STRUC_ELN__NAME);
+    }
+  }
+  
   /**
    * Makes sure that every datafacer match definition is defined in the
    * corresponding entity (or structure)

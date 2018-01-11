@@ -6,5 +6,6 @@ bin/
 worklog.*
 worknotes.*
 doc/gfx/
-xtend-gen
+xtend-gen/
 **/*.xtendbin
+**/*._trace
