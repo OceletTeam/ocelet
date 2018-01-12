@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.geotools.coverageio.gdal.aig.AIGFormat;
 
@@ -64,7 +65,11 @@ public class List<T> extends ArrayList<T> {
 	public boolean addAll(Collection<? extends T> list) {
 		return observer.addAll(list);//super.addAll((Collection<? extends T>)list);
 	}
-	
+	@Override
+	public boolean addAll(int index, Collection<? extends T> list) {
+		
+		 return observer.addAll(index, list);
+	}
 	
 	public int frequency(T obj) {
 		return observer.frequency(obj);
@@ -101,101 +106,10 @@ public class List<T> extends ArrayList<T> {
 		return las;
 	}
 
-	public class Observer extends ArrayInterface<T>{
-		
-		private ArrayInterface<T> ai;
-		
-		public Observer(){
-			ai = new ArrayInterface<T>();
-		}
-		
-		@Override
-		public boolean add(T value){
-			instanciate(value);
-			
-			return observer.add(value);
-		}
-		
-		public void instanciate(T value){
-			if(value instanceof AbstractEntity){
-				AbstractEntity ae = (AbstractEntity)value;
-				if(ae.getSpatialType() instanceof Cell){
-					ai = new CellArray<T>(value);
-				}
-			} else {
-					ai = new NormalArray<T>();
-				}
-			observer = ai;
-		}
-		
-		public void instanciateGetter(){
-			if(ai.size() > 0){
-				
-			}
-		}
-
-		public void addFill(int numberOfObjects, T value) {
-			instanciate(value);
-			observer.addFill(numberOfObjects, value);	
-		}
-
-		public boolean addU(T obj) {
-			instanciate(obj);
-			return observer.addU(obj);
-		}
-		@Override
-		public boolean addAll(Collection<? extends T> list) {
-			if(list.size() > 0)
-				instanciate(((List<T>)list).get(0));
-			 return ai.addAll(list);
-		}
-
-
-		public int frequency(T obj) {
-			return ai.frequency(obj);
-		}
-
-
-		public void reverse() {
-			ai.reverse();
-		}
-
-
-		public void shuffle() {
-			ai.shuffle();
-		}
-
-
-		public void rotate(int distance) {
-			ai.rotate(distance);
-		}
-
-
-		public void swap(int i, int j) {
-			ai.swap(i,  j);
-		}
-		
-		
-
-
-		public <U> List<U> of(U... u) {
-			List<U> las = new List<U>();
-			if (u != null)
-				for (U p : u) {
-					las.add(p);
-				}
-			return las;
-		}
-		@Override
-		public T get(int index) {			
-			return ai.get(index);
-		}
-		
-		
-
-
+	@Override 
+	public boolean retainAll(Collection<?> c) {
+		return observer.retainAll(c);
 	}
-
 	@Override
 	public Iterator<T> iterator(){
 		return observer.iterator();
@@ -256,8 +170,38 @@ public class List<T> extends ArrayList<T> {
 	}
 	
 	@Override
+	public ListIterator<T> listIterator(int index){
+		return observer.listIterator(index);
+	}
+	
+	@Override
+	public ListIterator<T> listIterator(){
+		return observer.listIterator();
+	}
+	
+	@Override
+	public void ensureCapacity(int min){
+		 observer.ensureCapacity(min);
+	}
+	
+	@Override
 	public boolean removeAll(Collection<?> c){
 		return observer.removeAll(c);
+	}
+	
+	@Override
+	public Object clone() {
+		
+		Object o = observer.clone();
+		List<T> newlist = new List<T>();
+		newlist.setObserver((ArrayInterface<T>)o);
+		return newlist;
+	}
+	
+public void setObserver(ArrayInterface<T> obs){
+		
+		this.observer = obs;
+
 	}
 	
 	@Override
@@ -283,15 +227,119 @@ public class List<T> extends ArrayList<T> {
 		return observer.toArray();
 	}
 	
-	/*@Override
-	public List<T> sort(){
-		List<T> list = new List<T>();
-		for(T t : observer){
-			list.add(t);
+	@Override
+	public <R> R[] toArray(R[] a){
+		return observer.toArray(a);
+	}
+
+	@Override 
+	public void trimToSize() {
+		observer.trimToSize();
+	}
+	public class Observer extends ArrayInterface<T>{
+		
+		private ArrayInterface<T> ai;
+		
+		public Observer(){
+			ai = new ArrayInterface<T>();
 		}
-		Collections.sort(list);
-		return (List<T>)observer.sort();
-	}*/
+		
+		@Override
+		public boolean add(T value){
+			instanciate(value);
+			
+			return observer.add(value);
+		}
+		
+		public void instanciate(T value){
+			if(value instanceof AbstractEntity){
+				AbstractEntity ae = (AbstractEntity)value;
+				if(ae.getSpatialType() instanceof Cell){
+					ai = new CellArray<T>(value);
+				}
+			} else {
+					ai = new NormalArray<T>();
+				}
+			observer = ai;
+		}
+		
+		public void instanciateGetter(){
+			if(ai.size() > 0){
+				
+			}
+		}
+
+		public void addFill(int numberOfObjects, T value) {
+			instanciate(value);
+			observer.addFill(numberOfObjects, value);	
+		}
+
+		public boolean addU(T obj) {
+			instanciate(obj);
+			return observer.addU(obj);
+		}
+		@Override
+		public boolean addAll(Collection<? extends T> list) {
+			if(list.size() > 0)
+				instanciate(((List<T>)list).get(0));
+			 return ai.addAll(list);
+		}
+		
+		@Override
+		public boolean addAll(int index, Collection<? extends T> list) {
+			if(list.size() > 0)
+				instanciate(((List<T>)list).get(0));
+			 return ai.addAll(index, list);
+		}
+
+
+		public int frequency(T obj) {
+			return ai.frequency(obj);
+		}
+
+
+		public void reverse() {
+			ai.reverse();
+		}
+
+
+		public void shuffle() {
+			ai.shuffle();
+		}
+
+
+		public void rotate(int distance) {
+			ai.rotate(distance);
+		}
+
+
+		public void swap(int i, int j) {
+			ai.swap(i,  j);
+		}
+		
+		
+
+
+		public <U> List<U> of(U... u) {
+			List<U> las = new List<U>();
+			if (u != null)
+				for (U p : u) {
+					las.add(p);
+				}
+			return las;
+		}
+		@Override
+		public T get(int index) {			
+			return ai.get(index);
+		}
+		
+		
+
+
+	}
+	
+	
+	
 	
 	
 
