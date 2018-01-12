@@ -21,6 +21,7 @@
 package fr.ocelet.lang.validation;
 
 import com.google.common.base.Objects;
+import fr.ocelet.lang.ocelet.Datafacer;
 import fr.ocelet.lang.ocelet.Entity;
 import fr.ocelet.lang.ocelet.EntityElements;
 import fr.ocelet.lang.ocelet.Match;
@@ -37,6 +38,7 @@ import fr.ocelet.lang.ocelet.StrucEln;
 import fr.ocelet.lang.ocelet.StrucVarDef;
 import fr.ocelet.lang.ocelet.Strucdef;
 import fr.ocelet.lang.validation.AbstractOceletValidator;
+import java.util.ArrayList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.validation.Check;
@@ -49,6 +51,30 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  */
 @SuppressWarnings("all")
 public class OceletValidator extends AbstractOceletValidator {
+  private final static ArrayList<String> ldn = new ArrayList<String>();
+  
+  /**
+   * Make sure the given datafacer type does exist
+   */
+  @Check
+  public void checkDatafacerType(final Datafacer df) {
+    int _size = OceletValidator.ldn.size();
+    boolean _equals = (_size == 0);
+    if (_equals) {
+      OceletValidator.ldn.add("Csvfile");
+      OceletValidator.ldn.add("KmlExport");
+      OceletValidator.ldn.add("Postgis");
+      OceletValidator.ldn.add("RasterFile");
+      OceletValidator.ldn.add("Shapefile");
+      OceletValidator.ldn.add("TemporalSeriesFile");
+    }
+    boolean _contains = OceletValidator.ldn.contains(df.getStoretype());
+    boolean _not = (!_contains);
+    if (_not) {
+      this.error("Unknown datafacer type.", OceletPackage.Literals.DATAFACER__STORETYPE);
+    }
+  }
+  
   /**
    * Property names must not begin with an uppercase letter
    */

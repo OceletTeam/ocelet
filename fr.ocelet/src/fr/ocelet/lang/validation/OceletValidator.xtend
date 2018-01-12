@@ -20,6 +20,7 @@
 */
 package fr.ocelet.lang.validation
 
+import fr.ocelet.lang.ocelet.Datafacer
 import fr.ocelet.lang.ocelet.Entity
 import fr.ocelet.lang.ocelet.Match
 import fr.ocelet.lang.ocelet.Mdef
@@ -39,6 +40,27 @@ import org.eclipse.xtext.validation.Check
  * @author Pascal Degenne - Initial contribution
  */
 class OceletValidator extends AbstractOceletValidator {
+
+val static ldn = new java.util.ArrayList<String>
+
+
+/**
+ * Make sure the given datafacer type does exist
+ */
+@Check
+def checkDatafacerType(Datafacer df) {
+  if (ldn.size == 0) {
+    ldn.add("Csvfile")
+    ldn.add("KmlExport")
+    ldn.add("Postgis")
+    ldn.add("RasterFile")
+    ldn.add("Shapefile")
+    ldn.add("TemporalSeriesFile")
+  }
+  if (!ldn.contains(df.storetype)) {
+  	error("Unknown datafacer type.",OceletPackage.Literals.DATAFACER__STORETYPE)
+  }
+}
 
 /**
  * Property names must not begin with an uppercase letter
