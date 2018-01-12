@@ -256,6 +256,11 @@ public class List<T> extends ArrayList<T> {
 	}
 	
 	@Override
+	public boolean removeAll(Collection<?> c){
+		return observer.removeAll(c);
+	}
+	
+	@Override
 	public T set(int index, T element){
 		return observer.set(index, element);
 	}

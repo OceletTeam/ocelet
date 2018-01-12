@@ -366,10 +366,10 @@ public class GridGenerator {
 		nmaxX = finalMaxX + xRes / 2 + 2 * xRes;
 		nmaxY = finalMaxY + yRes / 2 + 2 * yRes;*/
 
-		nminX = finalMinX - 2*xRes;
-		nminY = finalMinY - 2 * yRes;
-		nmaxX = finalMaxX + 2 * xRes;
-		nmaxY = finalMaxY + 2 * yRes;
+		nminX = finalMinX - xRes/2 - 2*xRes;
+		nminY = finalMinY - yRes / 2 - 2 * yRes;
+		nmaxX = finalMaxX + xRes / 2 + 2 * xRes;
+		nmaxY = finalMaxY +yRes / 2+ 2 * yRes;
 
 		double newMinX = nminX;// - 2*xRes;
 		double newMinY = nminY; // - 2*yRes;
