@@ -95,7 +95,7 @@ public class ORaster {
     public CoordinateReferenceSystem getCRS() {
     	return crs;
     }
-
+   
     public ORaster(String path){
     
         range = new int[4];
@@ -127,7 +127,7 @@ public class ORaster {
         this.pY = pY;
  						   
     }
-
+    
     public Grid getGrid(double minX, double minY, double maxX, double maxY)
     {
         Grid grid = new Grid(minX, minY, maxX, maxY, getMaxPixel(1), getCoverage().getGridGeometry());
@@ -139,7 +139,9 @@ public class ORaster {
         grid.setYRes((int)pY);
         return grid;
     }
-   
+   public Double[] getWorldBounds() {
+	   return bounds;
+   }
     public double[] gridToWorld(int x, int y){
     	GridCoordinates2D gc = new GridCoordinates2D(x, y);
     	DirectPosition dp = null;

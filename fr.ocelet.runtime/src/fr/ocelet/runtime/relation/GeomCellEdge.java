@@ -280,6 +280,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		if(bounds[3] < grid.getHeight() - 1){
 			bounds[3] = bounds[3] + 1;
 		}
+		if(bounds[0] > 0) {
+			bounds[0] = bounds[0] - 1;
+		}
+		
+		if(bounds[2] < grid.getWidth() - 1) {
+			bounds[2] = bounds[2] + 1;
+		}
 
 		for(int j = bounds[1]; j < bounds[3]; j++){
 
@@ -336,6 +343,21 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 		int bounds[] = grid.intBounds(polygon);
 		int index = 0;
+		
+		if(bounds[1] > 0){
+			bounds[1] = bounds[1] - 1;
+		}
+
+		if(bounds[3] < grid.getHeight() - 1){
+			bounds[3] = bounds[3] + 1;
+		}
+		if(bounds[0] > 0) {
+			bounds[0] = bounds[0] - 1;
+		}
+		
+		if(bounds[2] < grid.getWidth() - 1) {
+			bounds[2] = bounds[2] + 1;
+		}
 		for(int i = bounds[0]; i <= bounds[2]; i++){
 
 			for(int j = bounds[1]; j <= bounds[3]; j++){
@@ -413,7 +435,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		if(index == 0)
 		{
 			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
-			add(r2, scaledCentroid[0], scaledCentroid[1]);
+			if(scaledCentroid[0] < grid.getWidth() && scaledCentroid[0] >= 0 && scaledCentroid[1] < grid.getHeight() && scaledCentroid[1] >=0) {
+				add(r2, scaledCentroid[0], scaledCentroid[1]);
+			}
 		}
 	}
 
@@ -475,7 +499,14 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		if(bounds[3] < grid.getHeight() - 1){
 			bounds[3] = bounds[3] + 1;
 		}
-
+		if(bounds[0] > 0) {
+			bounds[0] = bounds[0] - 1;
+		}
+		
+		if(bounds[2] < grid.getWidth() - 1) {
+			bounds[2] = bounds[2] + 1;
+		}
+	
 		for(int j = bounds[1]; j < bounds[3]; j++){
 
 			for(int i = bounds[0]; i < bounds[2]; i ++){
@@ -491,11 +522,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				
 				CoordinateSequence seq = new CoordinateArraySequence(new Coordinate[]{c});
 				Point p = new Point(seq, SpatialManager.geometryFactory());
-				if(polygon.distance(p) < grid.getXRes() / 2){
+				if(polygon.distance(p) <= grid.getXRes() / 2){
 					add(r2, i, j );
 					index++;
 				}
 				}
+				
+			
 			}
 
 
