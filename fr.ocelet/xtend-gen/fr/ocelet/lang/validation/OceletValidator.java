@@ -21,6 +21,7 @@
 package fr.ocelet.lang.validation;
 
 import com.google.common.base.Objects;
+import fr.ocelet.lang.ocelet.Comitexpr;
 import fr.ocelet.lang.ocelet.Datafacer;
 import fr.ocelet.lang.ocelet.Entity;
 import fr.ocelet.lang.ocelet.EntityElements;
@@ -51,6 +52,26 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  */
 @SuppressWarnings("all")
 public class OceletValidator extends AbstractOceletValidator {
+  /**
+   * Agg : does the given property exist ?
+   */
+  @Check
+  public void checkAggProperties(final Comitexpr ce) {
+    final String prop = ce.getProp();
+    boolean res = false;
+    EList<EntityElements> _entelns = ce.getRol().getType().getEntelns();
+    for (final EntityElements eln : _entelns) {
+      int _compareTo = eln.getName().compareTo(prop);
+      boolean _equals = (_compareTo == 0);
+      if (_equals) {
+        res = true;
+      }
+    }
+    if ((!res)) {
+      this.error(("Unkown property " + prop), OceletPackage.Literals.COMITEXPR__PROP);
+    }
+  }
+  
   private final static ArrayList<String> ldn = new ArrayList<String>();
   
   /**

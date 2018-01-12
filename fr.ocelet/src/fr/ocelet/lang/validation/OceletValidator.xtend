@@ -21,6 +21,7 @@
 package fr.ocelet.lang.validation
 
 import fr.ocelet.lang.ocelet.Datafacer
+import fr.ocelet.lang.ocelet.Comitexpr
 import fr.ocelet.lang.ocelet.Entity
 import fr.ocelet.lang.ocelet.Match
 import fr.ocelet.lang.ocelet.Mdef
@@ -41,8 +42,19 @@ import org.eclipse.xtext.validation.Check
  */
 class OceletValidator extends AbstractOceletValidator {
 
-val static ldn = new java.util.ArrayList<String>
+/**
+ * Agg : does the given property exist ?
+ */
+@Check
+def checkAggProperties(Comitexpr ce) {
+  val prop = ce.getProp
+  var res = false
+  for (eln:ce.getRol.getType.entelns)  if (eln.name.compareTo(prop) == 0) res = true
+  if (!res) error('Unkown property '+prop,OceletPackage.Literals.COMITEXPR__PROP)
+}
 
+// List of datafacer types. See checkDatafacerType()
+val static ldn = new java.util.ArrayList<String>
 
 /**
  * Make sure the given datafacer type does exist
