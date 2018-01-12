@@ -506,10 +506,10 @@ public class GridGenerator {
 		double l = (Math.sqrt(3) / 2) * size;
 		
 		l = (Math.sqrt(3) * size / 3) + (Math.sqrt(3) * size / 6); 
-		double nminX = minX   - 2 * size;
-		double nminY = minY - (2 * l);
-		double nmaxX = maxX  + 2 * size;
-		double nmaxY = maxY +  2 * l;
+		double nminX = minX   - 3 * size;
+		double nminY = minY - (3 * l);
+		double nmaxX = maxX  + 3 * size;
+		double nmaxY = maxY +  3 * l;
 		
 		
 		double width = (nmaxX - nminX);

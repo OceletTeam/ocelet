@@ -280,8 +280,8 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 		}else{
 			
-			if(grid1.getWidth() < grid2.getWidth()){        
-
+			//if(grid1.getWidth() < grid2.getWidth()){        
+			if(grid1.getWidth() * grid1.getHeight() < grid2.getWidth() * grid2.getHeight()){  
 				globalGrid = grid1;
 				grid = grid2;
 
@@ -455,7 +455,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 	public boolean hasNext(){
 
 		if(equalGrid){
-			if(x == endX - 1 && y == endY - 1){
+			if(x == endX - 1 && y == endY){
 
 				x = startX;
 				y = startY;
@@ -467,7 +467,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				return true;
 			}
 		}
-		if((x2 == endX2 - 1 && y2 == endY2 - 1)){// || (x == endX && y == endY)){
+		if((x2 == endX2 - 1 && y2 == endY2)){// || (x == endX && y == endY)){
 
 			//globalSynchronisation();
 			finalSynchronisation();

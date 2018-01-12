@@ -523,7 +523,7 @@ public class Grid {
 		LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
 		Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
 		//return gCoord;
-		if(poly.contains(point)){
+		if(poly.contains(point) || poly.touches(point)){
 			return gCoord;
 		}else{
 			if(gCoord[0] - 1 >= 0 && gCoord[1] < height){
@@ -571,7 +571,7 @@ public class Grid {
 			CoordinateSequence cs = new CoordinateArraySequence(coords);
 			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
 			Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-			if(poly.contains(point)){
+			if(poly.contains(point) || poly.touches(point)){
 				return gCoord;
 			}else{
 				if(gCoord[0] - 1 >= 0){
@@ -582,7 +582,7 @@ public class Grid {
 					lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
 					poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-					if(poly.contains(point)){
+					if(poly.contains(point) || poly.touches(point)){
 						return new int[]{gCoord[0] - 1, gCoord[1]};
 					}
 				}
@@ -594,7 +594,7 @@ public class Grid {
 					lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
 					poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-					if(poly.contains(point)){
+					if(poly.contains(point) || poly.touches(point)){
 						return new int[]{gCoord[0] - 1, gCoord[1] - 1};
 					}
 				}
@@ -610,7 +610,7 @@ public class Grid {
 			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
 			Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-			if(poly.contains(point)){
+			if(poly.contains(point) || poly.touches(point)){
 				return new int[]{gCoord[0], gCoord[1]};
 			}
 			if(gCoord[0] -1 >=0 && gCoord[1] < height - 1){
@@ -621,7 +621,7 @@ public class Grid {
 				lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
 				poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-				if(poly.contains(point)){
+				if(poly.contains(point)|| poly.touches(point)){
 					return new int[]{gCoord[0] - 1, gCoord[1]};
 				}
 
@@ -634,7 +634,7 @@ public class Grid {
 				lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
 				poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-				if(poly.contains(point)){
+				if(poly.contains(point) || poly.touches(point)){
 					return new int[]{gCoord[0], gCoord[1] - 1};
 				}
 			}
