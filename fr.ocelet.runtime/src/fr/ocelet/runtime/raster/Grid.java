@@ -419,7 +419,7 @@ public class Grid {
 		
 		Coordinate c = new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
 		c = gridCoordinate(x, y);
-		//System.out.println("DP TOP "+c);
+	
 		//double dx = ((c.x - initCoordinates.x) / 2) + initCoordinates.x;// -xRes;
 		double dx = (c.x + initCoordinates.x + (xRes / 2)) / 2;
 		dx =  worldBounds[0]+ (((c.x - worldBounds[0]) * (worldBounds[2] - worldBounds[0])) / (worldBoundsPrime[2] - worldBounds[0]));
@@ -457,7 +457,6 @@ public class Grid {
 		double dy = c.y;*/
 		
 		Coordinate c = new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
-		//System.out.println("DP Down "+c);
 		c = gridCoordinate(x, y);
 		//double dx = ((c.x - initCoordinates.x) / 2) + initCoordinates.x;// - xRes;
 		double dx = (c.x + initCoordinates.x + (xRes / 2)) / 2;
@@ -514,7 +513,6 @@ public class Grid {
 			gCoord[0] = gc.x - 2;
 		}*/
 		gCoord[1] = gc.y;
-	//	System.out.println("gCoord "+gCoord[0]+" "+gCoord[1]);
 		Coordinate[] coord = new Coordinate[]{new Coordinate(x, y)};
 		CoordinateSequence pointSequence = new CoordinateArraySequence(coord);
 		Point point = new Point(pointSequence, SpatialManager.geometryFactory());
@@ -840,11 +838,8 @@ public class Grid {
 			bounds[2] = gridCoord2[0];
 			bounds[3] = gridCoord2[1];
 		}
+
 		
-		
-		
-		
-			//System.out.println("bounds "+gridCoord1[0]+" "+gridCoord1[1]+" "+gridCoord2[0]+" "+gridCoord2[1]);
 		return bounds;
 	}
 
