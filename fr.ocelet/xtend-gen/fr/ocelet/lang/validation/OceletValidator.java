@@ -21,6 +21,7 @@
 package fr.ocelet.lang.validation;
 
 import com.google.common.base.Objects;
+import fr.ocelet.lang.ocelet.Agregdef;
 import fr.ocelet.lang.ocelet.Comitexpr;
 import fr.ocelet.lang.ocelet.Datafacer;
 import fr.ocelet.lang.ocelet.Entity;
@@ -28,6 +29,8 @@ import fr.ocelet.lang.ocelet.EntityElements;
 import fr.ocelet.lang.ocelet.Match;
 import fr.ocelet.lang.ocelet.Matchtype;
 import fr.ocelet.lang.ocelet.Mdef;
+import fr.ocelet.lang.ocelet.ModEln;
+import fr.ocelet.lang.ocelet.Model;
 import fr.ocelet.lang.ocelet.OceletPackage;
 import fr.ocelet.lang.ocelet.Paramdefa;
 import fr.ocelet.lang.ocelet.Parameter;
@@ -35,6 +38,8 @@ import fr.ocelet.lang.ocelet.Parampart;
 import fr.ocelet.lang.ocelet.PropertyDef;
 import fr.ocelet.lang.ocelet.Rangevals;
 import fr.ocelet.lang.ocelet.RelPropertyDef;
+import fr.ocelet.lang.ocelet.Relation;
+import fr.ocelet.lang.ocelet.Scenario;
 import fr.ocelet.lang.ocelet.StrucEln;
 import fr.ocelet.lang.ocelet.StrucVarDef;
 import fr.ocelet.lang.ocelet.Strucdef;
@@ -52,6 +57,156 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  */
 @SuppressWarnings("all")
 public class OceletValidator extends AbstractOceletValidator {
+  @Check
+  public void checkDuplicateEntity(final Entity ent) {
+    EObject _eContainer = ent.eContainer();
+    final Model meln = ((Model) _eContainer);
+    int ecount = 0;
+    EList<ModEln> _modelns = meln.getModelns();
+    for (final ModEln eln : _modelns) {
+      boolean _matched = false;
+      if (eln instanceof Entity) {
+        _matched=true;
+        int _compareTo = ((Entity)eln).getName().compareTo(ent.getName());
+        boolean _equals = (_compareTo == 0);
+        if (_equals) {
+          ecount++;
+        }
+      }
+    }
+    if ((ecount > 1)) {
+      String _name = ent.getName();
+      String _plus = ("An entity named " + _name);
+      String _plus_1 = (_plus + " already exists in this model.");
+      this.error(_plus_1, OceletPackage.Literals.ENTITY__NAME);
+    }
+  }
+  
+  @Check
+  public void checkDuplicateDatafacer(final Datafacer daf) {
+    EObject _eContainer = daf.eContainer();
+    final Model meln = ((Model) _eContainer);
+    int ecount = 0;
+    EList<ModEln> _modelns = meln.getModelns();
+    for (final ModEln eln : _modelns) {
+      boolean _matched = false;
+      if (eln instanceof Datafacer) {
+        _matched=true;
+        int _compareTo = ((Datafacer)eln).getName().compareTo(daf.getName());
+        boolean _equals = (_compareTo == 0);
+        if (_equals) {
+          ecount++;
+        }
+      }
+    }
+    if ((ecount > 1)) {
+      String _name = daf.getName();
+      String _plus = ("A datafacer named " + _name);
+      String _plus_1 = (_plus + " already exists in this model.");
+      this.error(_plus_1, OceletPackage.Literals.DATAFACER__NAME);
+    }
+  }
+  
+  @Check
+  public void checkDuplicateRelation(final Relation rel) {
+    EObject _eContainer = rel.eContainer();
+    final Model meln = ((Model) _eContainer);
+    int ecount = 0;
+    EList<ModEln> _modelns = meln.getModelns();
+    for (final ModEln eln : _modelns) {
+      boolean _matched = false;
+      if (eln instanceof Relation) {
+        _matched=true;
+        int _compareTo = ((Relation)eln).getName().compareTo(rel.getName());
+        boolean _equals = (_compareTo == 0);
+        if (_equals) {
+          ecount++;
+        }
+      }
+    }
+    if ((ecount > 1)) {
+      String _name = rel.getName();
+      String _plus = ("A relation named " + _name);
+      String _plus_1 = (_plus + " already exists in this model.");
+      this.error(_plus_1, OceletPackage.Literals.RELATION__NAME);
+    }
+  }
+  
+  @Check
+  public void checkDuplicateStructure(final Strucdef stru) {
+    EObject _eContainer = stru.eContainer();
+    final Model meln = ((Model) _eContainer);
+    int ecount = 0;
+    EList<ModEln> _modelns = meln.getModelns();
+    for (final ModEln eln : _modelns) {
+      boolean _matched = false;
+      if (eln instanceof Strucdef) {
+        _matched=true;
+        int _compareTo = ((Strucdef)eln).getName().compareTo(stru.getName());
+        boolean _equals = (_compareTo == 0);
+        if (_equals) {
+          ecount++;
+        }
+      }
+    }
+    if ((ecount > 1)) {
+      String _name = stru.getName();
+      String _plus = ("A structure named " + _name);
+      String _plus_1 = (_plus + " already exists in this model.");
+      this.error(_plus_1, OceletPackage.Literals.STRUCDEF__NAME);
+    }
+  }
+  
+  @Check
+  public void checkDuplicateAgreg(final Agregdef agr) {
+    EObject _eContainer = agr.eContainer();
+    final Model meln = ((Model) _eContainer);
+    int ecount = 0;
+    EList<ModEln> _modelns = meln.getModelns();
+    for (final ModEln eln : _modelns) {
+      boolean _matched = false;
+      if (eln instanceof Agregdef) {
+        _matched=true;
+        int _compareTo = ((Agregdef)eln).getName().compareTo(agr.getName());
+        boolean _equals = (_compareTo == 0);
+        if (_equals) {
+          ecount++;
+        }
+      }
+    }
+    if ((ecount > 1)) {
+      String _name = agr.getName();
+      String _plus = ("An aggregation function named " + _name);
+      String _plus_1 = (_plus + " already exists in this model.");
+      this.error(_plus_1, OceletPackage.Literals.AGREGDEF__NAME);
+    }
+  }
+  
+  @Check
+  public void checkDuplicateScen(final Scenario scn) {
+    EObject _eContainer = scn.eContainer();
+    final Model meln = ((Model) _eContainer);
+    int ecount = 0;
+    EList<ModEln> _modelns = meln.getModelns();
+    for (final ModEln eln : _modelns) {
+      boolean _matched = false;
+      if (eln instanceof Scenario) {
+        _matched=true;
+        int _compareTo = ((Scenario)eln).getName().compareTo(scn.getName());
+        boolean _equals = (_compareTo == 0);
+        if (_equals) {
+          ecount++;
+        }
+      }
+    }
+    if ((ecount > 1)) {
+      String _name = scn.getName();
+      String _plus = ("A scenario named " + _name);
+      String _plus_1 = (_plus + " already exists in this model.");
+      this.error(_plus_1, OceletPackage.Literals.SCENARIO__NAME);
+    }
+  }
+  
   /**
    * Agg : does the given property exist ?
    */

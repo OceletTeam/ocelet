@@ -20,19 +20,24 @@
 */
 package fr.ocelet.lang.validation
 
-import fr.ocelet.lang.ocelet.Datafacer
+import fr.ocelet.lang.ocelet.Agregdef
 import fr.ocelet.lang.ocelet.Comitexpr
+import fr.ocelet.lang.ocelet.Datafacer
 import fr.ocelet.lang.ocelet.Entity
 import fr.ocelet.lang.ocelet.Match
 import fr.ocelet.lang.ocelet.Mdef
+import fr.ocelet.lang.ocelet.Model
 import fr.ocelet.lang.ocelet.OceletPackage
 import fr.ocelet.lang.ocelet.Paramdefa
 import fr.ocelet.lang.ocelet.Parameter
 import fr.ocelet.lang.ocelet.PropertyDef
 import fr.ocelet.lang.ocelet.Rangevals
 import fr.ocelet.lang.ocelet.RelPropertyDef
-import fr.ocelet.lang.ocelet.Strucdef
+import fr.ocelet.lang.ocelet.Relation
+import fr.ocelet.lang.ocelet.Scenario
 import fr.ocelet.lang.ocelet.StrucVarDef
+import fr.ocelet.lang.ocelet.Strucdef
+import java.util.ArrayList
 import org.eclipse.xtext.validation.Check
 
 /**
@@ -41,6 +46,91 @@ import org.eclipse.xtext.validation.Check
  * @author Pascal Degenne - Initial contribution
  */
 class OceletValidator extends AbstractOceletValidator {
+
+@Check
+def checkDuplicateEntity (Entity ent) {
+  val meln = ent.eContainer as Model
+  var ecount = 0
+  for (eln:meln.modelns) {
+  	switch (eln) {
+  	  Entity : {
+  	  	if (eln.name.compareTo(ent.name) == 0) ecount++
+  	  }
+  	}
+  }
+  if (ecount > 1) error("An entity named "+ent.name+" already exists in this model.",OceletPackage.Literals.ENTITY__NAME)
+}
+
+@Check
+def checkDuplicateDatafacer (Datafacer daf) {
+  val meln = daf.eContainer as Model
+  var ecount = 0
+  for (eln:meln.modelns) {
+  	switch (eln) {
+  	  Datafacer : {
+  	  	if (eln.name.compareTo(daf.name) == 0) ecount++
+  	  }
+  	}
+  }
+  if (ecount > 1) error("A datafacer named "+daf.name+" already exists in this model.",OceletPackage.Literals.DATAFACER__NAME)
+}
+
+@Check
+def checkDuplicateRelation (Relation rel) {
+  val meln = rel.eContainer as Model
+  var ecount = 0
+  for (eln:meln.modelns) {
+  	switch (eln) {
+  	  Relation : {
+  	  	if (eln.name.compareTo(rel.name) == 0) ecount++
+  	  }
+  	}
+  }
+  if (ecount > 1) error("A relation named "+rel.name+" already exists in this model.",OceletPackage.Literals.RELATION__NAME)
+}
+
+@Check
+def checkDuplicateStructure (Strucdef stru) {
+  val meln = stru.eContainer as Model
+  var ecount = 0
+  for (eln:meln.modelns) {
+  	switch (eln) {
+  	  Strucdef : {
+  	  	if (eln.name.compareTo(stru.name) == 0) ecount++
+  	  }
+  	}
+  }
+  if (ecount > 1) error("A structure named "+stru.name+" already exists in this model.",OceletPackage.Literals.STRUCDEF__NAME)
+}
+
+@Check
+def checkDuplicateAgreg (Agregdef agr) {
+  val meln = agr.eContainer as Model
+  var ecount = 0
+  for (eln:meln.modelns) {
+  	switch (eln) {
+  	  Agregdef : {
+  	  	if (eln.name.compareTo(agr.name) == 0) ecount++
+  	  }
+  	}
+  }
+  if (ecount > 1) error("An aggregation function named "+agr.name+" already exists in this model.",OceletPackage.Literals.AGREGDEF__NAME)
+}
+
+@Check
+def checkDuplicateScen (Scenario scn) {
+  val meln = scn.eContainer as Model
+  var ecount = 0
+  for (eln:meln.modelns) {
+  	switch (eln) {
+  	  Scenario : {
+  	  	if (eln.name.compareTo(scn.name) == 0) ecount++
+  	  }
+  	}
+  }
+  if (ecount > 1) error("A scenario named "+scn.name+" already exists in this model.",OceletPackage.Literals.SCENARIO__NAME)
+}
+
 
 /**
  * Agg : does the given property exist ?
@@ -54,7 +144,7 @@ def checkAggProperties(Comitexpr ce) {
 }
 
 // List of datafacer types. See checkDatafacerType()
-val static ldn = new java.util.ArrayList<String>
+val static ldn = new ArrayList<String>
 
 /**
  * Make sure the given datafacer type does exist
