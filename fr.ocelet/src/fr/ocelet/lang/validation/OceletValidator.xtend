@@ -131,7 +131,6 @@ def checkDuplicateScen (Scenario scn) {
   if (ecount > 1) error("A scenario named "+scn.name+" already exists in this model.",OceletPackage.Literals.SCENARIO__NAME)
 }
 
-
 /**
  * Agg : does the given property exist ?
  */
@@ -156,6 +155,7 @@ def checkDatafacerType(Datafacer df) {
     ldn.add("KmlExport")
     ldn.add("Postgis")
     ldn.add("RasterFile")
+    ldn.add("RasterExport")
     ldn.add("Shapefile")
     ldn.add("TemporalSeriesFile")
   }

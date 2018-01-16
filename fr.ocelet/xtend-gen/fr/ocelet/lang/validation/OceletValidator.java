@@ -241,6 +241,7 @@ public class OceletValidator extends AbstractOceletValidator {
       OceletValidator.ldn.add("KmlExport");
       OceletValidator.ldn.add("Postgis");
       OceletValidator.ldn.add("RasterFile");
+      OceletValidator.ldn.add("RasterExport");
       OceletValidator.ldn.add("Shapefile");
       OceletValidator.ldn.add("TemporalSeriesFile");
     }
