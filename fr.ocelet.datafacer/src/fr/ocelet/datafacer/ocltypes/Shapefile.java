@@ -264,10 +264,11 @@ public abstract class Shapefile extends GtDatafacer
 				}
 				sfiterator = featureCollection.features();
 			} catch (IOException e) {
-				System.out.println(ERR_HEADER + "Problem while attempting to read the shapefile's content.");
+				System.out.println(ERR_HEADER + "Problem while attempting to read the shapefile: "+getName());
 			}
 		}
-		return sfiterator.hasNext();
+		if (sfiterator != null) return sfiterator.hasNext();
+		else return false;
 	}
 
 	/**
