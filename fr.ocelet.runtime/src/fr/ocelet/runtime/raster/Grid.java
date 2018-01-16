@@ -657,12 +657,12 @@ public class Grid {
 
 			// GridCoordinates2D gc = gridGeometry.worldToGrid(new DirectPosition2D(x - (2 * xRes), y + (2 * yRes)));
 			GridCoordinates2D gc = gridGeometry.worldToGrid(new DirectPosition2D(x, y ));
-
+			
 			gCoord[0] = gc.x;
 			gCoord[1] = gc.y;
 		} catch(TransformException ex) {
-
-			ex.printStackTrace();
+			return null;
+			//ex.printStackTrace();
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
 		return gCoord;

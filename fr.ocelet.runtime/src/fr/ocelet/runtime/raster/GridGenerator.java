@@ -74,10 +74,10 @@ public class GridGenerator {
 
 		double rectangleWidth = size + size / 2;
 		double rectangleHeight = 2 * Math.sqrt( size * size - (size / 2) * (size / 2));
-		double nminX = minX - 2 * rectangleWidth;
-		double nminY = minY - 2 * rectangleHeight;
-		double nmaxX = maxX + 2 * rectangleWidth;
-		double nmaxY = maxY + 2 * rectangleHeight;
+		double nminX = minX;
+		double nminY = minY;
+		double nmaxX = maxX;
+		double nmaxY = maxY;
 		double width = nmaxX - nminX;
 		double height = nmaxY - nminY;
 		int col = (int) Math.round(width / rectangleWidth);
@@ -124,19 +124,34 @@ public class GridGenerator {
 			initProps.put(s, index);
 			index ++;
 		}
-		double nminX = minX - xRes;
-		double nminY = minY - yRes;
+		double nminX = minX;
+		double nminY = minY;
 		double nmaxX = maxX;
 		double nmaxY = maxY;
 		double width = nmaxX - nminX;
 		double height = nmaxY - nminY;
-
-		int cellWidth = (int)(Math.round(width / (xRes))) + 2;
-		int cellHeight = (int) (Math.round(height / (yRes))) + 2;	
+		
+		int iWidth = (int) Math.round(width);
+		int iHeight = (int) Math.round(height);
+		int cellWidth = 0;
+		if(width - iWidth < 0.5) {
+			cellWidth = (int)(Math.round(width / (xRes))) + 1;
+		}else {
+			cellWidth = (int)(Math.round(width / (xRes)));
+		}
+		
+		int cellHeight = 0;
+		
+		if(height - iHeight < 0.5) {
+			cellHeight = (int)(Math.round(height / (yRes))) + 1;
+		}else {
+			cellHeight = (int)(Math.round(height / (yRes)));
+		}
 		double newMinX = nminX;
 		double newMinY = nminY;
 		double newMaxX = newMinX + (cellWidth * xRes);
 		double newMaxY = newMinY + (cellHeight * yRes);
+		
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		//env.setCoordinateReferenceSystem();
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
