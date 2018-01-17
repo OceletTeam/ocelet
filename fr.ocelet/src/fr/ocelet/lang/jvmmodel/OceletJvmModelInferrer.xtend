@@ -181,37 +181,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 							return entityList;
                   		  	'''
                   		]                  	
-                  	  	members += meln.toMethod('readAll'+entname,tabType)[
-                  	  	parameters += meln.toParameter('minX', typeRef('java.lang.Integer'))
-                  	  	parameters += meln.toParameter('minY', typeRef('java.lang.Integer'))
-                  	  	parameters += meln.toParameter('maxX', typeRef('java.lang.Integer'))
-                  	  	parameters += meln.toParameter('maxY', typeRef('java.lang.Integer'))
-                  	  	body='''                 
-                  			«entname» entity = new «entname»(); 
-
-                  			if(grid == null){
-							grid = new Grid(minX, minY, maxX, maxY, getGridGeometry());
-                  	 		«FOR mp:matchdef.matchprops»
-                  	  	  	«val eproptype = propmap.get(mp.prop)»
-                 	  	  		«IF eproptype != null»
-                  	  	    		«IF mp.colname != null»
-										grid.addProp("«mp.prop»","«mp.colname»");
-                  	  	    		«ENDIF»
-                  	  	  		«ENDIF»
-                  	  		«ENDFOR»
-							grid.setInitRaster(raster.getRaster(minX, minY, maxX, maxY));
-							grid.setFinalProperties(entity.getProps());
-							grid.setRes(raster);
-							fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
-							entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
-							entity.updateCellInfo("QUADRILATERAL");
-							}
-								List<«entname»> entityList = new List<«entname»>();
-								entityList.add(entity);
-							return entityList;
-
-                  	  	'''
-                  	]
+                  	
                    	members += meln.toMethod('readAll'+entname,tabType)[
                   	parameters += meln.toParameter('shp', typeRef('fr.ocelet.datafacer.ocltypes.Shapefile'))
                   	body='''
