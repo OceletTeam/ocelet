@@ -50,6 +50,7 @@ import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.CRS;
+import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -64,15 +65,44 @@ public class ORaster {
 	
     int range[];
     private double pX;
-    private double pY;
-    private WritableRaster wRaster;
+    private double pY;  
     private Raster raster;
     int cpt;
     private AbstractGridCoverage2DReader reader;
     private GridGeometry2D geometry2D;
     private Double[] bounds = new Double[4];
     private CoordinateReferenceSystem crs;
+    private int minGridX;
+    private int minGridY;
+    private int maxGridX;
+    private int maxGridY;
+    private int gridWidth;
+    private int gridHeight;
 
+  
+    public int getGridMinX() {
+    	return minGridX;
+    }
+    
+    public int getGridMinY() {
+    	return minGridY;
+    }
+    
+    public int getGridMaxX() {
+    	return maxGridX;
+    }
+    
+    public int getGridMaxY() {
+    	return maxGridY;
+    }
+    
+    public int getGridWidth() {
+    	return gridWidth;
+    }
+    
+    public int getGridHeight() {
+    	return gridHeight;
+    }
     public ORaster(File file){
     
         range = new int[4];
@@ -103,8 +133,11 @@ public class ORaster {
 
         
         File file = new File(path);
-     
+        
+       
         AbstractGridFormat format = GridFormatFinder.findFormat(file);
+      
+     
         
         reader = format.getReader(file);
      
@@ -115,6 +148,27 @@ public class ORaster {
             						   
         getRaster();
         setPixelsize();
+    }
+    
+    public ORaster(String path, Double[] bounds){
+        
+        range = new int[4];
+        cpt = 0;
+
+        
+        File file = new File(path);
+        
+       
+        AbstractGridFormat format = GridFormatFinder.findFormat(file);
+      
+     
+        
+        reader = format.getReader(file);
+     
+       
+            						   
+        getRaster(bounds[0], bounds[1], bounds[2], bounds[3]);
+       // setPixelsize();
     }
 
     private ORaster(AbstractGridCoverage2DReader reader, Double bounds[], double pX, double pY){
@@ -238,12 +292,9 @@ public class ORaster {
          grid.setYRes(pY);
          return grid;
     }
-    private void zoneRaster(Raster raster, int x, int y, int width, int height)
-    {
-        wRaster = raster.createCompatibleWritableRaster(x, y, width + 1, height + 1);
-    }
+   
 
-    public WritableRaster getRaster(int minX, int minY, int maxX, int maxY)
+   /* public WritableRaster getRaster(int minX, int minY, int maxX, int maxY)
     {
         Raster iRaster = getRaster();
         WritableRaster r = null;
@@ -275,9 +326,9 @@ public class ORaster {
             }
         }
         return r;
-    }
+    }*/
 
-    public WritableRaster getRaster(int bounds[])
+   /* public WritableRaster getRaster(int bounds[])
     {
         Raster iRaster = getRaster();
         int minX = bounds[0];
@@ -314,25 +365,25 @@ public class ORaster {
 
         }
         return r;
-    }
+    }*/
     
    
 
-    public WritableRaster createRaster(int numBand, int width, int height)
+    /*public WritableRaster createRaster(int numBand, int width, int height)
     {
         java.awt.image.DataBuffer db2 = new DataBufferDouble(width * height, numBand);
         SampleModel sample = RasterFactory.createBandedSampleModel(4, width, height, numBand);
         Raster r = Raster.createRaster(sample, db2, null);
         return r.createCompatibleWritableRaster();
-    }
+    }*/
 
-    public void setCRS()
+   /* public void setCRS()
         throws FactoryException
     {
         String wkt = "GEOGCS[\"WGS 84\",  DATUM[    \"WGS_1984\",    SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],    TOWGS84[0,0,0,0,0,0,0],    AUTHORITY[\"EPSG\",\"6326\"]],  PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],  UNIT[\"DMSH\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9108\"]],  AXIS[\"Lat\",NORTH],  AXIS[\"Long\",EAST],  AUTHORITY[\"EPSG\",\"4326\"]]";
         CRS.parseWKT(wkt);
-    }
-public double[] worldBounds(){
+    }*/
+/*public double[] worldBounds(){
 	Raster raster = getRaster();
 	double[] worldBounds = new double[4];
 	int[] bounds = getBounds();
@@ -353,58 +404,57 @@ worldBounds[2] = maxX;
 worldBounds[3] = maxY;
 return worldBounds;
 
-}
-    public int[] getBounds()
+}*/
+   /* public int[] getBounds()
     {
     	
-        Raster raster = getRaster();
+        //Raster raster = getRaster();
         
         int bounds[] = {
             raster.getMinX(), raster.getMinY(), raster.getWidth() + raster.getMinX() - 1, raster.getMinY() + raster.getHeight() - 1
         };
         return bounds;
-    }
+    }*/
 
     public double[] getDoubleValue(int x, int y, int width, int height)
     {
-        Raster raster = getRaster();
+        //Raster raster = getRaster();
         double pixels[] = new double[1];
         return raster.getPixels(x, y, width, height, pixels);
     }
 
     public int[] getIntValue(int x, int y, int width, int height)
     {
-        Raster raster = getRaster();
+        //Raster raster = getRaster();
         int pixels[] = new int[1];
         return raster.getPixels(x, y, width, height, pixels);
     }
 
     public float[] getFloatValue(int x, int y, int width, int height)
     {
-        Raster raster = getRaster();
+        //Raster raster = getRaster();
         float pixels[] = new float[1];
         return raster.getPixels(x, y, width, height, pixels);
     }
 
     public double getDoubleValue(int x, int y, int band)
     {
-        return getRaster().getSampleDouble(x, y, band);
+        return raster.getSampleDouble(x, y, band);
     }
 
     public float getFloat(int x, int y, int band)
     {
-        return getRaster().getSampleFloat(x, y, band);
+        return raster.getSampleFloat(x, y, band);
     }
 
     public double getIntValue(int x, int y, int band)
     {
-        return (double)getRaster().getSample(x, y, band);
+        return (double)raster.getSample(x, y, band);
     }
 
     private Raster getRaster()
     {
-        if(wRaster != null)
-            return wRaster;
+       
         if(raster != null)
             return raster;
         GridCoverage2D coverage = null;
@@ -422,13 +472,125 @@ return worldBounds;
            // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
         }
         RenderedImage rendImage = coverage.getRenderedImage();
+       
         raster = rendImage.getData();
+        return raster;
+    }
+    
+    private Raster getRaster(Double bMinX, Double bMinY, Double bMaxX, Double bMaxY){
+    	
+    
+    	
+    	Double minX = bMinX;
+    	Double minY = bMinY;
+    	Double maxX = bMaxX;
+    	Double maxY = bMaxY;
+    	
+      
+        if(raster != null)
+            return raster;
+        GridCoverage2D coverage = null;
+        try
+        {
+            coverage = reader.read(null);
+            geometry2D = coverage.getGridGeometry();
+        }
+        catch(IllegalArgumentException ex)
+        {
+           // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch(IOException ex)
+        {
+           // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+       if(geometry2D.getEnvelope2D().getMinX() > minX) {
+        	minX = geometry2D.getEnvelope2D().getMinX();
+        	
+        }
+        if(geometry2D.getEnvelope2D().getMinY() > minY) {
+        	minY = geometry2D.getEnvelope2D().getMinY();
+        	
+        }
+        if(geometry2D.getEnvelope2D().getMaxX() < maxX) {
+        	maxX = geometry2D.getEnvelope2D().getMaxX();
+        	
+        }
+        if(geometry2D.getEnvelope2D().getMaxY() < maxY) {
+        	maxY = geometry2D.getEnvelope2D().getMaxY();
+        	
+        }
+        java.awt.Rectangle rect = new java.awt.Rectangle();
+        DirectPosition2D min = new DirectPosition2D(minX, minY);
+        DirectPosition2D max = new DirectPosition2D(maxX, maxY);
+        GridCoordinates2D dp1 = null;
+		try {
+			dp1 = geometry2D.worldToGrid(min);
+		} catch (InvalidGridGeometryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        GridCoordinates2D dp2 = null;
+		try {
+			dp2 = geometry2D.worldToGrid(max);
+		} catch (InvalidGridGeometryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		DirectPosition newMin = null;
+		try {
+			newMin = geometry2D.gridToWorld(dp1);
+		} catch (TransformException e) {
+			// TODO Auto-generated catch blocks
+			e.printStackTrace();
+		}
+		DirectPosition newMax = null;
+		try {
+			 newMax = geometry2D.gridToWorld(dp2);
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		double x = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
+    	double y = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
+    	double x2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
+    	double y2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
+    	
+    	double xRes = (x2 - x) / geometry2D.getGridRange2D().getBounds().getWidth();
+    	double yRes = (y2 - y) /geometry2D.getGridRange2D().getBounds().getHeight();
+		this.bounds[0] = newMin.getCoordinate()[0] - xRes / 2;
+	    this.bounds[1] = newMin.getCoordinate()[1] - yRes / 2;
+	    this.bounds[2] = newMax.getCoordinate()[0] + xRes / 2;
+	    this.bounds[3] = newMax.getCoordinate()[1] + yRes / 2;;
+		this.pX = xRes;
+		this.pY = yRes;
+       this.minGridX = dp1.x;
+       this.minGridY = dp2.y;
+       this.maxGridX = dp2.x;
+       this.maxGridY = dp1.y;
+       this.gridWidth = maxGridX - minGridX + 1;
+       this.gridHeight = maxGridY - minGridY + 1;
+        //rect.setBounds(dp1.x, dp2.y - 1, (dp2.x - dp1.x), (dp1.y - dp2.y));
+        rect.setBounds(minGridX, minGridY, gridWidth, gridHeight);
+     
+        //rect.setBounds((int)Math.round(bounds[0]), (int)Math.round(bounds[1]), (int)Math.round(bounds[2]), (int)Math.round(bounds[3]));
+        //rect.setBounds((int)Math.round(minX), (int)Math.round(minY), (int)Math.round(maxX) - (int)Math.round(minX), (int)Math.round(maxY) - (int)Math.round(minY));
+        RenderedImage rendImage = coverage.getRenderedImage();
+  
+        raster = rendImage.getData(rect);
         return raster;
     }
 
     public int numBands()
     {
-        return getRaster().getNumBands();
+        return raster.getNumBands();
     }
 
     public Double[] getDoubleValue(Polygon polygon, int band)
@@ -474,7 +636,7 @@ return worldBounds;
 
     public Integer[] getIntegerValue(Polygon polygon, int band){
     
-        Raster raster = getRaster();
+       
         ArrayList values = new ArrayList();
         Coordinate scaleCoor[] = scalePolygon(polygon);
         int bounds[] = getBounds(scaleCoor);
@@ -496,7 +658,7 @@ return worldBounds;
 
     public Float[] getFloatValue(Polygon polygon, int band)
     {
-        Raster raster = getRaster();
+      
         ArrayList values = new ArrayList();
         Coordinate scaleCoor[] = scalePolygon(polygon);
         int bounds[] = getBounds(scaleCoor);
@@ -614,7 +776,7 @@ return worldBounds;
 
     private void setPixelsize()
     {
-    	Raster r = getRaster();
+    	Raster r = raster;
     	int h = r.getHeight();
     	int w = r.getWidth();
     	int minX = r.getMinX();
@@ -707,7 +869,7 @@ return worldBounds;
         throws IOException
     {
         File file = new File(fileName);
-        Raster raster = getRaster();
+     
         WritableRaster create = raster.createCompatibleWritableRaster();
         RasterFactory.createRaster(raster.getSampleModel(), raster.getDataBuffer(), null);
         GeoTiffWriter writer = new GeoTiffWriter(file);
@@ -735,116 +897,15 @@ return worldBounds;
         return coverage;
     }
 
-    private void writeDoubleValue(int x, int y, int band, double value)
-    {
-        wRaster.setSample(x, y, band, value);
-    }
+   
 
-    private void writeIntValue(int x, int y, int band, int value)
-    {
-        wRaster.setSample(x, y, band, value);
-    }
+ 
+    
 
-    private void writeFloatValue(int x, int y, int band, float value)
-    {
-        wRaster.setSample(x, y, band, value);
-    }
 
-    public WritableRaster getWritableRaster()
-    {
-        return getCoverage().getRenderedImage().getData().createCompatibleWritableRaster();
-    }
 
-    public void writeValue(int x, int y, int band, Object value)
-    {
-        if(value instanceof Integer)
-            writeIntValue(x, y, band, ((Integer)value).intValue());
-        else
-        if(value instanceof Double)
-            writeDoubleValue(x, y, band, ((Double)value).doubleValue());
-        else
-        if(value instanceof Float)
-            writeFloatValue(x, y, band, ((Float)value).floatValue());
-        else
-            System.out.println(" ERROR VALUE TYPE NOT ALLOWED");
-    }
-
-    public void edit()
-    {
-        wRaster = getWritableRaster();
-        Raster raster = getCoverage().getRenderedImage().getData();
-        wRaster.setRect(raster);
-    }
-
-    public void write(String fileName, String imageName)
-    {
-        GeneralParameterValue paramValues[] = getInitialParameters();
-        File file = new File(fileName);
-        GeoTiffWriter writer = null;
-        try
-        {
-            writer = new GeoTiffWriter(file);
-        }
-        catch(IOException ex)
-        {
-           // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
-        }
-        GridCoverage2D cov = (new GridCoverageFactory()).create(imageName, wRaster, reader.getOriginalEnvelope());
-        try
-        {
-            writer.write(cov, paramValues);
-        }
-        catch(IllegalArgumentException ex)
-        {
-          //  Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IOException ex)
-        {
-          //  Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
-        }
-        catch(IndexOutOfBoundsException ex)
-        {
-           // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println((new StringBuilder(" File created in : ")).append(fileName).toString());
-        writer.dispose();
-    }
-
-    private GeneralParameterValue[] getInitialParameters()
-    {
-        java.util.List paramValues = reader.getFormat().getReadParameters().values();
-        return (GeneralParameterValue[])paramValues.toArray(new GeneralParameterValue[paramValues.size()]);
-    }
-
-    public int[] getBounds(Polygon polygon)
-    {
-        Polygon scalePoly = scaleTo(polygon);
-        int bounds[] = getBounds(scalePoly.getCoordinates());
-        int reverseB[] = new int[4];
-        reverseB[0] = bounds[0];
-        reverseB[1] = reverse(bounds[3]);
-        reverseB[2] = bounds[2];
-        reverseB[3] = reverse(bounds[1]);
-        Coordinate b[] = cboundary(polygon);
-        GridGeometry2D gridGeometry = getCoverage().getGridGeometry();
-        Coordinate acoordinate[];
-        int j = (acoordinate = b).length;
-        for(int i = 0; i < j; i++)
-        {
-            Coordinate c = acoordinate[i];
-            try
-            {
-                GridCoordinates2D gc = gridGeometry.worldToGrid(new DirectPosition2D(c.x, c.y));
-               // System.out.println((new StringBuilder(String.valueOf(gc.x))).append(" ").append(gc.y).toString());
-            }
-            catch(TransformException ex)
-            {
-              //  Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        return reverseB;
-    }
+   
+   
 
     public Coordinate[] cboundary(Polygon polygon)
     {
@@ -935,103 +996,18 @@ return worldBounds;
         return channelNum;
     }
 
-    public void plus(ORaster oRaster)
-    {
-        for(int i = 0; i < numBands(); i++)
-            plusBand(oRaster, i);
+    
 
-    }
+ 
 
-    public void minus(ORaster oRaster)
-    {
-        for(int i = 0; i < numBands(); i++)
-            minusBand(oRaster, i);
-
-    }
-
-    public void star(ORaster oRaster)
-    {
-        for(int i = 0; i < numBands(); i++)
-            starBand(oRaster, i);
-
-    }
-
-    public void divide(ORaster oRaster)
-    {
-        for(int i = 0; i < numBands(); i++)
-            divideBand(oRaster, i);
-
-    }
-
-    public void plusBand(ORaster oRaster, int band)
-    {
-        for(int x = 0; x < getMinPixel(0); x++)
-        {
-            for(int y = 0; y < getMinPixel(0); y++)
-            {
-                double thisVal = getDoubleValue(x, y, band);
-                double value = oRaster.getDoubleValue(x, y, band);
-                wRaster.setSample(x, y, band, thisVal + value);
-            }
-
-        }
-
-    }
-
-    public void minusBand(ORaster oRaster, int band)
-    {
-        for(int x = 0; x < getMinPixel(0); x++)
-        {
-            for(int y = 0; y < getMinPixel(0); y++)
-            {
-                double thisVal = getDoubleValue(x, y, band);
-                double value = oRaster.getDoubleValue(x, y, band);
-                wRaster.setSample(x, y, band, thisVal - value);
-            }
-
-        }
-
-    }
-
-    public void starBand(ORaster oRaster, int band)
-    {
-        for(int x = 0; x < getMinPixel(0); x++)
-        {
-            for(int y = 0; y < getMinPixel(0); y++)
-            {
-                double thisVal = getDoubleValue(x, y, band);
-                double value = oRaster.getDoubleValue(x, y, band);
-                wRaster.setSample(x, y, band, thisVal * value);
-            }
-
-        }
-
-    }
-
-    public void divideBand(ORaster oRaster, int band)
-    {
-        for(int x = 0; x < getMinPixel(0); x++)
-        {
-            for(int y = 0; y < getMinPixel(0); y++)
-            {
-                double thisVal = getDoubleValue(x, y, band);
-                double value = oRaster.getDoubleValue(x, y, band);
-                wRaster.setSample(x, y, band, thisVal / value);
-            }
-
-        }
-
-    }
+   
 
     public GridGeometry2D getGridGeometry()
     {
         return getCoverage().getGridGeometry();
     }
 
-    private void createNewBand()
-    {
-        wRaster.getSampleModel().getNumBands();
-    }
+  
 
     public double getXRes(){
     	return pX;

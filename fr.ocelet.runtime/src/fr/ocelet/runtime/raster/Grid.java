@@ -226,32 +226,36 @@ public class Grid {
 		int[] gridScaled = new int[4];
 		int[] rasterBounds = new int[4];
 		
-		int[] gridMin = gridCoordinate(scaled[0] + xRes / 2, scaled[3] -  yRes / 2);
-		int[] gridMax = gridCoordinate(scaled[2] - xRes / 2, scaled[1] + yRes / 2);
+		int[] gridMin = gridCoordinate(scaled[0], scaled[3] );
+		int[] gridMax = gridCoordinate(scaled[2], scaled[1]);
 		
-		int[] rasterMin = raster.worldToGrid(scaled[0]+ xRes /2, scaled[3] - yRes / 2);
-		int[] rasterMax = raster.worldToGrid(scaled[2]- xRes / 2, scaled[1]+ yRes / 2);
+		int[] rasterMin = raster.worldToGrid(scaled[0], scaled[3]);
+		int[] rasterMax = raster.worldToGrid(scaled[2], scaled[1]);
 		
 		int diffX = rasterMin[0] - gridMin[0];
 		int diffY = rasterMin[1] - gridMin[1];
+		
+		
 		
 		for(int i = gridMin[0]; i < gridMax[0]; i ++){
 			for(int j = gridMin[1]; j < gridMax[1]; j ++){
 				for(String name : matchedBand.keySet()){
 					//try{
-
+						
 						/*Coordinate worlds = this.gridCoordinate(i, j);
 						int[] convert = raster.worldToGrid(worlds.x, worlds.y);
 						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));*/
-						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(i + diffX, j + diffY, matchedBand.get(name)));
+						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(i + diffX, j + diffY , matchedBand.get(name)));
 					//}catch (Exception e){
+					//	System.out.println(i +" "+j+" "+(i+diffX)+" "+(j+diffY));
+						
 						//e.printStackTrace();
 					//}
 				}    			
 			}
 		}
 	}
-	public void copy(ORaster raster){
+	/*public void copy(ORaster raster){
 
 		Double[] scaledD = scalingDouble(worldBounds, raster.worldBounds());
 		double[] scaledd = scalingdouble(worldBounds, raster.worldBounds());
@@ -271,9 +275,9 @@ public class Grid {
 				}    			
 			}
 		}
-	}
+	}*/
 
-	public void setData(Double[] bounds,  ORaster raster, int numBands){
+	/*public void setData(Double[] bounds,  ORaster raster, int numBands){
 
 		xRes = raster.getXRes();
 		yRes = raster.getYRes();
@@ -305,9 +309,9 @@ public class Grid {
 		raster = null;
 
 		setInitCoordinate();
-	}
+	}*/
 
-	public void setData( ORaster raster, int numBands){
+	/*public void setData( ORaster raster, int numBands){
 
 		xRes = raster.getXRes();
 		yRes = raster.getYRes();
@@ -341,7 +345,7 @@ public class Grid {
 		raster = null;
 
 		setInitCoordinate();
-	}
+	}*/
 	public Grid(Double bounds[], GridGeometry2D gridGeometry, ORaster raster){
 		this.ts = normSetter;
 		//initRasterProps = new HashMap<String, Integer>();

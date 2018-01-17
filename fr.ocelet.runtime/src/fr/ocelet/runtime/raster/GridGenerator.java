@@ -228,10 +228,9 @@ public class GridGenerator {
 			index ++;
 		}
 
-		DirectPosition dpLow = raster.getGridGeometry().getEnvelope().getLowerCorner();
-		DirectPosition dpUp = raster.getGridGeometry().getEnvelope().getUpperCorner();
-		double[] lowerCorner = dpLow.getCoordinate();
-		double[] upperCorner = dpUp.getCoordinate();
+	
+		Double[] lowerCorner = new Double[]{raster.getWorldBounds()[0], raster.getWorldBounds()[1]};
+		Double[] upperCorner = new Double[]{raster.getWorldBounds()[2], raster.getWorldBounds()[3]};
 		
 		/*int[] rasterCoordMin = new int[]{raster.getMinPixel(0), raster.getMinPixel(1)};
 		int[] rasterCoordMax = new int[]{raster.getMaxPixel(0), raster.getMaxPixel(1)};
@@ -289,9 +288,9 @@ public class GridGenerator {
 
 
 
-		if(lowerCorner[1] > minY){
+		if(lowerCorner[1] - yRes > minY){
 
-			double diff = lowerCorner[1] -minY;
+			double diff = (lowerCorner[1] - yRes) -minY;
 
 			int resDiff = (int)Math.round(diff / yRes);
 
@@ -376,15 +375,10 @@ public class GridGenerator {
 
 		}
 
-		/*nminX = finalMinX - xRes / 2 - 2*xRes;
-		nminY = finalMinY - yRes / 2 - 2 * yRes;
-		nmaxX = finalMaxX + xRes / 2 + 2 * xRes;
-		nmaxY = finalMaxY + yRes / 2 + 2 * yRes;*/
-
-		nminX = finalMinX - xRes/2 - 2*xRes;
-		nminY = finalMinY - yRes / 2 - 2 * yRes;
-		nmaxX = finalMaxX + xRes / 2 + 2 * xRes;
-		nmaxY = finalMaxY +yRes / 2+ 2 * yRes;
+		nminX = finalMinX - xRes / 2;
+		nminY = finalMinY - yRes /2;
+		nmaxX = finalMaxX - xRes / 2;
+		nmaxY = finalMaxY - yRes / 2;
 
 		double newMinX = nminX;// - 2*xRes;
 		double newMinY = nminY; // - 2*yRes;
@@ -397,6 +391,8 @@ public class GridGenerator {
 		int cellWidth = (int)(Math.round((width) / xRes));
 		int cellHeight = (int) (Math.round((height) / yRes));	
 
+		newMaxX = newMinX + cellWidth * xRes;
+		newMaxY = newMinY + cellHeight * yRes;
 		/*width = cellWidth * xRes;
 		height = cellHeight * yRes;
 
@@ -484,9 +480,9 @@ public class GridGenerator {
 
 		int cellWidth = rasterCoordMax[0] - rasterCoordMin[0];
 		int cellHeight = rasterCoordMax[1] - rasterCoordMin[1];		
-		cellWidth =initRaster.getWritableRaster().getWidth();
+		cellWidth =initRaster.getGridWidth();
 		
-		cellHeight = initRaster.getWritableRaster().getHeight();
+		cellHeight = initRaster.getGridHeight();
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
 		//coverage = initRaster.getGridGeometry().getc

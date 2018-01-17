@@ -85,10 +85,7 @@ public abstract class TemporalSeriesFile {
 	        return raster.getGridGeometry();
 	    }
 
-	    public WritableRaster getRaster()
-	    {
-	        return raster.getWritableRaster();
-	    }
+	  
 	    
 	    public boolean hasNext(){
 	    	if(index < names.length - 1){
