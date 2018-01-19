@@ -1068,13 +1068,39 @@ public abstract class DiCursorEdge extends OcltEdge{
 		
 		
 		
+		double factorX = xResFactor;
+		double factorY = yResFactor;
 		
-		int[] gridMin = grid.gridCoordinate(scaled[0] + xResFactor, scaled[3] - yResFactor);
-		int[] gridMax = grid.gridCoordinate(scaled[2] - xResFactor, scaled[1] + yResFactor);
-
-		int[] globalMin = globalGrid.gridCoordinate(scaled[0] + xResFactor, scaled[3] - yResFactor);
-		int[] globalMax = globalGrid.gridCoordinate(scaled[2] - xResFactor, scaled[1] + yResFactor);
-
+		int[] gridMin = grid.gridCoordinate(scaled[0] + factorX, scaled[3] - factorY);
+		while(gridMin == null) {
+			factorX = factorX + xResFactor;
+			factorY = factorY + yResFactor;
+			gridMin = grid.gridCoordinate(scaled[0] + factorX, scaled[3] - factorY);
+		}
+		 factorX = xResFactor;
+		 factorY = yResFactor;
+		int[] gridMax = grid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
+		while(gridMax == null) {
+			factorX = factorX + xResFactor;
+			factorY = factorY + yResFactor;
+			gridMax = grid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
+		}
+		factorX = xResFactor;
+		 factorY = yResFactor;
+		int[] globalMin = globalGrid.gridCoordinate(scaled[0] +factorX, scaled[3] - factorY);
+		while(gridMax == null) {
+			factorX = factorX + xResFactor;
+			factorY = factorY + yResFactor;
+			globalMin = globalGrid.gridCoordinate(scaled[0] + factorX, scaled[3] - factorY);
+		}
+		factorX = xResFactor;
+		 factorY = yResFactor;
+		int[] globalMax = globalGrid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
+		while(gridMax == null) {
+			factorX = factorX + xResFactor;
+			factorY = factorY + yResFactor;
+			globalMax = globalGrid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
+		}
 		
 		if(globalMin == null){
 			startX = 0;

@@ -244,10 +244,10 @@ public class Grid {
 		int maxX = gridMax[0];
 		int maxY = gridMax[1];
 	
-		if(w < width && w < raster.getGridWidth()) {
+		if(w < width - 1 && w < raster.getGridWidth() - 1) {
 			maxX ++;
 		}
-		if(h < height && h < raster.getGridHeight()) {
+		if(h < height - 1 && h < raster.getGridHeight() - 1) {
 			maxY ++;
 		}
 
@@ -496,6 +496,9 @@ public class Grid {
 
 	private Coordinate[] hexagonalCoordinate(int x, int y){
 		Coordinate c = gridCoordinate(x, y);
+		if(c == null) {
+			return null;
+		}
 		double dx = c.x;
 		double dy = c.y;
 		Coordinate[] coords= new Coordinate[7];
@@ -575,9 +578,11 @@ public class Grid {
 		try{
 			gc = gridGeometry.worldToGrid(new DirectPosition2D(x, y ));
 		}catch(TransformException ex){
-			ex.printStackTrace();
+			//ex.printStackTrace();
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
+		if(gc == null)
+			return null;
 		gCoord[0] = gc.x;
 		gCoord[1] = gc.y;
 		Coordinate[] coord = new Coordinate[]{new Coordinate(x, y)};
@@ -587,6 +592,9 @@ public class Grid {
 		if(gCoord[0] % 2 == 0){
 
 			Coordinate[] coords = hexagonalCoordinate(gCoord[0], gCoord[1]);
+			if(coords == null) {
+				return null;
+			}
 			CoordinateSequence cs = new CoordinateArraySequence(coords);
 			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
 			Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
@@ -595,7 +603,9 @@ public class Grid {
 			}else{
 				if(gCoord[0] - 1 >= 0){
 					coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1]);
-
+					if(coords == null) {
+						return null;
+					}
 					cs = new CoordinateArraySequence(coords);
 
 					lr = new LinearRing(cs,SpatialManager.geometryFactory());
@@ -607,7 +617,9 @@ public class Grid {
 				}
 				if(gCoord[0] - 1 >= 0 && gCoord[1] - 1 >= 0){
 					coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1] - 1);
-
+					if(coords == null) {
+						return null;
+					}
 					cs = new CoordinateArraySequence(coords);
 
 					lr = new LinearRing(cs,SpatialManager.geometryFactory());
@@ -623,7 +635,9 @@ public class Grid {
 		}else{
 
 			Coordinate[] coords = hexagonalCoordinate(gCoord[0], gCoord[1]);
-
+			if(coords == null) {
+				return null;
+			}
 			CoordinateSequence cs = new CoordinateArraySequence(coords);
 
 			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
@@ -634,7 +648,9 @@ public class Grid {
 			}
 			if(gCoord[0] -1 >=0 && gCoord[1] < height - 1){
 				coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1]);
-
+				if(coords == null) {
+					return null;
+				}
 				cs = new CoordinateArraySequence(coords);
 
 				lr = new LinearRing(cs,SpatialManager.geometryFactory());
@@ -647,7 +663,9 @@ public class Grid {
 			}
 			if(gCoord[1] - 1 >= 0 ){
 				coords = hexagonalCoordinate(gCoord[0], gCoord[1] - 1);
-
+				if(coords == null) {
+					return null;
+				}
 				cs = new CoordinateArraySequence(coords);
 
 				lr = new LinearRing(cs,SpatialManager.geometryFactory());
@@ -687,18 +705,25 @@ public class Grid {
 		return gCoord;
 	}
 	private Coordinate hexagonalGridToWorld(int x, int y){
-		double dx = initCoordinates.x ;
+		double dx = initCoordinates.x;
 		double dy = initCoordinates.y;
 
 		DirectPosition dc = null;
+		
+		if(x < minX || x >= maxX || y < minY || y >= maxY) {
+			return null;
+		}
 		try {
 			dc = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
 		} catch (InvalidGridGeometryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (TransformException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+		}
+		if(dc == null) {
+			return null;
 		}
 		double dist = xRes - (xRes / 2 + xRes / 4);
 
