@@ -182,17 +182,7 @@ public class ORaster {
  						   
     }
     
-    public Grid getGrid(double minX, double minY, double maxX, double maxY)
-    {
-        Grid grid = new Grid(minX, minY, maxX, maxY, getMaxPixel(1), getCoverage().getGridGeometry());
-        bounds = (new Double[] {
-            getMinimum(0), getMinimum(1), getMaximum(0), getMaximum(1)
-        });
-        setPixelsize();
-        grid.setXRes((int)pX);
-        grid.setYRes((int)pY);
-        return grid;
-    }
+   
    public Double[] getWorldBounds() {
 	   return bounds;
    }
@@ -224,197 +214,7 @@ public class ORaster {
     	 return new int[]{gridCoord.x, gridCoord.y};
     }
 
-    /*private void fillGrid(Grid grid, double minX, double minY){
-    	
-    	raster = getRaster();
-    	
-    	DirectPosition dp = new DirectPosition2D(minX, minY);
-    	GridCoordinates2D coords = null;
-    	try {
-			coords = geometry2D.worldToGrid(dp);
-		} catch (InvalidGridGeometryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	for(int i = 0; i < grid.getWidth(); i ++){
-    		
-    		for(int j = 0; j < grid.getHeight(); j ++){
-    			
-    			for(String name : grid.getInitialBands().keySet()){
-    			grid.setCellValue(name, i, j, raster.getSampleDouble(i + coords.x, j + coords.y, grid.getInitialBands().get(name)));
-    			}
-    			
-    		}
-    		
-    		
-    		
-    	}
-    	
-    	
-    }*/
-   /* public Grid getGrid(Double bounds[], String name, Grid grid)
-    {
-    	
-    	
-    	double minX = bounds[0];
-    	double minY = bounds[1];
-    	
-    	int cellWidth =(int) Math.round((bounds[2] - bounds[0]) / pX);
-    	int cellHeight = (int)Math.round(bounds[3] - bounds[1] / pY);
-    	
-    	double newMaxX = minX + (cellWidth * pX);
-    	double newMaxY = minX + (cellHeight * pY);
-    	
-    	WritableRaster wr = GridGenerator.createRaster(grid.getInitialBands().keySet().size(), cellWidth, cellHeight);
-    	Envelope2D env = GridGenerator.createEnvelope(minX, minY, newMaxX, newMaxY);
-    	GridCoverage2D coverage = GridGenerator.createCoverage(name, wr, env);
-    	
-    	grid.setRaster(wr);
-    	grid.setGridGeometry(coverage.getGridGeometry());
-    	fillGrid(grid, minX, minY);
-       
-        return grid;
-    }*/
-
-    public Grid getFullGrid(){
-    	GridGeometry2D gridGeom = getCoverage().getGridGeometry();
-    	 this.bounds = (new Double[] {
-                 getMinimum(0), getMinimum(1), getMaximum(0), getMaximum(1)
-             });
-    	 Grid grid = new Grid(bounds, gridGeom, this);
-        
-         setPixelsize();
-         grid.setXRes(pX);
-         grid.setYRes(pY);
-         return grid;
-    }
    
-
-   /* public WritableRaster getRaster(int minX, int minY, int maxX, int maxY)
-    {
-        Raster iRaster = getRaster();
-        WritableRaster r = null;
-        if(minX > 2 && minY > 2)
-        {
-            r = getRaster().createCompatibleWritableRaster(minX - 2, minY - 2, maxX - minX - 2, maxY - minY - 2);
-            for(int i = minX - 2; i < maxX + 2; i++)
-            {
-                for(int j = minY - 2; j < maxY + 2; j++)
-                {
-                    for(int b = 0; b < iRaster.getNumBands(); b++)
-                        r.setSample(i, j, b, iRaster.getSampleDouble(i, j, b));
-
-                }
-
-            }
-
-        } else
-        {
-            r = getRaster().createCompatibleWritableRaster(minX, minY, maxX - minX, maxY - minY);
-            for(int i = minX; i < maxX; i++)
-            {
-                for(int j = minY; j < maxY; j++)
-                {
-                    for(int b = 0; b < iRaster.getNumBands(); b++)
-                        r.setSample(i, j, b, iRaster.getSampleDouble(i, j, b));
-
-                }
-            }
-        }
-        return r;
-    }*/
-
-   /* public WritableRaster getRaster(int bounds[])
-    {
-        Raster iRaster = getRaster();
-        int minX = bounds[0];
-        int minY = bounds[1];
-        int maxX = bounds[2];
-        int maxY = bounds[3];
-        WritableRaster r;
-        if(minX > 2 && minY > 2)
-        {
-            r = getRaster().createCompatibleWritableRaster(minX, minY, (maxX - minX), (maxY - minY));
-            for(int i = minX; i < maxX; i++)
-            {
-                for(int j = minY; j < maxY; j++)
-                {
-                    for(int b = 0; b < iRaster.getNumBands(); b++)
-                        r.setSample(i, j, b, iRaster.getSampleDouble(i, j, b));
-
-                }
-            }
-
-        } else
-        {
-            r = getRaster().createCompatibleWritableRaster(minX, minY, maxX - minX, maxY - minY);
-            for(int i = minX; i < maxX; i++)
-            {
-                for(int j = minY; j < maxY; j++)
-                {
-                    for(int b = 0; b < iRaster.getNumBands(); b++)
-                        r.setSample(i, j, b, iRaster.getSampleDouble(i, j, b));
-
-                }
-
-            }
-
-        }
-        return r;
-    }*/
-    
-   
-
-    /*public WritableRaster createRaster(int numBand, int width, int height)
-    {
-        java.awt.image.DataBuffer db2 = new DataBufferDouble(width * height, numBand);
-        SampleModel sample = RasterFactory.createBandedSampleModel(4, width, height, numBand);
-        Raster r = Raster.createRaster(sample, db2, null);
-        return r.createCompatibleWritableRaster();
-    }*/
-
-   /* public void setCRS()
-        throws FactoryException
-    {
-        String wkt = "GEOGCS[\"WGS 84\",  DATUM[    \"WGS_1984\",    SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],    TOWGS84[0,0,0,0,0,0,0],    AUTHORITY[\"EPSG\",\"6326\"]],  PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],  UNIT[\"DMSH\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9108\"]],  AXIS[\"Lat\",NORTH],  AXIS[\"Long\",EAST],  AUTHORITY[\"EPSG\",\"4326\"]]";
-        CRS.parseWKT(wkt);
-    }*/
-/*public double[] worldBounds(){
-	Raster raster = getRaster();
-	double[] worldBounds = new double[4];
-	int[] bounds = getBounds();
-	
-	double[] min = gridToWorld(bounds[0], bounds[1]);
-	double[] max = gridToWorld(bounds[2], bounds[3] - 1);
-
-
-	double minX = min[0];
-	double minY = max[1];	
-	double maxX = max[0];
-	double maxY = min[1];
-	
-
-worldBounds[0] = minX;
-worldBounds[1] = minY;
-worldBounds[2] = maxX;
-worldBounds[3] = maxY;
-return worldBounds;
-
-}*/
-   /* public int[] getBounds()
-    {
-    	
-        //Raster raster = getRaster();
-        
-        int bounds[] = {
-            raster.getMinX(), raster.getMinY(), raster.getWidth() + raster.getMinX() - 1, raster.getMinY() + raster.getHeight() - 1
-        };
-        return bounds;
-    }*/
 
     public double[] getDoubleValue(int x, int y, int width, int height)
     {
@@ -474,6 +274,12 @@ return worldBounds;
         RenderedImage rendImage = coverage.getRenderedImage();
        
         raster = rendImage.getData();
+        this.minGridX = raster.getMinX();
+        this.minGridY = raster.getMinY();
+        this.maxGridX = raster.getMinX() + raster.getWidth() - 1;
+        this.maxGridY = raster.getMinY() + raster.getHeight() - 1;
+        this.gridWidth = raster.getWidth();
+        this.gridHeight = raster.getHeight();
         return raster;
     }
     
@@ -503,22 +309,24 @@ return worldBounds;
         {
            // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
         }
-        
+		
        if(geometry2D.getEnvelope2D().getMinX() > minX) {
         	minX = geometry2D.getEnvelope2D().getMinX();
+        	 minX = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
         	
         }
         if(geometry2D.getEnvelope2D().getMinY() > minY) {
         	minY = geometry2D.getEnvelope2D().getMinY();
+        	minY = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
         	
         }
         if(geometry2D.getEnvelope2D().getMaxX() < maxX) {
         	maxX = geometry2D.getEnvelope2D().getMaxX();
-        	
+        	maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
         }
         if(geometry2D.getEnvelope2D().getMaxY() < maxY) {
         	maxY = geometry2D.getEnvelope2D().getMaxY();
-        	
+        	maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
         }
         java.awt.Rectangle rect = new java.awt.Rectangle();
         DirectPosition2D min = new DirectPosition2D(minX, minY);
@@ -577,14 +385,18 @@ return worldBounds;
        this.maxGridY = dp1.y;
        this.gridWidth = maxGridX - minGridX + 1;
        this.gridHeight = maxGridY - minGridY + 1;
+    
         //rect.setBounds(dp1.x, dp2.y - 1, (dp2.x - dp1.x), (dp1.y - dp2.y));
         rect.setBounds(minGridX, minGridY, gridWidth, gridHeight);
-     
+   
         //rect.setBounds((int)Math.round(bounds[0]), (int)Math.round(bounds[1]), (int)Math.round(bounds[2]), (int)Math.round(bounds[3]));
         //rect.setBounds((int)Math.round(minX), (int)Math.round(minY), (int)Math.round(maxX) - (int)Math.round(minX), (int)Math.round(maxY) - (int)Math.round(minY));
         RenderedImage rendImage = coverage.getRenderedImage();
-  
+     
+        
+     
         raster = rendImage.getData(rect);
+        
         return raster;
     }
 
@@ -593,27 +405,7 @@ return worldBounds;
         return raster.getNumBands();
     }
 
-    public Double[] getDoubleValue(Polygon polygon, int band)
-    {
-        Raster raster = getRaster();
-        ArrayList values = new ArrayList();
-        Coordinate scaleCoor[] = scalePolygon(polygon);
-        int bounds[] = getBounds(scaleCoor);
-        for(int i = bounds[0]; i < bounds[2]; i++)
-        {
-            for(int j = bounds[1]; j < bounds[3]; j++)
-                if(polygon.intersects(getPoint(new Coordinate(i, j))))
-                    values.add(raster.getSampleDouble(i, j, band));
-
-        }
-
-        if(values.isEmpty())
-        {
-            int scaledCentroid[] = scaledCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
-            values.add(Double.valueOf(raster.getSampleDouble(scaledCentroid[0], scaledCentroid[1], band)));
-        }
-        return (Double[])values.toArray(new Double[values.size()]);
-    }
+    
 
     public int[] getPixelBounds(Polygon polygon)
     {

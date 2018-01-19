@@ -162,7 +162,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   		
 								«entname» entity = new «entname»();
 							if(grid == null){
-								grid = new «gridType»(getWidth(), getHeight(), getGridGeometry());
+								
                   	  			«FOR mp:matchdef.matchprops»
                   	  	  		«val eproptype = propmap.get(mp.prop)»
                  	  	  			«IF eproptype != null»

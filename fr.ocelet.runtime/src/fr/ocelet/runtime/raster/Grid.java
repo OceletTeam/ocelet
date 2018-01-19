@@ -90,11 +90,9 @@ public class Grid {
 	protected String cellShapeType = "QUADRILATERAL";
 	protected Coordinate initCoordinates;
 	protected Double[] worldBounds;
-	protected double boundsX;
-	protected double boundsY;
+
 	public Envelope2D env;
-	private int pos1[];
-	private int pos2[];
+
 	private TypeSetter ts;
 	private TempSetter tempSetter = new TempSetter();
 	private NormSetter normSetter = new NormSetter();
@@ -136,8 +134,7 @@ public class Grid {
 	public Grid(int width, int height, GridGeometry2D gridGeometry){
 
 		rasterProps = new HashMap<String, Integer>();
-		pos1 = new int[2];
-		pos2 = new int[2];
+	
 		this.gridGeometry = gridGeometry;
 		this.width = width;
 		this.height = height;
@@ -221,24 +218,42 @@ public class Grid {
 		return scaled;
 	}
 	public void  copy(ORaster raster, KeyMap<String, Integer> matchedBand){
-
+		
+		
 		Double[] scaled = scale(raster);
-		int[] gridScaled = new int[4];
-		int[] rasterBounds = new int[4];
+	
 		
-		int[] gridMin = gridCoordinate(scaled[0], scaled[3] );
+	
+		
+		int[] gridMin = gridCoordinate(scaled[0], scaled[3]);
 		int[] gridMax = gridCoordinate(scaled[2], scaled[1]);
-		
+	
 		int[] rasterMin = raster.worldToGrid(scaled[0], scaled[3]);
 		int[] rasterMax = raster.worldToGrid(scaled[2], scaled[1]);
 		
+		
+	
 		int diffX = rasterMin[0] - gridMin[0];
 		int diffY = rasterMin[1] - gridMin[1];
+
 		
 		
+	
+		int w = gridMax[0] - gridMin[0];
+		int h = gridMax[1] - gridMin[1];
+		int maxX = gridMax[0];
+		int maxY = gridMax[1];
+	
+		if(w < width && w < raster.getGridWidth()) {
+			maxX ++;
+		}
+		if(h < height && h < raster.getGridHeight()) {
+			maxY ++;
+		}
+
 		
-		for(int i = gridMin[0]; i < gridMax[0]; i ++){
-			for(int j = gridMin[1]; j < gridMax[1]; j ++){
+		for(int i = gridMin[0]; i < maxX; i ++){
+			for(int j = gridMin[1]; j < maxY; j ++){
 				for(String name : matchedBand.keySet()){
 					//try{
 						
@@ -246,6 +261,7 @@ public class Grid {
 						int[] convert = raster.worldToGrid(worlds.x, worlds.y);
 						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));*/
 						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(i + diffX, j + diffY , matchedBand.get(name)));
+						
 					//}catch (Exception e){
 					//	System.out.println(i +" "+j+" "+(i+diffX)+" "+(j+diffY));
 						
@@ -350,8 +366,7 @@ public class Grid {
 		this.ts = normSetter;
 		//initRasterProps = new HashMap<String, Integer>();
 		rasterProps = new HashMap<String, Integer>();
-		pos1 = new int[2];
-		pos2 = new int[2];
+		
 		this.gridGeometry = gridGeometry;
 		int iBounds[] = intBounds(bounds);
 		minX = iBounds[0];
@@ -747,7 +762,7 @@ public class Grid {
 		}
 		catch(TransformException ex){
 
-			//ex.printStackTrace();
+			ex.printStackTrace();
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
@@ -923,31 +938,7 @@ public class Grid {
 
 
 
-	public int[] getPos1(){
-		return pos1;
-	}
-
-	public void setPos1(int pos1[]){
-		this.pos1 = pos1;
-	}
-
-	public int[] getPos2(){
-		return pos2;
-	}
-
-	public void setPos2(int pos2[]){
-		this.pos2 = pos2;
-	}
-
-	public void setPos1(int x, int y){
-		pos1[0] = x;
-		pos1[1] = y;
-	}
-
-	public void setPos2(int x, int y){
-		pos2[0] = x;
-		pos2[1] = y;
-	}
+	
 
 	public ArrayList<String> getPropertiesName(){
 
@@ -1032,11 +1023,7 @@ public class Grid {
 	}
 
 
-	public void setGridGeometry(GridGeometry2D gridGeometry){
-		this.gridGeometry = gridGeometry;
-		setInitCoordinate();
-	}
-
+	
 	public void setCellShapeType(String type){
 		this.cellShapeType = type;
 		this.gridCellManager = GridCellFactory.create(type, this);
@@ -1065,8 +1052,7 @@ public class Grid {
 	public void setWorldBounds(Double[] worldBounds){
 
 		this.worldBounds = worldBounds;
-		this.boundsX = worldBounds[0];
-		this.boundsY = worldBounds[3];
+		
 	}
 
 	public void clearData(){

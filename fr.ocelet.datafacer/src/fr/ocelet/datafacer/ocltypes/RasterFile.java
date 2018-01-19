@@ -38,23 +38,26 @@ public class RasterFile{
 	
 	private KeyMap<String, Integer> propMatched = new KeyMap<String, Integer>();
 	private CoordinateReferenceSystem crs;
+	
+	private String path;
     public RasterFile(String fileName){
-    	try{
+    	/*try{
         raster = new ORaster(FileUtils.applyOutput(fileName));
     	}catch(Exception e){
     		
-    	}
+    	}*/
+    	this.path = fileName;
     }
     
     public RasterFile(String fileName, String epsg) {
-    	try{
+    	/*try{
             raster = new ORaster(FileUtils.applyOutput(fileName));
         	}catch(Exception e){
-        		
-        	}
-    	
+        		e.printStackTrace();
+        	}*/
+    	this.path = fileName;
     	setCrs(epsg);
-    	raster.setCRS(crs);
+    	//raster.setCRS(crs);
     }
    
     public Polygon getBoundaries(){
@@ -114,19 +117,23 @@ public class RasterFile{
         return raster.getMaxPixel(1);
     }
 
-    public GridGeometry2D getGridGeometry(){
-    
-        return raster.getGridGeometry();
-    }
-
-    public WritableRaster getRaster(){
-    
-        return raster.getWritableRaster();
-    }
-   
+  
+     
     
     
     protected Grid createGrid(List<String> properties, Shapefile shp, String gridName){
+    	
+    	Double[] bounds = shp.getBounds();
+    	
+    	
+    	try{
+            raster = new ORaster(FileUtils.applyOutput(path), bounds);
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}
+    	if(crs != null) {
+    		raster.setCRS(crs);
+    	}
     	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), shp.getBounds());
         fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
         grid.copy(raster, propMatched);
@@ -134,6 +141,18 @@ public class RasterFile{
     }
     
     protected Grid createGrid(List<String> properties, List<Geometry> geometries, String gridName){
+    	
+    	Double[] bounds = getDoubleBounds(geometries);
+    	
+    	
+    	try{
+            raster = new ORaster(FileUtils.applyOutput(path), bounds);
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}
+    	if(crs != null) {
+    		raster.setCRS(crs);
+    	}
     	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBounds(geometries));
         fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
         grid.copy(raster, propMatched);
@@ -141,6 +160,18 @@ public class RasterFile{
     }
     
     protected Grid createGrid(List<String> properties, Geometry geometry, String gridName){
+    	
+	Double[] bounds = getDoubleBounds(geometry);
+    	
+    	
+    	try{
+            raster = new ORaster(FileUtils.applyOutput(path), bounds);
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}
+    	if(crs != null) {
+    		raster.setCRS(crs);
+    	}
     	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBounds(geometry));
         fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
         grid.copy(raster, propMatched);
@@ -148,6 +179,14 @@ public class RasterFile{
     }
     
     protected void createGrid(List<String> properties, String gridName){
+    	try{
+            raster = new ORaster(FileUtils.applyOutput(path));
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}
+    	if(crs != null) {
+    		raster.setCRS(crs);
+    	}
     	grid = GridGenerator.squareGridFrom(gridName, properties, raster);
         fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
         grid.copy(raster, propMatched);
@@ -155,10 +194,7 @@ public class RasterFile{
 
     }
     
-    protected void createGrid(List<String> properties, String gridName, int minX, int minY, int maxX, int maxY){
-    	
-    }
-    
+   
     
     public void export(List<? extends AbstractEntity> entities, String path, String epsgCode, String... names){
     	
@@ -249,14 +285,14 @@ public class RasterFile{
     				maxX = c.x;
     			}
     			if(c.y > maxY) {
-    				maxY = c.x;
+    				maxY = c.y;
     			}
     			
     			if(c.x < minX) {
     				minX = c.x;
     			}
     			if(c.x < minY) {
-    				minY = c.x;
+    				minY = c.y;
     			}
     			
     		}
@@ -267,6 +303,80 @@ public class RasterFile{
     	LinearRing lr = new LinearRing(cs, SpatialManager.geometryFactory());
     	Polygon env = new Polygon(lr, null, SpatialManager.geometryFactory());
     	return env;
+    	
+    }
+    
+  private Double[] getDoubleBounds(List<Geometry> geometries) {
+    	
+	  
+	  Double[] bounds = new Double[4];
+    	double minX = Double.POSITIVE_INFINITY;
+    	double minY = Double.POSITIVE_INFINITY;
+    	double maxX = Double.NEGATIVE_INFINITY;
+    	double maxY = Double.NEGATIVE_INFINITY;
+    	
+    	for(Geometry g : geometries) {
+    		
+    		for(Coordinate c : g.getCoordinates()) {
+    			if(c.x > maxX) {
+    				maxX = c.x;
+    			}
+    			if(c.y > maxY) {
+    				maxY = c.y;
+    			}
+    			
+    			if(c.x < minX) {
+    				minX = c.x;
+    			}
+    			if(c.x < minY) {
+    				minY = c.y;
+    			}
+    			
+    		}
+    	}
+    	bounds[0] = minX;
+    	bounds[1] = minY;
+    	bounds[2] = maxX;
+    	bounds[3] = maxY;
+
+    	return bounds;
+    	
+    }
+  
+private Double[] getDoubleBounds(Geometry geometry) {
+    	
+	  
+	  Double[] bounds = new Double[4];
+    	double minX = Double.POSITIVE_INFINITY;
+    	double minY = Double.POSITIVE_INFINITY;
+    	double maxX = Double.NEGATIVE_INFINITY;
+    	double maxY = Double.NEGATIVE_INFINITY;
+    	
+    	
+    		
+    		for(Coordinate c : geometry.getCoordinates()) {
+    			if(c.x > maxX) {
+    				maxX = c.x;
+    			}
+    			if(c.y > maxY) {
+    				maxY = c.y;
+    			}
+    			
+    			if(c.x < minX) {
+    				minX = c.x;
+    			}
+    			if(c.y < minY) {
+    				minY = c.y;
+    			}
+    			
+    		}
+    	
+    	bounds[0] = minX;
+    	bounds[1] = minY;
+    	bounds[2] = maxX;
+    	bounds[3] = maxY;
+
+    	return bounds;
     	
     }
     
@@ -290,7 +400,7 @@ public class RasterFile{
     			if(c.x < minX) {
     				minX = c.x;
     			}
-    			if(c.x < minY) {
+    			if(c.y < minY) {
     				minY = c.y;
     			}
     			

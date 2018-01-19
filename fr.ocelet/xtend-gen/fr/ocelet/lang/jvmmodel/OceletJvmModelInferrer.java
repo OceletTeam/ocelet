@@ -283,10 +283,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append("\t\t\t\t\t\t\t");
                                 _builder.append("if(grid == null){");
                                 _builder.newLine();
-                                _builder.append("grid = new ");
-                                _builder.append(gridType);
-                                _builder.append("(getWidth(), getHeight(), getGridGeometry());");
-                                _builder.newLineIfNotEmpty();
+                                _builder.newLine();
                                 {
                                   EList<Mdef> _matchprops = matchdef.getMatchprops();
                                   for(final Mdef mp : _matchprops) {
