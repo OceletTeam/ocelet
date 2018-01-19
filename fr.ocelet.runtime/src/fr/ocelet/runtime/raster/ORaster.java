@@ -312,21 +312,21 @@ public class ORaster {
 		
        if(geometry2D.getEnvelope2D().getMinX() > minX) {
         	minX = geometry2D.getEnvelope2D().getMinX();
-        	 minX = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
+        	// minX = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
         	
         }
         if(geometry2D.getEnvelope2D().getMinY() > minY) {
         	minY = geometry2D.getEnvelope2D().getMinY();
-        	minY = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
+        	//minY = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
         	
         }
         if(geometry2D.getEnvelope2D().getMaxX() < maxX) {
         	maxX = geometry2D.getEnvelope2D().getMaxX();
-        	maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
+        	//maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
         }
         if(geometry2D.getEnvelope2D().getMaxY() < maxY) {
         	maxY = geometry2D.getEnvelope2D().getMaxY();
-        	maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
+        	//maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
         }
         java.awt.Rectangle rect = new java.awt.Rectangle();
         DirectPosition2D min = new DirectPosition2D(minX, minY);
@@ -379,6 +379,27 @@ public class ORaster {
 	    this.bounds[3] = newMax.getCoordinate()[1] + yRes / 2;;
 		this.pX = xRes;
 		this.pY = yRes;
+		 min = new DirectPosition2D(bounds[0], bounds[1]);
+	     max = new DirectPosition2D(bounds[2], bounds[3]);
+		try {
+			dp1 = geometry2D.worldToGrid(min);
+		} catch (InvalidGridGeometryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+ 
+		try {
+			dp2 = geometry2D.worldToGrid(max);
+		} catch (InvalidGridGeometryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
        this.minGridX = dp1.x;
        this.minGridY = dp2.y;
        this.maxGridX = dp2.x;
@@ -393,13 +414,15 @@ public class ORaster {
         //rect.setBounds((int)Math.round(minX), (int)Math.round(minY), (int)Math.round(maxX) - (int)Math.round(minX), (int)Math.round(maxY) - (int)Math.round(minY));
         RenderedImage rendImage = coverage.getRenderedImage();
      
-        
+       
      
         raster = rendImage.getData(rect);
         
         return raster;
     }
-
+    public void printWorldBounds() {
+		System.out.println(bounds[0]+ " "+bounds[1]+ " "+bounds[2]+ " "+bounds[3]);
+	}
     public int numBands()
     {
         return raster.getNumBands();

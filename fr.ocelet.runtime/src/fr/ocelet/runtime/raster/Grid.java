@@ -241,13 +241,17 @@ public class Grid {
 	
 		int w = gridMax[0] - gridMin[0];
 		int h = gridMax[1] - gridMin[1];
+		
 		int maxX = gridMax[0];
 		int maxY = gridMax[1];
 	
-		if(w < width - 1 && w < raster.getGridWidth() - 1) {
+		/*System.out.println(width + " "+height+" "+raster.getGridWidth()+" "+raster.getGridHeight());
+		printWorldBounds();
+		raster.printWorldBounds();*/
+		if(w < width  && w < raster.getGridWidth()  ) {
 			maxX ++;
 		}
-		if(h < height - 1 && h < raster.getGridHeight() - 1) {
+		if(h < height  && h < raster.getGridHeight() ) {
 			maxY ++;
 		}
 
@@ -256,7 +260,7 @@ public class Grid {
 			for(int j = gridMin[1]; j < maxY; j ++){
 				for(String name : matchedBand.keySet()){
 					//try{
-						
+						//System.out.println(i +" "+j+" "+(i + diffX)+" "+(j + diffY));
 						/*Coordinate worlds = this.gridCoordinate(i, j);
 						int[] convert = raster.worldToGrid(worlds.x, worlds.y);
 						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));*/
@@ -270,6 +274,10 @@ public class Grid {
 				}    			
 			}
 		}
+	}
+	
+	private void printWorldBounds() {
+		System.out.println(worldBounds[0]+ " "+worldBounds[1]+ " "+worldBounds[2]+ " "+worldBounds[3]);
 	}
 	/*public void copy(ORaster raster){
 

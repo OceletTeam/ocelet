@@ -298,6 +298,7 @@ public class GridGenerator {
 
 		//lower corner :
 		if(testMinX == false && testMinY == false){
+			
 			int[] minGridCoordFromShp = raster.worldToGrid(minX, minY);
 			double[] minCoordFromShp = raster.gridToWorld(minGridCoordFromShp[0], minGridCoordFromShp[1]);
 			finalMinX = minCoordFromShp[0] - xRes / 2;
@@ -325,6 +326,7 @@ public class GridGenerator {
 		//upper corner :
 
 		if(testMaxX == false && testMaxY == false){
+			
 			int[] maxGridCoordFromShp = raster.worldToGrid(maxX, maxY);
 			double[] maxCoordFromShp = raster.gridToWorld(maxGridCoordFromShp[0], maxGridCoordFromShp[1]);
 			finalMaxX = maxCoordFromShp[0] + xRes / 2;
