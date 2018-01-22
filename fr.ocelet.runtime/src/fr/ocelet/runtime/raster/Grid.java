@@ -191,7 +191,30 @@ public class Grid {
 		
 		Double[] rBounds = raster.getWorldBounds();
 		Double[] scaled = new Double[4];
-		if(worldBounds[0] < rBounds[0]) {
+		/*if(worldBounds[0] < rBounds[0]) {
+			scaled[0] = rBounds[0];
+		}else {
+			scaled[0] = worldBounds[0];
+		}
+		
+		if(worldBounds[1] < rBounds[1]) {
+			scaled[1] = rBounds[1];
+		}else {
+			scaled[1] = worldBounds[1];
+		}
+		
+		if(worldBounds[2] > rBounds[2]) {
+			scaled[2] = rBounds[2];
+		}else {
+			scaled[2] = worldBounds[2];
+		}
+		
+		if(worldBounds[3] > rBounds[3]) {
+			scaled[3] = rBounds[3];
+		}else {
+			scaled[3] = worldBounds[3];
+		}*/
+		if(worldBounds[0] / 2 < rBounds[0]) {
 			scaled[0] = rBounds[0];
 		}else {
 			scaled[0] = worldBounds[0];
@@ -214,7 +237,6 @@ public class Grid {
 		}else {
 			scaled[3] = worldBounds[3];
 		}
-		
 		return scaled;
 	}
 	public void  copy(ORaster raster, KeyMap<String, Integer> matchedBand){
@@ -225,10 +247,10 @@ public class Grid {
 		
 	
 		
-		int[] gridMin = gridCoordinate(scaled[0], scaled[3]);
-		int[] gridMax = gridCoordinate(scaled[2], scaled[1]);
+		int[] gridMin = gridCoordinate(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
+		int[] gridMax = gridCoordinate(scaled[2] - xRes / 2, scaled[1] + yRes / 2);
 	
-		int[] rasterMin = raster.worldToGrid(scaled[0], scaled[3]);
+		int[] rasterMin = raster.worldToGrid(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
 		int[] rasterMax = raster.worldToGrid(scaled[2], scaled[1]);
 		
 		
@@ -788,6 +810,10 @@ public class Grid {
 		return new Coordinate(dx, dy);
 
 	}
+	
+	public void printGridBounds() {
+		System.out.println(minX+" "+minY+" "+maxX+" "+maxY);
+	}
 
 	public Coordinate gridCoordinate(int x, int y){
 
@@ -797,16 +823,18 @@ public class Grid {
 		if(cellShapeType.equals("TRIANGULAR")){
 			return triangularGridToWorld(x, y);
 		}
-
+		DirectPosition dp = null;
 		try{
-			DirectPosition dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
-			return new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
+		 dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
+			
 		}
 		catch(TransformException ex){
-
-			ex.printStackTrace();
+			//return null;
+			//ex.printStackTrace();
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
+		if(dp != null)
+			return new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
 		return null;
 	}
 

@@ -520,12 +520,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 				
 				Coordinate c = null;
 				int[] c2 = null;
-				try{
+		
 					c = grid.gridCoordinate(x2, y2);
+					if(c != null)
 					c2 = globalGrid.gridCoordinate(c.x, c.y);
-				}catch(Exception e) {
-					
-				}
+			
 				//colCount++;
 
 				//System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
@@ -550,7 +549,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 					x2 = startX2;
 					y2++;
-
+					
 					//Coordinate c = grid.gridCoordinate(x2, y2);
 					//int[] c2 = globalGrid.gridCoordinate(c.x, c.y);
 					//System.out.println(colCount);
@@ -566,12 +565,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 						
 						Coordinate c = null;
 						int[] c2 = null;
-						try{
+				
 							c = grid.gridCoordinate(x2, y2);
+							if(c != null)
 							c2 = globalGrid.gridCoordinate(c.x, c.y);
-						}catch(Exception e) {
-							
-						}
+					
 						//colCount++;
 
 						//System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
@@ -611,12 +609,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 					}else{
 						Coordinate c = null;
 						int[] c2 = null;
-						try{
+					
 							c = grid.gridCoordinate(x2, y2);
+							if(c != null)
 							c2 = globalGrid.gridCoordinate(c.x, c.y);
-						}catch(Exception e) {
-							
-						}
+					
 						//colCount++;
 
 						//System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
@@ -667,15 +664,15 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 				}else{
 					x2++;
+					
 					//System.out.println("coord px "+x2 + " "+y2);
 					Coordinate c = null;
 					int[] c2 = null;
-					try{
+						//grid.printGridBounds();
 						c = grid.gridCoordinate(x2, y2);
+						if(c != null)
 						c2 = globalGrid.gridCoordinate(c.x, c.y);
-					}catch(Exception e) {
-						
-					}
+				
 					//System.out.println(c);
 					
 					//colCount++;
@@ -701,6 +698,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							colCount++;
 						}
 						if(hasNext()){
+							
 							next();
 						}else{
 							x2 = endX2;
@@ -1243,14 +1241,21 @@ public abstract class DiCursorEdge extends OcltEdge{
 			
 		}
 		endX2 = img[0];
-		double yResDiff = globalGrid.getYRes() / 2 - grid.getYRes() / 2;
+		double yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
 		img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
 		if(img != null) {
-			yResDiff =yResDiff - grid.getYRes() / 2;
+			yResDiff =yResDiff + grid.getYRes() / 2;
 			img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
 			
 		}
 		endY2 = img[1];
+		if(endX2 > grid.getMaxX()) {
+			endX2 = grid.getMaxX();
+		}
+		
+		if(endY2 > grid.getMaxY()) {
+			endY2 = grid.getMaxY();
+		}
 		//printMatchCoord();
 		//System.out.println(globalGrid.getMaxX()+" "+globalGrid.getMaxY());
 		equalGrid = false;
