@@ -140,8 +140,8 @@ public class Grid {
 		this.height = height;
 		this.minX = 0;
 		this.minY = 0;
-		this.maxX = width;
-		this.maxY = height;
+		this.maxX = width - 1;
+		this.maxY = height - 1;
 		this.ts = normSetter;
 		setInitCoordinate();        
 	}
@@ -600,65 +600,73 @@ public class Grid {
 		if(gCoord[0] % 2 == 0){
 
 			Coordinate[] coords = hexagonalCoordinate(gCoord[0], gCoord[1]);
-			if(coords == null) {
-				return null;
+	
+			CoordinateSequence cs = null;
+			LinearRing lr = null;
+			Polygon poly = null;
+			
+			if(coords != null) {
+				 cs = new CoordinateArraySequence(coords);
+				 lr = new LinearRing(cs,SpatialManager.geometryFactory());
+				 poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+				if(poly.contains(point) || poly.touches(point)){
+					return gCoord;
+				}
 			}
-			CoordinateSequence cs = new CoordinateArraySequence(coords);
-			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
-			Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-			if(poly.contains(point) || poly.touches(point)){
-				return gCoord;
-			}else{
-				if(gCoord[0] - 1 >= 0){
+			if(gCoord[0] - 1 >= 0){
 					coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1]);
-					if(coords == null) {
-						return null;
-					}
-					cs = new CoordinateArraySequence(coords);
-
-					lr = new LinearRing(cs,SpatialManager.geometryFactory());
-
-					poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-					if(poly.contains(point) || poly.touches(point)){
-						return new int[]{gCoord[0] - 1, gCoord[1]};
+					
+					if(coords != null) {
+						cs = new CoordinateArraySequence(coords);
+	
+						lr = new LinearRing(cs,SpatialManager.geometryFactory());
+						
+						poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+						if(poly.contains(point) || poly.touches(point)){
+							return new int[]{gCoord[0] - 1, gCoord[1]};
+						}
 					}
 				}
 				if(gCoord[0] - 1 >= 0 && gCoord[1] - 1 >= 0){
+					
+				
 					coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1] - 1);
-					if(coords == null) {
-						return null;
-					}
-					cs = new CoordinateArraySequence(coords);
-
-					lr = new LinearRing(cs,SpatialManager.geometryFactory());
-
-					poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-					if(poly.contains(point) || poly.touches(point)){
-						return new int[]{gCoord[0] - 1, gCoord[1] - 1};
+					if(coords != null) {
+						cs = new CoordinateArraySequence(coords);
+	
+						lr = new LinearRing(cs,SpatialManager.geometryFactory());
+	
+						poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+						if(poly.contains(point) || poly.touches(point)){
+							return new int[]{gCoord[0] - 1, gCoord[1] - 1};
+						}
 					}
 				}
-			}
+			
 			return null;
 
 		}else{
 
 			Coordinate[] coords = hexagonalCoordinate(gCoord[0], gCoord[1]);
-			if(coords == null) {
-				return null;
-			}
-			CoordinateSequence cs = new CoordinateArraySequence(coords);
+		
+			CoordinateSequence cs = null;
+			LinearRing lr = null;
+			Polygon poly = null;
+			
+			if(coords != null) {
+			 cs = new CoordinateArraySequence(coords);
 
-			LinearRing lr = new LinearRing(cs,SpatialManager.geometryFactory());
+			 lr = new LinearRing(cs,SpatialManager.geometryFactory());
 
-			Polygon poly = new Polygon(lr, null,SpatialManager.geometryFactory());
-			if(poly.contains(point) || poly.touches(point)){
-				return new int[]{gCoord[0], gCoord[1]};
+			 poly = new Polygon(lr, null,SpatialManager.geometryFactory());
+				if(poly.contains(point) || poly.touches(point)){
+					return new int[]{gCoord[0], gCoord[1]};
+				}
 			}
 			if(gCoord[0] -1 >=0 && gCoord[1] < height - 1){
 				coords = hexagonalCoordinate(gCoord[0] - 1, gCoord[1]);
-				if(coords == null) {
-					return null;
-				}
+				
+				if(coords != null) {
 				cs = new CoordinateArraySequence(coords);
 
 				lr = new LinearRing(cs,SpatialManager.geometryFactory());
@@ -667,13 +675,13 @@ public class Grid {
 				if(poly.contains(point)|| poly.touches(point)){
 					return new int[]{gCoord[0] - 1, gCoord[1]};
 				}
+				}
 
 			}
 			if(gCoord[1] - 1 >= 0 ){
 				coords = hexagonalCoordinate(gCoord[0], gCoord[1] - 1);
-				if(coords == null) {
-					return null;
-				}
+				if(coords != null) {
+				
 				cs = new CoordinateArraySequence(coords);
 
 				lr = new LinearRing(cs,SpatialManager.geometryFactory());
@@ -681,6 +689,7 @@ public class Grid {
 				poly = new Polygon(lr, null,SpatialManager.geometryFactory());
 				if(poly.contains(point) || poly.touches(point)){
 					return new int[]{gCoord[0], gCoord[1] - 1};
+				}
 				}
 			}
 			return null;	
@@ -718,7 +727,7 @@ public class Grid {
 
 		DirectPosition dc = null;
 		
-		if(x < minX || x >= maxX || y < minY || y >= maxY) {
+		if(x < minX || x > maxX || y < minY || y > maxY) {
 			return null;
 		}
 		try {

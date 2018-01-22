@@ -195,6 +195,9 @@ public class ORaster {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	if(dp == null) {
+    		return null;
+    	}
     	return dp.getCoordinate();
     }
     public int[] worldToGrid(double x, double y){
@@ -205,12 +208,14 @@ public class ORaster {
 		 gridCoord = geometry2D.worldToGrid(dp);
 		} catch (InvalidGridGeometryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (TransformException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
-    	 
+    	 if(gridCoord == null) {
+    		 return null;
+    	 }
     	 return new int[]{gridCoord.x, gridCoord.y};
     }
 
@@ -309,25 +314,38 @@ public class ORaster {
         {
            // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
         }
-		
+    	double x = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
+    	double y = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
+    	double x2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
+    	double y2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
+    	
+    	double xRes = (x2 - x) / geometry2D.getGridRange2D().getBounds().getWidth();
+    	double yRes = (y2 - y) /geometry2D.getGridRange2D().getBounds().getHeight();
        if(geometry2D.getEnvelope2D().getMinX() > minX) {
         	minX = geometry2D.getEnvelope2D().getMinX();
+        	
         	// minX = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
         	
         }
         if(geometry2D.getEnvelope2D().getMinY() > minY) {
+        
         	minY = geometry2D.getEnvelope2D().getMinY();
-        	//minY = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
+        
         	
         }
         if(geometry2D.getEnvelope2D().getMaxX() < maxX) {
         	maxX = geometry2D.getEnvelope2D().getMaxX();
-        	//maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
+        	//maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0] ;
         }
         if(geometry2D.getEnvelope2D().getMaxY() < maxY) {
         	maxY = geometry2D.getEnvelope2D().getMaxY();
-        	//maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
+        	//maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1] ;
         }
+        minX = minX + xRes / 2;
+        minY = minY + yRes / 2;
+        maxX = maxX - xRes / 2;
+        maxY = maxY - yRes / 2;
+       
         java.awt.Rectangle rect = new java.awt.Rectangle();
         DirectPosition2D min = new DirectPosition2D(minX, minY);
         DirectPosition2D max = new DirectPosition2D(maxX, maxY);
@@ -366,13 +384,7 @@ public class ORaster {
 			e.printStackTrace();
 		}
 		
-		double x = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
-    	double y = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
-    	double x2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
-    	double y2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1];
-    	
-    	double xRes = (x2 - x) / geometry2D.getGridRange2D().getBounds().getWidth();
-    	double yRes = (y2 - y) /geometry2D.getGridRange2D().getBounds().getHeight();
+	
 		this.bounds[0] = newMin.getCoordinate()[0] - xRes / 2;
 	    this.bounds[1] = newMin.getCoordinate()[1] - yRes / 2;
 	    this.bounds[2] = newMax.getCoordinate()[0] + xRes / 2;
@@ -412,16 +424,13 @@ public class ORaster {
    
         //rect.setBounds((int)Math.round(bounds[0]), (int)Math.round(bounds[1]), (int)Math.round(bounds[2]), (int)Math.round(bounds[3]));
         //rect.setBounds((int)Math.round(minX), (int)Math.round(minY), (int)Math.round(maxX) - (int)Math.round(minX), (int)Math.round(maxY) - (int)Math.round(minY));
-        RenderedImage rendImage = coverage.getRenderedImage();
-     
-       
-     
+        RenderedImage rendImage = coverage.getRenderedImage();   
         raster = rendImage.getData(rect);
         
         return raster;
     }
     public void printWorldBounds() {
-		System.out.println(bounds[0]+ " "+bounds[1]+ " "+bounds[2]+ " "+bounds[3]);
+		//System.out.println(bounds[0]+ " "+bounds[1]+ " "+bounds[2]+ " "+bounds[3]);
 	}
     public int numBands()
     {
