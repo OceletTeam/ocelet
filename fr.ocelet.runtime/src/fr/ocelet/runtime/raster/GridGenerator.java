@@ -74,9 +74,9 @@ public class GridGenerator {
 
 		double rectangleWidth = size + size / 2;
 		double rectangleHeight = 2 * Math.sqrt( size * size - (size / 2) * (size / 2));
-		double nminX = minX - rectangleWidth - rectangleWidth / 2;
+		double nminX = minX - rectangleWidth;
 		double nminY = minY - rectangleHeight / 2;
-		double nmaxX = maxX + rectangleWidth + rectangleWidth / 2;
+		double nmaxX = maxX + rectangleWidth;
 		double nmaxY = maxY+ rectangleHeight / 2; ;
 		double width = nmaxX - nminX;
 		double height = nmaxY - nminY;
