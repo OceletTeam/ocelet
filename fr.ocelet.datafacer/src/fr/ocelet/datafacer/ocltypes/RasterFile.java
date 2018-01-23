@@ -101,11 +101,7 @@ public class RasterFile{
 		}
 	}
     public void setFileName(String fileName){
-    	try{
-        raster = new ORaster(FileUtils.applyOutput(fileName));
-    	}catch(Exception e){
-    		
-    	}
+    	this.path = fileName;
     }
     
     public int getWidth(){
