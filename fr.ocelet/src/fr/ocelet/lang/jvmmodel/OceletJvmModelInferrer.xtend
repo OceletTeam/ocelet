@@ -171,7 +171,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  	    			«ENDIF»
                   	  	  			«ENDIF»
                   	  			«ENDFOR»
-								createGrid(entity.getProps(), "«entname»Grid");
+								createGrid(entity.getProps(), "«entname»");
 								entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
 								entity.updateCellInfo("QUADRILATERAL");
 								
@@ -197,7 +197,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	«ENDIF»
                   	«ENDIF»
                   	«ENDFOR»
-                  	                  	this.grid = createGrid(entity.getProps(), shp, 	"«entname»Grid");
+                  	                  	this.grid = createGrid(entity.getProps(), shp, 	"«entname»");
                     entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
                     entity.updateCellInfo("QUADRILATERAL");
                   	}
@@ -222,7 +222,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	«ENDIF»
                   	«ENDIF»
                   	«ENDFOR»
-                  	                  	this.grid = createGrid(entity.getProps(), geometries, 	"«entname»Grid");
+                  	                  	this.grid = createGrid(entity.getProps(), geometries, 	"«entname»");
                     entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
                     entity.updateCellInfo("QUADRILATERAL");
                   	}
@@ -248,7 +248,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	«ENDIF»
                   	«ENDIF»
                   	«ENDFOR»
-                  	                  	this.grid = createGrid(entity.getProps(), geometry, 	"«entname»Grid");
+                  	                  	this.grid = createGrid(entity.getProps(), geometry, 	"«entname»");
                     entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
                     entity.updateCellInfo("QUADRILATERAL");
                   	}
@@ -2083,7 +2083,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			parameters += meln.toParameter("size",typeRef('java.lang.Double'))
           			body = '''
           				«firstRoleType» entity = new «firstRoleType»();
-          				«gridType» grid = createHexagon("«graphcname»",entity.getProps(), shp.getBounds(), size);
+          				«gridType» grid = createHexagon("«firstRoleType»",entity.getProps(), shp.getBounds(), size);
           				
           			    fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
                   	 	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
@@ -2104,7 +2104,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			
           		body = '''
           				«firstRoleType» entity = new «firstRoleType»();
-          				«gridType» grid =  createHexagon("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
+          				«gridType» grid =  createHexagon("«firstRoleType»",entity.getProps(), minX, minY, maxX, maxY, size);
           				fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
                   	   	entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
                   	   	entity.updateCellInfo("HEXAGONAL");
@@ -2122,7 +2122,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			parameters += meln.toParameter("yRes",typeRef('java.lang.Double'))
           			body = '''
 						«firstRoleType» entity = new «firstRoleType»();
-						«gridType» grid = createSquare("«graphcname»",entity.getProps(), shp.getBounds(), xRes, yRes);
+						«gridType» grid = createSquare("«firstRoleType»",entity.getProps(), shp.getBounds(), xRes, yRes);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
 						entity.updateCellInfo("QUADRILATERAL");
@@ -2144,7 +2144,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			
           			body = '''
 						«firstRoleType» entity = new «firstRoleType»();
-						«gridType» grid = createSquare("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);
+						«gridType» grid = createSquare("«firstRoleType»",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
 						entity.updateCellInfo("QUADRILATERAL");
@@ -2161,7 +2161,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		parameters += meln.toParameter("size",typeRef('java.lang.Double'))
           			body = '''
 						«firstRoleType» entity = new «firstRoleType»();
-						«gridType» grid = createTriangle("«graphcname»",entity.getProps(), shp.getBounds(), size);
+						«gridType» grid = createTriangle("«firstRoleType»",entity.getProps(), shp.getBounds(), size);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); 
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
 						entity.updateCellInfo("TRIANGULAR");
@@ -2182,7 +2182,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			
           			body = '''
 						«firstRoleType» entity = new «firstRoleType»();
-						«gridType» grid = createTriangle("«graphcname»",entity.getProps(), minX, minY, maxX, maxY, size);
+						«gridType» grid = createTriangle("«firstRoleType»",entity.getProps(), minX, minY, maxX, maxY, size);
 						fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
 						entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());
 						entity.updateCellInfo("TRIANGULAR");

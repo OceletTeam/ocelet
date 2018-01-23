@@ -30,7 +30,7 @@ public class GridManager
 
     public GridManager(){
            
-        index = 0;
+       
     }
 
     public static GridManager getInstance()
@@ -42,8 +42,25 @@ public class GridManager
 
     public void add(Grid grid)
     {
-        grids.put(Integer.valueOf(index), grid);
-        index++;
+    	int curIndex = - 1;
+    	for(Integer i : grids.keySet()) {
+    		//if(grid.getName())
+    		if(grid.getName().equals(grids.get(i).getName())) {
+    			curIndex = i;
+    		}
+    	}
+    	if(curIndex != -1) {
+    		Grid precGrid = grids.get(curIndex);
+    		precGrid.flush();
+    		precGrid = null;
+    		grids.put(curIndex, grid);
+    		index = curIndex;
+    	}else {
+    		index = grids.keySet().size();
+    		grids.put(grids.keySet().size(), grid);
+    		
+        	
+    	}
     }
 
     public Grid get(int index)
@@ -53,7 +70,8 @@ public class GridManager
 
     public int getCurrentIndex()
     {
-        return index - 1;
+    
+        return index;
     }
 
     public int getIndex(Grid grid){
@@ -67,7 +85,7 @@ public class GridManager
     	return i;
     }
     private HashMap<Integer, Grid> grids = new HashMap<Integer, Grid>();
-    private int index;
+   private int index = 0;
     private static GridManager gridManager = null;
 
 }

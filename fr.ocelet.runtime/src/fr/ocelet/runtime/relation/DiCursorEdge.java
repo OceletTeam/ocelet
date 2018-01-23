@@ -1171,10 +1171,10 @@ public abstract class DiCursorEdge extends OcltEdge{
 	
 		double[] chainedScale = scalingdouble(chainRescaledGrid, chainRescaledGlobal);
 		
-		 gridMin = grid.gridCoordinate(chainedScale[0], chainedScale[3]);
+		 /*gridMin = grid.gridCoordinate(chainedScale[0], chainedScale[3]);
 		 gridMax = grid.gridCoordinate(chainedScale[2], chainedScale[1]);
 		 globalMin = globalGrid.gridCoordinate(chainedScale[0], chainedScale[3]);
-		 globalMax = globalGrid.gridCoordinate(chainedScale[2], chainedScale[1]);
+		 globalMax = globalGrid.gridCoordinate(chainedScale[2], chainedScale[1]);*/
 		// System.out.println("chainedScale "+chainedScale[0]+" "+chainedScale[1]+" "+chainedScale[2]+" "+chainedScale[3]);
 		/*if(globalMin == null){
 			startX = 0;
@@ -1233,7 +1233,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			endY2 = gridMax[1];
 		Coordinate mG = globalGrid.gridCoordinate(endX, endY);
 		
-		double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
+		/*double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
 		int[] img = grid.gridCoordinate(mG.x + xResDiff, mG.y );
 		while(img == null) {
 			xResDiff = xResDiff - grid.getXRes() / 2;
@@ -1243,9 +1243,19 @@ public abstract class DiCursorEdge extends OcltEdge{
 		endX2 = img[0];
 		double yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
 		img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
-		if(img != null) {
+		while(img == null) {
 			yResDiff =yResDiff + grid.getYRes() / 2;
 			img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
+			
+		}*/
+		double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
+		int[] img = grid.gridCoordinate(mG.x + xResDiff, mG.y );
+		double yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
+		
+		while(img == null) {
+			yResDiff =yResDiff + grid.getYRes() / 2;
+			xResDiff = xResDiff - grid.getXRes() / 2;
+			img = grid.gridCoordinate(mG.x + xResDiff , mG.y + yResDiff);
 			
 		}
 		endY2 = img[1];

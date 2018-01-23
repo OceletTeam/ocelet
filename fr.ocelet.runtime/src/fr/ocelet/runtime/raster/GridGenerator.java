@@ -94,7 +94,7 @@ public class GridGenerator {
 		Envelope2D env = createEnvelope(nminX, nminY, nmaxX, nmaxY);
 		WritableRaster raster = createRaster(index, col, row);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
-		Grid grid = new Grid(col, row, coverage.getGridGeometry());
+		Grid grid = new Grid(name, col, row, coverage.getGridGeometry());
 		grid.setRasterProperties(initProps);
 		grid.setRaster(raster);
 		grid.setXRes(size);
@@ -156,7 +156,7 @@ public class GridGenerator {
 		//env.setCoordinateReferenceSystem();
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
-		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
+		Grid grid = new Grid(name,cellWidth, cellHeight, coverage.getGridGeometry());
 		grid.setRasterProperties(initProps);
 		grid.setRaster(raster);
 		grid.setXRes(xRes);
@@ -205,7 +205,7 @@ public class GridGenerator {
 		//env.setCoordinateReferenceSystem();
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
-		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
+		Grid grid = new Grid(name,cellWidth, cellHeight, coverage.getGridGeometry());
 		grid.setRasterProperties(initProps);
 		grid.setRaster(raster);
 		grid.setXRes(xRes);
@@ -436,7 +436,7 @@ public class GridGenerator {
 		env.setCoordinateReferenceSystem(raster.getCRS());
 		WritableRaster newRaster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, newRaster, env);		
-		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
+		Grid grid = new Grid(name,cellWidth, cellHeight, coverage.getGridGeometry());
 		
 		grid.setRasterProperties(initProps);
 		grid.setRaster(newRaster);
@@ -521,7 +521,7 @@ public class GridGenerator {
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
 		//coverage = initRaster.getGridGeometry().getc
-		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
+		Grid grid = new Grid(name,cellWidth, cellHeight, coverage.getGridGeometry());
 		grid.setRasterProperties(initProps);
 		grid.setRaster(raster);
 		grid.setXRes(initRaster.getXRes());
@@ -591,7 +591,7 @@ public class GridGenerator {
 		Envelope2D env = createEnvelope(nminX, squareMinY, squareMaxX, newSquareMaxY);
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, raster, env);
-		Grid grid = new Grid(cellWidth, cellHeight, coverage.getGridGeometry());
+		Grid grid = new Grid(name,cellWidth, cellHeight, coverage.getGridGeometry());
 		
 		grid.setRasterProperties(initProps);
 		grid.setRaster(raster);

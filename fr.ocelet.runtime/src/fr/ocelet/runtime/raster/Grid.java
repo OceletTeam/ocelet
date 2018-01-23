@@ -90,7 +90,7 @@ public class Grid {
 	protected String cellShapeType = "QUADRILATERAL";
 	protected Coordinate initCoordinates;
 	protected Double[] worldBounds;
-
+	private String name;
 	public Envelope2D env;
 
 	private TypeSetter ts;
@@ -100,8 +100,15 @@ public class Grid {
 	private MrmSetter mrmSetter = new MrmSetter();
 	private Double[] worldBoundsPrime;
 	private CoordinateReferenceSystem crs;
-
-
+	
+	public void flush() {
+		raster = null;
+		gridCellManager = null;
+		geomTempVal = null;
+	}
+	public String getName() {
+		return name;
+	}
 
 	public void setFinalProperties(List<String> props){
 		ArrayList<Integer> indexes = new ArrayList<Integer>();
@@ -131,10 +138,10 @@ public class Grid {
 		return ((Integer)rasterProps.get(name)).intValue();
 	}
 
-	public Grid(int width, int height, GridGeometry2D gridGeometry){
+	public Grid(String name,int width, int height, GridGeometry2D gridGeometry){
 
 		rasterProps = new HashMap<String, Integer>();
-	
+		this.name = name;
 		this.gridGeometry = gridGeometry;
 		this.width = width;
 		this.height = height;
@@ -214,7 +221,7 @@ public class Grid {
 		}else {
 			scaled[3] = worldBounds[3];
 		}*/
-		if(worldBounds[0] / 2 < rBounds[0]) {
+		if(worldBounds[0] < rBounds[0]) {
 			scaled[0] = rBounds[0];
 		}else {
 			scaled[0] = worldBounds[0];
@@ -264,18 +271,18 @@ public class Grid {
 		int w = gridMax[0] - gridMin[0];
 		int h = gridMax[1] - gridMin[1];
 		
-		int maxX = gridMax[0];
-		int maxY = gridMax[1];
+		int maxX = gridMax[0] + 1;
+		int maxY = gridMax[1] + 1;
 	
 		/*System.out.println(width + " "+height+" "+raster.getGridWidth()+" "+raster.getGridHeight());
 		printWorldBounds();
 		raster.printWorldBounds();*/
-		if(w < width  && w < raster.getGridWidth()  ) {
+		/*if(w < width  && w < raster.getGridWidth()  ) {
 			maxX ++;
 		}
 		if(h < height  && h < raster.getGridHeight() ) {
 			maxY ++;
-		}
+		}*/
 
 		
 		for(int i = gridMin[0]; i < maxX; i ++){
@@ -301,97 +308,7 @@ public class Grid {
 	private void printWorldBounds() {
 		System.out.println(worldBounds[0]+ " "+worldBounds[1]+ " "+worldBounds[2]+ " "+worldBounds[3]);
 	}
-	/*public void copy(ORaster raster){
-
-		Double[] scaledD = scalingDouble(worldBounds, raster.worldBounds());
-		double[] scaledd = scalingdouble(worldBounds, raster.worldBounds());
-		int[] rasterMin = raster.worldToGrid(scaledD[0],scaledD[3]);
-		int[] gridMin = gridCoordinate(scaledd[0], scaledd[3]);
-		int[] gridMax = gridCoordinate(scaledd[2], scaledd[1]);
-		int width = gridMax[0] - gridMin[0];
-		int height = gridMax[1] - gridMin[1];
-		for(int i = 0; i < width; i ++){
-			for(int j = 0; j < height; j ++){
-				for(String name : rasterProps.keySet()){
-					try{
-						this.raster.setSample(i + gridMin[0], j + gridMin[1], rasterProps.get(name), raster.getDoubleValue(i + rasterMin[0] , j + rasterMin[1], rasterProps.get(name)));
-					}catch (Exception e){
-						//e.printStackTrace();
-					}
-				}    			
-			}
-		}
-	}*/
-
-	/*public void setData(Double[] bounds,  ORaster raster, int numBands){
-
-		xRes = raster.getXRes();
-		yRes = raster.getYRes();
-		Double[] newBounds = new Double[4];
-		newBounds[0] = bounds[0];
-		newBounds[1] = bounds[1];
-		newBounds[2] = bounds[2];
-		newBounds[3] = bounds[3];
-		worldBounds = newBounds;
-		int cellWidth = (int)(Math.round( (newBounds[2] - newBounds[0]) / xRes ));
-		int cellHeight = (int)(Math.round( (newBounds[3] - newBounds[1]) / yRes ));
-		minX = 0;
-		minY = 0;
-		maxX = cellWidth;
-		maxY = cellHeight;
-		double newMinX = newBounds[0];
-		double newMinY = newBounds[1];
-		width = cellWidth;
-		height = cellHeight; 
-		boundsX = newBounds[0];
-		boundsY = newBounds[3];
-		this.raster = GridGenerator.createRaster(numBands, cellWidth, cellHeight);
-		Envelope2D env = GridGenerator.createEnvelope(newMinX, newMinY, newMinX+  (xRes * cellWidth), newMinY + (yRes * cellHeight));
-		GridCoverage2D coverage = GridGenerator.createCoverage("", this.raster, env);
-		setEnv(env);
-		gridGeometry = coverage.getGridGeometry();
-
-		copy(raster);
-		raster = null;
-
-		setInitCoordinate();
-	}*/
-
-	/*public void setData( ORaster raster, int numBands){
-
-		xRes = raster.getXRes();
-		yRes = raster.getYRes();
-		Double[] newBounds = new Double[4];
-		double[] bounds = raster.worldBounds();
-		newBounds[0] = bounds[0];
-		newBounds[1] = bounds[1];
-		newBounds[2] = bounds[2];
-		newBounds[3] = bounds[3];
-
-		worldBounds = newBounds;
-		int cellWidth = (int)(Math.round( (newBounds[2] - newBounds[0]) / xRes ));
-		int cellHeight = (int)(Math.round( (newBounds[3] - newBounds[1]) / yRes ));
-		minX = 0;
-		minY = 0;
-		maxX = cellWidth;
-		maxY = cellHeight;
-		double newMinX = newBounds[0];
-		double newMinY = newBounds[1];
-		width = cellWidth;
-		height = cellHeight; 
-		boundsX = newBounds[0];
-		boundsY = newBounds[3];
-		this.raster = GridGenerator.createRaster(numBands, cellWidth, cellHeight);
-		Envelope2D env = GridGenerator.createEnvelope(newMinX, newMinY, newMinX+  (xRes * cellWidth), newMinY + (yRes * cellHeight));
-		GridCoverage2D coverage = GridGenerator.createCoverage("", this.raster, env);
-		setEnv(env);
-		gridGeometry = coverage.getGridGeometry();
-
-		copy(raster);
-		raster = null;
-
-		setInitCoordinate();
-	}*/
+	
 	public Grid(Double bounds[], GridGeometry2D gridGeometry, ORaster raster){
 		this.ts = normSetter;
 		//initRasterProps = new HashMap<String, Integer>();

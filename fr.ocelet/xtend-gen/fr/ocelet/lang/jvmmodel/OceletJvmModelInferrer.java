@@ -312,7 +312,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 }
                                 _builder.append("createGrid(entity.getProps(), \"");
                                 _builder.append(entname);
-                                _builder.append("Grid\");");
+                                _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());");
                                 _builder.newLine();
@@ -386,7 +386,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append("                  \t");
                                 _builder.append("this.grid = createGrid(entity.getProps(), shp, \t\"");
                                 _builder.append(entname, "                  \t");
-                                _builder.append("Grid\");");
+                                _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("                    ");
                                 _builder.append("entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());");
@@ -464,7 +464,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append("                  \t");
                                 _builder.append("this.grid = createGrid(entity.getProps(), geometries, \t\"");
                                 _builder.append(entname, "                  \t");
-                                _builder.append("Grid\");");
+                                _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("                    ");
                                 _builder.append("entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());");
@@ -542,7 +542,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append("                  \t");
                                 _builder.append("this.grid = createGrid(entity.getProps(), geometry, \t\"");
                                 _builder.append(entname, "                  \t");
-                                _builder.append("Grid\");");
+                                _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("                    ");
                                 _builder.append("entity.setNumGrid(fr.ocelet.runtime.raster.GridManager.getInstance().getCurrentIndex());");
@@ -4291,7 +4291,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append(gridType);
                             _builder.append(" grid = createHexagon(\"");
-                            _builder.append(graphcname);
+                            _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), shp.getBounds(), size);");
                             _builder.newLineIfNotEmpty();
                             _builder.newLine();
@@ -4352,7 +4352,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append(gridType);
                             _builder.append(" grid =  createHexagon(\"");
-                            _builder.append(graphcname);
+                            _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), minX, minY, maxX, maxY, size);");
                             _builder.newLineIfNotEmpty();
                             _builder.append("fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);");
@@ -4406,7 +4406,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append(gridType);
                             _builder.append(" grid = createSquare(\"");
-                            _builder.append(graphcname);
+                            _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), shp.getBounds(), xRes, yRes);");
                             _builder.newLineIfNotEmpty();
                             _builder.append("fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); ");
@@ -4464,7 +4464,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append(gridType);
                             _builder.append(" grid = createSquare(\"");
-                            _builder.append(graphcname);
+                            _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);");
                             _builder.newLineIfNotEmpty();
                             _builder.append("fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);");
@@ -4510,7 +4510,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append(gridType);
                             _builder.append(" grid = createTriangle(\"");
-                            _builder.append(graphcname);
+                            _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), shp.getBounds(), size);");
                             _builder.newLineIfNotEmpty();
                             _builder.append("fr.ocelet.runtime.raster.GridManager.getInstance().add(grid); ");
@@ -4565,7 +4565,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append(gridType);
                             _builder.append(" grid = createTriangle(\"");
-                            _builder.append(graphcname);
+                            _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), minX, minY, maxX, maxY, size);");
                             _builder.newLineIfNotEmpty();
                             _builder.append("fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);");

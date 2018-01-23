@@ -285,6 +285,8 @@ public class ORaster {
         this.maxGridY = raster.getMinY() + raster.getHeight() - 1;
         this.gridWidth = raster.getWidth();
         this.gridHeight = raster.getHeight();
+        
+     
         return raster;
     }
     
@@ -321,30 +323,27 @@ public class ORaster {
     	
     	double xRes = (x2 - x) / geometry2D.getGridRange2D().getBounds().getWidth();
     	double yRes = (y2 - y) /geometry2D.getGridRange2D().getBounds().getHeight();
-       if(geometry2D.getEnvelope2D().getMinX() > minX) {
-        	minX = geometry2D.getEnvelope2D().getMinX();
+       if(geometry2D.getEnvelope2D().getMinX() > minX || geometry2D.getEnvelope2D().getMinX() / minX < xRes / 2) {
+        	minX = geometry2D.getEnvelope2D().getMinX() + xRes / 2;
         	
         	// minX = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
         	
         }
-        if(geometry2D.getEnvelope2D().getMinY() > minY) {
+        if(geometry2D.getEnvelope2D().getMinY() > minY || geometry2D.getEnvelope2D().getMinY() / minY < xRes / 2) {
         
-        	minY = geometry2D.getEnvelope2D().getMinY();
+        	minY = geometry2D.getEnvelope2D().getMinY() + yRes / 2;
         
         	
         }
-        if(geometry2D.getEnvelope2D().getMaxX() < maxX) {
-        	maxX = geometry2D.getEnvelope2D().getMaxX();
+        if(geometry2D.getEnvelope2D().getMaxX() < maxX || geometry2D.getEnvelope2D().getMaxX() / maxX < xRes / 2) {
+        	maxX = geometry2D.getEnvelope2D().getMaxX() - xRes / 2;
         	//maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0] ;
         }
-        if(geometry2D.getEnvelope2D().getMaxY() < maxY) {
-        	maxY = geometry2D.getEnvelope2D().getMaxY();
+        if(geometry2D.getEnvelope2D().getMaxY() < maxY || geometry2D.getEnvelope2D().getMaxY() / maxY < yRes / 2) {
+        	maxY = geometry2D.getEnvelope2D().getMaxY() - yRes / 2;
         	//maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1] ;
         }
-        minX = minX + xRes / 2;
-        minY = minY + yRes / 2;
-        maxX = maxX - xRes / 2;
-        maxY = maxY - yRes / 2;
+       
        
         java.awt.Rectangle rect = new java.awt.Rectangle();
         DirectPosition2D min = new DirectPosition2D(minX, minY);
