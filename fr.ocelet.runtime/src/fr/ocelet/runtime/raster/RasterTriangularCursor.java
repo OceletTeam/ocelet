@@ -27,8 +27,8 @@ public class RasterTriangularCursor extends RasterCursor{
 	private NeighbourSideRightToRight nsrtr; 
 	private NeighbourSideBot nsb;
 
-	public RasterTriangularCursor(int numGrid) {
-		super(numGrid);
+	public RasterTriangularCursor(Grid grid) {
+		super(grid);
 		// TODO Auto-generated constructor stub
 		direction = -1;
 		x = -1;

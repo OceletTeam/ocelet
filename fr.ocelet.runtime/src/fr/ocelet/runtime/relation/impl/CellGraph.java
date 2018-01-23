@@ -34,7 +34,6 @@ import fr.ocelet.runtime.raster.Grid;
 import fr.ocelet.runtime.raster.GridCellFactory;
 import fr.ocelet.runtime.raster.GridCellManager;
 import fr.ocelet.runtime.raster.GridGenerator;
-import fr.ocelet.runtime.raster.GridManager;
 import fr.ocelet.runtime.relation.*;
 
 import java.awt.image.WritableRaster;
@@ -77,7 +76,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 		AbstractEntity r1 = (AbstractEntity)r1List.get(0);
     	
     	Cell c1 = (Cell)r1.getSpatialType();
-        this.grid = GridManager.getInstance().get(c1.getNumGrid());
+        this.grid = c1.getGrid();
 
 		grid.setGridCellManager(GridCellFactory.create(grid));
 	}

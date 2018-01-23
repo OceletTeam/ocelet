@@ -35,8 +35,8 @@ public class RasterMultiQuadrilateralCursor extends RasterCursor {
 	private int size;
 	private int type = 0;
 
-public RasterMultiQuadrilateralCursor(int numGrid) {
-		super(numGrid);
+public RasterMultiQuadrilateralCursor(Grid grid) {
+		super(grid);
 		// TODO Auto-generated constructor stub
 		direction = -1;
 		x = -1;

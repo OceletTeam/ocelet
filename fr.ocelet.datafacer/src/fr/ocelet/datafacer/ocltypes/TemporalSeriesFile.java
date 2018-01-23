@@ -10,7 +10,7 @@ import org.geotools.coverage.grid.GridGeometry2D;
 
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.raster.GridManager;
+
 import fr.ocelet.runtime.raster.ORaster;
 import fr.ocelet.runtime.relation.OcltRole;
 import fr.ocelet.runtime.util.FileUtils;
@@ -100,7 +100,7 @@ public abstract class TemporalSeriesFile {
 	    
 	    public void update(){
 	    	currentGrid();
-	    	Grid grid = GridManager.getInstance().get(numGrid);
+	   
 	    	ORaster raster = new ORaster(FileUtils.applyOutput(path+"/"+names[index]));
 	    	
 	    	grid.copy(raster, matchedBand);

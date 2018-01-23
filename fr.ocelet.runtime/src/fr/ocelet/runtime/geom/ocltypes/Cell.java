@@ -39,7 +39,7 @@ import com.vividsolutions.jts.operation.valid.IsValidOp;
 import fr.ocelet.runtime.geom.OceletGeomFactory;
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.raster.GridManager;
+
 
 
 // Referenced classes of package fr.ocelet.runtime.geom.ocltypes:
@@ -47,7 +47,7 @@ import fr.ocelet.runtime.raster.GridManager;
 
 public class Cell implements SpatialType{
    
-	
+	private Grid grid;
 	  private int x;
 	    private int y;
 	    private String type = "QUADRILATERAL";
@@ -55,7 +55,16 @@ public class Cell implements SpatialType{
 	    private double xRes; 
 	    private double yRes;
 	    
+	    public Grid getGrid() {
+	    	return grid;
+	    }
 	    
+	    public void setGrid(Grid grid) {
+	    	this.grid = grid;
+	    	this.xRes = grid.getXRes();
+	    	this.yRes = grid.getYRes();
+	    	this.type = grid.getCellShapeType();
+	    }
 
     public Cell()
     {
@@ -98,24 +107,22 @@ public class Cell implements SpatialType{
     
     public void setNumGrid(int numGrid){
     	this.numGrid = numGrid;
-    	this.xRes = GridManager.getInstance().get(numGrid).getXRes();
-    	this.yRes = GridManager.getInstance().get(numGrid).getYRes();
-    	this.type =GridManager.getInstance().get(numGrid).getCellShapeType();
+    	this.xRes = grid.getXRes();
+    	this.yRes = grid.getYRes();
+    	this.type = grid.getCellShapeType();
     }
   
     
     public GridGeometry2D getGridGeometry(){
-    	return GridManager.getInstance().get(numGrid).getGridGeometry();
+    	return grid.getGridGeometry();
     }
     
-    public int getNumGrid(){
-    	return numGrid;
-    }
+   
    
     private Coordinate[] createCoordinates(){
     	
     	if(type == null){
-    		type = GridManager.getInstance().get(numGrid).getCellShapeType();
+    		type = grid.getCellShapeType();
     		//return quadriCoordinate();
     	}
     	if(type.equals("QUADRILATERAL")){
@@ -133,13 +140,13 @@ public class Cell implements SpatialType{
     }
     
     private Coordinate getCoord(int x, int y){
-    	return GridManager.getInstance().get(numGrid).gridCoordinate(x, y);
+    	return grid.gridCoordinate(x, y);
     }
     
     
     private Coordinate initCoord(){
     	
-    	return GridManager.getInstance().get(numGrid).getInitCoordinate();
+    	return grid.getInitCoordinate();
     }
     
    private Coordinate[] quadriCoordinate(){
@@ -266,8 +273,8 @@ public class Cell implements SpatialType{
     
     public void updateResInfo(){
     	
-    	xRes = GridManager.getInstance().get(numGrid).getXRes();
-    	yRes = GridManager.getInstance().get(numGrid).getYRes();
+    	xRes = grid.getXRes();
+    	yRes = grid.getYRes();
     }
     
     public Double distance(Geometry geom){

@@ -44,7 +44,7 @@ import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.raster.GridManager;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 	private HashMap<Integer, HashMap<Integer, ArrayList<GeomContainer>>> matrice = new HashMap<Integer, HashMap<Integer,ArrayList<GeomContainer>>>();
 
 	private List<R2> geomEntities;	    
-	private Grid grid;	    
+	protected Grid grid;	    
 	private int currentxKey;	    
 	private int currentyKey;	    
 	private GeomContainer currentRoleKey;	    
@@ -155,7 +155,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		AbstractEntity ae = cellList.get(0);
 		Cell cell = (Cell)ae.getSpatialType();
 
-		this.grid = GridManager.getInstance().get(cell.getNumGrid());//grid;
+		this.grid = cell.getGrid();
 
 		initEdgeProperty();
 		fill(this.geomEntities);

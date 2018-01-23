@@ -323,9 +323,9 @@ public class ORaster {
     	
     	double xRes = (x2 - x) / geometry2D.getGridRange2D().getBounds().getWidth();
     	double yRes = (y2 - y) /geometry2D.getGridRange2D().getBounds().getHeight();
-    	
-    	double precision1 = 0.98;
-    	double precision2 = 1.02;
+    	double precisionScale = 0.05;
+    	double precision1 = 1.0 - precisionScale;
+    	double precision2 = 1.0+ precisionScale;
     	
        if(geometry2D.getEnvelope2D().getMinX() > minX ||  ( (geometry2D.getEnvelope2D().getMinX() / minX) > precision1 && 
     		   1 - (geometry2D.getEnvelope2D().getMinX() / minX)< precision2)   ) {
@@ -356,11 +356,27 @@ public class ORaster {
        
        
         java.awt.Rectangle rect = new java.awt.Rectangle();
+        if(minX <= geometry2D.getEnvelope2D().getMinX()) {
+        	minX =  geometry2D.getEnvelope2D().getMinX() + xRes / 2;
+        }
+        if(minY <= geometry2D.getEnvelope2D().getMinY()) {
+        	minY =  geometry2D.getEnvelope2D().getMinY() + yRes / 2;
+        }
+        if(maxX <= geometry2D.getEnvelope2D().getMaxX()) {
+        	maxX =  geometry2D.getEnvelope2D().getMaxX() - xRes / 2;
+        }
+        if(maxY <= geometry2D.getEnvelope2D().getMaxY()) {
+        	maxY =  geometry2D.getEnvelope2D().getMaxY() - yRes / 2;
+        }
+       
         DirectPosition2D min = new DirectPosition2D(minX, minY);
         DirectPosition2D max = new DirectPosition2D(maxX, maxY);
+        
+        
         GridCoordinates2D dp1 = null;
 		try {
 			dp1 = geometry2D.worldToGrid(min);
+			System.out.println(dp1.x+" "+dp1.y);
 		} catch (InvalidGridGeometryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -371,6 +387,7 @@ public class ORaster {
         GridCoordinates2D dp2 = null;
 		try {
 			dp2 = geometry2D.worldToGrid(max);
+			System.out.println(dp2.x+" "+dp2.y);
 		} catch (InvalidGridGeometryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -428,11 +445,8 @@ public class ORaster {
        this.gridWidth = maxGridX - minGridX + 1;
        this.gridHeight = maxGridY - minGridY + 1;
     
-        //rect.setBounds(dp1.x, dp2.y - 1, (dp2.x - dp1.x), (dp1.y - dp2.y));
-        rect.setBounds(minGridX, minGridY, gridWidth, gridHeight);
-   
-        //rect.setBounds((int)Math.round(bounds[0]), (int)Math.round(bounds[1]), (int)Math.round(bounds[2]), (int)Math.round(bounds[3]));
-        //rect.setBounds((int)Math.round(minX), (int)Math.round(minY), (int)Math.round(maxX) - (int)Math.round(minX), (int)Math.round(maxY) - (int)Math.round(minY));
+        rect.setBounds(minGridX, minGridY, gridWidth, gridHeight);   
+       
         RenderedImage rendImage = coverage.getRenderedImage();   
         raster = rendImage.getData(rect);
         

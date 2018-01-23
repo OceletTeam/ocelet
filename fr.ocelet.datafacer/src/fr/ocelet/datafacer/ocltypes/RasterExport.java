@@ -9,7 +9,7 @@ import fr.ocelet.runtime.raster.ORaster;
 import fr.ocelet.runtime.relation.OcltRole;
 import fr.ocelet.runtime.util.FileUtils;
 import fr.ocelet.runtime.raster.GridGenerator;
-import fr.ocelet.runtime.raster.GridManager;
+
 
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -38,7 +38,7 @@ public class RasterExport implements Datafacer{
 		
 		AbstractEntity ae = entities.get(0);
     	Cell cell = (Cell)ae.getSpatialType();
-    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
+    	Grid grid = cell.getGrid();
 		GeneralParameterValue paramValues[] = null; //getInitialParameters();
         File file = new File(FileUtils.applyOutput(path));
         GeoTiffWriter writer = null;
@@ -104,7 +104,7 @@ public class RasterExport implements Datafacer{
 		
 		AbstractEntity ae = entities.get(0);
     	Cell cell = (Cell)ae.getSpatialType();
-    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
+    	Grid grid = cell.getGrid();
 		GeneralParameterValue paramValues[] = null; //getInitialParameters();
         File file = new File(FileUtils.applyOutput(path));
         GeoTiffWriter writer = null;
@@ -168,7 +168,7 @@ public class RasterExport implements Datafacer{
     public void export(List<? extends AbstractEntity> entities, String path, String epsgCode){
     	 AbstractEntity ae = entities.get(0);
     	Cell cell = (Cell)ae.getSpatialType();
-    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
+    	Grid grid = cell.getGrid();
 
  GeneralParameterValue paramValues[] = null; //getInitialParameters();
     	 

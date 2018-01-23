@@ -299,8 +299,8 @@ public class RasterHexagonalCursor extends RasterCursor {
 
 	private boolean toMove = false;
 	private int index = 0;
-	public RasterHexagonalCursor(int numGrid) {
-		super(numGrid);
+	public RasterHexagonalCursor(Grid grid) {
+		super(grid);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -40,7 +40,7 @@ public abstract class CursorEdge extends OcltEdge {
 	protected int y;
 	protected int x2;
 	protected int y2;
-	private int numGrid;
+	
 	protected Grid grid;
 	private int direction;
 	private boolean state;
@@ -128,14 +128,14 @@ public abstract class CursorEdge extends OcltEdge {
 	}
 
 	public void extendedMoore(int n){
-		GridManager.getInstance().get(numGrid).extendedMoore(n);
-		RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(numGrid);
+		grid.extendedMoore(n);
+		RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(grid);
 		rmqc.setSize(n, 0);
 		cursor = rmqc;
 	}
 	public void extendedCircularMoore(int n){
-		GridManager.getInstance().get(numGrid).extendedMoore(n);
-		RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(numGrid);
+		grid.extendedMoore(n);
+		RasterMultiQuadrilateralCursor rmqc= new RasterMultiQuadrilateralCursor(grid);
 		rmqc.setSize(n, 1);
 		cursor = rmqc;
 	}
@@ -144,21 +144,21 @@ public abstract class CursorEdge extends OcltEdge {
 
 		if(type.equals(TYPE_HEXAGONAL)){
 
-			cursor = new RasterHexagonalCursor(numGrid);
+			cursor = new RasterHexagonalCursor(grid);
 		}
 
 		if(type.equals(TYPE_QUADRILATERAL)){
 
-			cursor = new RasterQuadrilateralCursor(numGrid);
+			cursor = new RasterQuadrilateralCursor(grid);
 		}
 
 		if(type.equals(TYPE_TRIANGULAR)){
 
-			cursor = new RasterTriangularCursor(numGrid);
+			cursor = new RasterTriangularCursor(grid);
 		}
 
 	}
-	public CursorEdge(int numGrid){
+	/*public CursorEdge(int numGrid){
 
 
 		this.numGrid = numGrid;
@@ -174,15 +174,15 @@ public abstract class CursorEdge extends OcltEdge {
 		gridManager = grid.getGridCellManager();
 		initEdgeProperty();
 		update();
-	}
+	}*/
 
 	public CursorEdge(List<? extends AbstractEntity> list){
 
 		AbstractEntity ae = (AbstractEntity)list.get(0);
 		Cell cell = (Cell)ae.getSpatialType();
 
-		this.numGrid = cell.getNumGrid();//GridManager.getInstance().getIndex(grid);
-		cursor = new RasterQuadrilateralCursor(numGrid);
+		this.grid = cell.getGrid();
+		cursor = new RasterQuadrilateralCursor(grid);
 		x = 0;
 		y = 0;
 		x2 = 0;
@@ -190,7 +190,7 @@ public abstract class CursorEdge extends OcltEdge {
 		direction = 0;
 		state = true;
 		index = 0;
-		this.grid = GridManager.getInstance().get(numGrid);
+		
 		gridManager = grid.getGridCellManager();
 		initEdgeProperty();
 

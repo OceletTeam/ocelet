@@ -35,9 +35,9 @@ public abstract class RasterCursor {
 	protected double xRes;
 	protected double yRes;
 	
-	public RasterCursor(int numGrid){
+	public RasterCursor(Grid grid){
 		
-		Grid grid = GridManager.getInstance().get(numGrid);
+	
 		this.width = grid.getWidth();
 		this.height = grid.getHeight();
 		xRes = grid.getXRes();

@@ -28,7 +28,6 @@ import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.raster.GridManager;
 import fr.ocelet.runtime.raster.MultiResolutionManager;
 import fr.ocelet.runtime.relation.regularedges.DiRegularCellsEdgeManager;
 
@@ -66,7 +65,8 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 	private int colCount = 0;
 	private int currentY;
-
+	protected Grid grid1;
+	protected Grid grid2;
 	private int mode;
 	private double r1XRes;
 	private double r1YRes;
@@ -194,8 +194,8 @@ public abstract class DiCursorEdge extends OcltEdge{
 		AbstractEntity ae2 = (AbstractEntity)r2List.get(0);
 		Cell cell2 = (Cell)ae2.getSpatialType();
 
-		Grid grid1 = GridManager.getInstance().get(cell1.getNumGrid());
-		Grid grid2 = GridManager.getInstance().get(cell2.getNumGrid());
+		 grid1 = cell1.getGrid();
+		 grid2 = cell2.getGrid();
 		scalingGrids(grid1, grid2);
 		
 		/*Double[] grid1Bounds = grid1.getWorldBounds();
@@ -401,15 +401,12 @@ public abstract class DiCursorEdge extends OcltEdge{
 	public void updateRoleInfo(){	
 
 		Cell cell1 = (Cell)getRole(new Integer(0)).getSpatialType();
-		int numGrid = ((Cell)getRole(new Integer(0)).getSpatialType()).getNumGrid();
-		cell1.setType(GridManager.getInstance().get(numGrid).getCellShapeType());
-
-		Cell cell2 = (Cell)getRole(new Integer(1)).getSpatialType();
-		int numGrid2 = ((Cell)getRole(new Integer(1)).getSpatialType()).getNumGrid();
-		cell2.setType(GridManager.getInstance().get(numGrid2).getCellShapeType());
+		Grid grid = cell1.getGrid();
+		
+		
 
 
-		if ( GridManager.getInstance().get(numGrid).equals(globalGrid)){
+		if (grid.equals(globalGrid)){
 			r1 = getRole(new Integer(0));
 			r2 = getRole(new Integer(1));
 

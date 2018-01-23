@@ -44,7 +44,7 @@ public abstract class CursorHexagonalEdge extends OcltEdge{
 	    private int index;
 	    
 	    
-    public CursorHexagonalEdge(int numGrid){
+   /* public CursorHexagonalEdge(int numGrid){
         x = 0;
         y = 0;
         x2 = 0;
@@ -55,7 +55,7 @@ public abstract class CursorHexagonalEdge extends OcltEdge{
         grid = GridManager.getInstance().get(numGrid);
         gridManager = grid.getGridCellManager();
         update();
-    }
+    }*/
 
     public CursorHexagonalEdge(Grid grid){
         x = 0;

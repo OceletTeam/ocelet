@@ -28,7 +28,6 @@ import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.geom.ocltypes.SpatialType;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.raster.GridManager;
 import java.util.Iterator;
 public class CellArray<T> extends ArrayInterface<T>{
 
@@ -50,7 +49,7 @@ public class CellArray<T> extends ArrayInterface<T>{
 		this.cell = (Cell)((AbstractEntity)ae).getSpatialType();
 		cell.setX(0);
 		cell.setY(0);
-		this.grid = GridManager.getInstance().get(cell.getNumGrid());
+		this.grid = cell.getGrid();
 		this.width = grid.getWidth();
 		this.height = grid.getHeight();
 	}

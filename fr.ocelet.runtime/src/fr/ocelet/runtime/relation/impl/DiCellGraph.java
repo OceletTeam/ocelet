@@ -26,7 +26,6 @@ import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.CellAggregOperator;
 import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.raster.GridManager;
 import fr.ocelet.runtime.relation.*;
 
 import java.util.Iterator;
@@ -48,8 +47,8 @@ implements DiGraphInterface<E, R1, R2> {
     	
     	Cell c1 = (Cell)r1.getSpatialType();
     	Cell c2 = (Cell)r2.getSpatialType();
-        this.grid1 = GridManager.getInstance().get(c1.getNumGrid());
-        this.grid2 = GridManager.getInstance().get(c2.getNumGrid());   
+        this.grid1 = c1.getGrid();
+        this.grid2 = c2.getGrid();   
         }
 
     public void setCompleteIteratorDiCell(E e){
@@ -119,7 +118,7 @@ implements DiGraphInterface<E, R1, R2> {
         completeIteratorDiCell.updateGrid();
     }
 
-    private Grid grid1;
-    private Grid grid2;
+    protected Grid grid1;
+    protected Grid grid2;
     private CompleteIteratorDiCell<E, R1, R2> completeIteratorDiCell;
 }

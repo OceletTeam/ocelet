@@ -10,7 +10,7 @@ import fr.ocelet.runtime.raster.Grid;
 import fr.ocelet.runtime.raster.ORaster;
 import fr.ocelet.runtime.util.FileUtils;
 import fr.ocelet.runtime.raster.GridGenerator;
-import fr.ocelet.runtime.raster.GridManager;
+
 
 import java.awt.image.WritableRaster;
 import java.io.File;
@@ -131,7 +131,7 @@ public class RasterFile{
     		raster.setCRS(crs);
     	}
     	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), shp.getBounds());
-        fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+      
         grid.copy(raster, propMatched);
         return grid;
     }
@@ -150,7 +150,7 @@ public class RasterFile{
     		raster.setCRS(crs);
     	}
     	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBounds(geometries));
-        fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+       
         grid.copy(raster, propMatched);
         return grid;
     }
@@ -169,12 +169,12 @@ public class RasterFile{
     		raster.setCRS(crs);
     	}
     	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBounds(geometry));
-        fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+       
         grid.copy(raster, propMatched);
         return grid;
     }
     
-    protected void createGrid(List<String> properties, String gridName){
+    protected Grid createGrid(List<String> properties, String gridName){
     	try{
             raster = new ORaster(FileUtils.applyOutput(path));
         	}catch(Exception e){
@@ -184,88 +184,15 @@ public class RasterFile{
     		raster.setCRS(crs);
     	}
     	grid = GridGenerator.squareGridFrom(gridName, properties, raster);
-        fr.ocelet.runtime.raster.GridManager.getInstance().add(grid);
+       
         grid.copy(raster, propMatched);
-        
+        return grid;
 
     }
     
    
     
-    public void export(List<? extends AbstractEntity> entities, String path, String epsgCode, String... names){
-    	
-    	
-    	
-    	
-    	AbstractEntity ae = entities.get(0);
-    	Cell cell = (Cell)ae.getSpatialType();
-    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
- GeneralParameterValue paramValues[] = null; //getInitialParameters();
-    	 
-         File file = new File(FileUtils.applyOutput(path));
-         GeoTiffWriter writer = null;
-         
-         Double[] wBounds = grid.getWorldBounds();
-         
- 		Envelope2D env = GridGenerator.createEnvelope(wBounds[0], wBounds[1],
- 		wBounds[0]+ (grid.getWidth() * grid.getXRes()), wBounds[1] + (grid.getHeight() * grid.getYRes()));
- 		WritableRaster raster = GridGenerator.createRaster(names.length, grid.getWidth(), grid.getHeight());
- 		CoordinateReferenceSystem crs = null;
-		try {
-			crs = CRS.decode(epsgCode);
-		} catch (NoSuchAuthorityCodeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FactoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
- 		env.setCoordinateReferenceSystem(crs);
- 		for(int i = 0; i < grid.getWidth(); i ++){
- 			
- 			for(int j = 0; j < grid.getHeight(); j ++){
- 				
- 				for(int n = 0 ; n < names.length; n ++){
- 					raster.setSample(i, j, n, grid.getValue(names[n], i, j));
- 					//System.out.println( grid.getValue(names[n], i, j));
- 				}
- 			}
- 			
- 		}
-         
-       
- 		 
- 	 		
-         try{
-         
-             writer = new GeoTiffWriter(file);
-         }
-         catch(IOException ex){
-         
-        	 ex.printStackTrace();
-         }
-         	GridCoverage2D cov = (new GridCoverageFactory()).create(path, raster, env);
-        
-         try{
-         
-             writer.write(cov, paramValues);
-         }
-         catch(IllegalArgumentException ex){
-         
-        	 ex.printStackTrace();
-         }
-         catch(IOException ex){
-         
-        	 ex.printStackTrace();
-         }
-         catch(IndexOutOfBoundsException ex){
-         
-        	 ex.printStackTrace();
-         }
-         System.out.println((new StringBuilder("Raster File created in : ")).append(path).toString());
-         writer.dispose();
-    	
-    }
+   
     
     private Polygon getBounds(List<Geometry> geometries) {
     	
@@ -416,56 +343,7 @@ private Double[] getDoubleBounds(Geometry geometry) {
     	return env;
     	
     }
-    public void export(List<? extends AbstractEntity> entities, String path, String epsgCode){
-    	 AbstractEntity ae = entities.get(0);
-    	Cell cell = (Cell)ae.getSpatialType();
-    	Grid grid = GridManager.getInstance().get(cell.getNumGrid());
-
- GeneralParameterValue paramValues[] = null; //getInitialParameters();
-    	 
-         File file = new File(FileUtils.applyOutput(path));
-         GeoTiffWriter writer = null;
-         
-         CoordinateReferenceSystem crs = null;
- 		try {
- 			crs = CRS.decode(epsgCode);
- 		} catch (NoSuchAuthorityCodeException e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
- 		} catch (FactoryException e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
- 		}
-  		grid.getEnv().setCoordinateReferenceSystem(crs);
-    	try{
-         
-             writer = new GeoTiffWriter(file);
-         }
-         catch(IOException ex){
-         
-        	 ex.printStackTrace();
-         }
-         	GridCoverage2D cov = (new GridCoverageFactory()).create(path, grid.getRaster(), grid.getEnv());
-        
-         try{
-         
-             writer.write(cov, paramValues);
-         }
-         catch(IllegalArgumentException ex){
-         
-        	 ex.printStackTrace();
-         }
-         catch(IOException ex){
-         
-        	 ex.printStackTrace();
-         }
-         catch(IndexOutOfBoundsException ex){
-         
-        	 ex.printStackTrace();
-         }
-         System.out.println((new StringBuilder("Raster File created in : ")).append(path).toString());
-         writer.dispose();
-    }
+  
 
     protected void addProperty(String name, Integer band){
     	if(!propMatched.keySet().contains(name))
