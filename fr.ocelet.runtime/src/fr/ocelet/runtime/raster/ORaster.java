@@ -327,7 +327,7 @@ public class ORaster {
     	double precision1 = 0.98;
     	double precision2 = 1.02;
     	
-       if(geometry2D.getEnvelope2D().getMinX() > minX ||  (1 - (geometry2D.getEnvelope2D().getMinX() / minX) > precision1 && 
+       if(geometry2D.getEnvelope2D().getMinX() > minX ||  ( (geometry2D.getEnvelope2D().getMinX() / minX) > precision1 && 
     		   1 - (geometry2D.getEnvelope2D().getMinX() / minX)< precision2)   ) {
     	   
     	   
@@ -336,19 +336,19 @@ public class ORaster {
         	// minX = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
         	
         }
-        if(geometry2D.getEnvelope2D().getMinY() > minY || (1 - (geometry2D.getEnvelope2D().getMinY() / minY) > precision1 && 
+        if(geometry2D.getEnvelope2D().getMinY() > minY || ( (geometry2D.getEnvelope2D().getMinY() / minY) > precision1 && 
         		1 - (geometry2D.getEnvelope2D().getMinY() / minY) < precision2)) {
         
         	minY = geometry2D.getEnvelope2D().getMinY() + yRes / 2;
         
         	
         }
-        if(geometry2D.getEnvelope2D().getMaxX() < maxX || (1 - (geometry2D.getEnvelope2D().getMaxX() / maxX) > precision1 &&
+        if(geometry2D.getEnvelope2D().getMaxX() < maxX || ( (geometry2D.getEnvelope2D().getMaxX() / maxX) > precision1 &&
         		1 - (geometry2D.getEnvelope2D().getMaxX() / maxX) < precision2)	) {
         	maxX = geometry2D.getEnvelope2D().getMaxX() - xRes / 2;
         	//maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0] ;
         }
-        if(geometry2D.getEnvelope2D().getMaxY() < maxY || (1 - (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision1 &&
+        if(geometry2D.getEnvelope2D().getMaxY() < maxY || ( (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision1 &&
         		1 - (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision2)) {
         	maxY = geometry2D.getEnvelope2D().getMaxY() - yRes / 2;
         	//maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1] ;
