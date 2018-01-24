@@ -305,7 +305,7 @@ public class Grid {
 		}
 	}
 	
-	private void printWorldBounds() {
+	public void printWorldBounds() {
 		System.out.println(worldBounds[0]+ " "+worldBounds[1]+ " "+worldBounds[2]+ " "+worldBounds[3]);
 	}
 	

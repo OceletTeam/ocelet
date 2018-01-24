@@ -261,47 +261,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 
                     '''
                   ]
-             }else if('TemporalSeriesFile'.equals(''+meln.storetype)) { 
-             	
-             	
-             	 /*	acceptor.accept(modl.toClass(meln.fullyQualifiedName)) [
-          	  superTypes += typeRef('fr.ocelet.datafacer.ocltypes.'+meln.storetype)
-          	  members+= meln.toConstructor[
-         	    parameters += meln.toParameter('filename', typeRef('java.lang.String'))
-                body = '''
-                	super(filename);
-                '''
-     		  ]*/
-             	/*var jvmFieldY = meln.toField("cellEntity", entype)
-          	    if (jvmFieldY != null) {
-          	      jvmFieldY.setFinal(false) 
-          		  members+= jvmFieldY
-          		
-          		 }*/
-          		 
-          		 
-          		 	members += meln.toMethod('init',typeRef(Void::TYPE))[
-                  		body='''
-                  				«FOR mp:matchdef.matchprops»
-                  	  	  		«val eproptype = propmap.get(mp.prop)»
-                 	  	  			«IF eproptype != null»
-                  	  	    			«IF mp.colname != null»
-										matchedBand.put("«mp.prop»",«mp.colname»);
-                  	  	    			«ENDIF»
-                  	  	  			«ENDIF»
-                  	  			«ENDFOR»
-                  		  	'''
-                  		]  
-                  		
-                  		members += meln.toMethod('currentGrid',typeRef(Void::TYPE))[
-                  		body='''
-                  		
-                  		«entname» cellEntity = new «entname»();
-                  				this.numGrid = cellEntity.getNumGrid();
-                  		  	'''
-                  		]
-              	
-       		}else{
+             }else{
 
                   // InputDatafacer functions
                   if (Class::forName('fr.ocelet.datafacer.InputDatafacer').isAssignableFrom(Class::forName('fr.ocelet.datafacer.ocltypes.'+meln.storetype))) {

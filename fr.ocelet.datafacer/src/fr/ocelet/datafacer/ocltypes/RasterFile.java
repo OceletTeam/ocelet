@@ -15,6 +15,8 @@ import fr.ocelet.runtime.raster.GridGenerator;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -40,13 +42,43 @@ public class RasterFile{
 	private CoordinateReferenceSystem crs;
 	
 	private String path;
+	private String directory;
+	private boolean isDirectory;
+	protected String[] names;
+	private int index = 0;
+	private Double[] bounds;
+	private boolean bounded = false;
+	
+	
+	
     public RasterFile(String fileName){
     	/*try{
         raster = new ORaster(FileUtils.applyOutput(fileName));
     	}catch(Exception e){
     		
     	}*/
-    	this.path = fileName;
+    	
+	      	File file = new File(FileUtils.applyOutput(path));
+	      	if(file.isDirectory()) {
+	      		directory = fileName;
+	        names = file.list();
+	        isDirectory = true;
+	        File[] files = file.listFiles();
+	        ArrayList<String> tempNames = new ArrayList<String>();
+	        for(File f : files){
+	        	if(!f.isDirectory()){
+	        		tempNames.add(f.getName());
+
+	        	}
+	        }
+	        Collections.sort(tempNames);
+	        names = tempNames.toArray(new String[tempNames.size()]);
+	        this.path = FileUtils.applyOutput(directory+"/"+names[index]);
+	      	}else {
+	      		this.path = fileName;
+	      	}
+	      	
+	      	
     }
     
     public RasterFile(String fileName, String epsg) {
@@ -55,11 +87,93 @@ public class RasterFile{
         	}catch(Exception e){
         		e.printStackTrace();
         	}*/
-    	this.path = fileName;
+    	File file = new File(FileUtils.applyOutput(fileName));
+      	if(file.isDirectory()) {
+      		isDirectory = true;
+      		directory = fileName;
+        names = file.list();
+        File[] files = file.listFiles();
+        ArrayList<String> tempNames = new ArrayList<String>();
+        for(File f : files){
+        	if(!f.isDirectory()){
+        		tempNames.add(f.getName());
+
+        	}
+        }
+        Collections.sort(tempNames);
+        names = tempNames.toArray(new String[tempNames.size()]);
+        this.path = FileUtils.applyOutput(directory+"/"+names[index]);
+      	}else {
+      		this.path = fileName;
+      	}
+      	
     	setCrs(epsg);
     	//raster.setCRS(crs);
     }
-   
+    
+    
+    public void setDirectory(String fileName){
+   	 directory = fileName;
+     	File file = new File(FileUtils.applyOutput(directory));
+       names = file.list();
+       isDirectory = true;
+       File[] files = file.listFiles();
+       ArrayList<String> tempNames = new ArrayList<String>();
+       for(File f : files){
+       	if(!f.isDirectory()){
+       		tempNames.add(f.getName());
+
+       	}
+       }
+       Collections.sort(tempNames);
+       names = tempNames.toArray(new String[tempNames.size()]);
+       this.path = FileUtils.applyOutput(directory+"/"+names[index]);
+   }
+    
+    
+    public boolean hasNext(){
+    	if(index < names.length - 1){
+    		return true;
+    	}
+    	return false;
+    }
+
+    public void next(){
+    	index ++;
+    }
+    
+    public void update(){
+    	
+    	if(bounded) {
+    	try{
+            raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}
+    	if(crs != null) {
+    		raster.setCRS(crs);
+    	}
+    	}else {
+    		try{
+                raster = new ORaster(FileUtils.applyOutput(path));
+            	}catch(Exception e){
+            		e.printStackTrace();
+            	}
+        	if(crs != null) {
+        		raster.setCRS(crs);
+        	}
+    	}
+       
+         this.grid.copy(raster, propMatched);
+    }
+    
+    public Integer size() {
+    	if(isDirectory) {
+    		return names.length;
+    	}else {
+    		return 1;
+    	}
+    }
     public Polygon getBoundaries(){
     	Coordinate[] coordinates = new Coordinate[5];
     	Double[] bounds = grid.getWorldBounds();
@@ -102,6 +216,7 @@ public class RasterFile{
 	}
     public void setFileName(String fileName){
     	this.path = fileName;
+    	
     }
     
     public int getWidth(){
@@ -119,8 +234,8 @@ public class RasterFile{
     
     protected Grid createGrid(List<String> properties, Shapefile shp, String gridName){
     	
-    	Double[] bounds = shp.getBounds();
-    	
+    	 bounds = shp.getBounds();
+    	bounded = true;
     	
     	try{
             raster = new ORaster(FileUtils.applyOutput(path), bounds);
@@ -138,8 +253,8 @@ public class RasterFile{
     
     protected Grid createGrid(List<String> properties, List<Geometry> geometries, String gridName){
     	
-    	Double[] bounds = getDoubleBounds(geometries);
-    	
+    	 bounds = getDoubleBounds(geometries);
+    	bounded = true;
     	
     	try{
             raster = new ORaster(FileUtils.applyOutput(path), bounds);
@@ -157,8 +272,8 @@ public class RasterFile{
     
     protected Grid createGrid(List<String> properties, Geometry geometry, String gridName){
     	
-	Double[] bounds = getDoubleBounds(geometry);
-    	
+	bounds = getDoubleBounds(geometry);
+    	bounded = true;
     	
     	try{
             raster = new ORaster(FileUtils.applyOutput(path), bounds);

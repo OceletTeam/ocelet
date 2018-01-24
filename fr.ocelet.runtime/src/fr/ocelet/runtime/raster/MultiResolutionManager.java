@@ -38,13 +38,16 @@ public class MultiResolutionManager {
     public void add(int x, int y, String name, double value){
     	
     	if(y == currentY){
+    		//System.out.println("add 1");
     		addFirstLine(x, name, value);
     	}
     	else if(y == currentY + 1){
     		addSecondLine(x, name, value);
+    		//System.out.println("add 2");
     	}
     	else if(y == currentY + 2){
     		addThirdLine(x, name, value);
+    		//System.out.println("add 3");
     	}
     else{
     		//System.out.println("WARNING : Unable to reference world coordinate "+x +" "+y+" "+currentY );
@@ -57,6 +60,7 @@ public class MultiResolutionManager {
     }
     
     public void switchLine(){
+    	
     	currentY = currentY + 1;
     	CellValues[] temp1 = secondLine;
     	CellValues[] temp2 = thirdLine;
