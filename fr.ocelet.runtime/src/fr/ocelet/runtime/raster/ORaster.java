@@ -376,7 +376,7 @@ public class ORaster {
         GridCoordinates2D dp1 = null;
 		try {
 			dp1 = geometry2D.worldToGrid(min);
-			System.out.println(dp1.x+" "+dp1.y);
+			
 		} catch (InvalidGridGeometryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -387,7 +387,7 @@ public class ORaster {
         GridCoordinates2D dp2 = null;
 		try {
 			dp2 = geometry2D.worldToGrid(max);
-			System.out.println(dp2.x+" "+dp2.y);
+			
 		} catch (InvalidGridGeometryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

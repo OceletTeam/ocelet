@@ -26,8 +26,7 @@ public abstract class TemporalSeriesFile {
 	protected String[] names;
 	protected Double[] bounds;
 	protected HashMap<String, ParsedName> parsedNames = new HashMap<String, ParsedName>();
-	protected int numGrid;
-	
+	protected int numGrid;	
 	protected KeyMap<String, Integer> matchedBand = new KeyMap<String, Integer>();
 
 	  public TemporalSeriesFile(String fileName){

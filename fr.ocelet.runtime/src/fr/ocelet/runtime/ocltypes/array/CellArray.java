@@ -46,6 +46,7 @@ public class CellArray<T> extends ArrayInterface<T>{
 
 	public CellArray(T ae){
 		this.ae = ae;
+		
 		this.cell = (Cell)((AbstractEntity)ae).getSpatialType();
 		cell.setX(0);
 		cell.setY(0);
@@ -217,7 +218,8 @@ public class CellArray<T> extends ArrayInterface<T>{
 			}
 	}*/
 	public class CellIterator implements Iterator<T>{
-
+		
+		
 		@Override
 		public boolean hasNext() {
 			if(cell.getX() == width - 1 && cell.getY() == height - 1){

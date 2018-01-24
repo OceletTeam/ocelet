@@ -90,6 +90,12 @@ public class GridGenerator {
 		height = row * rectangleHeight;
 		nmaxX = nminX + width;
 		nmaxY = nminY + height;
+		
+		double[] center = center(minX, minY, maxX, maxY, nminX, nminY, nmaxX, nmaxY);
+		nminX = center[0];
+		nminY = center[1];
+		nmaxX = center[2];
+		nmaxY = center[3];
 		double hexaMinY = nminY - rectangleHeight / 2;
 		Envelope2D env = createEnvelope(nminX, nminY, nmaxX, nmaxY);
 		WritableRaster raster = createRaster(index, col, row);
@@ -135,7 +141,7 @@ public class GridGenerator {
 		int iHeight = (int) Math.round(height);
 		int cellWidth = 0;
 		if(width - iWidth < 0.5) {
-			cellWidth = (int)(Math.round(width / (xRes))) + 1;
+			cellWidth = (int)(Math.round(width / (xRes)) + 1);
 		}else {
 			cellWidth = (int)(Math.round(width / (xRes)));
 		}
@@ -143,7 +149,7 @@ public class GridGenerator {
 		int cellHeight = 0;
 		
 		if(height - iHeight < 0.5) {
-			cellHeight = (int)(Math.round(height / (yRes))) + 1;
+			cellHeight = (int)(Math.round(height / (yRes)) + 1);
 		}else {
 			cellHeight = (int)(Math.round(height / (yRes)));
 		}
@@ -151,6 +157,13 @@ public class GridGenerator {
 		double newMinY = nminY;
 		double newMaxX = newMinX + (cellWidth * xRes);
 		double newMaxY = newMinY + (cellHeight * yRes);
+		
+		double[] center = center(minX, minY, maxX, maxY, newMinX, newMinY, newMaxX, newMaxY);
+		
+		newMinX = center[0];
+		newMinY = center[1];
+		newMaxX = center[2];
+		newMaxY = center[3];
 		
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		//env.setCoordinateReferenceSystem();
@@ -428,9 +441,9 @@ public class GridGenerator {
 		newMaxY = newMinY + cellHeight * yRes;
 		/*width = cellWidth * xRes;
 		height = cellHeight * yRes;
-
 		newMaxX = newMinX + width;
 		newMaxY = newMinY + height;*/
+		
 		
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		env.setCoordinateReferenceSystem(raster.getCRS());
@@ -693,7 +706,22 @@ public class GridGenerator {
 
 		return envelope;
 	}
-
+	private static double[] center(double iMinX,double iMinY, double iMaxX,double iMaxY, double minX, double minY, double maxX, double maxY) {
+		
+		
+		
+		double iCenterX = (iMaxX - iMinX) / 2;
+		double iCenterY = (iMaxY - iMinY) / 2;
+		
+		double centerX = (maxX - minX) / 2;
+		double centerY = (maxY - minY) / 2;
+		
+		double diffX = centerX - iCenterX;
+		double diffY = centerY - iCenterY;
+		
+		return new double[] {minX - diffX, minY - diffY, maxX - diffX, maxY - diffY};
+		
+	}
 	private static double roundValue(double value, Integer precision){
 		Integer scale = (int)Math.round(value * precision);
 		return scale.doubleValue() / precision.doubleValue();

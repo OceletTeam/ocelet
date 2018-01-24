@@ -51,7 +51,7 @@ public class Cell implements SpatialType{
 	  private int x;
 	    private int y;
 	    private String type = "QUADRILATERAL";
-	    private int numGrid;
+	   
 	    private double xRes; 
 	    private double yRes;
 	    
@@ -105,12 +105,7 @@ public class Cell implements SpatialType{
     	this.type = type;
     }
     
-    public void setNumGrid(int numGrid){
-    	this.numGrid = numGrid;
-    	this.xRes = grid.getXRes();
-    	this.yRes = grid.getYRes();
-    	this.type = grid.getCellShapeType();
-    }
+    
   
     
     public GridGeometry2D getGridGeometry(){

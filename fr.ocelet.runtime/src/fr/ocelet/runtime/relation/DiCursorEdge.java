@@ -1263,6 +1263,9 @@ public abstract class DiCursorEdge extends OcltEdge{
 		if(endY2 > grid.getMaxY()) {
 			endY2 = grid.getMaxY();
 		}
+		
+		//System.out.println(startX+" "+startY+" "+endX+" "+endY);
+		//System.out.println(startX2+" "+startY2+" "+endX2+" "+endY2);
 		//printMatchCoord();
 		//System.out.println(globalGrid.getMaxX()+" "+globalGrid.getMaxY());
 		equalGrid = false;
