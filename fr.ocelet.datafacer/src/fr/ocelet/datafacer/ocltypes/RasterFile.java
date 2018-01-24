@@ -58,7 +58,7 @@ public class RasterFile{
     		
     	}*/
     	
-	      	File file = new File(FileUtils.applyOutput(path));
+	      	File file = new File(FileUtils.applyOutput(fileName));
 	      	if(file.isDirectory()) {
 	      		directory = fileName;
 	        names = file.list();
@@ -73,7 +73,7 @@ public class RasterFile{
 	        }
 	        Collections.sort(tempNames);
 	        names = tempNames.toArray(new String[tempNames.size()]);
-	        this.path = FileUtils.applyOutput(directory+"/"+names[index]);
+	      
 	      	}else {
 	      		this.path = fileName;
 	      	}
@@ -102,7 +102,7 @@ public class RasterFile{
         }
         Collections.sort(tempNames);
         names = tempNames.toArray(new String[tempNames.size()]);
-        this.path = FileUtils.applyOutput(directory+"/"+names[index]);
+        
       	}else {
       		this.path = fileName;
       	}
@@ -114,6 +114,7 @@ public class RasterFile{
     
     public void setDirectory(String fileName){
    	 directory = fileName;
+   
      	File file = new File(FileUtils.applyOutput(directory));
        names = file.list();
        isDirectory = true;
@@ -127,7 +128,8 @@ public class RasterFile{
        }
        Collections.sort(tempNames);
        names = tempNames.toArray(new String[tempNames.size()]);
-       this.path = FileUtils.applyOutput(directory+"/"+names[index]);
+       index = 0;
+       this.path = directory+"/"+names[index];
    }
     
     
@@ -215,10 +217,29 @@ public class RasterFile{
 		}
 	}
     public void setFileName(String fileName){
+    	
+    	
+    	if(isDirectory) {
+    		int i = 0;
+    		for(String name : names) {
+    			if(name.equals(fileName)) {
+    				index = i;
+    				
+    			}
+    			i++;
+    		}
+    	}else {
     	this.path = fileName;
+    	}
     	
     }
-    
+    public String getFileName() {
+    	if(isDirectory) {
+    		return names[index];
+    	}else {
+    		return path;
+    	}
+    }
     public int getWidth(){
         return raster.getMaxPixel(0);
     }
@@ -236,12 +257,15 @@ public class RasterFile{
     	
     	 bounds = shp.getBounds();
     	bounded = true;
-    	
+    	if(isDirectory) {
+    		 raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
+    	}else {
     	try{
             raster = new ORaster(FileUtils.applyOutput(path), bounds);
         	}catch(Exception e){
         		e.printStackTrace();
         	}
+    	}
     	if(crs != null) {
     		raster.setCRS(crs);
     	}
@@ -253,14 +277,19 @@ public class RasterFile{
     
     protected Grid createGrid(List<String> properties, List<Geometry> geometries, String gridName){
     	
+    	
     	 bounds = getDoubleBounds(geometries);
     	bounded = true;
     	
-    	try{
-            raster = new ORaster(FileUtils.applyOutput(path), bounds);
-        	}catch(Exception e){
-        		e.printStackTrace();
-        	}
+    	if(isDirectory) {
+   		 raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
+   	}else {
+   	try{
+           raster = new ORaster(FileUtils.applyOutput(path), bounds);
+       	}catch(Exception e){
+       		e.printStackTrace();
+       	}
+   	}
     	if(crs != null) {
     		raster.setCRS(crs);
     	}
@@ -275,11 +304,15 @@ public class RasterFile{
 	bounds = getDoubleBounds(geometry);
     	bounded = true;
     	
-    	try{
-            raster = new ORaster(FileUtils.applyOutput(path), bounds);
-        	}catch(Exception e){
-        		e.printStackTrace();
-        	}
+    	if(isDirectory) {
+   		 raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
+   	}else {
+   	try{
+           raster = new ORaster(FileUtils.applyOutput(path), bounds);
+       	}catch(Exception e){
+       		e.printStackTrace();
+       	}
+   	}
     	if(crs != null) {
     		raster.setCRS(crs);
     	}
@@ -290,11 +323,17 @@ public class RasterFile{
     }
     
     protected Grid createGrid(List<String> properties, String gridName){
-    	try{
-            raster = new ORaster(FileUtils.applyOutput(path));
-        	}catch(Exception e){
-        		e.printStackTrace();
-        	}
+    	
+    	
+    	if(isDirectory) {
+   		 raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
+   	}else {
+   	try{
+           raster = new ORaster(FileUtils.applyOutput(path), bounds);
+       	}catch(Exception e){
+       		e.printStackTrace();
+       	}
+   	}
     	if(crs != null) {
     		raster.setCRS(crs);
     	}
