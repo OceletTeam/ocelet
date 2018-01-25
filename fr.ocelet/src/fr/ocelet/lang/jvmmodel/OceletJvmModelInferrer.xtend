@@ -2025,6 +2025,21 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           		]
           		
           		members += meln.toMethod("createHexagons",typeRef(Void::TYPE))[
+          			parameters += meln.toParameter("geometry",typeRef("com.vividsolutions.jts.geom.Geometry"))
+          			parameters += meln.toParameter("size",typeRef('java.lang.Double'))
+          			body = '''
+          				«firstRoleType» entity = new «firstRoleType»();
+          				grid = createHexagon("«firstRoleType»",entity.getProps(), geometry, size);          				
+          			 	entity.getCell().setGrid(grid);
+                  	 
+                  	 	«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+                  	   	connect(array);
+                  	   	
+          			'''
+          		]
+          		
+          		members += meln.toMethod("createHexagons",typeRef(Void::TYPE))[
           		parameters += meln.toParameter("size",typeRef('java.lang.Double'))
           		parameters += meln.toParameter("minX",typeRef('java.lang.Double'))
           		parameters += meln.toParameter("minY",typeRef('java.lang.Double'))
@@ -2041,14 +2056,27 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	   	
           			'''
           		]
-          		
-          		members += meln.toMethod("createSquares",typeRef(Void::TYPE))[
+          			members += meln.toMethod("createSquares",typeRef(Void::TYPE))[
           			parameters += meln.toParameter("shp",typeRef("fr.ocelet.datafacer.ocltypes.Shapefile"))
           			parameters += meln.toParameter("xRes",typeRef('java.lang.Double'))
           			parameters += meln.toParameter("yRes",typeRef('java.lang.Double'))
           			body = '''
 						«firstRoleType» entity = new «firstRoleType»();
 						grid = createSquare("«firstRoleType»",entity.getProps(), shp.getBounds(), xRes, yRes);
+						entity.getCell().setGrid(grid);						
+						«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+						connect(array);
+						
+          			'''
+          		]
+          		members += meln.toMethod("createSquares",typeRef(Void::TYPE))[
+          			parameters += meln.toParameter("geometry",typeRef("com.vividsolutions.jts.geom.Geometry"))
+          			parameters += meln.toParameter("xRes",typeRef('java.lang.Double'))
+          			parameters += meln.toParameter("yRes",typeRef('java.lang.Double'))
+          			body = '''
+						«firstRoleType» entity = new «firstRoleType»();
+						grid = createSquare("«firstRoleType»",entity.getProps(), geometry, xRes, yRes);
 						entity.getCell().setGrid(grid);						
 						«firstCellList» array = new «firstCellList»();
                   	 	array.add(entity);
@@ -2075,7 +2103,19 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						
           			'''
           		]
-          		
+          		members += meln.toMethod("createTriangles",typeRef(Void::TYPE))[
+          		parameters += meln.toParameter("geometry",typeRef("com.vividsolutions.jts.geom.Geometry"))
+          		parameters += meln.toParameter("size",typeRef('java.lang.Double'))
+          			body = '''
+						«firstRoleType» entity = new «firstRoleType»();
+						grid = createTriangle("«firstRoleType»",entity.getProps(), geometry, size);
+						entity.getCell().setGrid(grid);						
+						«firstCellList» array = new «firstCellList»();
+                  	 	array.add(entity);
+						connect(array);
+						
+          			'''
+          		]
           		members += meln.toMethod("createTriangles",typeRef(Void::TYPE))[
           		parameters += meln.toParameter("shp",typeRef("fr.ocelet.datafacer.ocltypes.Shapefile"))
           		parameters += meln.toParameter("size",typeRef('java.lang.Double'))

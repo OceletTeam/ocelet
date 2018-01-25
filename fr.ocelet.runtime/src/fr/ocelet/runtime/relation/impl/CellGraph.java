@@ -234,7 +234,15 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 	protected Grid createHexagon(String name, List<String> props, double minX, double minY, double maxX, double maxY, double size){
 		return GridGenerator.hexagonalGrid(name, props, size, minX, minY, maxX, maxY);
 	}
-
+	protected Grid createHexagon(String name, List<String> props, Geometry geometry, double size){
+		Double[] bounds = getBounds(geometry);
+		return GridGenerator.hexagonalGrid(name, props, size, bounds);
+		
+	}
+	protected Grid createSquare(String name, List<String> props,  Geometry geometry, double xRes, double yRes){
+		Double[] bounds = getBounds(geometry);
+		return GridGenerator.squareGrid(name, props, xRes, yRes, bounds);
+	}
 	protected Grid createSquare(String name, List<String> props,  Double[] bounds, double xRes, double yRes){
 		return GridGenerator.squareGrid(name, props, xRes, yRes, bounds);
 	}
@@ -243,6 +251,11 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 		return GridGenerator.squareGrid(name, props, xRes, yRes, minX, minY, maxX, maxY);
 	}
 
+	protected Grid createTriangle(String name, List<String> props,Geometry  geometry, double size){
+		Double[] bounds = getBounds(geometry);
+		return GridGenerator.triangularGrid(name, props, size, bounds);
+
+	}
 	protected Grid createTriangle(String name, List<String> props,  Double[] bounds, double size){
 		return GridGenerator.triangularGrid(name, props, size, bounds);
 
@@ -252,6 +265,45 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 		return null;
 	}
 
+	
+	private Double[] getBounds(Geometry geometry) {
+    	
+		  
+		  Double[] bounds = new Double[4];
+	    	double minX = Double.POSITIVE_INFINITY;
+	    	double minY = Double.POSITIVE_INFINITY;
+	    	double maxX = Double.NEGATIVE_INFINITY;
+	    	double maxY = Double.NEGATIVE_INFINITY;
+	    	
+	    	
+	    		
+	    		for(Coordinate c : geometry.getCoordinates()) {
+	    			if(c.x > maxX) {
+	    				maxX = c.x;
+	    			}
+	    			if(c.y > maxY) {
+	    				maxY = c.y;
+	    			}
+	    			
+	    			if(c.x < minX) {
+	    				minX = c.x;
+	    			}
+	    			if(c.y < minY) {
+	    				minY = c.y;
+	    			}
+	    			
+	    		}
+	    	
+	    	bounds[0] = minX;
+	    	bounds[1] = minY;
+	    	bounds[2] = maxX;
+	    	bounds[3] = maxY;
+
+	    	return bounds;
+	    	
+	    }
+	    
+	
 	public Grid getGrid(){
 		return grid;
 	}
