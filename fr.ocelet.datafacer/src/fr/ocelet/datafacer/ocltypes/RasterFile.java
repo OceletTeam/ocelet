@@ -326,10 +326,10 @@ public class RasterFile{
     	
     	
     	if(isDirectory) {
-   		 raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
+   		 raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]));
    	}else {
    	try{
-           raster = new ORaster(FileUtils.applyOutput(path), bounds);
+           raster = new ORaster(FileUtils.applyOutput(path));
        	}catch(Exception e){
        		e.printStackTrace();
        	}
