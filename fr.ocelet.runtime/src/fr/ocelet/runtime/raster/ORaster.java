@@ -141,10 +141,7 @@ public class ORaster {
         
         reader = format.getReader(file);
      
-        bounds[0] = getMinimum(0);
-        bounds[1] = getMinimum(1);
-        bounds[2] = getMaximum(0);
-        bounds[3] = getMaximum(1);
+       
             						   
         getRaster();
         setPixelsize();
@@ -277,7 +274,10 @@ public class ORaster {
            // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
         }
         RenderedImage rendImage = coverage.getRenderedImage();
-       
+        bounds[0] = geometry2D.getEnvelope2D().getMinX();
+                bounds[1] = geometry2D.getEnvelope2D().getMinY();
+                bounds[2] =geometry2D.getEnvelope2D().getMaxX();
+                bounds[3] = geometry2D.getEnvelope2D().getMaxY();
         raster = rendImage.getData();
         this.minGridX = raster.getMinX();
         this.minGridY = raster.getMinY();
@@ -328,7 +328,7 @@ public class ORaster {
     	double precision2 = 1.0+ precisionScale;
     	
        if(geometry2D.getEnvelope2D().getMinX() > minX ||  ( (geometry2D.getEnvelope2D().getMinX() / minX) > precision1 && 
-    		   1 - (geometry2D.getEnvelope2D().getMinX() / minX)< precision2)   ) {
+    		    (geometry2D.getEnvelope2D().getMinX() / minX)< precision2)   ) {
     	   
     	   
         	minX = geometry2D.getEnvelope2D().getMinX() + xRes / 2;
@@ -337,19 +337,19 @@ public class ORaster {
         	
         }
         if(geometry2D.getEnvelope2D().getMinY() > minY || ( (geometry2D.getEnvelope2D().getMinY() / minY) > precision1 && 
-        		1 - (geometry2D.getEnvelope2D().getMinY() / minY) < precision2)) {
+        		 (geometry2D.getEnvelope2D().getMinY() / minY) < precision2)) {
         
         	minY = geometry2D.getEnvelope2D().getMinY() + yRes / 2;
         
         	
         }
         if(geometry2D.getEnvelope2D().getMaxX() < maxX || ( (geometry2D.getEnvelope2D().getMaxX() / maxX) > precision1 &&
-        		1 - (geometry2D.getEnvelope2D().getMaxX() / maxX) < precision2)	) {
+        		 (geometry2D.getEnvelope2D().getMaxX() / maxX) < precision2)	) {
         	maxX = geometry2D.getEnvelope2D().getMaxX() - xRes / 2;
         	//maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0] ;
         }
         if(geometry2D.getEnvelope2D().getMaxY() < maxY || ( (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision1 &&
-        		1 - (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision2)) {
+        		 (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision2)) {
         	maxY = geometry2D.getEnvelope2D().getMaxY() - yRes / 2;
         	//maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1] ;
         }
@@ -414,7 +414,7 @@ public class ORaster {
 		this.bounds[0] = newMin.getCoordinate()[0] - xRes / 2;
 	    this.bounds[1] = newMin.getCoordinate()[1] - yRes / 2;
 	    this.bounds[2] = newMax.getCoordinate()[0] + xRes / 2;
-	    this.bounds[3] = newMax.getCoordinate()[1] + yRes / 2;;
+	    this.bounds[3] = newMax.getCoordinate()[1] + yRes / 2;
 		this.pX = xRes;
 		this.pY = yRes;
 		 min = new DirectPosition2D(bounds[0], bounds[1]);

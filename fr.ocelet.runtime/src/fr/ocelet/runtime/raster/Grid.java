@@ -375,7 +375,7 @@ public class Grid {
 		 dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
 		} catch (TransformException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 			
 			
 		}
@@ -385,7 +385,7 @@ public class Grid {
 		
 		Coordinate c = new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
 		c = gridCoordinate(x, y);
-	
+		
 		//double dx = ((c.x - initCoordinates.x) / 2) + initCoordinates.x;// -xRes;
 		double dx = (c.x + initCoordinates.x + (xRes / 2)) / 2;
 		dx =  worldBounds[0]+ (((c.x - worldBounds[0]) * (worldBounds[2] - worldBounds[0])) / (worldBoundsPrime[2] - worldBounds[0]));
@@ -416,7 +416,7 @@ public class Grid {
 		 dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
 		} catch (TransformException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 		/*Coordinate c = gridCoordinate(x, y);
 		double dx = c.x;
@@ -424,6 +424,9 @@ public class Grid {
 		
 		Coordinate c = new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
 		c = gridCoordinate(x, y);
+		if(c == null) {
+			return null;
+		}
 		//double dx = ((c.x - initCoordinates.x) / 2) + initCoordinates.x;// - xRes;
 		double dx = (c.x + initCoordinates.x + (xRes / 2)) / 2;
 		dx = worldBounds[0] + (((c.x - worldBounds[0]) * (worldBounds[2] - worldBounds[0])) / (worldBoundsPrime[2] - worldBounds[0]));
@@ -473,9 +476,10 @@ public class Grid {
 			gc = gridGeometry.worldToGrid(new DirectPosition2D(xP, y ));
 		}catch(TransformException ex){
 
-			ex.printStackTrace();
+			return null;
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
+		
 		
 		gCoord[0] = gc.x;
 		/*if(gc.x > 2){
@@ -637,7 +641,8 @@ public class Grid {
 
 
 	public int[] gridCoordinate(double x, double y){
-
+		
+		if(x > worldBounds[0] && y > worldBounds[1] && x < worldBounds[2] && y < worldBounds[3]) {
 		int gCoord[] = new int[2];
 		if(cellShapeType.equals("HEXAGONAL")){
 			return hexagonalWorldToGrid(x, y);
@@ -659,6 +664,8 @@ public class Grid {
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
 		return gCoord;
+		}
+		return null;
 	}
 	private Coordinate hexagonalGridToWorld(int x, int y){
 		double dx = initCoordinates.x;

@@ -43,7 +43,7 @@ public class RasterExport implements Datafacer{
         File file = new File(FileUtils.applyOutput(path));
         GeoTiffWriter writer = null;
         Double[] wBounds = grid.getWorldBounds();
-         
+        
  		//Envelope2D env = GridGenerator.createEnvelope(wBounds[0], wBounds[1],
  		//wBounds[0]+ (grid.getWidth() * grid.getXRes()), wBounds[1] + (grid.getHeight() * grid.getYRes()));
  		

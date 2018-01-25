@@ -193,7 +193,12 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 		 grid1 = cell1.getGrid();
 		 grid2 = cell2.getGrid();
-		scalingGrids(grid1, grid2);
+		//scalingGrids(grid1, grid2);
+		
+			rescale2();
+	
+		
+		
 		
 		/*Double[] grid1Bounds = grid1.getWorldBounds();
 		Double[] grid2Bounds =  grid2.getWorldBounds();
@@ -426,10 +431,12 @@ public abstract class DiCursorEdge extends OcltEdge{
 			//globalSynchronisation();
 			//mrm.switchLine();
 			//currentY = endY;
+			//System.out.println("final synch " +currentY);
 			finalSynchronisation();
 			clearAggregMap();
-			//System.out.println("END CURSOR");
-			currentY = startY;
+			////System.out.println("END CURSOR");
+			
+			colCount = startX2;
 			x2 = -1;
 			y2 = -1;
 			x = startX;
@@ -444,14 +451,15 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 
 	public void next(){
-		/*System.out.println("TYPE "+equalGrid);
-		System.out.println(globalGrid.getWidth()+" "+globalGrid.getHeight());
-		System.out.println("GLOBAL "+startX+" "+startY+" "+endX+" "+endY);
-		System.out.println(grid.getWidth()+" "+grid.getHeight());
-		System.out.println("LESSER "+startX2+" "+startY2+" "+endX2+" "+endY2);*/
+		/*//System.out.println("TYPE "+equalGrid);
+		//System.out.println(globalGrid.getWidth()+" "+globalGrid.getHeight());
+		//System.out.println("GLOBAL "+startX+" "+startY+" "+endX+" "+endY);
+		//System.out.println(grid.getWidth()+" "+grid.getHeight());
+		//System.out.println("LESSER "+startX2+" "+startY2+" "+endX2+" "+endY2);*/
+////System.out.println("next "+ x+" "+y+" "+x2+" "+y2);
 
-		//System.out.println(grid.getWidth()+" "+grid.getHeight()+"  "+globalGrid.getWidth()+"   "+globalGrid.getHeight());
-		//System.out.println(x+"  "+y+"  "+x2+" "+y2);
+		////System.out.println(grid.getWidth()+" "+grid.getHeight()+"  "+globalGrid.getWidth()+"   "+globalGrid.getHeight());
+		////System.out.println(x+"  "+y+"  "+x2+" "+y2);
 		if(equalGrid){
 
 			if(x2 == -1 && y2 == -1){
@@ -489,7 +497,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			
 				//colCount++;
 
-				//System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
+				////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 				if(c2 != null){
 					x = c2[0];
@@ -498,7 +506,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 					if(y == currentY + 1 || y == currentY + 2){
 						colCount++;
 
-						//System.out.print("  "+colCount);
+						////System.out.print("  "+colCount);
 					}
 				}
 				currentY = y;
@@ -506,7 +514,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				mrm = globalGrid.getMrm();
 				
 			}else{
-
+				
 				if(x2 == endX2){
 
 					x2 = startX2;
@@ -514,14 +522,18 @@ public abstract class DiCursorEdge extends OcltEdge{
 					
 					//Coordinate c = grid.gridCoordinate(x2, y2);
 					//int[] c2 = globalGrid.gridCoordinate(c.x, c.y);
-					//System.out.println(colCount);
+					////System.out.println(colCount);
 					if(colCount == endX2){
-				
+					
+						//System.out.println("global synch"+currentY);
+					
 						globalSynchronisation();
+						
+						
 						//y = c2[1];
 						y = currentY + 1;
 						mrm.switchLine();
-						currentY ++;
+						currentY = y;
 						x = startX;
 						colCount = startX2;
 						
@@ -534,7 +546,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 					
 						//colCount++;
 
-						//System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
+						////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 						if(c2 != null){
 							x = c2[0];
@@ -543,11 +555,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 							if(y == currentY + 1 || y == currentY + 2){
 								colCount++;
 
-								//System.out.print("  "+colCount);
+								////System.out.print("  "+colCount);
 							}
 
-
-							//System.out.println(x + " "+y);
+							
+							////System.out.println(x + " "+y);
 						}else{
 							/*if(y != currentY + 1 && y != currentY + 2){
 							colCount++;
@@ -556,7 +568,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 								colCount++;
 
-								//System.out.print("  "+colCount);
+								////System.out.print("  "+colCount);
 							}
 							if(hasNext()){
 								next();
@@ -565,7 +577,8 @@ public abstract class DiCursorEdge extends OcltEdge{
 								y2 = endY2;
 							}
 						}
-						//System.out.println("Sync "+currentY+" "+y);
+				
+						////System.out.println("Sync "+currentY+" "+y);
 
 					}else{
 						Coordinate c = null;
@@ -577,7 +590,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 					
 						//colCount++;
 
-						//System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
+						////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 						if(c2 != null){
 							x = c2[0];
@@ -586,11 +599,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 							if(y == currentY + 1 || y == currentY + 2){
 								colCount++;
 
-								//System.out.print("  "+colCount);
+								////System.out.print("  "+colCount);
 							}
 
 
-							//System.out.println(x + " "+y);
+							////System.out.println(x + " "+y);
 						}else{
 							/*if(y != currentY + 1 && y != currentY + 2){
 							colCount++;
@@ -599,7 +612,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 								colCount++;
 
-								//System.out.print("  "+colCount);
+								////System.out.print("  "+colCount);
 							}
 							if(hasNext()){
 								next();
@@ -625,19 +638,23 @@ public abstract class DiCursorEdge extends OcltEdge{
 				}else{
 					x2++;
 					
-					//System.out.println("coord px "+x2 + " "+y2);
+					////System.out.println("coord px "+x2 + " "+y2);
 					Coordinate c = null;
 					int[] c2 = null;
 						//grid.printGridBounds();
+					try {
 						c = grid.gridCoordinate(x2, y2);
-						if(c != null)
+					}catch(Exception e) {
+						
+					}
+						if(c != null )
 						c2 = globalGrid.gridCoordinate(c.x, c.y);
 				
-					//System.out.println(c);
+					////System.out.println(c);
 					
 					//colCount++;
 
-					//System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
+					////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 					if(c2 != null){
 						x = c2[0];
@@ -647,7 +664,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 							colCount++;
 						}
-						//System.out.println(x + " "+y);
+						////System.out.println(x + " "+y);
 					}else{
 						/*if(y != currentY + 1 && y != currentY + 2){
 							colCount++;
@@ -668,16 +685,16 @@ public abstract class DiCursorEdge extends OcltEdge{
 			}
 			/*try {
 				TimeUnit.MILLISECONDS.sleep(20);
-				System.out.println(x+" "+y+" "+x2+" "+y2);
+				//System.out.println(x+" "+y+" "+x2+" "+y2);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}*/
-			//System.out.println(x2+" "+y2+" "+x+" "+y);
+			////System.out.println(x2+" "+y2+" "+x+" "+y);
 
 
 		}
-		//System.out.println(x+" "+y+" "+x2+" "+y2+" moving "+currentY+" "+colCount);
+		////System.out.println(x+" "+y+" "+x2+" "+y2+" moving "+currentY+" "+colCount);
 		updateBis();
 	}
 
@@ -1040,7 +1057,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		Double[] globalBounds = new Double[]{upperLeftGlobal.x, downRightGlobal.y, downRightGlobal.x, upperLeftGlobal.y};
 		 
 		double[] scaled = scalingdouble(gridBounds, globalBounds);
-		// System.out.println("cScale "+scaled[0]+" "+scaled[1]+" "+scaled[2]+" "+scaled[3]);
+		// //System.out.println("cScale "+scaled[0]+" "+scaled[1]+" "+scaled[2]+" "+scaled[3]);
 		double xResFactor = 0.0;
 		double yResFactor = 0.0;
 		double precision = 1.0;
@@ -1109,14 +1126,14 @@ public abstract class DiCursorEdge extends OcltEdge{
 		Coordinate globalCMin = globalGrid.gridCoordinate(globalMin[0], globalMin[1]);
 		Coordinate globalCMax = globalGrid.gridCoordinate(globalMax[0], globalMax[1]);
 		
-		//System.out.println(globalCMin);
+		////System.out.println(globalCMin);
 		int[] t1 = globalGrid.gridCoordinate(globalCMin.x, globalCMin.y);
-		//System.out.println(t1[0]+" "+t1[1]);
+		////System.out.println(t1[0]+" "+t1[1]);
 	
 		
-		//System.out.println(globalCMax);
+		////System.out.println(globalCMax);
 		int[] t2 = globalGrid.gridCoordinate(globalCMax.x, globalCMax.y);
-		//System.out.println(t2[0]+" "+t2[1]);
+		////System.out.println(t2[0]+" "+t2[1]);
 		
 		Double[] chainRescaledGrid = new Double[] {gridCMin.x, gridCMax.y, gridCMax.x, gridCMin.y};
 		Double[] chainRescaledGlobal = new Double[] {globalCMin.x, globalCMax.y, globalCMax.x, globalCMin.y};
@@ -1127,7 +1144,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		 gridMax = grid.gridCoordinate(chainedScale[2], chainedScale[1]);
 		 globalMin = globalGrid.gridCoordinate(chainedScale[0], chainedScale[3]);
 		 globalMax = globalGrid.gridCoordinate(chainedScale[2], chainedScale[1]);*/
-		// System.out.println("chainedScale "+chainedScale[0]+" "+chainedScale[1]+" "+chainedScale[2]+" "+chainedScale[3]);
+		// //System.out.println("chainedScale "+chainedScale[0]+" "+chainedScale[1]+" "+chainedScale[2]+" "+chainedScale[3]);
 		/*if(globalMin == null){
 			startX = 0;
 			startY = 0;
@@ -1198,7 +1215,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
 			
 		}*/
-		double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
+		/*double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
 		double yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
 		int[] img = grid.gridCoordinate(mG.x + xResDiff, mG.y + yResDiff );
 	
@@ -1209,7 +1226,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			img = grid.gridCoordinate(mG.x + xResDiff , mG.y + yResDiff);
 			
 		}
-		endY2 = img[1];
+		endY2 = img[1];*/
 		if(endX2 > grid.getMaxX()) {
 			endX2 = grid.getMaxX();
 		}
@@ -1220,10 +1237,10 @@ public abstract class DiCursorEdge extends OcltEdge{
 		
 		
 		
-		//System.out.println(startX+" "+startY+" "+endX+" "+endY);
-		//System.out.println(startX2+" "+startY2+" "+endX2+" "+endY2);
+		////System.out.println(startX+" "+startY+" "+endX+" "+endY);
+		////System.out.println(startX2+" "+startY2+" "+endX2+" "+endY2);
 		//printMatchCoord();
-		//System.out.println(globalGrid.getMaxX()+" "+globalGrid.getMaxY());
+		////System.out.println(globalGrid.getMaxX()+" "+globalGrid.getMaxY());
 		equalGrid = false;
 		x = startX;
 		y = startY;
@@ -1235,13 +1252,37 @@ public abstract class DiCursorEdge extends OcltEdge{
 	}
 	
 	private void printMatchCoord() {
-		System.out.println("Global "+startX+" "+endX+" "+startY+" "+endY);
-		System.out.println("Grid "+startX2+" "+endX2+" "+startY2+" "+endY2);
+		//System.out.println("Global "+startX+" "+endX+" "+startY+" "+endY);
+		//System.out.println("Grid "+startX2+" "+endX2+" "+startY2+" "+endY2);
 	}
 
-
+	
 	private void rescale2() {
-		if(grid1.getWidth() * grid1.getHeight() < grid2.getWidth() * grid2.getHeight()){ 
+		
+		double[] iScale = scalingdouble(grid1.getWorldBounds(), grid2.getWorldBounds());
+		
+		int g1ScaledWidth = (int)Math.round((iScale[2] - iScale[0]) / grid1.getXRes());
+		if((g1ScaledWidth -(iScale[2] - iScale[0])) < 0.5) {
+			g1ScaledWidth++;
+		}
+		
+		int g1ScaledHeight = (int)Math.round((iScale[3] - iScale[1]) / grid1.getYRes());
+		if((g1ScaledHeight -(iScale[3] - iScale[1])) < 0.5) {
+			g1ScaledHeight++;
+		}
+		
+		int g2ScaledWidth = (int)Math.round((iScale[2] - iScale[0]) / grid2.getXRes());
+		if((g2ScaledWidth -(iScale[2] - iScale[0])) < 0.5) {
+			g2ScaledWidth++;
+		}
+		
+		int g2ScaledHeight = (int)Math.round((iScale[3] - iScale[1]) / grid2.getYRes());
+		if((g2ScaledHeight -(iScale[3] - iScale[1])) < 0.5) {
+			g2ScaledHeight++;
+		}
+		
+		
+		if(g1ScaledWidth * g1ScaledHeight < g2ScaledWidth * g2ScaledHeight){ 
 			globalGrid = grid1;
 			grid = grid2;
 
@@ -1271,17 +1312,10 @@ public abstract class DiCursorEdge extends OcltEdge{
 		int[] minUpper = grid.gridCoordinate(upperLeftGrid.x, upperLeftGrid.y);
 	
 		
-		/*int[] globalToGridUpperLeft = globalGrid.gridCoordinate(upperLeftGrid.x, upperLeftGrid.y);
-		int[] globalToGridDownRight = globalGrid.gridCoordinate(downRightGrid.x, downRightGrid.y);
-		
-		int[] gridToGlobalUpperLeft = grid.gridCoordinate(upperLeftGlobal.x, upperLeftGlobal.y);
-		int[] gridToGlobalDownRight = grid.gridCoordinate(downRightGlobal.x, downRightGlobal.y);*/
-		
-		//Double[] gridBounds = new Double[]{upperLeftGrid.x, downRightGrid.y, downRightGrid.x, upperLeftGrid.y};
-		//Double[] globalBounds = new Double[]{upperLeftGlobal.x, downRightGlobal.y, downRightGlobal.x, upperLeftGlobal.y};
+		;
 		Double[] gridBounds = grid.getWorldBounds();
 		Double[] globalGridBounds = globalGrid.getWorldBounds();
-		double[] scaled = new double[4]; //scalingdouble(gridBounds, globalBounds);
+		Double[] scaled = new Double[4];
 		
 		double gridMinX = gridBounds[0] + grid.getXRes() / 2;
 		double gridMinY = gridBounds[1] + grid.getYRes() / 2;
@@ -1291,254 +1325,182 @@ public abstract class DiCursorEdge extends OcltEdge{
 		double globalGridMinY = globalGridBounds[1] + globalGrid.getYRes() / 2;
 		double globalGridMaxX = globalGridBounds[2] - globalGrid.getXRes() / 2;
 		double globalGridMaxY = globalGridBounds[3] - globalGrid.getYRes() / 2;
-		
-		
+		//grid.printWorldBounds();
+		//globalGrid.printWorldBounds();
+		scaled = globalGrid.getWorldBounds();
 		if(gridBounds[0]  < globalGridBounds[0] ){
 			scaled[0]  = globalGridBounds[0];
-			gridMinX = globalGridBounds[0];
+			gridMinX = globalGridBounds[0]- grid.getXRes();
 		}else{
 			if(gridBounds[0]  > globalGridBounds[0]) {
 			scaled[0] = gridBounds[0];
-			globalGridMaxX = gridBounds[0];
+			globalGridMinX = gridBounds[0] - globalGrid.getXRes();
 			}
 		}
 		if(gridBounds[1] < globalGridBounds[1]){
 			scaled[1] = globalGridBounds[1];
-			gridMinY = globalGridBounds[1];
+			gridMinY = globalGridBounds[1] - grid.getYRes();
 		}else{
 			if(gridBounds[1] > globalGridBounds[1]) {
 			scaled[1] = gridBounds[1];
-			globalGridMinY = gridBounds[1];
+			globalGridMinY = gridBounds[1] - globalGrid.getYRes();
 			}
 		}
 
 		if(gridBounds[2]  > globalGridBounds[2] ){
 			scaled[2] = globalGridBounds[2];
-			gridMaxX = globalGridBounds[2];
+			gridMaxX = globalGridBounds[2] + grid.getXRes();
 		}else{
 			if(gridBounds[2]  < globalGridBounds[2] ) {
 			scaled[2] = gridBounds[2];
-			globalGridMaxX = gridBounds[2];
+			globalGridMaxX = gridBounds[2] + globalGrid.getXRes();
 			}
 
 		}
 		if(gridBounds[3]  > globalGridBounds[3]){
 			scaled[3] = globalGridBounds[3] ;
-			gridMaxY = globalGridBounds[3];
+			gridMaxY = globalGridBounds[3] + grid.getYRes();
 		}else{
 			if(gridBounds[3]  < globalGridBounds[3]){
 			scaled[3] = gridBounds[3] ;
-			globalGridMaxY = gridBounds[3];
+			globalGridMaxY = gridBounds[3] + grid.getYRes();
 			}
 
 		}
-		// System.out.println("cScale "+scaled[0]+" "+scaled[1]+" "+scaled[2]+" "+scaled[3]);
-		/*double xResFactor = 0.0;
-		double yResFactor = 0.0;
-		double precision = 0.8;
-		if(grid.getXRes() == globalGrid.getXRes()) {
-			xResFactor = (grid.getXRes() * precision) / 2;
-			
-		}else {
-			if(grid.getXRes() < globalGrid.getXRes()) {
-				xResFactor = (grid.getXRes() * precision) / 2; 
-			}else {
-				xResFactor = (globalGrid.getXRes() * precision) / 2;
- 			}
-		}
 		
-		if(grid.getYRes() == globalGrid.getYRes()) {
-			yResFactor = (grid.getYRes() * precision) / 2;
-			
-		}else {
-			if(grid.getYRes() < globalGrid.getYRes()) {
-				yResFactor = (grid.getYRes() * precision) / 2; 
-			}else {
-				yResFactor = (globalGrid.getYRes() * precision) / 2;
- 			}
-		}
-		
-		
-		
-		
-		double factorX = xResFactor;
-		double factorY = yResFactor;
-		
-		int[] gridMin = grid.gridCoordinate(scaled[0] + factorX, scaled[3] - factorY);
+		double ngridMinX = gridMinX;
+		double ngridMinY = gridMinY;
+		double ngridMaxX = gridMaxX;
+		double ngridMaxY = gridMaxY;
+		////System.out.println("scaled "+scaled[0]+" "+scaled[1]+" "+scaled[2]+" "+scaled[3]);
+		double factorX = grid.getXRes() / 2;
+		double factorY = grid.getYRes() / 2;
+		int[] gridMin = grid.gridCoordinate(ngridMinX, ngridMaxY);
+		////System.out.println("gridMin");
 		while(gridMin == null) {
-			factorX = factorX + xResFactor;
-			factorY = factorY + yResFactor;
-			gridMin = grid.gridCoordinate(scaled[0] + factorX, scaled[3] - factorY);
+			factorX = factorX + grid.getXRes() / 2;
+			factorY = factorY + grid.getYRes() / 2;
+			gridMin = grid.gridCoordinate(ngridMinX + factorX, ngridMaxY - factorY);
+			////System.out.println((ngridMinX + factorX)+" "+(ngridMaxY - factorY));
+			
 		}
-		 factorX = xResFactor;
-		 factorY = yResFactor;
-		int[] gridMax = grid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
+		 factorX =  grid.getXRes() / 2;
+		 factorY =  grid.getYRes() / 2;
+		int[] gridMax = grid.gridCoordinate(ngridMaxX, ngridMinY);
+		
 		while(gridMax == null) {
-			factorX = factorX + xResFactor;
-			factorY = factorY + yResFactor;
-			gridMax = grid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
-		}
-		factorX = xResFactor;
-		 factorY = yResFactor;
-		int[] globalMin = globalGrid.gridCoordinate(scaled[0] +factorX, scaled[3] - factorY);
-		while(globalMin == null) {
-			factorX = factorX + xResFactor;
-			factorY = factorY + yResFactor;
-			globalMin = globalGrid.gridCoordinate(scaled[0] + factorX, scaled[3] - factorY);
-		}
-		factorX = xResFactor;
-		 factorY = yResFactor;
-		int[] globalMax = globalGrid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
-		while(globalMax == null) {
-			factorX = factorX + xResFactor;
-			factorY = factorY + yResFactor;
-			globalMax = globalGrid.gridCoordinate(scaled[2] - factorX, scaled[1] + factorY);
+			factorX = factorX + grid.getXRes() / 2;
+			factorY = factorY + grid.getYRes() / 2;
+			gridMax = grid.gridCoordinate(ngridMaxX - factorX, ngridMinY + factorY);
+			////System.out.println((ngridMaxX - factorX)+" "+(ngridMinY + factorY));
+			
 		}
 		
-		Coordinate gridCMin = grid.gridCoordinate(gridMin[0], gridMin[1]);
-		Coordinate gridCMax = grid.gridCoordinate(gridMax[0], gridMax[1]);
 		
-		Coordinate globalCMin = globalGrid.gridCoordinate(globalMin[0], globalMin[1]);
-		Coordinate globalCMax = globalGrid.gridCoordinate(globalMax[0], globalMax[1]);
-		
-		//System.out.println(globalCMin);
-		int[] t1 = globalGrid.gridCoordinate(globalCMin.x, globalCMin.y);
-		//System.out.println(t1[0]+" "+t1[1]);
-	
-		
-		//System.out.println(globalCMax);
-		int[] t2 = globalGrid.gridCoordinate(globalCMax.x, globalCMax.y);
-		//System.out.println(t2[0]+" "+t2[1]);
-		
-		Double[] chainRescaledGrid = new Double[] {gridCMin.x, gridCMax.y, gridCMax.x, gridCMin.y};
-		Double[] chainRescaledGlobal = new Double[] {globalCMin.x, globalCMax.y, globalCMax.x, globalCMin.y};
-	
-		double[] chainedScale = scalingdouble(chainRescaledGrid, chainRescaledGlobal);
-		
-		 /*gridMin = grid.gridCoordinate(chainedScale[0], chainedScale[3]);
-		 gridMax = grid.gridCoordinate(chainedScale[2], chainedScale[1]);
-		 globalMin = globalGrid.gridCoordinate(chainedScale[0], chainedScale[3]);
-		 globalMax = globalGrid.gridCoordinate(chainedScale[2], chainedScale[1]);*/
-		// System.out.println("chainedScale "+chainedScale[0]+" "+chainedScale[1]+" "+chainedScale[2]+" "+chainedScale[3]);
-		/*if(globalMin == null){
-			startX = 0;
-			startY = 0;
-		}else{
-			startX = globalMin[0];
-			startY = globalMin[1];
-
+		Coordinate cGridMin = grid.gridCoordinate(gridMin[0], gridMin[1]);
+		Coordinate cGridMax = grid.gridCoordinate(gridMax[0], gridMax[1]);
+		 factorX =  globalGrid.getXRes() / 2;
+		 factorY =  globalGrid.getYRes() / 2;
+		int[] globalGridMin = globalGrid.gridCoordinate(globalGridMinX, globalGridMaxY);
+		////System.out.println("globalgridMin");
+		while( globalGridMin == null) {
+			factorX = factorX + globalGrid.getXRes() / 2;
+			factorY = factorY + globalGrid.getYRes() / 2;
+			
+			globalGridMin = globalGrid.gridCoordinate(globalGridMinX + factorX, globalGridMaxY - factorY);
+			//cGridMin = grid.gridCoordinate(globalGridMin[0], globalGridMin[1]);
+			////System.out.println((cGridMin.x + factorX)+" "+(cGridMin.y - factorY));
+			
 		}
-		if(globalMax == null){
-			endX = globalGrid.getWidth()-1;
-			endY = globalGrid.getHeight()-1;
-		}else{
-			endX = globalMax[0];
-			endY = globalMax[1];
-
+		 factorX =  globalGrid.getXRes() / 2;
+		 factorY =  globalGrid.getYRes() / 2;
+		int[] globalGridMax = globalGrid.gridCoordinate(globalGridMaxX, globalGridMinY);
+		////System.out.println("globalGridMax");
+		while( globalGridMax == null) {
+			factorX = factorX + globalGrid.getXRes() / 2;
+			factorY = factorY + globalGrid.getYRes() / 2;
+			globalGridMax = globalGrid.gridCoordinate(globalGridMaxX - factorX, globalGridMinY + factorY);
+			//cGridMax = grid.gridCoordinate(globalGridMax[0], globalGridMax[1]);
+			////System.out.println((cGridMax.x - factorX)+" "+(cGridMax.y + factorY));
+			
 		}
-		if(gridMin == null){
-			startX2 = 0;
-			startY2 = 0;
-		}else{
-			startX2 = gridMin[0];
-			startY2 = gridMin[1];
+		
+		/*gridMin = grid.gridCoordinate(cGridMin.x, cGridMin.y);
+		ngridMinX = cGridMin.x;
+		ngridMinY = cGridMin.y;
+		////System.out.println("gridMin");
+		factorX =  grid.getXRes() / 2;
+		 factorY =  grid.getYRes() / 2;
+		while(gridMin == null || cGridMin == null) {
+			factorX = factorX + grid.getXRes() / 2;
+			factorY = factorY + grid.getYRes() / 2;
+			gridMin = grid.gridCoordinate(ngridMinX + factorX, ngridMaxY - factorY);
+			cGridMin = grid.gridCoordinate(gridMin[0], gridMin[1]);
+			////System.out.println((ngridMinX + factorX)+" "+(ngridMaxY - factorY));
+			
 		}
-		if(gridMax == null){
-			endX2 = grid.getWidth()-1;
-			endY2 = grid.getHeight()-1;
-		}else{
-			endX2 = gridMax[0];
-			endY2 = gridMax[1];
+		 factorX =  grid.getXRes() / 2;
+		 factorY =  grid.getYRes() / 2;
+		gridMax = grid.gridCoordinate(cGridMax.x, cGridMax.y);
+		ngridMaxX = cGridMax.x;
+		ngridMaxY = cGridMax.y;
+		while(gridMax == null || cGridMax == null) {
+			factorX = factorX + grid.getXRes() / 2;
+			factorY = factorY + grid.getYRes() / 2;
+			gridMax = grid.gridCoordinate(ngridMaxX - factorX, ngridMinY + factorY);
+			cGridMax = grid.gridCoordinate(gridMax[0], gridMax[1]);
+			////System.out.println((ngridMaxX - factorX)+" "+(ngridMinY + factorY));
+			
 		}*/
-		 	
-	
-			grid.printWorldBounds();
-			
-			System.out.println(gridMinX+" "+gridMinY+" "+gridMaxX+" "+gridMaxY);
-			globalGrid.printWorldBounds();
-			System.out.println(globalGridMinX+" "+globalGridMinY+" "+globalGridMaxX+" "+globalGridMaxY);			
-			
-			int[] gridMin = grid.gridCoordinate(gridMinX, gridMaxY);
-			
-			
-			
-			int[] gridMax = grid.gridCoordinate(gridMaxX, gridMinY);
-			
-			int[] globalMin = globalGrid.gridCoordinate(globalGridMinX, globalGridMaxY);
-			int[] globalMax = globalGrid.gridCoordinate(globalGridMaxX, globalGridMinY);
-			startX = globalMin[0];
-			startY = globalMin[1];		
-	
-			endX = globalMax[0];
-			endY = globalMax[1];
-			/*if(startX > globalGrid.getMinX()) {
-				startX = startX - 1;
-			}
-			if(startY > globalGrid.getMinY()) {
-				startY = startY - 1;
-			}
-			if(endX < globalGrid.getMaxX()) {
-				endX = endX + 1;
-			}
-			if(endY < globalGrid.getMaxY()) {
-				endY = endY + 1;
-			}*/
-			
-			startX2 = gridMin[0];
-			startY2 = gridMin[1];
+		startX = globalGridMin[0];
+		startY = globalGridMin[1];
+		endX = globalGridMax[0];
+		endY = globalGridMax[1];
 		
-		
-			endX2 = gridMax[0];
-			endY2 = gridMax[1];
-		Coordinate mG = globalGrid.gridCoordinate(endX, endY);
-		
-		
-		
-		double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
-		int[] img = grid.gridCoordinate(mG.x + xResDiff, mG.y );
-		while(img == null) {
-			xResDiff = xResDiff - grid.getXRes() / 2;
-			img = grid.gridCoordinate(mG.x + xResDiff, mG.y );
-			
+		startX2 = gridMin[0];
+		startY2 = gridMin[1];
+		endX2 = gridMax[0];
+		endY2 = gridMax[1];
+		//System.out.println(startX+" "+startY+" "+endX+" "+endY);
+		//System.out.println("pass1 "+startX2+" "+startY2+" "+endX2+" "+endY2);
+		if(startX2 < grid.getMinX()) {
+			startX2 = grid.getMinX();
 		}
-		endX2 = img[0];
-		double yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
-		img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
-		while(img == null) {
-			yResDiff =yResDiff + grid.getYRes() / 2;
-			img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
-			
+		if(startY2 < grid.getMinY()) {
+			startY2 = grid.getMinY();
 		}
-		 xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
-		 yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
-		 img = grid.gridCoordinate(mG.x + xResDiff, mG.y );
-		
-		
-		while(img == null) {
-			yResDiff =yResDiff + grid.getYRes() / 2;
-			xResDiff = xResDiff - grid.getXRes() / 2;
-			img = grid.gridCoordinate(mG.x + xResDiff , mG.y + yResDiff);
-			
-		}
-		endY2 = img[1];
 		if(endX2 > grid.getMaxX()) {
 			endX2 = grid.getMaxX();
 		}
-		
 		if(endY2 > grid.getMaxY()) {
 			endY2 = grid.getMaxY();
 		}
 		
+		if(startX < globalGrid.getMinX()) {
+			startX = globalGrid.getMinX();
+		}
+		if(startY < globalGrid.getMinY()) {
+			startY = globalGrid.getMinY();
+		}
+		if(endX > globalGrid.getMaxX()) {
+			endX = globalGrid.getMaxX();
+		}
+		if(endY > globalGrid.getMaxY()) {
+			endY = globalGrid.getMaxY();
+		}
+		
+		
 		//System.out.println(startX+" "+startY+" "+endX+" "+endY);
-		//System.out.println(startX2+" "+startY2+" "+endX2+" "+endY2);
-		//printMatchCoord();
-		//System.out.println(globalGrid.getMaxX()+" "+globalGrid.getMaxY());
+		//System.out.println("pass2 "+startX2+" "+startY2+" "+endX2+" "+endY2);
+		
+		
 		equalGrid = false;
 		x = startX;
 		y = startY;
 		x2 = -1;
 		y2 = -1;
 		currentY = startY;
+		
 		colCount = startX2;
 		initEdgeProperty();
 	}

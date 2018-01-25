@@ -96,6 +96,8 @@ public class GridGenerator {
 		nminY = center[1];
 		nmaxX = center[2];
 		nmaxY = center[3];
+		
+		
 		double hexaMinY = nminY - rectangleHeight / 2;
 		Envelope2D env = createEnvelope(nminX, nminY, nmaxX, nmaxY);
 		WritableRaster raster = createRaster(index, col, row);
@@ -164,7 +166,33 @@ public class GridGenerator {
 		newMinY = center[1];
 		newMaxX = center[2];
 		newMaxY = center[3];
+	
+		while(newMaxX <= maxX){
+			
+			cellWidth++;
+			 newMaxX = newMinX + (cellWidth * xRes);
+			 center = center(minX, minY, maxX, maxY, newMinX, newMinY, newMaxX, newMaxY);
+				
+				newMinX = center[0];
+				newMinY = center[1];
+				newMaxX = center[2];
+				newMaxY = center[3];
+		}
+		while(newMaxY <= maxY) {
 		
+			cellHeight++;
+			 newMaxY = newMinY + (cellHeight * yRes);
+			 center = center(minX, minY, maxX, maxY, newMinX, newMinY, newMaxX, newMaxY);
+				
+				newMinX = center[0];
+				newMinY = center[1];
+				newMaxX = center[2];
+				newMaxY = center[3];
+		}
+		
+		
+	
+		 
 		Envelope2D env = createEnvelope(newMinX, newMinY,newMaxX, newMaxY);
 		//env.setCoordinateReferenceSystem();
 		WritableRaster raster = createRaster(index, cellWidth, cellHeight);
@@ -308,18 +336,22 @@ public class GridGenerator {
 
 
 		//Testing if raster coord is out of shapefile description
-
+		double precisionScale = 0.05;
+    	double precision1 = 1.0 - precisionScale;
+    	double precision2 = 1.0+ precisionScale;
+    	
+       
 		//lower corner :
 		if(testMinX == false && testMinY == false){
 			int[] minGridCoordFromShp = null;
-			if(minY / lowerCorner[1] < yRes / 2 ) {
-				if(minX / lowerCorner[0] < xRes / 2) {
+			if( ((lowerCorner[1] / minY) > precision1 &&    (lowerCorner[1] / minY)< precision2) ) {
+				if( ((lowerCorner[0] / minX) > precision1 &&    (lowerCorner[0] / minX)< precision2) ) {
 					minGridCoordFromShp = raster.worldToGrid(minX + xRes / 2, minY + yRes / 2);
 				}else {
 					minGridCoordFromShp = raster.worldToGrid(minX, minY + yRes / 2);
 				}
 			}else {
-				if(minX / lowerCorner[0] < xRes / 2) {
+				if( ((lowerCorner[0] / minX) > precision1 &&    (lowerCorner[0] / minX)< precision2) ) {
 					minGridCoordFromShp = raster.worldToGrid(minX + xRes / 2, minY);
 				}else {
 					minGridCoordFromShp = raster.worldToGrid(minX, minY);
@@ -335,7 +367,7 @@ public class GridGenerator {
 		if(testMinX == false && testMinY == true){
 			
 			int[] minGridCoordFromShp = null;
-				if(minX / lowerCorner[0] < xRes / 2) {
+				if( ((lowerCorner[0] / minX) > precision1 &&    (lowerCorner[0] / minX)< precision2) ) {
 					minGridCoordFromShp = raster.worldToGrid(minX + xRes / 2, finalMinY + yRes / 2);
 				}else {
 					minGridCoordFromShp = raster.worldToGrid(minX, finalMinY + yRes / 2);
@@ -351,7 +383,7 @@ public class GridGenerator {
 
 		if(testMinX == true && testMinY == false){
 			int[] minGridCoordFromShp = null;
-			if(minY / lowerCorner[1] < yRes / 2) {
+			if( ((lowerCorner[1] / minY) > precision1 &&    (lowerCorner[1] / minY)< precision2) ) {
 				minGridCoordFromShp = raster.worldToGrid(finalMinX + xRes / 2, minY + yRes / 2);
 			}else {
 				minGridCoordFromShp = raster.worldToGrid(finalMinX + xRes / 2, minY);
@@ -369,14 +401,14 @@ public class GridGenerator {
 			
 			
 			int[] maxGridCoordFromShp = null;
-			if(maxY / upperCorner[1] < yRes / 2 ) {
-				if(maxX / upperCorner[0] < xRes / 2) {
+			if( ((upperCorner[1] / maxY) > precision1 &&    (upperCorner[1] / maxY)< precision2) ) {
+				if(((upperCorner[0] / maxX) > precision1 &&    (upperCorner[0] / maxX)< precision2)) {
 					maxGridCoordFromShp = raster.worldToGrid(maxX - xRes / 2, maxY - yRes / 2);
 				}else {
 					maxGridCoordFromShp = raster.worldToGrid(maxX, maxY - yRes / 2);
 				}
 			}else {
-				if(maxX / upperCorner[0] < xRes / 2) {
+				if(((upperCorner[0] / maxX) > precision1 &&    (upperCorner[0] / maxX)< precision2)) {
 					maxGridCoordFromShp = raster.worldToGrid(maxX - xRes / 2, maxY);
 				}else {
 					maxGridCoordFromShp = raster.worldToGrid(maxX, maxY);
@@ -395,7 +427,7 @@ public class GridGenerator {
 			int[] maxGridCoordFromShp = null;
 			
 			
-			if(maxX / upperCorner[0] < xRes / 2) {
+			if(((upperCorner[0] / maxX) > precision1 &&    (upperCorner[0] / maxX)< precision2)) {
 				maxGridCoordFromShp = raster.worldToGrid(maxX - xRes / 2, finalMaxY - yRes / 2);
 			}else {
 				maxGridCoordFromShp = raster.worldToGrid(maxX, finalMaxY - yRes / 2);
@@ -409,7 +441,7 @@ public class GridGenerator {
 
 		if(testMinX == true && testMinY == false){
 			int[] maxGridCoordFromShp = null;
-			if(minY / lowerCorner[1] < yRes / 2) {
+			if(((upperCorner[1] / maxY) > precision1 &&    (upperCorner[1] / maxY)< precision2)) {
 				maxGridCoordFromShp = raster.worldToGrid(finalMaxX - xRes / 2, maxY - yRes / 2);
 			}else {
 				maxGridCoordFromShp = raster.worldToGrid(finalMinX - xRes / 2, maxY);
@@ -434,8 +466,14 @@ public class GridGenerator {
 		double width = newMaxX - newMinX;
 		double height = newMaxY - newMinY;
 
-		int cellWidth = (int)(Math.round((width) / xRes));
-		int cellHeight = (int) (Math.round((height) / yRes));	
+		int cellWidth = (int)(Math.round(width / xRes));
+		int cellHeight = (int) (Math.round(height / yRes));	
+		if(Math.round(width / xRes) - cellWidth < 0.5) {
+			cellWidth ++;
+		}
+		if(Math.round(height / yRes) - cellHeight < 0.5) {
+			cellHeight ++;
+		}
 
 		newMaxX = newMinX + cellWidth * xRes;
 		newMaxY = newMinY + cellHeight * yRes;

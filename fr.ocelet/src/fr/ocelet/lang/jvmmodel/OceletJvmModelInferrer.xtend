@@ -161,7 +161,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   		body='''
                   		
 								«entname» entity = new «entname»();
-							if(grid == null){
+							
 								
                   	  			«FOR mp:matchdef.matchprops»
                   	  	  		«val eproptype = propmap.get(mp.prop)»
@@ -175,7 +175,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 								
 								
 								
-								}
+								
 								entity.getCell().setGrid(grid);
 								List<«entname»> entityList = new List<«entname»>();
 								entityList.add(entity);
@@ -188,7 +188,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	body='''
                   	«entname» entity = new «entname»();
 
-                  	if(grid == null){
+                  	
                   
                   	«FOR mp:matchdef.matchprops»
                   	«val eproptype = propmap.get(mp.prop)»
@@ -201,7 +201,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	this.grid = createGrid(entity.getProps(), shp, 	"«entname»");
                     
                    
-                  	}
+                  	
                   	entity.getCell().setGrid(grid);
 					List<«entname»> entityList = new List<«entname»>();
 					entityList.add(entity);
@@ -209,39 +209,14 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 
                     '''
                   ]
-                   	members += meln.toMethod('readAll'+entname,tabType)[
-                  	parameters += meln.toParameter('geometries', typeRef('fr.ocelet.runtime.ocltypes.List', typeRef('com.vividsolutions.jts.geom.Geometry')))
-                  	body='''
-                  	«entname» entity = new «entname»();
-
-                  	if(grid == null){
-                  
-                  	«FOR mp:matchdef.matchprops»
-                  	«val eproptype = propmap.get(mp.prop)»
-                 	«IF eproptype != null»
-                  	«IF mp.colname != null»
-						addProperty("«mp.prop»",«mp.colname»);
-                  	«ENDIF»
-                  	«ENDIF»
-                  	«ENDFOR»
-                  	this.grid = createGrid(entity.getProps(), geometries, 	"«entname»");
-                  	                  	
-                   
-                  	}
-                  	entity.getCell().setGrid(grid);
-					List<«entname»> entityList = new List<«entname»>();
-					entityList.add(entity);
-					return entityList;
-
-                    '''
-                  ]
+                 
                   
                        	members += meln.toMethod('readAll'+entname,tabType)[
                   	parameters += meln.toParameter('geometry',  typeRef('com.vividsolutions.jts.geom.Geometry'))
                   	body='''
                   	«entname» entity = new «entname»();
 
-                  	if(grid == null){
+                
                   
                   	«FOR mp:matchdef.matchprops»
                   	«val eproptype = propmap.get(mp.prop)»
@@ -252,9 +227,10 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	«ENDIF»
                   	«ENDFOR»
                   	                  	this.grid = createGrid(entity.getProps(), geometry, 	"«entname»");
-                     entity.getCell().setGrid(grid);
+                    
                     entity.updateCellInfo("QUADRILATERAL");
-                  	}
+                  	
+                  	 entity.getCell().setGrid(grid);
 					List<«entname»> entityList = new List<«entname»>();
 					entityList.add(entity);
 					return entityList;
