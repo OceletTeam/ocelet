@@ -251,7 +251,9 @@ public class GridHexaCellManager extends GridCellManager {
               
                   grid.setCellValue(name, i, y - 1, cv.getValues(name).get((int)(Math.random() * cv.getValues(name).size())));
               }
+              
           }
+          
 
       }
 

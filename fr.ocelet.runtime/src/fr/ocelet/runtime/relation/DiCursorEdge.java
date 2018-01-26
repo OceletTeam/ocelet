@@ -1399,8 +1399,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		}
 		
 		
-		Coordinate cGridMin = grid.gridCoordinate(gridMin[0], gridMin[1]);
-		Coordinate cGridMax = grid.gridCoordinate(gridMax[0], gridMax[1]);
+
 		 factorX =  globalGrid.getXRes() / 2;
 		 factorY =  globalGrid.getYRes() / 2;
 		int[] globalGridMin = globalGrid.gridCoordinate(globalGridMinX, globalGridMaxY);
