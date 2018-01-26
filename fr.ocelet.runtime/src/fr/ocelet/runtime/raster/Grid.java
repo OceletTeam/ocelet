@@ -642,7 +642,7 @@ public class Grid {
 
 	public int[] gridCoordinate(double x, double y){
 		
-		if(x > worldBounds[0] && y > worldBounds[1] && x < worldBounds[2] && y < worldBounds[3]) {
+		
 		int gCoord[] = new int[2];
 		if(cellShapeType.equals("HEXAGONAL")){
 			return hexagonalWorldToGrid(x, y);
@@ -664,8 +664,7 @@ public class Grid {
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
 		return gCoord;
-		}
-		return null;
+		
 	}
 	private Coordinate hexagonalGridToWorld(int x, int y){
 		double dx = initCoordinates.x;

@@ -301,6 +301,8 @@ public class RasterHexagonalCursor extends RasterCursor {
 	private int index = 0;
 	public RasterHexagonalCursor(Grid grid) {
 		super(grid);
+		
+	
 		// TODO Auto-generated constructor stub
 	}
 
@@ -339,7 +341,7 @@ public class RasterHexagonalCursor extends RasterCursor {
 		
 		 if(direction == 0){
 			 toMove = false;
-			  if(inbounds(x + 1, y - 1)){
+			  if(inbounds(x + 1, y - 1 )){
 				  x2 = x + 1;
 	              y2 = y - 1;
 	              direction = 1;

@@ -84,6 +84,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 	public void setCompleteIteratorCell(E e)
 	{
 		cellIterator = new CompleteIteratorCell<E, Ro>(e, this);
+		setCellShapeType(grid.getCellShapeType());
 	}
 
 
@@ -227,37 +228,53 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 	}
 
 	protected Grid createHexagon(String name, List<String> props, Double[] bounds, double size){
-		return GridGenerator.hexagonalGrid(name, props, size, bounds);
+		grid = GridGenerator.hexagonalGrid(name, props, size, bounds);
+		
+		return grid;
 
 	}
 
 	protected Grid createHexagon(String name, List<String> props, double minX, double minY, double maxX, double maxY, double size){
-		return GridGenerator.hexagonalGrid(name, props, size, minX, minY, maxX, maxY);
+		grid = GridGenerator.hexagonalGrid(name, props, size, minX, minY, maxX, maxY);
+		
+		return grid;
 	}
 	protected Grid createHexagon(String name, List<String> props, Geometry geometry, double size){
 		Double[] bounds = getBounds(geometry);
-		return GridGenerator.hexagonalGrid(name, props, size, bounds);
+		grid = GridGenerator.hexagonalGrid(name, props, size, bounds);
+		
+		return grid;
 		
 	}
 	protected Grid createSquare(String name, List<String> props,  Geometry geometry, double xRes, double yRes){
 		Double[] bounds = getBounds(geometry);
-		return GridGenerator.squareGrid(name, props, xRes, yRes, bounds);
+		grid = GridGenerator.squareGrid(name, props, xRes, yRes, bounds);
+		
+		return grid;
 	}
 	protected Grid createSquare(String name, List<String> props,  Double[] bounds, double xRes, double yRes){
-		return GridGenerator.squareGrid(name, props, xRes, yRes, bounds);
+		grid = GridGenerator.squareGrid(name, props, xRes, yRes, bounds);
+		
+		return grid;
 	}
 
 	protected Grid createSquare(String name, List<String> props, double minX, double minY, double maxX, double maxY, double xRes, double yRes){	
-		return GridGenerator.squareGrid(name, props, xRes, yRes, minX, minY, maxX, maxY);
+		grid = GridGenerator.squareGrid(name, props, xRes, yRes, minX, minY, maxX, maxY);
+		
+		return grid;
 	}
 
 	protected Grid createTriangle(String name, List<String> props,Geometry  geometry, double size){
 		Double[] bounds = getBounds(geometry);
-		return GridGenerator.triangularGrid(name, props, size, bounds);
+		grid =  GridGenerator.triangularGrid(name, props, size, bounds);
+		
+		return grid;
 
 	}
 	protected Grid createTriangle(String name, List<String> props,  Double[] bounds, double size){
-		return GridGenerator.triangularGrid(name, props, size, bounds);
+		grid = GridGenerator.triangularGrid(name, props, size, bounds);
+		
+		return grid;
 
 	}
 

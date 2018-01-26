@@ -82,7 +82,7 @@ public class GridGenerator {
 		double height = nmaxY - nminY;
 		int col = (int) Math.round(width / rectangleWidth);
 		int row = (int) Math.round(height / rectangleHeight);
-		if(row % 2 != 0){
+		if(row % 2 == 0){
 			row++;
 		}
 		

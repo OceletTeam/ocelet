@@ -205,7 +205,9 @@ public abstract class CursorEdge extends OcltEdge {
 
 			update();
 			cursor.reset();    		
+			grid.setMode(1);
 			return false;
+			
 		}
 		return true;
 

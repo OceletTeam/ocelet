@@ -441,6 +441,8 @@ public abstract class DiCursorEdge extends OcltEdge{
 			y2 = -1;
 			x = startX;
 			y = startY;
+			grid.setMode(1);
+			globalGrid.setMode(1);
 			//	globalGrid.cleanOperator();
 			return false;
 		}
@@ -1363,7 +1365,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		}else{
 			if(gridBounds[3]  < globalGridBounds[3]){
 			scaled[3] = gridBounds[3] ;
-			globalGridMaxY = gridBounds[3] + grid.getYRes();
+			globalGridMaxY = gridBounds[3] + globalGrid.getYRes();
 			}
 
 		}
