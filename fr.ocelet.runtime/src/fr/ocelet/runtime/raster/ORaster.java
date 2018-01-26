@@ -68,6 +68,7 @@ public class ORaster {
     private double pY;  
     private Raster raster;
     int cpt;
+    private String path;
     private AbstractGridCoverage2DReader reader;
     private GridGeometry2D geometry2D;
     private Double[] bounds = new Double[4];
@@ -133,7 +134,7 @@ public class ORaster {
 
         
         File file = new File(path);
-        
+        this.path = path;
        
         AbstractGridFormat format = GridFormatFinder.findFormat(file);
       
@@ -154,7 +155,7 @@ public class ORaster {
 
         
         File file = new File(path);
-        
+        this.path = path;
        
         AbstractGridFormat format = GridFormatFinder.findFormat(file);
       
@@ -327,52 +328,54 @@ public class ORaster {
     	double precision1 = 1.0 - precisionScale;
     	double precision2 = 1.0+ precisionScale;
     	
-       if(geometry2D.getEnvelope2D().getMinX() > minX ||  ( (geometry2D.getEnvelope2D().getMinX() / minX) > precision1 && 
-    		    (geometry2D.getEnvelope2D().getMinX() / minX)< precision2)   ) {
+    	
+		
+		
+    	
+       if(x >= minX || Math.abs(x - minX) < Math.abs(xRes / 2) ){
     	   
     	   
-        	minX = geometry2D.getEnvelope2D().getMinX() + xRes / 2;
-        	
+        	minX = x + xRes / 2;
+        	minGridX = coverage.getGridGeometry().getGridRange2D().x;
         	// minX = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
         	
         }
-        if(geometry2D.getEnvelope2D().getMinY() > minY || ( (geometry2D.getEnvelope2D().getMinY() / minY) > precision1 && 
-        		 (geometry2D.getEnvelope2D().getMinY() / minY) < precision2)) {
+        if(y >= minY ||  Math.abs(y - minY) < Math.abs(yRes / 2)) {
         
-        	minY = geometry2D.getEnvelope2D().getMinY() + yRes / 2;
-        
+        	minY = y + yRes / 2;
+        	minGridY = coverage.getGridGeometry().getGridRange2D().y;
         	
         }
-        if(geometry2D.getEnvelope2D().getMaxX() < maxX || ( (geometry2D.getEnvelope2D().getMaxX() / maxX) > precision1 &&
-        		 (geometry2D.getEnvelope2D().getMaxX() / maxX) < precision2)	) {
-        	maxX = geometry2D.getEnvelope2D().getMaxX() - xRes / 2;
+        if(x2 <= maxX ||  Math.abs(x2 - maxX) < Math.abs(xRes / 2)	) {
+        	maxX = x2 - xRes / 2;
+        	maxGridX = coverage.getGridGeometry().getGridRange2D().x + coverage.getGridGeometry().getGridRange2D().width - 1;
         	//maxX = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0] ;
         }
-        if(geometry2D.getEnvelope2D().getMaxY() < maxY || ( (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision1 &&
-        		 (geometry2D.getEnvelope2D().getMaxY() / maxY) > precision2)) {
-        	maxY = geometry2D.getEnvelope2D().getMaxY() - yRes / 2;
+        if(y2 <= maxY || Math.abs(y2 - maxY) < Math.abs(yRes / 2)) {
+        	maxY = y2 - yRes / 2;
+        	maxGridY = coverage.getGridGeometry().getGridRange2D().y + coverage.getGridGeometry().getGridRange2D().height - 1;
         	//maxY = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[1] ;
         }
        
-       
+  
         java.awt.Rectangle rect = new java.awt.Rectangle();
-        if(minX <= geometry2D.getEnvelope2D().getMinX()) {
-        	minX =  geometry2D.getEnvelope2D().getMinX() + xRes / 2;
+        if(minX <= x) {
+        	minX =  x + xRes / 2;
         }
-        if(minY <= geometry2D.getEnvelope2D().getMinY()) {
-        	minY =  geometry2D.getEnvelope2D().getMinY() + yRes / 2;
+        if(minY <= y) {
+        	minY =  y + yRes / 2;
         }
-        if(maxX <= geometry2D.getEnvelope2D().getMaxX()) {
-        	maxX =  geometry2D.getEnvelope2D().getMaxX() - xRes / 2;
+        if(maxX <= x2) {
+        	maxX = x2 - xRes / 2;
         }
-        if(maxY <= geometry2D.getEnvelope2D().getMaxY()) {
-        	maxY =  geometry2D.getEnvelope2D().getMaxY() - yRes / 2;
+        if(maxY <= y2) {
+        	maxY =  y2 - yRes / 2;
         }
-       
+        
         DirectPosition2D min = new DirectPosition2D(minX, minY);
         DirectPosition2D max = new DirectPosition2D(maxX, maxY);
         
-        
+      
         GridCoordinates2D dp1 = null;
 		try {
 			dp1 = geometry2D.worldToGrid(min);
@@ -409,7 +412,6 @@ public class ORaster {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	
 		this.bounds[0] = newMin.getCoordinate()[0] - xRes / 2;
 	    this.bounds[1] = newMin.getCoordinate()[1] - yRes / 2;
@@ -417,8 +419,8 @@ public class ORaster {
 	    this.bounds[3] = newMax.getCoordinate()[1] + yRes / 2;
 		this.pX = xRes;
 		this.pY = yRes;
-		 min = new DirectPosition2D(bounds[0], bounds[1]);
-	     max = new DirectPosition2D(bounds[2], bounds[3]);
+		 min = new DirectPosition2D(bounds[0] + xRes / 2, bounds[1] + xRes / 2);
+	     max = new DirectPosition2D(bounds[2] - xRes / 2, bounds[3] - yRes / 2);
 		try {
 			dp1 = geometry2D.worldToGrid(min);
 		} catch (InvalidGridGeometryException e) {
@@ -864,5 +866,14 @@ public class ORaster {
     	return pY;
     }
     
+    @Override
+    public String toString() {
+    	
+    	String s = "";
+    	s = path+"\n";
+    	s = s+ "Grid bounds "+minGridX+" "+minGridY+" "+maxGridX+" "+maxGridY+" w "+gridWidth+" h "+gridHeight+" \n";
+    	s = s +" world bounds "+bounds[0]+" "+bounds[1]+" "+bounds[2]+" "+bounds[3];
+    	return s;
+    }
 
 }
