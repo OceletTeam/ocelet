@@ -453,15 +453,8 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 
 	public void next(){
-		/*//System.out.println("TYPE "+equalGrid);
-		//System.out.println(globalGrid.getWidth()+" "+globalGrid.getHeight());
-		//System.out.println("GLOBAL "+startX+" "+startY+" "+endX+" "+endY);
-		//System.out.println(grid.getWidth()+" "+grid.getHeight());
-		//System.out.println("LESSER "+startX2+" "+startY2+" "+endX2+" "+endY2);*/
-////System.out.println("next "+ x+" "+y+" "+x2+" "+y2);
 
-		////System.out.println(grid.getWidth()+" "+grid.getHeight()+"  "+globalGrid.getWidth()+"   "+globalGrid.getHeight());
-		////System.out.println(x+"  "+y+"  "+x2+" "+y2);
+		
 		if(equalGrid){
 
 			if(x2 == -1 && y2 == -1){
@@ -516,39 +509,41 @@ public abstract class DiCursorEdge extends OcltEdge{
 				mrm = globalGrid.getMrm();
 				
 			}else{
-				
-				if(x2 == endX2){
+				if(colCount == endX2){
+					
+					
 
+					globalSynchronisation();
+
+					currentY ++;
+					mrm.switchLine();
+					colCount = startX2;
+				}
+				//System.out.println(y+" "+y2+" "+colCount+" "+endX2);
+				if(x2 == endX2){
+					colCount = startX2;
 					x2 = startX2;
 					y2++;
+					//System.out.println(y+" "+y2+" "+colCount+" "+endX2);
 					
-					//Coordinate c = grid.gridCoordinate(x2, y2);
-					//int[] c2 = globalGrid.gridCoordinate(c.x, c.y);
-					////System.out.println(colCount);
+					
+					
 					if(colCount == endX2){
 					
-						//System.out.println("global synch"+currentY);
-					
-						globalSynchronisation();
 						
-						
-						//y = c2[1];
+
+					//	globalSynchronisation();
+
 						y = currentY + 1;
-						mrm.switchLine();
+						//mrm.switchLine();
 						currentY = y;
 						x = startX;
-						colCount = startX2;
-						
+					//	colCount = startX2;
 						Coordinate c = null;
 						int[] c2 = null;
-				
 							c = grid.gridCoordinate(x2, y2);
 							if(c != null)
 							c2 = globalGrid.gridCoordinate(c.x, c.y);
-					
-						//colCount++;
-
-						////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 						if(c2 != null){
 							x = c2[0];
@@ -557,20 +552,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 							if(y == currentY + 1 || y == currentY + 2){
 								colCount++;
 
-								////System.out.print("  "+colCount);
 							}
-
-							
-							////System.out.println(x + " "+y);
 						}else{
-							/*if(y != currentY + 1 && y != currentY + 2){
-							colCount++;
-						}*/
+							
 							if(y == currentY + 1 || y == currentY + 2){
-
 								colCount++;
-
-								////System.out.print("  "+colCount);
 							}
 							if(hasNext()){
 								next();
@@ -579,20 +565,18 @@ public abstract class DiCursorEdge extends OcltEdge{
 								y2 = endY2;
 							}
 						}
-				
-						////System.out.println("Sync "+currentY+" "+y);
 
 					}else{
+						
 						Coordinate c = null;
 						int[] c2 = null;
 					
 							c = grid.gridCoordinate(x2, y2);
-							if(c != null)
+							if(c != null) {
+								
 							c2 = globalGrid.gridCoordinate(c.x, c.y);
-					
-						//colCount++;
-
-						////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
+							//colCount = x2;	
+							}
 
 						if(c2 != null){
 							x = c2[0];
@@ -600,21 +584,17 @@ public abstract class DiCursorEdge extends OcltEdge{
 						
 							if(y == currentY + 1 || y == currentY + 2){
 								colCount++;
-
-								////System.out.print("  "+colCount);
 							}
 
 
-							////System.out.println(x + " "+y);
+						
 						}else{
-							/*if(y != currentY + 1 && y != currentY + 2){
-							colCount++;
-						}*/
+							//colCount = startX2;
 							if(y == currentY + 1 || y == currentY + 2){
 
 								colCount++;
 
-								////System.out.print("  "+colCount);
+							
 							}
 							if(hasNext()){
 								next();
@@ -623,40 +603,23 @@ public abstract class DiCursorEdge extends OcltEdge{
 								y2 = endY2;
 							}
 						}
-					}
-					/*if(c2 != null){
-						if(c2[1] > y + 0.75){
-						globalSynchronisation();
-						//y = c2[1];
-						y = y + 1;
-						mrm.switchLine();
-					}
-					}*/
+					}			
 
-					colCount = startX2;
-
-					//x = startX;
+						
 
 				}else{
-					x2++;
 					
-					////System.out.println("coord px "+x2 + " "+y2);
+					x2++;			
 					Coordinate c = null;
-					int[] c2 = null;
-						//grid.printGridBounds();
+					int[] c2 = null;				
 					try {
 						c = grid.gridCoordinate(x2, y2);
 					}catch(Exception e) {
 						
 					}
-						if(c != null )
-						c2 = globalGrid.gridCoordinate(c.x, c.y);
-				
-					////System.out.println(c);
+					if(c != null )
+						c2 = globalGrid.gridCoordinate(c.x, c.y);			
 					
-					//colCount++;
-
-					////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 					if(c2 != null){
 						x = c2[0];
@@ -666,11 +629,9 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 							colCount++;
 						}
-						////System.out.println(x + " "+y);
+						
 					}else{
-						/*if(y != currentY + 1 && y != currentY + 2){
-							colCount++;
-						}*/
+						
 						if(y == currentY + 1 || y == currentY + 2){
 
 							colCount++;
@@ -685,18 +646,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 					}
 				}
 			}
-			/*try {
-				TimeUnit.MILLISECONDS.sleep(20);
-				//System.out.println(x+" "+y+" "+x2+" "+y2);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-			////System.out.println(x2+" "+y2+" "+x+" "+y);
-
-
 		}
-		////System.out.println(x+" "+y+" "+x2+" "+y2+" moving "+currentY+" "+colCount);
 		updateBis();
 	}
 
@@ -1253,10 +1203,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		initEdgeProperty();
 	}
 	
-	private void printMatchCoord() {
-		//System.out.println("Global "+startX+" "+endX+" "+startY+" "+endY);
-		//System.out.println("Grid "+startX2+" "+endX2+" "+startY2+" "+endY2);
-	}
+
 
 	
 	private void rescale2() {
@@ -1296,22 +1243,9 @@ public abstract class DiCursorEdge extends OcltEdge{
 		
 		
 		
-		int minGridX = 0;
-		int minGridY = 0;
-		int minGlobalX = 0;
-		int minGlobalY = 0;
-		int maxGridX = grid.getWidth() - 1;
-		int maxGridY = grid.getHeight() - 1;
-		int maxGlobalX = globalGrid.getWidth() - 1;
-		int maxGlobalY = globalGrid.getHeight() - 1;
+	
+	
 		
- 		Coordinate upperLeftGrid = grid.gridCoordinate(minGridX, minGridY);
-		Coordinate downRightGrid = grid.gridCoordinate(maxGridX, maxGridY);
-		
-		Coordinate upperLeftGlobal = globalGrid.gridCoordinate(minGlobalX, minGlobalY);
-		Coordinate downRightGlobal = globalGrid.gridCoordinate(maxGlobalX, maxGlobalY);
-		
-		int[] minUpper = grid.gridCoordinate(upperLeftGrid.x, upperLeftGrid.y);
 	
 		
 		;
@@ -1494,7 +1428,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		//System.out.println(startX+" "+startY+" "+endX+" "+endY);
 		//System.out.println("pass2 "+startX2+" "+startY2+" "+endX2+" "+endY2);
 		
-		
+		//printInfo();
 		equalGrid = false;
 		x = startX;
 		y = startY;
@@ -1504,6 +1438,19 @@ public abstract class DiCursorEdge extends OcltEdge{
 		
 		colCount = startX2;
 		initEdgeProperty();
+	}
+	
+	private void printInfo() {
+		System.out.println("grid 1 : ");
+		System.out.println(grid);
+		System.out.println("scaled "+startX2 +" "+startY2+" "+endX2+" "+endY2);
+		
+		System.out.println("grid 2 : ");
+		System.out.println(globalGrid);
+		System.out.println("scaled " +startX+" "+startY+" "+endX+" "+endY);
+		
+		System.out.println("cell : "+x+" "+y+" "+x2+" "+y2+ " line : "+currentY);
+		
 	}
 
 }

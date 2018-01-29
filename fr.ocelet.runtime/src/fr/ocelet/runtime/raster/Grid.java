@@ -643,6 +643,7 @@ public class Grid {
 	public int[] gridCoordinate(double x, double y){
 		
 		
+		if(inWorldBounds(x, y)) {
 		int gCoord[] = new int[2];
 		if(cellShapeType.equals("HEXAGONAL")){
 			return hexagonalWorldToGrid(x, y);
@@ -664,6 +665,8 @@ public class Grid {
 			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
 		}
 		return gCoord;
+		}
+		return null;
 		
 	}
 	private Coordinate hexagonalGridToWorld(int x, int y){
@@ -740,6 +743,7 @@ public class Grid {
 
 	public Coordinate gridCoordinate(int x, int y){
 
+		if(inGridBounds(x, y)) {
 		if(cellShapeType.equals("HEXAGONAL")){
 			return hexagonalGridToWorld(x, y);
 		}
@@ -758,6 +762,8 @@ public class Grid {
 		}
 		if(dp != null)
 			return new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
+		return null;
+		}
 		return null;
 	}
 
@@ -1207,6 +1213,12 @@ public class Grid {
 		this.raster = raster;
 	}
 
+	private boolean inGridBounds(int x, int y) {
+		return (x >= minX && y >= minY && x <=maxX && y <= maxY);
+	}
+	private boolean inWorldBounds(double x, double y) {
+		return (x >= worldBounds[0] && y >= worldBounds[1] && x <= worldBounds[2] && y <= worldBounds[3]);
+	}
 	public void setMode(int mode){
 		this.mode = mode;
 		if(mode == modeTemp){
@@ -1234,4 +1246,11 @@ public class Grid {
 		this.worldBoundsPrime = worldBoundsPrime;
 	}
 
+	@Override
+	public String toString() {
+		String s = ""+cellShapeType+"\n";
+		s += minX+" "+minY+" "+maxX+" "+maxY+"\n";
+		s+= worldBounds[0]+" "+worldBounds[1]+" "+worldBounds[2]+" "+worldBounds[3];
+		return s;
+	}
 }
