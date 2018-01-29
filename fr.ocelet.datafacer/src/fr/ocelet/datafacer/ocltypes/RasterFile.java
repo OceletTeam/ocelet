@@ -146,6 +146,7 @@ public class RasterFile{
     
     public void update(){
     	
+    	
     	if(bounded) {
     	try{
             raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
@@ -157,7 +158,7 @@ public class RasterFile{
     	}
     	}else {
     		try{
-                raster = new ORaster(FileUtils.applyOutput(path));
+                raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]));
             	}catch(Exception e){
             		e.printStackTrace();
             	}

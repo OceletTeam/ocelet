@@ -146,6 +146,10 @@ public class CellArray<T> extends ArrayInterface<T>{
 		Collections.rotate(this, distance);
 	}
 
+	@Override
+	public int size() {
+		return grid.getWidth() * grid.getHeight();
+	}
 	/**
 	 * Swaps the elements at the specified positions in this List. (If the
 	 * specified positions are equal, invoking this method leaves the list
