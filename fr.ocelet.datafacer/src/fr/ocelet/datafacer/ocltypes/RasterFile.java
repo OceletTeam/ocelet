@@ -337,7 +337,7 @@ public class RasterFile{
     	if(crs != null) {
     		raster.setCRS(crs);
     	}
-    	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBounds(geometry));
+    	grid = GridGenerator.squareGridFromShp(gridName, properties, raster,raster.getXRes(), raster.getYRes(), getBoundaries(geometry));
        
         grid.copy(raster, propMatched);
         return grid;
@@ -478,7 +478,7 @@ private Double[] getDoubleBounds(Geometry geometry) {
     	
     }
     
-    private Polygon getBounds(Geometry geometry) {
+    private Polygon getBoundaries(Geometry geometry) {
     	
     	double minX = Double.POSITIVE_INFINITY;
     	double minY = Double.POSITIVE_INFINITY;

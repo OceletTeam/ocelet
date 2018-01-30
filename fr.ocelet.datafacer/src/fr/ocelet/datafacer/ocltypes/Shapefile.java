@@ -338,7 +338,7 @@ public abstract class Shapefile extends GtDatafacer
 		return bounds;
 	}
 
-	public Polygon getEnveloppe() {
+	public Polygon getBoundaries() {
 
 		Coordinate[] coordinates = new Coordinate[5];
 
