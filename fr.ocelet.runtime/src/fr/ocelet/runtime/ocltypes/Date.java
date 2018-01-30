@@ -30,11 +30,15 @@ import java.util.GregorianCalendar;
  * A convenient class to manipulation dates and time
  * 
  * @author Pascal Degenne - Initial contribution
+ * 
+ * @deprecated Please use DateTime instead
  */
+@Deprecated 
 public class Date {
 
 	protected GregorianCalendar gc;
 
+	
 	public Date() {
 		gc = new GregorianCalendar();
 	}

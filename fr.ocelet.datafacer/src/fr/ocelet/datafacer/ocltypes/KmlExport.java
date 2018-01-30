@@ -39,6 +39,7 @@ import fr.ocelet.datafacer.KmlUtils;
 import fr.ocelet.runtime.Miscutils;
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.Date;
+import fr.ocelet.runtime.ocltypes.DateTime;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.util.FileUtils;
 
@@ -79,7 +80,18 @@ public class KmlExport implements Datafacer {
 		return kf;
 	}
 
+	/**
+	 * @deprecated Please use the DateTime version
+	 */
+	@Deprecated
 	public KmlFolder addFolder(String label, Date beginDate, Date endDate) {
+		KmlFolder kf = new KmlFolder(doc, label, dateToKml(beginDate),
+				dateToKml(endDate));
+		folders.put(label, kf);
+		return kf;
+	}
+
+	public KmlFolder addFolder(String label, DateTime beginDate, DateTime endDate) {
 		KmlFolder kf = new KmlFolder(doc, label, dateToKml(beginDate),
 				dateToKml(endDate));
 		folders.put(label, kf);
@@ -93,8 +105,19 @@ public class KmlExport implements Datafacer {
 				name, description, styleName);
 	}
 
+	/**
+	 * @deprecated Please use the DateTime version
+	 */
+	@Deprecated
 	public void addLabel(double xpos, double ypos, double height,
 			Date beginDate, Date endDate, String name, String description,
+			String styleName) {
+		getDefaultFolder().addLabel(xpos, ypos, height, dateToKml(beginDate),
+				dateToKml(endDate), name, description, styleName);
+	}
+
+	public void addLabel(double xpos, double ypos, double height,
+			DateTime beginDate, DateTime endDate, String name, String description,
 			String styleName) {
 		getDefaultFolder().addLabel(xpos, ypos, height, dateToKml(beginDate),
 				dateToKml(endDate), name, description, styleName);
@@ -107,8 +130,19 @@ public class KmlExport implements Datafacer {
 				name, description, styleName);
 	}
 
+	/**
+	 * @deprecated Please use the DateTime version
+	 */
+	@Deprecated
 	public void addLabel(String foldname, double xpos, double ypos,
 			double height, Date beginDate, Date endDate, String name,
+			String description, String styleName) {
+		getFolder(foldname).addLabel(xpos, ypos, height, dateToKml(beginDate),
+				dateToKml(endDate), name, description, styleName);
+	}
+
+	public void addLabel(String foldname, double xpos, double ypos,
+			double height, DateTime beginDate, DateTime endDate, String name,
 			String description, String styleName) {
 		getFolder(foldname).addLabel(xpos, ypos, height, dateToKml(beginDate),
 				dateToKml(endDate), name, description, styleName);
@@ -120,8 +154,18 @@ public class KmlExport implements Datafacer {
 				beginDate, endDate, daefile);
 	}
 
+	/**
+	 * @deprecated Please use the DateTime version
+	 */
+	@Deprecated
 	public void add3DModel(double xpos, double ypos, double orientation,
 			double scale, Date beginDate, Date endDate, String daefile) {
+		getDefaultFolder().add3DModel(xpos, ypos, orientation, scale,
+				dateToKml(beginDate), dateToKml(endDate), daefile);
+	}
+
+	public void add3DModel(double xpos, double ypos, double orientation,
+			double scale, DateTime beginDate, DateTime endDate, String daefile) {
 		getDefaultFolder().add3DModel(xpos, ypos, orientation, scale,
 				dateToKml(beginDate), dateToKml(endDate), daefile);
 	}
@@ -133,8 +177,19 @@ public class KmlExport implements Datafacer {
 				beginDate, endDate, daefile);
 	}
 
+	/**
+	 * @deprecated Please use the DateTime version
+	 */
+	@Deprecated
 	public void add3DModel(String foldname, double xpos, double ypos,
 			double orientation, double scale, Date beginDate, Date endDate,
+			String daefile) {
+		getFolder(foldname).add3DModel(xpos, ypos, orientation, scale,
+				dateToKml(beginDate), dateToKml(endDate), daefile);
+	}
+
+	public void add3DModel(String foldname, double xpos, double ypos,
+			double orientation, double scale, DateTime beginDate, DateTime endDate,
 			String daefile) {
 		getFolder(foldname).add3DModel(xpos, ypos, orientation, scale,
 				dateToKml(beginDate), dateToKml(endDate), daefile);
@@ -146,7 +201,17 @@ public class KmlExport implements Datafacer {
 				styleName, height);
 	}
 
+	/**
+	 * @deprecated Please use the DateTime version
+	 */
+	@Deprecated
 	public void addGeometry(String label, Date beginDate, Date endDate,
+			Geometry geom, String styleName, double height) {
+		getDefaultFolder().addGeometry(label, dateToKml(beginDate),
+				dateToKml(endDate), geom, styleName, height);
+	}
+
+	public void addGeometry(String label, DateTime beginDate, DateTime endDate,
 			Geometry geom, String styleName, double height) {
 		getDefaultFolder().addGeometry(label, dateToKml(beginDate),
 				dateToKml(endDate), geom, styleName, height);
@@ -177,12 +242,23 @@ public class KmlExport implements Datafacer {
 				styleName, height);
 	}
 
+	/**
+	 * @deprecated Please use the DateTime version
+	 */
+	@Deprecated
 	public void addGeometry(String foldname, String label, Date beginDate,
 			Date endDate, Geometry geom, String styleName, double height) {
 		getFolder(foldname).addGeometry(label, dateToKml(beginDate),
 				dateToKml(endDate), geom, styleName, height);
 	}
 
+	public void addGeometry(String foldname, String label, DateTime beginDate,
+			DateTime endDate, Geometry geom, String styleName, double height) {
+		getFolder(foldname).addGeometry(label, dateToKml(beginDate),
+				dateToKml(endDate), geom, styleName, height);
+	}
+
+	
 	/**
 	 * Defines a new style to be used with addStyledRecord
 	 * 
@@ -365,6 +441,10 @@ public class KmlExport implements Datafacer {
 	}
 
 	protected String dateToKml(Date d) {
+		return d.toString("yyyy-MM-dd") + "T" + d.toString("HH:mm:ss");
+	}
+
+	protected String dateToKml(DateTime d) {
 		return d.toString("yyyy-MM-dd") + "T" + d.toString("HH:mm:ss");
 	}
 }

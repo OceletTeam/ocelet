@@ -55,8 +55,8 @@ public class Miscutils {
 	 *            Number to be formatted
 	 * @param pattern
 	 *            The formatting pattern
-	 * @return A formatted String representation of number n, depending on the
-	 *         given pattern
+	 * @return A formatted String representation of number n, depending on the given
+	 *         pattern
 	 */
 	public static String format(Number n, String pattern) {
 
@@ -78,8 +78,8 @@ public class Miscutils {
 	 *            The formatting pattern
 	 * @param lang
 	 *            Lowercase two-letter ISO-639 code representing a langage.
-	 * @return A formatted String representation of number n, depending on the
-	 *         given pattern
+	 * @return A formatted String representation of number n, depending on the given
+	 *         pattern
 	 */
 	public static String format(Number n, String pattern, String lang) {
 		dfs = new DecimalFormatSymbols(new Locale(lang));
@@ -134,8 +134,7 @@ public class Miscutils {
 	}
 
 	/**
-	 * Deletes a directory and all its content. Without warning. Use with
-	 * caution.
+	 * Deletes a directory and all its content. Without warning. Use with caution.
 	 * 
 	 * @param dirpath
 	 *            Path of the directory to be removed
@@ -182,10 +181,11 @@ public class Miscutils {
 			System.err.print('.');
 		}
 	}
-	
+
 	/**
-	 * Checks if a file is locked
-	 * If the file does not exist, we consider is it not locked
+	 * Checks if a file is locked If the file does not exist, we consider is it not
+	 * locked
+	 * 
 	 * @param filepath
 	 * @return true if the file is locked
 	 */
@@ -194,4 +194,34 @@ public class Miscutils {
 		return ((f.exists()) && (!f.renameTo(f))); // most reliable trick we found so far ...
 	}
 
+	/**
+	 * A utility function that transforms an amount of milliseconds into a textual
+	 * representation of time in hours, minutes, seconds and ms
+	 * 
+	 * @param ms
+	 *            Number of milliseconds
+	 * @return A String representing the same time range in hours, minutes, seconds
+	 *         and milliseconds
+	 */
+	public static String millisecondsToString(long ms) {
+		StringBuffer sb = new StringBuffer();
+		long h = ms / 3600000;
+		if (h > 0) {
+			sb.append(h + "h ");
+			ms = ms % 3600000;
+		}
+		long m = ms / 60000;
+		if (m > 0) {
+			sb.append(m + "min ");
+			ms = ms % 60000;
+		}
+		long s = ms / 1000;
+		if (s > 0) {
+			sb.append(s + "s ");
+			ms = ms % 1000;
+		}
+		if (ms > 0)
+			sb.append(ms + "ms");
+		return sb.toString();
+	}
 }
