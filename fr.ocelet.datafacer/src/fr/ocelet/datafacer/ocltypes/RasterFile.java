@@ -48,6 +48,7 @@ public class RasterFile{
 	private int index = 0;
 	private Double[] bounds;
 	private boolean bounded = false;
+	private String fileFormat = null;
 	
 	
 	
@@ -111,7 +112,22 @@ public class RasterFile{
     	//raster.setCRS(crs);
     }
     
-    
+    public void setFileFormat(String fileFormat) {
+    	this.fileFormat = fileFormat;
+    	 ArrayList<String> tempNames = new ArrayList<String>();
+    	 for(String name : names) {
+    		
+    		 if(name.substring(name.length() - 4, name.length()).equals(fileFormat)) {
+    			
+    			 tempNames.add(name);
+    			 
+    		 }
+    	 }
+    	 Collections.sort(tempNames);
+         names = tempNames.toArray(new String[tempNames.size()]);
+         this.path = directory+"/"+names[index];
+    	
+    }
     public void setDirectory(String fileName){
    	 directory = fileName;
    
@@ -130,6 +146,10 @@ public class RasterFile{
        names = tempNames.toArray(new String[tempNames.size()]);
        index = 0;
        this.path = directory+"/"+names[index];
+       
+       if(fileFormat != null) {
+    	   setFileFormat(fileFormat);
+       }
    }
     
     
