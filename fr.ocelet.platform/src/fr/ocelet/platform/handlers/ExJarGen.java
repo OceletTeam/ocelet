@@ -36,6 +36,7 @@ import org.apache.tools.ant.ProjectHelper;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -140,6 +141,8 @@ public class ExJarGen extends ModelCmdHandler {
 						antTemplate, false);
 				BufferedReader br = new BufferedReader(new InputStreamReader(
 						tinputStream));
+				IFolder outputfolder = selectedProject.getFolder("output");
+				if (!outputfolder.exists()) outputfolder.create(true, true, null);
 				IFile antIf = selectedProject.getFile("output/jargen.xml");
 				File antFile = antIf.getRawLocation().makeAbsolute().toFile();
 				antFile.createNewFile();
