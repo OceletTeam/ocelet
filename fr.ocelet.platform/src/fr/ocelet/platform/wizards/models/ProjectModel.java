@@ -91,7 +91,7 @@ public abstract class ProjectModel {
 
 			// comment:
 			newDescription
-					.setComment("Ocelet Project created by the Ocelet Modelling Platform v"
+					.setComment("Ocelet Project created by the Ocelet Modelling Platform version "
 							+ PlatformSettings.version);
 
 			// now update the description of the new project:
