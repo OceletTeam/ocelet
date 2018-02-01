@@ -7,7 +7,8 @@ Bundle-SymbolicName: fr.ocelet.ide; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: fr.ocelet,
  org.eclipse.xtext.ide,
- org.eclipse.xtext.xbase.ide
+ org.eclipse.xtext.xbase.ide,
+ org.antlr.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: fr.ocelet.lang.ide.contentassist.antlr.internal,
  fr.ocelet.lang.ide.contentassist.antlr

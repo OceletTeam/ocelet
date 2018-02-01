@@ -378,19 +378,19 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	public class ParaoptElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "fr.ocelet.lang.Ocelet.Paraopt");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cOptionnalKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Keyword cOptionalKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final Assignment cParoptAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cParoptSTRINGTerminalRuleCall_1_0 = (RuleCall)cParoptAssignment_1.eContents().get(0);
 		
 		//Paraopt:
-		//	'optionnal' paropt=STRING;
+		//	'optional' paropt=STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'optionnal' paropt=STRING
+		//'optional' paropt=STRING
 		public Group getGroup() { return cGroup; }
 		
-		//'optionnal'
-		public Keyword getOptionnalKeyword_0() { return cOptionnalKeyword_0; }
+		//'optional'
+		public Keyword getOptionalKeyword_0() { return cOptionalKeyword_0; }
 		
 		//paropt=STRING
 		public Assignment getParoptAssignment_1() { return cParoptAssignment_1; }
@@ -2199,7 +2199,7 @@ public class OceletGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Paraopt:
-	//	'optionnal' paropt=STRING;
+	//	'optional' paropt=STRING;
 	public ParaoptElements getParaoptAccess() {
 		return pParaopt;
 	}

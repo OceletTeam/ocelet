@@ -4985,9 +4985,9 @@ rule__Paraopt__Group__0__Impl
 	}
 :
 (
-	{ before(grammarAccess.getParaoptAccess().getOptionnalKeyword_0()); }
-	'optionnal'
-	{ after(grammarAccess.getParaoptAccess().getOptionnalKeyword_0()); }
+	{ before(grammarAccess.getParaoptAccess().getOptionalKeyword_0()); }
+	'optional'
+	{ after(grammarAccess.getParaoptAccess().getOptionalKeyword_0()); }
 )
 ;
 finally {

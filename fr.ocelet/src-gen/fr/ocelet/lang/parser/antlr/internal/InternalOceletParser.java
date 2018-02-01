@@ -22,7 +22,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalOceletParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'package'", "'metadata'", "'{'", "'description'", "'webpage'", "'}'", "'parameter'", "'unit'", "'default'", "'null'", "'false'", "'true'", "'range'", "'..'", "'optionnal'", "'entity'", "'property'", "'service'", "'('", "','", "')'", "'init'", "'relation'", "'<'", "'>'", "'interaction'", "'agg'", "'.'", "'+<<'", "'<<'", "'filter'", "'structure'", "'extends'", "';'", "'function'", "'datafacer'", "'store'", "'data'", "'match'", "':'", "'aggreg'", "'scenario'", "'create'", "'let'", "'fix'", "'const'", "'='", "'|'", "'?.'", "'-'", "'+='", "'-='", "'*='", "'/='", "'%='", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'=>'", "'<>'", "'?:'", "'+'", "'*'", "'**'", "'/'", "'%'", "'!'", "'as'", "'++'", "'--'", "'#'", "'['", "']'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'static'", "'import'", "'extension'", "'super'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_STRING", "RULE_ID", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'package'", "'metadata'", "'{'", "'description'", "'webpage'", "'}'", "'parameter'", "'unit'", "'default'", "'null'", "'false'", "'true'", "'range'", "'..'", "'optional'", "'entity'", "'property'", "'service'", "'('", "','", "')'", "'init'", "'relation'", "'<'", "'>'", "'interaction'", "'agg'", "'.'", "'+<<'", "'<<'", "'filter'", "'structure'", "'extends'", "';'", "'function'", "'datafacer'", "'store'", "'data'", "'match'", "':'", "'aggreg'", "'scenario'", "'create'", "'let'", "'fix'", "'const'", "'='", "'|'", "'?.'", "'-'", "'+='", "'-='", "'*='", "'/='", "'%='", "'>='", "'||'", "'&&'", "'=='", "'!='", "'==='", "'!=='", "'instanceof'", "'->'", "'..<'", "'=>'", "'<>'", "'?:'", "'+'", "'*'", "'**'", "'/'", "'%'", "'!'", "'as'", "'++'", "'--'", "'#'", "'['", "']'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'static'", "'import'", "'extension'", "'super'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'"
     };
     public static final int RULE_HEX=6;
     public static final int T__50=50;
@@ -2106,7 +2106,7 @@ public class InternalOceletParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleParaopt"
-    // InternalOcelet.g:709:1: ruleParaopt returns [EObject current=null] : (otherlv_0= 'optionnal' ( (lv_paropt_1_0= RULE_STRING ) ) ) ;
+    // InternalOcelet.g:709:1: ruleParaopt returns [EObject current=null] : (otherlv_0= 'optional' ( (lv_paropt_1_0= RULE_STRING ) ) ) ;
     public final EObject ruleParaopt() throws RecognitionException {
         EObject current = null;
 
@@ -2117,16 +2117,16 @@ public class InternalOceletParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalOcelet.g:715:2: ( (otherlv_0= 'optionnal' ( (lv_paropt_1_0= RULE_STRING ) ) ) )
-            // InternalOcelet.g:716:2: (otherlv_0= 'optionnal' ( (lv_paropt_1_0= RULE_STRING ) ) )
+            // InternalOcelet.g:715:2: ( (otherlv_0= 'optional' ( (lv_paropt_1_0= RULE_STRING ) ) ) )
+            // InternalOcelet.g:716:2: (otherlv_0= 'optional' ( (lv_paropt_1_0= RULE_STRING ) ) )
             {
-            // InternalOcelet.g:716:2: (otherlv_0= 'optionnal' ( (lv_paropt_1_0= RULE_STRING ) ) )
-            // InternalOcelet.g:717:3: otherlv_0= 'optionnal' ( (lv_paropt_1_0= RULE_STRING ) )
+            // InternalOcelet.g:716:2: (otherlv_0= 'optional' ( (lv_paropt_1_0= RULE_STRING ) ) )
+            // InternalOcelet.g:717:3: otherlv_0= 'optional' ( (lv_paropt_1_0= RULE_STRING ) )
             {
             otherlv_0=(Token)match(input,27,FOLLOW_7); if (state.failed) return current;
             if ( state.backtracking==0 ) {
 
-              			newLeafNode(otherlv_0, grammarAccess.getParaoptAccess().getOptionnalKeyword_0());
+              			newLeafNode(otherlv_0, grammarAccess.getParaoptAccess().getOptionalKeyword_0());
               		
             }
             // InternalOcelet.g:721:3: ( (lv_paropt_1_0= RULE_STRING ) )

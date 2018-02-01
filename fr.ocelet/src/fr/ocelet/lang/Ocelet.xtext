@@ -53,7 +53,7 @@ Paramunit :'unit' parunit = STRING;
 Paramdefa :'default' pardefa = (SignedNumber | STRING | 'null' | 'false' | 'true');
 Rangevals :'range' parmin=SignedNumber '..' parmax=SignedNumber;
 Paradesc  :'description' pardesc = STRING;
-Paraopt   :'optionnal' paropt = STRING;
+Paraopt   :'optional' paropt = STRING;
 	
 // ------ Entity ------
 

@@ -714,9 +714,9 @@ ruleParaopt returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='optionnal'
+		otherlv_0='optional'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getParaoptAccess().getOptionnalKeyword_0());
+			newLeafNode(otherlv_0, grammarAccess.getParaoptAccess().getOptionalKeyword_0());
 		}
 		(
 			(

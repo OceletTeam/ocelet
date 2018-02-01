@@ -23,7 +23,7 @@ import java.util.HashMap;
 @SuppressWarnings("all")
 public class InternalOceletParser extends AbstractInternalContentAssistParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'null'", "'false'", "'true'", "'<<'", "'store'", "'data'", "'create'", "'let'", "'fix'", "'const'", "'.'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'package'", "'metadata'", "'{'", "'}'", "'description'", "'webpage'", "'parameter'", "'unit'", "'default'", "'range'", "'optionnal'", "'entity'", "'property'", "'service'", "'('", "')'", "','", "'init'", "'relation'", "'interaction'", "'agg'", "'filter'", "'structure'", "';'", "'function'", "'datafacer'", "'match'", "':'", "'aggreg'", "'scenario'", "'instanceof'", "'as'", "'#'", "'['", "']'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'+<<'", "'|'", "'?.'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_STRING", "RULE_HEX", "RULE_INT", "RULE_DECIMAL", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'='", "'||'", "'&&'", "'null'", "'false'", "'true'", "'<<'", "'store'", "'data'", "'create'", "'let'", "'fix'", "'const'", "'.'", "'+='", "'-='", "'*='", "'/='", "'%='", "'=='", "'!='", "'==='", "'!=='", "'>='", "'>'", "'<'", "'->'", "'..<'", "'..'", "'=>'", "'<>'", "'?:'", "'+'", "'-'", "'*'", "'**'", "'/'", "'%'", "'!'", "'++'", "'--'", "'extends'", "'static'", "'import'", "'extension'", "'super'", "'package'", "'metadata'", "'{'", "'}'", "'description'", "'webpage'", "'parameter'", "'unit'", "'default'", "'range'", "'optional'", "'entity'", "'property'", "'service'", "'('", "')'", "','", "'init'", "'relation'", "'interaction'", "'agg'", "'filter'", "'structure'", "';'", "'function'", "'datafacer'", "'match'", "':'", "'aggreg'", "'scenario'", "'instanceof'", "'as'", "'#'", "'['", "']'", "'if'", "'else'", "'switch'", "'case'", "'for'", "'while'", "'do'", "'new'", "'typeof'", "'throw'", "'return'", "'try'", "'finally'", "'synchronized'", "'catch'", "'?'", "'&'", "'+<<'", "'|'", "'?.'"
     };
     public static final int RULE_HEX=6;
     public static final int T__50=50;
@@ -18011,24 +18011,24 @@ public class InternalOceletParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__Paraopt__Group__0__Impl"
-    // InternalOcelet.g:4982:1: rule__Paraopt__Group__0__Impl : ( 'optionnal' ) ;
+    // InternalOcelet.g:4982:1: rule__Paraopt__Group__0__Impl : ( 'optional' ) ;
     public final void rule__Paraopt__Group__0__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalOcelet.g:4986:1: ( ( 'optionnal' ) )
-            // InternalOcelet.g:4987:1: ( 'optionnal' )
+            // InternalOcelet.g:4986:1: ( ( 'optional' ) )
+            // InternalOcelet.g:4987:1: ( 'optional' )
             {
-            // InternalOcelet.g:4987:1: ( 'optionnal' )
-            // InternalOcelet.g:4988:2: 'optionnal'
+            // InternalOcelet.g:4987:1: ( 'optional' )
+            // InternalOcelet.g:4988:2: 'optional'
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getParaoptAccess().getOptionnalKeyword_0()); 
+               before(grammarAccess.getParaoptAccess().getOptionalKeyword_0()); 
             }
             match(input,69,FOLLOW_2); if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getParaoptAccess().getOptionnalKeyword_0()); 
+               after(grammarAccess.getParaoptAccess().getOptionalKeyword_0()); 
             }
 
             }
