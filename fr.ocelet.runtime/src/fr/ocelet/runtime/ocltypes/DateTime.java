@@ -140,11 +140,11 @@ public final class DateTime {
 	}
 
 	public int getMicrosecond() {
-		return ldt.getNano() * 1000;
+		return ldt.getNano() / 1000;
 	}
 
 	public int getMillisecond() {
-		return ldt.getNano() * 1000000;
+		return ldt.getNano() / 1000000;
 	}
 
 	public int getMinute() {
