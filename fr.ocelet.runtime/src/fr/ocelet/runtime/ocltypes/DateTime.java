@@ -21,7 +21,9 @@
 
 package fr.ocelet.runtime.ocltypes;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;;
 
@@ -32,15 +34,30 @@ import java.time.format.DateTimeParseException;;
  */
 public final class DateTime {
 
+	private final String DEFAULT_FORMAT="yyyy-MM-dd HH:mm";
+	
 	public static DateTime fromString(String format, String sdate) {
-		try {
-			return new DateTime(LocalDateTime.parse(sdate, DateTimeFormatter.ofPattern(format)),
-					DateTimeFormatter.ofPattern(format));
-		} catch (DateTimeParseException e) {
-			System.out
-					.println("Failed to create a valid DateTime from \"" + sdate + "\" using formating pattern: \"" + format+"\"");
-			System.out.println("  creating a default DateTime with system time instead.");
+	  try {
+		DateTimeFormatter ndtf = DateTimeFormatter.ofPattern(format);
+		return new DateTime(LocalDateTime.parse(sdate, ndtf),ndtf);
+		} catch (DateTimeParseException edt) {
+		  try { 
+			DateTimeFormatter ndtf = DateTimeFormatter.ofPattern(format);
+			LocalDate ld = LocalDate.parse(sdate,DateTimeFormatter.ofPattern(format));
+			return new DateTime(LocalDateTime.of(ld,LocalDateTime.now().toLocalTime()),ndtf);
+		  } catch (DateTimeParseException ed) {
+			try { 
+			  DateTimeFormatter ndtf = DateTimeFormatter.ofPattern(format);
+			  LocalTime lt = LocalTime.parse(sdate,ndtf);
+			  return new DateTime(LocalDateTime.of(LocalDateTime.now().toLocalDate(),lt),ndtf);
+		  } catch (DateTimeParseException et) {
+			  System.out.println("Failed to create a valid DateTime from \"" + sdate + "\" using formating pattern: \"" + format+"\"");
+			}
+		  }
+		} catch (IllegalArgumentException iae) {
+			System.out.println("Unrecognized DateTime format \""+format+"\"");
 		}
+		System.out.println("  creating a default DateTime with system time instead.");
 		return new DateTime();
 	}
 
@@ -53,17 +70,17 @@ public final class DateTime {
 
 	public DateTime() {
 		ldt = LocalDateTime.now();
-		dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		dtf = DateTimeFormatter.ofPattern(DEFAULT_FORMAT);
 	}
 
 	public DateTime(int year, int month, int day) {
 		ldt = LocalDateTime.of(year, month, day, 0, 0);
-		dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		dtf = DateTimeFormatter.ofPattern(DEFAULT_FORMAT);
 	}
 
 	public DateTime(int year, int month, int day, int hour, int minute, int second) {
 		ldt = LocalDateTime.of(year, month, day, hour, minute, second);
-		dtf = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		dtf = DateTimeFormatter.ofPattern(DEFAULT_FORMAT);
 	}
 
 	private DateTime(LocalDateTime aldt, DateTimeFormatter adft) {
