@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,7 +41,7 @@ import fr.ocelet.runtime.util.FileUtils;
 /**
  * Datafacer specialized for reading Comma Separated Values format files
  * 
- * @author Pascal Degenne, Initial contribution
+ * @author Pascal Degenne - Initial contribution
  */
 public class Csvfile implements InputDatafacer, Iterator<InputDataRecord> {
 

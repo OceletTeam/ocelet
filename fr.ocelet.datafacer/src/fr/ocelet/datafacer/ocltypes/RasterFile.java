@@ -1,31 +1,31 @@
+/*
+*  Ocelet spatial modelling language.   www.ocelet.org
+*  Copyright Cirad 2010-2018
+*
+*  This software is a domain specific programming language dedicated to writing
+*  spatially explicit models and performing spatial dynamics simulations.
+*
+*  This software is governed by the CeCILL license under French law and
+*  abiding by the rules of distribution of free software.  You can  use,
+*  modify and/ or redistribute the software under the terms of the CeCILL
+*  license as circulated by CEA, CNRS and INRIA at the following URL
+*  "http://www.cecill.info".
+*  As a counterpart to the access to the source code and  rights to copy,
+*  modify and redistribute granted by the license, users are provided only
+*  with a limited warranty  and the software's author,  the holder of the
+*  economic rights,  and the successive licensors  have only limited
+*  liability.
+*  The fact that you are presently reading this means that you have had
+*  knowledge of the CeCILL license and that you accept its terms.
+*/
 package fr.ocelet.datafacer.ocltypes;
 
-import fr.ocelet.runtime.entity.AbstractEntity;
-import fr.ocelet.runtime.geom.SpatialManager;
-import fr.ocelet.runtime.geom.ocltypes.Cell;
-import fr.ocelet.runtime.geom.ocltypes.Polygon;
-import fr.ocelet.runtime.ocltypes.KeyMap;
-import fr.ocelet.runtime.ocltypes.List;
-import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.raster.ORaster;
-import fr.ocelet.runtime.util.FileUtils;
-import fr.ocelet.runtime.raster.GridGenerator;
-
-
-import java.awt.image.WritableRaster;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.GridCoverageFactory;
-import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.factory.Hints;
-import org.geotools.gce.geotiff.GeoTiffWriter;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.CRS;
-import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -36,6 +36,20 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
+import fr.ocelet.runtime.geom.SpatialManager;
+import fr.ocelet.runtime.geom.ocltypes.Polygon;
+import fr.ocelet.runtime.ocltypes.KeyMap;
+import fr.ocelet.runtime.ocltypes.List;
+import fr.ocelet.runtime.raster.Grid;
+import fr.ocelet.runtime.raster.GridGenerator;
+import fr.ocelet.runtime.raster.ORaster;
+import fr.ocelet.runtime.util.FileUtils;
+
+/**
+ * Datafacer used to read geotiff raster files.
+ * 
+ * @author Mathieu Castets - Initial contribution
+ */
 public class RasterFile{
 	
 	private KeyMap<String, Integer> propMatched = new KeyMap<String, Integer>();

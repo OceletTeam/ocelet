@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -25,7 +25,7 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Describes the behavior of all tabular data records that will be written to a data store
- * @author Pascal Degenne, Initial contribution
+ * @author Pascal Degenne - Initial contribution
  *
  */
 public interface OutputDataRecord {
