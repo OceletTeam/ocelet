@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -22,7 +22,6 @@
 package fr.ocelet.platform;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -41,7 +40,7 @@ import org.eclipse.core.runtime.Platform;
  */
 public class PlatformSettings {
 
-	public final static String version = "Sulfur : 2.0.2";
+	public final static String version = "Sulfur : 2.0.3";
 
 	public final static int NORMAL = 0;
 	public final static int VERBOSE = 1;
