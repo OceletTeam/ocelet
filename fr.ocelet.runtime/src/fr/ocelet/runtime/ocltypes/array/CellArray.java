@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -22,20 +22,19 @@ package fr.ocelet.runtime.ocltypes.array;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 import fr.ocelet.runtime.entity.AbstractEntity;
 import fr.ocelet.runtime.geom.ocltypes.Cell;
-import fr.ocelet.runtime.geom.ocltypes.SpatialType;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.Grid;
-import java.util.Iterator;
-public class CellArray<T> extends ArrayInterface<T>{
 
-
-
-	/**
-	 * 
-	 */
+/**
+ * @author Mathieu Castets - Initial contribution
+ *
+ * @param <T>
+ */
+public class CellArray<T> extends ArrayInterface<T> {
 	private static final long serialVersionUID = 1L;
 	private Grid grid;
 	private T ae;
@@ -44,16 +43,17 @@ public class CellArray<T> extends ArrayInterface<T>{
 	private Cell cell;
 	private boolean start = true;
 
-	public CellArray(T ae){
+	public CellArray(T ae) {
 		this.ae = ae;
-		
-		this.cell = (Cell)((AbstractEntity)ae).getSpatialType();
+
+		this.cell = (Cell) ((AbstractEntity) ae).getSpatialType();
 		cell.setX(0);
 		cell.setY(0);
 		this.grid = cell.getGrid();
 		this.width = grid.getWidth();
 		this.height = grid.getHeight();
 	}
+
 	/**
 	 * Adds several occurences of one same initializing value to this List
 	 * 
@@ -68,14 +68,14 @@ public class CellArray<T> extends ArrayInterface<T>{
 	}
 
 	@Override
-	public T get(int index){
+	public T get(int index) {
 		int xPos = Math.round(index / width);
 
 		int yPos = Math.round(index % width);
 
-		if(xPos > 0){
+		if (xPos > 0) {
 			this.cell.set(xPos, 0);
-		}else{
+		} else {
 			this.cell.set(xPos, yPos);
 		}
 
@@ -102,7 +102,7 @@ public class CellArray<T> extends ArrayInterface<T>{
 	 * @return true if the list could be changed as expected
 	 */
 	@Override
-	public boolean addAll(Collection<? extends T> list){
+	public boolean addAll(Collection<? extends T> list) {
 		return false;
 	}
 
@@ -133,11 +133,11 @@ public class CellArray<T> extends ArrayInterface<T>{
 	}
 
 	/**
-	 * Rotates the elements in this list by the specified distance. After
-	 * calling this method, the element at index i will be the element
-	 * previously at index (i - distance) mod list.size(), for all values of i
-	 * between 0 and list.size()-1, inclusive. (This method has no effect on the
-	 * size of the list.)
+	 * Rotates the elements in this list by the specified distance. After calling
+	 * this method, the element at index i will be the element previously at index
+	 * (i - distance) mod list.size(), for all values of i between 0 and
+	 * list.size()-1, inclusive. (This method has no effect on the size of the
+	 * list.)
 	 * 
 	 * @param distance
 	 */
@@ -150,10 +150,10 @@ public class CellArray<T> extends ArrayInterface<T>{
 	public int size() {
 		return grid.getWidth() * grid.getHeight();
 	}
+
 	/**
-	 * Swaps the elements at the specified positions in this List. (If the
-	 * specified positions are equal, invoking this method leaves the list
-	 * unchanged.)
+	 * Swaps the elements at the specified positions in this List. (If the specified
+	 * positions are equal, invoking this method leaves the list unchanged.)
 	 * 
 	 * @param i
 	 *            the index of one element to be swapped.
@@ -172,61 +172,43 @@ public class CellArray<T> extends ArrayInterface<T>{
 	 * @return A new Initialized List
 	 */
 	public static <U> List<U> of(U... u) {
-
-
-
 		return null;
 	}
 
-	public Grid getGrid(){
+	public Grid getGrid() {
 		return grid;
 	}
+
 	@Override
-	public Iterator<T> iterator(){
+	public Iterator<T> iterator() {
 		return new CellIterator();
 	}
-	/*public abstract class Nexter<T extends AbstractEntity>{
 
-		public abstract T next();
+	/*
+	 * public abstract class Nexter<T extends AbstractEntity>{
+	 * 
+	 * public abstract T next();
+	 * 
+	 * 
+	 * } public class Changer<T extends AbstractEntity>{
+	 * 
+	 * 
+	 * public Nexter<T> nexter; public T next(){ return nexter.next(); } } public
+	 * class FisrtNexter<T extends AbstractEntity> extends Nexter{
+	 * 
+	 * @Override public T next(){ cell.setX(0); cell.setY(0); return ae; } }
+	 * 
+	 * public class AfeterNexter extends Nexter<T>{
+	 * 
+	 * @Override public T next(){ if(cell.getX() == width - 1){ cell.setX(0);
+	 * cell.setY(cell.getY() + 1); }else{ cell.setX(cell.getX() + 1); } return ae; }
+	 * }
+	 */
+	public class CellIterator implements Iterator<T> {
 
-
-	}
-	public class Changer<T extends AbstractEntity>{
-
-
-		public Nexter<T> nexter;
-		public T next(){
-			return nexter.next();
-		}
-	}
-	public class FisrtNexter<T extends AbstractEntity> extends Nexter{
-
-		@Override
-		public T next(){
-			cell.setX(0);
-			cell.setY(0);
-			return ae;
-		}
-	}
-
-	public class AfeterNexter extends Nexter<T>{
-		@Override
-		public T next(){
-			if(cell.getX() == width - 1){
-				cell.setX(0);
-				cell.setY(cell.getY() + 1);
-			}else{
-				cell.setX(cell.getX() + 1);
-			}
-			return ae;
-			}
-	}*/
-	public class CellIterator implements Iterator<T>{
-		
-		
 		@Override
 		public boolean hasNext() {
-			if(cell.getX() == width - 1 && cell.getY() == height - 1){
+			if (cell.getX() == width - 1 && cell.getY() == height - 1) {
 				cell.set(0, 0);
 				start = true;
 				return false;
@@ -236,18 +218,18 @@ public class CellArray<T> extends ArrayInterface<T>{
 
 		@Override
 		public T next() {
-			if(start){
+			if (start) {
 				cell.set(0, 0);
 				start = false;
-			}else{
-				if(cell.getX() == width - 1){
+			} else {
+				if (cell.getX() == width - 1) {
 					cell.setX(0);
 					cell.setY(cell.getY() + 1);
-				}else{
+				} else {
 					cell.setX(cell.getX() + 1);
 				}
 			}
-			return ae;			
-		}	
+			return ae;
+		}
 	}
 }

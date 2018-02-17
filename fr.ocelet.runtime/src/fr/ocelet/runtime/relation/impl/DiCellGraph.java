@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -32,93 +32,92 @@ import java.util.Iterator;
 
 // Referenced classes of package fr.ocelet.runtime.relation.impl:
 //            CompleteIteratorDiCell
-
+/**
+ * @author Mathieu Castets - Initial contribution
+ *
+ * @param <E>
+ * @param <R1>
+ * @param <R2>
+ */
 public class DiCellGraph<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole>
-implements DiGraphInterface<E, R1, R2> {
+		implements DiGraphInterface<E, R1, R2> {
 
-    public DiCellGraph(){
-    
-    }
+	public DiCellGraph() {
 
-    public void setGrid(List<R1> r1List, List<R2> r2List){
-    	
-    	AbstractEntity r1 = (AbstractEntity)r1List.get(0);
-    	AbstractEntity r2 = (AbstractEntity)r2List.get(0);
-    	
-    	Cell c1 = (Cell)r1.getSpatialType();
-    	Cell c2 = (Cell)r2.getSpatialType();
-        this.grid1 = c1.getGrid();
-        this.grid2 = c2.getGrid();   
-        }
+	}
 
-    public void setCompleteIteratorDiCell(E e){
-    
-        completeIteratorDiCell = new CompleteIteratorDiCell<E, R1, R2>(this, e);
-    }
+	public void setGrid(List<R1> r1List, List<R2> r2List) {
 
-    public void beginTransaction(){
-    }
+		AbstractEntity r1 = (AbstractEntity) r1List.get(0);
+		AbstractEntity r2 = (AbstractEntity) r2List.get(0);
 
-    public void abortTransaction(){
-    }
-    
-    public void endTransaction(){
-    }
+		Cell c1 = (Cell) r1.getSpatialType();
+		Cell c2 = (Cell) r2.getSpatialType();
+		this.grid1 = c1.getGrid();
+		this.grid2 = c2.getGrid();
+	}
 
-    public void disconnect(OcltEdge ocltedge){
-    }
+	public void setCompleteIteratorDiCell(E e) {
 
-    public void disconnect(Iterable iterable){
-    	
-    }
+		completeIteratorDiCell = new CompleteIteratorDiCell<E, R1, R2>(this, e);
+	}
 
-    public int size(){
-        return 0;
-    }
+	public void beginTransaction() {
+	}
 
-    public Iterator<E> iterator()
-    {
-        return completeIteratorDiCell;
-    }
+	public void abortTransaction() {
+	}
 
-    public E connect(OcltRole left, OcltRole right)
-    {
-        return null;
-    }
+	public void endTransaction() {
+	}
 
-    public E createEdge(OcltRole gro, OcltRole lro)
-    {
-        return null;
-    }
+	public void disconnect(OcltEdge ocltedge) {
+	}
 
-    public DiGraphInterface<E, R1, R2> getComplete()
-    {
-        return null;
-    }
+	public void disconnect(Iterable iterable) {
 
-    public void cleanOperator(){
-    
-        completeIteratorDiCell.clearAggregMap();
-        grid1.clearGeomTempVal();
-        grid2.clearGeomTempVal();
-    }
+	}
 
-    public void setCellOperator(CellAggregOperator operator)
-    {
-        completeIteratorDiCell.addOperator(operator.getName(), operator);
-    }
+	public int size() {
+		return 0;
+	}
 
-    public OcltEdge getEdge()
-    {
-        return completeIteratorDiCell.getEdge();
-    }
+	public Iterator<E> iterator() {
+		return completeIteratorDiCell;
+	}
 
-    public void updateGrid()
-    {
-        completeIteratorDiCell.updateGrid();
-    }
+	public E connect(OcltRole left, OcltRole right) {
+		return null;
+	}
 
-    protected Grid grid1;
-    protected Grid grid2;
-    private CompleteIteratorDiCell<E, R1, R2> completeIteratorDiCell;
+	public E createEdge(OcltRole gro, OcltRole lro) {
+		return null;
+	}
+
+	public DiGraphInterface<E, R1, R2> getComplete() {
+		return null;
+	}
+
+	public void cleanOperator() {
+
+		completeIteratorDiCell.clearAggregMap();
+		grid1.clearGeomTempVal();
+		grid2.clearGeomTempVal();
+	}
+
+	public void setCellOperator(CellAggregOperator operator) {
+		completeIteratorDiCell.addOperator(operator.getName(), operator);
+	}
+
+	public OcltEdge getEdge() {
+		return completeIteratorDiCell.getEdge();
+	}
+
+	public void updateGrid() {
+		completeIteratorDiCell.updateGrid();
+	}
+
+	protected Grid grid1;
+	protected Grid grid2;
+	private CompleteIteratorDiCell<E, R1, R2> completeIteratorDiCell;
 }

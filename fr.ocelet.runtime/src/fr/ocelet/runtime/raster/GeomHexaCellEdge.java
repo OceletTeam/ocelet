@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -21,9 +21,14 @@
 
 package fr.ocelet.runtime.raster;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+
 import fr.ocelet.runtime.geom.ocltypes.Line;
 import fr.ocelet.runtime.geom.ocltypes.MultiLine;
 import fr.ocelet.runtime.geom.ocltypes.MultiPoint;
@@ -31,19 +36,15 @@ import fr.ocelet.runtime.geom.ocltypes.MultiPolygon;
 import fr.ocelet.runtime.geom.ocltypes.Point;
 import fr.ocelet.runtime.geom.ocltypes.Polygon;
 import fr.ocelet.runtime.ocltypes.List;
-import fr.ocelet.runtime.relation.AggregOperator;
 import fr.ocelet.runtime.relation.OcltEdge;
 import fr.ocelet.runtime.relation.OcltRole;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 
 // Referenced classes of package fr.ocelet.runtime.relation:
 //            OcltEdge, OcltRole, AggregOperator
-
+/**
+ * @author Mathieu Castets - Initial contribution
+ */
 public abstract class GeomHexaCellEdge<R1 extends OcltRole, R2 extends OcltRole> extends OcltEdge {
 
 

@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -24,15 +24,21 @@ import fr.ocelet.runtime.entity.AbstractEntity;
 import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
-import fr.ocelet.runtime.raster.*;
-import fr.ocelet.runtime.relation.regularedges.MultiCellEdgesManager;
+import fr.ocelet.runtime.raster.CellAggregOperator;
+import fr.ocelet.runtime.raster.Grid;
+import fr.ocelet.runtime.raster.GridCellManager;
+import fr.ocelet.runtime.raster.RasterCursor;
+import fr.ocelet.runtime.raster.RasterHexagonalCursor;
+import fr.ocelet.runtime.raster.RasterMultiQuadrilateralCursor;
+import fr.ocelet.runtime.raster.RasterQuadrilateralCursor;
+import fr.ocelet.runtime.raster.RasterTriangularCursor;
 import fr.ocelet.runtime.relation.regularedges.SimpleCellEdgesManager;
-
-import java.io.PrintStream;
 
 // Referenced classes of package fr.ocelet.runtime.relation:
 //            OcltEdge, GridCellManager, OcltRole, AggregOperator
-
+/**
+ * @author Mathieu Castets - Initial contribution
+ */
 public abstract class CursorEdge extends OcltEdge {
 
 

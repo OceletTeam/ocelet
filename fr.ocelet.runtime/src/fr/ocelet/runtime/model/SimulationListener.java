@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -18,14 +18,13 @@
 *  The fact that you are presently reading this means that you have had
 *  knowledge of the CeCILL license and that you accept its terms.
 */
-
 package fr.ocelet.runtime.model;
 
 /**
  * A simulation listener that can be used when an Ocelet
  * model simulation is launched and controlled from an external process.
  *
- * @author Pascal Degenne
+ * @author Pascal Degenne - Initial contribution
  *
  */
 public interface SimulationListener {

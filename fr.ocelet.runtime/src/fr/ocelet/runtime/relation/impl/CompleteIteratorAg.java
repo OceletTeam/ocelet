@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -28,15 +28,15 @@ import fr.ocelet.runtime.relation.OcltRole;
 
 /**
  * Iterator that give access toall the edges of a complete interaction graph.
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  * @param <E>
  * @param <Ro>
  */
-public class CompleteIteratorAg<E extends OcltEdge, Ro extends OcltRole>
-		implements Iterator<E> {
+public class CompleteIteratorAg<E extends OcltEdge, Ro extends OcltRole> implements Iterator<E> {
 
-	protected AutoGraph<E,Ro> agr;
+	protected AutoGraph<E, Ro> agr;
 	protected Iterator<Ro> itg; // iterator on left side Roles
 	protected Iterator<Ro> itd; // iterator on right side Roles
 	protected Ro nextg;
@@ -71,7 +71,7 @@ public class CompleteIteratorAg<E extends OcltEdge, Ro extends OcltRole>
 
 	@Override
 	public E next() {
-		return agr.createEdge(nextg,nextd);
+		return agr.createEdge(nextg, nextd);
 	}
 
 	@Override

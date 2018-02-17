@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -42,7 +42,7 @@ import fr.ocelet.runtime.geom.ocltypes.Polygon;
  * in use in an Ocelet projet and that also provides the crs
  * transformation functions.
  * 
- * @author Pascal Degenne
+ * @author Pascal Degenne - Initial contribution
  *
  */
 public class SpatialManager {

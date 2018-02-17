@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -35,7 +35,7 @@ import fr.ocelet.runtime.relation.RoleSet;
 /**
  * Implementation of a DiGraph that keeps everything in memory.
  * 
- * @author Pascal Degenne, Initial contribution
+ * @author Pascal Degenne - Initial contribution
  */
 public abstract class DiGraph<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole>
 		implements DiGraphInterface<E, R1, R2> {
@@ -124,15 +124,13 @@ public abstract class DiGraph<E extends OcltEdge, R1 extends OcltRole, R2 extend
 	}
 
 	public DiGraph<E, R1, R2> getComplete() {
-		CompleteIteratorBi<E, R1, R2> cit = new CompleteIteratorBi<E, R1, R2>(
-				this);
+		CompleteIteratorBi<E, R1, R2> cit = new CompleteIteratorBi<E, R1, R2>(this);
 		filteredIterator = cit;
 		return this;
 	}
 
 	public void addFilter(EdgeFilter<R1, R2> ef) {
-		if ((filteredIterator == null)
-				|| !(filteredIterator instanceof EdgeFilteringIterator))
+		if ((filteredIterator == null) || !(filteredIterator instanceof EdgeFilteringIterator))
 			filteredIterator = new EdgeFilteringIteratorImpl(iterator());
 		((EdgeFilteringIterator) filteredIterator).addFilter(ef);
 	}
@@ -159,7 +157,6 @@ public abstract class DiGraph<E extends OcltEdge, R1 extends OcltRole, R2 extend
 	}
 
 	public String toString() {
-		return "Interaction graph (" + this.getClass().getSimpleName()
-				+ ") contains " + size() + " edges.";
+		return "Interaction graph (" + this.getClass().getSimpleName() + ") contains " + size() + " edges.";
 	}
 }

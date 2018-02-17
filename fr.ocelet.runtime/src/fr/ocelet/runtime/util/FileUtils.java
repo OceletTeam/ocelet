@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -18,20 +18,18 @@
 *  The fact that you are presently reading this means that you have had
 *  knowledge of the CeCILL license and that you accept its terms.
 */
-
 package fr.ocelet.runtime.util;
 
 import java.io.File;
 
 public class FileUtils {
-
 	/**
 	 * An utility method to apply the output dir and save behavior :
 	 * 
-	 * If no path is provided, output/ is added
-	 * If the target directory doesn't exist, it is created
-	 * If the new directory can't be created, replace it by output/ (and print a warning message)
-	 * If the given path is valid and already exists, just use it
+	 * If no path is provided, output/ is added If the target directory doesn't
+	 * exist, it is created If the new directory can't be created, replace it by
+	 * output/ (and print a warning message) If the given path is valid and already
+	 * exists, just use it
 	 * 
 	 * @author Pascal Degenne - Initial contribution
 	 *
@@ -59,8 +57,8 @@ public class FileUtils {
 		fpath = new File(path);
 		if ((!fpath.exists()) && (!fpath.mkdirs())) {
 			path = "output" + File.separator;
-			System.err.println("Sorry, impossible to create '" + filename
-					+ "', using '" + path + justfile + "' instead.");
+			System.err.println(
+					"Sorry, impossible to create '" + filename + "', using '" + path + justfile + "' instead.");
 		}
 		return path + justfile;
 	}

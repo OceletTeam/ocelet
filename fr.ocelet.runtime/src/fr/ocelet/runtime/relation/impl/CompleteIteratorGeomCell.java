@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -33,86 +33,87 @@ import com.vividsolutions.jts.geom.Geometry;
 
 // Referenced classes of package fr.ocelet.runtime.relation.impl:
 //            GeometryCellGraph
+/**
+ * 
+ * @author Mathieu Castets - Initial contribution
+ *
+ * @param <E>
+ * @param <R1>
+ * @param <R2>
+ */
+public class CompleteIteratorGeomCell<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole>
+		implements Iterator<E> {
 
-public class CompleteIteratorGeomCell<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole> implements Iterator<E>{
-   
-	
-	  protected GeometryCellGraph<E, R1, R2> bigr;
-	    protected E geomCellEdge;
+	protected GeometryCellGraph<E, R1, R2> bigr;
+	protected E geomCellEdge;
 
-    public CompleteIteratorGeomCell(E geomCellEdge, GeometryCellGraph<E, R1, R2> bigr)
-    {
-        this.bigr = bigr;
-        this.geomCellEdge = geomCellEdge;
-    }
+	public CompleteIteratorGeomCell(E geomCellEdge, GeometryCellGraph<E, R1, R2> bigr) {
+		this.bigr = bigr;
+		this.geomCellEdge = geomCellEdge;
+	}
 
-    public boolean hasNext()
-    {
-        return ((GeomCellEdge)geomCellEdge).hasNext();
-    }
+	public boolean hasNext() {
+		return ((GeomCellEdge) geomCellEdge).hasNext();
+	}
 
-    public E next(){
-    
-        ((GeomCellEdge)geomCellEdge).next();
-        return geomCellEdge;
-    }
+	public E next() {
 
-    public List<R2> getGeomEntities()
-    {
-        return ((GeomCellEdge)geomCellEdge).getGeomEntities();
-    }
+		((GeomCellEdge) geomCellEdge).next();
+		return geomCellEdge;
+	}
 
-    public void remove()
-    {
-    }
+	public List<R2> getGeomEntities() {
+		return ((GeomCellEdge) geomCellEdge).getGeomEntities();
+	}
 
-    public void setMode(int mode)
-    {
-        ((GeomCellEdge)geomCellEdge).setMode(mode);
-    }
+	public void remove() {
+	}
 
-    public void clearAggregMap()
-    {
-        ((GeomCellEdge)geomCellEdge).clearAggregMap();
-    }
+	public void setMode(int mode) {
+		((GeomCellEdge) geomCellEdge).setMode(mode);
+	}
 
-    public void addOperator(CellAggregOperator operator)
-    {
-        ((GeomCellEdge)geomCellEdge).addOperator(operator.getName(), operator);
-    }
+	public void clearAggregMap() {
+		((GeomCellEdge) geomCellEdge).clearAggregMap();
+	}
 
-   public Grid getGrid(){
-	  return ((GeomCellEdge)geomCellEdge).getGrid();
-  }
+	public void addOperator(CellAggregOperator operator) {
+		((GeomCellEdge) geomCellEdge).addOperator(operator.getName(), operator);
+	}
 
-   public Iterator<R1> getCellIterator(){
-		  return ((GeomCellEdge)geomCellEdge).getCells();
-	   }
-  
-   public E getEdge(){
-	   return geomCellEdge;
-   }
-   
-   public void connect(R1 r1, R2 r2){
-	 //  ((GeomCellEdge)geomCellEdge).connect(r1, r2);
-   }
-   public void disconnect(R1 r1, R2 r2){
-	 //  ((GeomCellEdge)geomCellEdge).disconnect(r1, r2);
-   }
-   
-   public void connect(R2 r2, Geometry zone){
-	  // ((GeomCellEdge)geomCellEdge).connect(r2, zone);
-   }
-   
-   public void disconnect(R2 r2, Geometry zone){
-	 //  ((GeomCellEdge)geomCellEdge).disconnect(r2, zone);
-   }
-   public void morph(Double buffer){
-	   ((GeomCellEdge)geomCellEdge).morph(buffer);
-   }
-   
-   public void disconnectAll(){
-	 //  ((GeomCellEdge)geomCellEdge).disconnectAll();
-   }
+	public Grid getGrid() {
+		return ((GeomCellEdge) geomCellEdge).getGrid();
+	}
+
+	public Iterator<R1> getCellIterator() {
+		return ((GeomCellEdge) geomCellEdge).getCells();
+	}
+
+	public E getEdge() {
+		return geomCellEdge;
+	}
+
+	public void connect(R1 r1, R2 r2) {
+		// ((GeomCellEdge)geomCellEdge).connect(r1, r2);
+	}
+
+	public void disconnect(R1 r1, R2 r2) {
+		// ((GeomCellEdge)geomCellEdge).disconnect(r1, r2);
+	}
+
+	public void connect(R2 r2, Geometry zone) {
+		// ((GeomCellEdge)geomCellEdge).connect(r2, zone);
+	}
+
+	public void disconnect(R2 r2, Geometry zone) {
+		// ((GeomCellEdge)geomCellEdge).disconnect(r2, zone);
+	}
+
+	public void morph(Double buffer) {
+		((GeomCellEdge) geomCellEdge).morph(buffer);
+	}
+
+	public void disconnectAll() {
+		// ((GeomCellEdge)geomCellEdge).disconnectAll();
+	}
 }
-

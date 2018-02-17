@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fr.ocelet.runtime
 Bundle-SymbolicName: fr.ocelet.runtime
-Bundle-Version: 2.0.2
+Bundle-Version: 2.0.3
 Bundle-Vendor: UMR TETIS - Cirad
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: fr.ocelet.runtime,

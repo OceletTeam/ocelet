@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -21,151 +21,143 @@
 
 package fr.ocelet.runtime.relation.impl;
 
-import fr.ocelet.runtime.geom.ocltypes.Cell;
-import fr.ocelet.runtime.ocltypes.List;
-import fr.ocelet.runtime.raster.CellAggregOperator;
-import fr.ocelet.runtime.raster.Grid;
-import fr.ocelet.runtime.relation.*;
-
 import java.util.Iterator;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+import fr.ocelet.runtime.raster.CellAggregOperator;
+import fr.ocelet.runtime.relation.DiGraphInterface;
+import fr.ocelet.runtime.relation.EdgeFilter;
+import fr.ocelet.runtime.relation.OcltEdge;
+import fr.ocelet.runtime.relation.OcltRole;
+
 // Referenced classes of package fr.ocelet.runtime.relation.impl:
 //            CompleteIteratorGeomCell
-
+/**
+ * 
+ * @author Mathieu Castets - Initial contribution
+ *
+ * @param <E>
+ * @param <R1>
+ * @param <R2>
+ */
 public abstract class GeometryCellGraph<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole>
-implements DiGraphInterface<E, R1, R2>{
+		implements DiGraphInterface<E, R1, R2> {
 
-	 protected CompleteIteratorGeomCell<E, R1, R2> completeIteratorCellGeom;
-	
-    public GeometryCellGraph(){
-    
-    }
+	protected CompleteIteratorGeomCell<E, R1, R2> completeIteratorCellGeom;
 
-    public void setCompleteIteratorGeomCell(E e)
-    {
-        completeIteratorCellGeom = new CompleteIteratorGeomCell<E, R1, R2>(e, this);
-       
-    }
+	public GeometryCellGraph() {
 
-    public E createEdge(OcltRole r1, OcltRole r2)
-    {
-        return null;
-    }
+	}
 
-    public void beginTransaction(){
-    
-    	for(R2 r2 : completeIteratorCellGeom.getGeomEntities()){
-    		
-    		r2.tbegin();
-    	}
-       
+	public void setCompleteIteratorGeomCell(E e) {
+		completeIteratorCellGeom = new CompleteIteratorGeomCell<E, R1, R2>(e, this);
 
-    }
+	}
 
-    public void endTransaction(){
-    
-    	for(R2 r2 : completeIteratorCellGeom.getGeomEntities()){
-    		r2.tcommit();
-    	}       
+	public E createEdge(OcltRole r1, OcltRole r2) {
+		return null;
+	}
 
+	public void beginTransaction() {
 
-    }
+		for (R2 r2 : completeIteratorCellGeom.getGeomEntities()) {
 
-    public void abortTransaction()
-    {
-    	for(R2 r2 : completeIteratorCellGeom.getGeomEntities()){
-    		r2.tabort();
-    	}   
+			r2.tbegin();
+		}
 
-    }
+	}
 
-    public Iterator<R1> getCells(){
-    	return completeIteratorCellGeom.getCellIterator();
-    }
-    public void disconnect(OcltEdge ocltedge)
-    {
-    }
+	public void endTransaction() {
 
-    public void disconnect(Iterable<E> iterable)
-    {
-    }
+		for (R2 r2 : completeIteratorCellGeom.getGeomEntities()) {
+			r2.tcommit();
+		}
 
-    public Iterator<E> iterator()
-    {
-        return completeIteratorCellGeom;
-    }
+	}
 
-    public int size()
-    {
-        return 0;
-    }
+	public void abortTransaction() {
+		for (R2 r2 : completeIteratorCellGeom.getGeomEntities()) {
+			r2.tabort();
+		}
 
-    public GeometryCellGraph<E, R1, R2> getComplete()
-    {
-        return this;
-    }
+	}
 
-    public void addFilter(EdgeFilter edgefilter)
-    {
-    }
+	public Iterator<R1> getCells() {
+		return completeIteratorCellGeom.getCellIterator();
+	}
 
-    public String toString()
-    {
-        return (new StringBuilder("Interaction graph (")).append(getClass().getSimpleName()).append(") contains ").append(size()).append(" edges.").toString();
-    }
+	public void disconnect(OcltEdge ocltedge) {
+	}
 
-  
+	public void disconnect(Iterable<E> iterable) {
+	}
 
-    public E connect(R1 r1, R2 r2)
-    {
-    	completeIteratorCellGeom.connect(r1, r2);
-    	return null;
-    }
+	public Iterator<E> iterator() {
+		return completeIteratorCellGeom;
+	}
 
-    public void setCells(){
-    
-    }
+	public int size() {
+		return 0;
+	}
 
-    public void setMode(int mode){
-    
-        completeIteratorCellGeom.setMode(mode);
-    }
+	public GeometryCellGraph<E, R1, R2> getComplete() {
+		return this;
+	}
 
-    public void cleanOperator()
-    {
-        completeIteratorCellGeom.clearAggregMap();
-    }
+	public void addFilter(EdgeFilter edgefilter) {
+	}
 
-    public void setCellOperator(CellAggregOperator operator)
-    {
-        completeIteratorCellGeom.addOperator(operator);
-    }
+	public String toString() {
+		return (new StringBuilder("Interaction graph (")).append(getClass().getSimpleName()).append(") contains ")
+				.append(size()).append(" edges.").toString();
+	}
 
- 
-    public E getEdge(){
-    	return completeIteratorCellGeom.getEdge();
-    }
-    public void disconnect(R1 r1, R2 r2){
-    
-    	completeIteratorCellGeom.disconnect(r1, r2);
-    	
-    }
-    
-    public void connect(R2 r2, Geometry zone){
-    	completeIteratorCellGeom.connect(r2, zone);
-    }
-    
-    public void disconnect(R2 r2, Geometry zone){
-    	completeIteratorCellGeom.disconnect(r2, zone);
-    }
-    
-    public void morph(Double buffer){
-    	completeIteratorCellGeom.morph(buffer);
-    }
-   
-    public void disconnectAll(){
-    	completeIteratorCellGeom.disconnectAll();
-    }
+	public E connect(R1 r1, R2 r2) {
+		completeIteratorCellGeom.connect(r1, r2);
+		return null;
+	}
+
+	public void setCells() {
+
+	}
+
+	public void setMode(int mode) {
+
+		completeIteratorCellGeom.setMode(mode);
+	}
+
+	public void cleanOperator() {
+		completeIteratorCellGeom.clearAggregMap();
+	}
+
+	public void setCellOperator(CellAggregOperator operator) {
+		completeIteratorCellGeom.addOperator(operator);
+	}
+
+	public E getEdge() {
+		return completeIteratorCellGeom.getEdge();
+	}
+
+	public void disconnect(R1 r1, R2 r2) {
+
+		completeIteratorCellGeom.disconnect(r1, r2);
+
+	}
+
+	public void connect(R2 r2, Geometry zone) {
+		completeIteratorCellGeom.connect(r2, zone);
+	}
+
+	public void disconnect(R2 r2, Geometry zone) {
+		completeIteratorCellGeom.disconnect(r2, zone);
+	}
+
+	public void morph(Double buffer) {
+		completeIteratorCellGeom.morph(buffer);
+	}
+
+	public void disconnectAll() {
+		completeIteratorCellGeom.disconnectAll();
+	}
 }

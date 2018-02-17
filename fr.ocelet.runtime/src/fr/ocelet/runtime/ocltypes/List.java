@@ -1,6 +1,6 @@
 /*
  *  Ocelet spatial modelling language.   www.ocelet.org
- *  Copyright Cirad 2010-2017
+ *  Copyright Cirad 2010-2018
  *
  *  This software is a domain specific programming language dedicated to writing
  *  spatially explicit models and performing spatial dynamics simulations.
@@ -18,17 +18,12 @@
  *  The fact that you are presently reading this means that you have had
  *  knowledge of the CeCILL license and that you accept its terms.
  */
-
-
 package fr.ocelet.runtime.ocltypes;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.ListIterator;
-
-import org.geotools.coverageio.gdal.aig.AIGFormat;
 
 import fr.ocelet.runtime.entity.AbstractEntity;
 import fr.ocelet.runtime.geom.ocltypes.Cell;
@@ -37,10 +32,8 @@ import fr.ocelet.runtime.ocltypes.array.CellArray;
 import fr.ocelet.runtime.ocltypes.array.NormalArray;
 
 /**
- * 
  * @author Pascal Degenne  - Initial contribution
  * @author Mathieu Castets - Observer based version
- *
  */
 @SuppressWarnings("serial")
 public class List<T> extends ArrayList<T> {

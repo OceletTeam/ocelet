@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -60,8 +60,7 @@ public class EdgeFilteringIteratorImpl<E extends OcltEdge, F extends EdgeFilter>
 			nextEdge = edgit.next();
 			boolean filt = true;
 			for (F ef : filters) {
-				filt = filt
-						& ef.filter(nextEdge.getRole(0), nextEdge.getRole(1));
+				filt = filt & ef.filter(nextEdge.getRole(0), nextEdge.getRole(1));
 				if (!filt)
 					break;
 			}

@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -23,11 +23,12 @@ package fr.ocelet.runtime.relation;
 
 /**
  * Generic edge filter definition
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  */
 public interface EdgeFilter<Eg extends OcltRole, Ed extends OcltRole> {
 
 	public Boolean filter(Eg left, Ed right);
-	
+
 }

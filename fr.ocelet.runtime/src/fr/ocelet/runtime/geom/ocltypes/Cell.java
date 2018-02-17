@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -18,25 +18,16 @@
 *  The fact that you are presently reading this means that you have had
 *  knowledge of the CeCILL license and that you accept its terms.
 */
-
-
-
 package fr.ocelet.runtime.geom.ocltypes;
 
-import org.geotools.coverage.grid.GridCoordinates2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
-import com.vividsolutions.jts.operation.valid.IsValidOp;
 
-import fr.ocelet.runtime.geom.OceletGeomFactory;
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.raster.Grid;
 
@@ -44,7 +35,9 @@ import fr.ocelet.runtime.raster.Grid;
 
 // Referenced classes of package fr.ocelet.runtime.geom.ocltypes:
 //            SpatialType
-
+/**
+ * @author Mathieu Castets - Initial contribution
+ */
 public class Cell implements SpatialType{
    
 	private Grid grid;

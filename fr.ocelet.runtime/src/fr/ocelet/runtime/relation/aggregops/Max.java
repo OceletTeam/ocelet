@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -31,7 +31,7 @@ import fr.ocelet.runtime.relation.AggregOperator;
  * should only be used with number properties (real and int in Ocelet).
  * 
  * @see AggregOperator
- * @author Pascal Degenne, initial contribution
+ * @author Pascal Degenne - initial contribution
  */
 public class Max<T extends Comparable<T>> implements AggregOperator<T,List<T>> {
 
