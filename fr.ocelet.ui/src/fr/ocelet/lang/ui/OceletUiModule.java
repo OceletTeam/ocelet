@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -22,10 +22,8 @@ package fr.ocelet.lang.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
-import org.eclipse.xtext.resource.containers.IAllContainersState;
 
 import com.google.inject.Binder;
-import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import fr.ocelet.lang.OcltOutputConfigurationProvider;
@@ -44,8 +42,7 @@ public class OceletUiModule extends fr.ocelet.lang.ui.AbstractOceletUiModule {
 	public void configure(Binder binder) {
 		super.configure(binder);
 
-		binder.bind(IOutputConfigurationProvider.class)
-				.to(OcltOutputConfigurationProvider.class).in(Singleton.class);
+		binder.bind(IOutputConfigurationProvider.class).to(OcltOutputConfigurationProvider.class).in(Singleton.class);
 	}
-	
+
 }
