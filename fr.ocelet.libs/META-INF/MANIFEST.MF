@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: fr.ocelet.libs
 Bundle-SymbolicName: fr.ocelet.libs
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.3
 Bundle-ClassPath: gt-data-9.4.jar,
  gt-main-9.4.jar,
  gt-render-9.4.jar,
