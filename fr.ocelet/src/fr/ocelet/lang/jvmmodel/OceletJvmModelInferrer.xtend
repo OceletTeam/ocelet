@@ -390,7 +390,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  			
       		  			
       		  			if(isCell){
-      		  				if(!enteln.name.equals('cell')){
+      		  				if(!enteln.type.simpleName.equals('Cell')){
       		  					members += enteln.toMethod('set'+enteln.name.toFirstUpper,typeRef(Void::TYPE))[
       		  				documentation = enteln.documentation
       		  				val parName = enteln.name
@@ -457,7 +457,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				'''
       		  				}else{
       		  					body= '''
-      		  					System.out.println("«enteln.name» type is not allowed for a cell entity");
+      		  					System.out.println("«enteln.type.simpleName» type is not allowed for a cell entity");
       		  					return null;
       		  				'''
 
@@ -1943,18 +1943,25 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                     ]
           	  	  }
           	  	  Filterdef : {
-          	  	  	members += reln.toMethod(reln.name,typeRef(graphcname.toString))[
+          	  	   	members += reln.toMethod(reln.name,typeRef(graphcname.toString))[
           	  	  	  for(p:reln.params) {
                         parameters += reln.toParameter(p.name,p.parameterType)
                       }
+                      
                       body = '''
-                      	«meln.name+"_"+reln.name» _filter = new «meln.name+"_"+reln.name»
-                      	«IF reln.params.size() > 0»
-                      	«FOR i : 0..reln.params.size() - 1»	reln.params.get(i).name»«IF i < (reln.params.size()-1) »,«ENDIF»«ENDFOR»«ENDIF»;
+                        «meln.name+"_"+reln.name» _filter = new «meln.name+"_"+reln.name»(
+                        «IF reln.params.size() > 0»
+                        	«FOR i:0..reln.params.size()-1»
+                        		«reln.params.get(i).name»
+                        		«IF i < (reln.params.size()-1)»
+                        			,
+                        		«ENDIF»
+                        	«ENDFOR»
+                        «ENDIF»
+                        );
                         super.addFilter(_filter);
                         return this;
-                      	
-                       '''
+                      '''
           	  	  	]
           	  	  }
  		        }

@@ -32,19 +32,21 @@ import java.util.Iterator;
 import com.vividsolutions.jts.geom.Geometry;
 
 // Referenced classes of package fr.ocelet.runtime.relation.impl:
-//            CompleteIteratorGeomCell
+// CompleteIteratorGeomCell
 
 public abstract class GeometryCellGraph<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole>
 implements DiGraphInterface<E, R1, R2>{
 
 	 protected CompleteIteratorGeomCell<E, R1, R2> completeIteratorCellGeom;
-	
+	 protected Iterator<E> filteredIterator;
+	 protected GeomCellEdge geomCellEdge;
     public GeometryCellGraph(){
     
     }
 
     public void setCompleteIteratorGeomCell(E e)
     {
+    	this.geomCellEdge = (GeomCellEdge)e;
         completeIteratorCellGeom = new CompleteIteratorGeomCell<E, R1, R2>(e, this);
        
     }
@@ -94,7 +96,10 @@ implements DiGraphInterface<E, R1, R2>{
 
     public Iterator<E> iterator()
     {
-        return completeIteratorCellGeom;
+    	if (filteredIterator != null)
+			return filteredIterator;
+		//cleanGraph();
+		return completeIteratorCellGeom;
     }
 
     public int size()
@@ -104,12 +109,22 @@ implements DiGraphInterface<E, R1, R2>{
 
     public GeometryCellGraph<E, R1, R2> getComplete()
     {
-        return this;
+    	CompleteIteratorGeomCell<E, R1, R2> cit = new CompleteIteratorGeomCell<E, R1, R2>((E)geomCellEdge, this);
+		if ((filteredIterator != null)
+				&& (filteredIterator instanceof EdgeFilteringIterator))
+			((EdgeFilteringIterator) filteredIterator).setSourceIterator(cit);
+		else
+			filteredIterator = cit;
+		return this;
     }
 
-    public void addFilter(EdgeFilter edgefilter)
-    {
-    }
+   
+    public void addFilter(EdgeFilter<R2, R1> ef) {
+		if ((filteredIterator == null)
+				|| !(filteredIterator instanceof EdgeFilteringIterator))
+			filteredIterator = new EdgeFilteringIteratorImpl(iterator());
+		((EdgeFilteringIterator) filteredIterator).addFilter(ef);
+	}
 
     public String toString()
     {

@@ -21,9 +21,12 @@
 package fr.ocelet.runtime.raster;
 
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.processing.Operations;
+
 import com.sun.media.jai.codecimpl.util.RasterFactory;
 import com.vividsolutions.jts.geom.Coordinate;
 
+import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.geom.ocltypes.Polygon;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.OcltRole;
@@ -260,7 +263,8 @@ public class GridGenerator {
 	}
 	public static Grid squareGridFromShp(String name, List<String> props,ORaster raster, double xRes, double yRes, double minX, double minY, double maxX, double maxY){
 
-
+		
+		
 		HashMap<String, Integer> initProps = new HashMap<String, Integer>();
 
 		int index = 0;
@@ -268,7 +272,7 @@ public class GridGenerator {
 			initProps.put(s, index);
 			index ++;
 		}
-
+		
 	
 	
 		Double[] lowerCorner = new Double[]{raster.getWorldBounds()[0], raster.getWorldBounds()[1]};
@@ -500,6 +504,10 @@ public class GridGenerator {
 		env.setCoordinateReferenceSystem(raster.getCRS());
 		WritableRaster newRaster = createRaster(index, cellWidth, cellHeight);
 		GridCoverage2D coverage =  createCoverage(name, newRaster, env);		
+		
+		
+		
+		
 		Grid grid = new Grid(name,cellWidth, cellHeight, coverage.getGridGeometry());
 		
 		grid.setRasterProperties(initProps);

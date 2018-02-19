@@ -28,6 +28,8 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
+import fr.ocelet.runtime.geom.SpatialManager;
+
 import java.awt.image.DataBufferDouble;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
@@ -45,7 +47,7 @@ import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-
+import org.geotools.coverage.processing.Operations;
 import org.geotools.gce.geotiff.GeoTiffWriter;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
@@ -73,6 +75,7 @@ public class ORaster {
     private GridGeometry2D geometry2D;
     private Double[] bounds = new Double[4];
     private CoordinateReferenceSystem crs;
+    private GridCoverage2D coverage;
     private int minGridX;
     private int minGridY;
     private int maxGridX;
@@ -80,7 +83,7 @@ public class ORaster {
     private int gridWidth;
     private int gridHeight;
 
-  
+    
     public int getGridMinX() {
     	return minGridX;
     }
@@ -258,13 +261,13 @@ public class ORaster {
     private Raster getRaster()
     {
        
-        if(raster != null)
-            return raster;
-        GridCoverage2D coverage = null;
+        //if(raster != null)
+           // return raster;
+       // GridCoverage2D coverage = null;
         try
         {
             coverage = reader.read(null);
-            geometry2D = coverage.getGridGeometry();
+           
         }
         catch(IllegalArgumentException ex)
         {
@@ -274,6 +277,13 @@ public class ORaster {
         {
            // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
         }
+        /*System.out.println("resample");
+    	if(!coverage.getCoordinateReferenceSystem().getName().equals(SpatialManager.getCrs().getName())) {
+    			
+    			coverage = (GridCoverage2D) Operations.DEFAULT.resample(coverage,SpatialManager.getCrs());
+    		}
+    	   System.out.println("end resample");*/
+	 geometry2D = coverage.getGridGeometry();
         RenderedImage rendImage = coverage.getRenderedImage();
         bounds[0] = geometry2D.getEnvelope2D().getMinX();
                 bounds[1] = geometry2D.getEnvelope2D().getMinY();
@@ -294,20 +304,20 @@ public class ORaster {
     private Raster getRaster(Double bMinX, Double bMinY, Double bMaxX, Double bMaxY){
     	
     
-    	
+    
     	Double minX = bMinX;
     	Double minY = bMinY;
     	Double maxX = bMaxX;
     	Double maxY = bMaxY;
     	
       
-        if(raster != null)
-            return raster;
-        GridCoverage2D coverage = null;
+       // if(raster != null)
+          //  return raster;
+       // GridCoverage2D coverage = null;
         try
         {
             coverage = reader.read(null);
-            geometry2D = coverage.getGridGeometry();
+           
         }
         catch(IllegalArgumentException ex)
         {
@@ -317,6 +327,13 @@ public class ORaster {
         {
            // Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
         }
+      /*  System.out.println("resample");
+	if(!coverage.getCoordinateReferenceSystem().getName().equals(SpatialManager.getCrs().getName())) {
+			
+			coverage = (GridCoverage2D) Operations.DEFAULT.resample(coverage,SpatialManager.getCrs());
+		}
+	   System.out.println("end resample");*/
+	 geometry2D = coverage.getGridGeometry();
     	double x = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
     	double y = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
     	double x2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
@@ -728,9 +745,9 @@ public class ORaster {
         writer.dispose();
     }
 
-    private GridCoverage2D getCoverage()
+    public GridCoverage2D getCoverage()
     {
-        GridCoverage2D coverage = null;
+       if(coverage == null) {
         try
         {
             coverage = reader.read(null);
@@ -743,6 +760,7 @@ public class ORaster {
         {
             //Logger.getLogger(fr/ocelet/runtime/raster/ORaster.getName()).log(Level.SEVERE, null, ex);
         }
+       }
         return coverage;
     }
 

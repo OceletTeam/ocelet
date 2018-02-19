@@ -224,11 +224,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 	}
 
 	/*  public ArrayList<OcltRole> get(int x, int y){
-
 	        return matrice[x][y].get();
 }*/
 	/*public ArrayList<R2> get(int x, int y){
-
 	return matrice.get(x).get(y);
 //   return matrice[x][y].get();
 }*/
@@ -968,22 +966,18 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 	}
 
 	/*   public void connect(R2 r2, Geometry zone){
-
 	HashMap<Integer, Line> lines = makeLines();
 	if(grid.getCellShapeType().equals("QUADRILATERAL")){
-
 	    OcltRole e = (OcltRole)r2;
        if(e.getSpatialType() instanceof Polygon)
            //setQuadrilateralCells(r2, (Polygon)e.getSpatialType(), lines);
        setQuadrilateralCells(r2, (Polygon)e.getSpatialType());
        if(e.getSpatialType() instanceof MultiPolygon)
        {
-
            MultiPolygon mp = (MultiPolygon)e.getSpatialType();
            for(int i = 0; i < mp.getNumGeometries(); i++)
            	// setQuadrilateralCells(r2, (Polygon)e.getSpatialType(), lines);
                setQuadrilateralCells(r2, (Polygon)mp.getGeometryN(i));
-
        }
        if(e.getSpatialType() instanceof Line)
            setQuadrilateralCells(r2, (Line)e.getSpatialType());
@@ -992,9 +986,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
            MultiLine ml = (MultiLine)e.getSpatialType();
            for(int i = 0; i < ml.getNumGeometries(); i++)
                setQuadrilateralCells(r2, (Line)ml.getGeometryN(i));
-
        }
-
        if(e.getSpatialType() instanceof Point)
            setQuadrilateralCells(r2, (Point)e.getSpatialType());
        if(e.getSpatialType() instanceof MultiPoint)
@@ -1002,7 +994,6 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
            MultiPoint mp = (MultiPoint)e.getSpatialType();
            for(int i = 0; i < mp.getNumGeometries(); i++)
                setQuadrilateralCells(r2, (Point)mp.getGeometryN(i));
-
        }
 	}
 	if(grid.getCellShapeType().equals("HEXAGONAL")){
@@ -1011,11 +1002,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
             setHexagonalCells(r2, (Polygon)e.getSpatialType());
         if(e.getSpatialType() instanceof MultiPolygon)
         {
-
             MultiPolygon mp = (MultiPolygon)e.getSpatialType();
             for(int i = 0; i < mp.getNumGeometries(); i++)
                 setHexagonalCells(r2, (Polygon)mp.getGeometryN(i));
-
         }
         if(e.getSpatialType() instanceof Line)
             setQuadrilateralCells(r2, (Line)e.getSpatialType());
@@ -1024,7 +1013,6 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
             MultiLine ml = (MultiLine)e.getSpatialType();
             for(int i = 0; i < ml.getNumGeometries(); i++)
                 setHexagonalCells(r2, (Line)ml.getGeometryN(i));
-
         }
         if(e.getSpatialType() instanceof Point)
             setHexagonalCells(r2, (Point)e.getSpatialType());
@@ -1033,21 +1021,17 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
             MultiPoint mp = (MultiPoint)e.getSpatialType();
             for(int i = 0; i < mp.getNumGeometries(); i++)
                 setHexagonalCells(r2, (Point)mp.getGeometryN(i));
-
         }
 	}
-
 	if(grid.getCellShapeType().equals("TRIANGULAR")){
 	    OcltRole e = (OcltRole)r2;
        if(e.getSpatialType() instanceof Polygon)
            setTriangularCells(r2, (Polygon)e.getSpatialType());
        if(e.getSpatialType() instanceof MultiPolygon)
        {
-
            MultiPolygon mp = (MultiPolygon)e.getSpatialType();
            for(int i = 0; i < mp.getNumGeometries(); i++)
                setTriangularCells(r2, (Polygon)mp.getGeometryN(i));
-
        }
        if(e.getSpatialType() instanceof Line)
            setTriangularCells(r2, (Line)e.getSpatialType());
@@ -1056,7 +1040,6 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
            MultiLine ml = (MultiLine)e.getSpatialType();
            for(int i = 0; i < ml.getNumGeometries(); i++)
                setTriangularCells(r2, (Line)ml.getGeometryN(i));
-
        }
        if(e.getSpatialType() instanceof Point)
            setTriangularCells(r2, (Point)e.getSpatialType());
@@ -1065,11 +1048,8 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
            MultiPoint mp = (MultiPoint)e.getSpatialType();
            for(int i = 0; i < mp.getNumGeometries(); i++)
                setTriangularCells(r2, (Point)mp.getGeometryN(i));
-
        }
 	}
-
-
 	xIterator = matrice.keySet().iterator();
       currentxKey = xIterator.next().intValue();
       yIterator = matrice.get(currentxKey).keySet().iterator();
@@ -1552,4 +1532,3 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 
 }
-
