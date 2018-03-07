@@ -273,19 +273,15 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             StringConcatenationClient _client = new StringConcatenationClient() {
                               @Override
                               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                _builder.append("                  \t\t");
-                                _builder.newLine();
                                 _builder.append(entname);
                                 _builder.append(" entity = new ");
                                 _builder.append(entname);
                                 _builder.append("();");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("\t\t\t\t\t\t\t");
-                                _builder.newLine();
-                                _builder.newLine();
                                 {
                                   EList<Mdef> _matchprops = matchdef.getMatchprops();
                                   for(final Mdef mp : _matchprops) {
+                                    _builder.append("                  \t  \t  ");
                                     final String eproptype = propmap.get(mp.getProp());
                                     _builder.newLineIfNotEmpty();
                                     {
@@ -313,10 +309,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append(entname);
                                 _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
-                                _builder.newLine();
-                                _builder.newLine();
-                                _builder.newLine();
-                                _builder.newLine();
                                 _builder.append("entity.getCell().setGrid(grid);");
                                 _builder.newLine();
                                 _builder.append("List<");
@@ -327,7 +319,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("entityList.add(entity);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t\t\t");
                                 _builder.append("return entityList;");
                                 _builder.newLine();
                               }
@@ -349,14 +340,10 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append(entname);
                                 _builder.append("();");
                                 _builder.newLineIfNotEmpty();
-                                _builder.newLine();
-                                _builder.newLine();
-                                _builder.append("                  ");
-                                _builder.newLine();
                                 {
                                   EList<Mdef> _matchprops = matchdef.getMatchprops();
                                   for(final Mdef mp : _matchprops) {
-                                    _builder.append("                  \t");
+                                    _builder.append("                  \t      ");
                                     final String eproptype = propmap.get(mp.getProp());
                                     _builder.newLineIfNotEmpty();
                                     {
@@ -384,26 +371,20 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append(entname);
                                 _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("                    ");
-                                _builder.newLine();
-                                _builder.append("                   ");
-                                _builder.newLine();
-                                _builder.newLine();
                                 _builder.append("entity.getCell().setGrid(grid);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t");
+                                _builder.append("\t\t\t\t\t    ");
                                 _builder.append("List<");
-                                _builder.append(entname, "\t\t\t\t\t");
+                                _builder.append(entname, "\t\t\t\t\t    ");
                                 _builder.append("> entityList = new List<");
-                                _builder.append(entname, "\t\t\t\t\t");
+                                _builder.append(entname, "\t\t\t\t\t    ");
                                 _builder.append(">();");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("\t\t\t\t\t");
+                                _builder.append("\t\t\t\t\t    ");
                                 _builder.append("entityList.add(entity);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t");
+                                _builder.append("\t\t\t\t\t    ");
                                 _builder.append("return entityList;");
-                                _builder.newLine();
                                 _builder.newLine();
                               }
                             };
@@ -424,15 +405,10 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append(entname);
                                 _builder.append("();");
                                 _builder.newLineIfNotEmpty();
-                                _builder.newLine();
-                                _builder.append("                ");
-                                _builder.newLine();
-                                _builder.append("                  ");
-                                _builder.newLine();
                                 {
                                   EList<Mdef> _matchprops = matchdef.getMatchprops();
                                   for(final Mdef mp : _matchprops) {
-                                    _builder.append("                  \t");
+                                    _builder.append("                  \t    ");
                                     final String eproptype = propmap.get(mp.getProp());
                                     _builder.newLineIfNotEmpty();
                                     {
@@ -456,33 +432,27 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                     }
                                   }
                                 }
-                                _builder.append("                  \t");
                                 _builder.append("this.grid = createGrid(entity.getProps(), geometry, \t\"");
-                                _builder.append(entname, "                  \t");
+                                _builder.append(entname);
                                 _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("                    ");
-                                _builder.newLine();
-                                _builder.append("                    ");
+                                _builder.append("                      ");
                                 _builder.append("entity.updateCellInfo(\"QUADRILATERAL\");");
                                 _builder.newLine();
-                                _builder.newLine();
-                                _builder.append(" ");
                                 _builder.append("entity.getCell().setGrid(grid);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t");
+                                _builder.append("\t\t\t\t\t  ");
                                 _builder.append("List<");
-                                _builder.append(entname, "\t\t\t\t\t");
+                                _builder.append(entname, "\t\t\t\t\t  ");
                                 _builder.append("> entityList = new List<");
-                                _builder.append(entname, "\t\t\t\t\t");
+                                _builder.append(entname, "\t\t\t\t\t  ");
                                 _builder.append(">();");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("\t\t\t\t\t");
+                                _builder.append("\t\t\t\t\t  ");
                                 _builder.append("entityList.add(entity);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t");
+                                _builder.append("\t\t\t\t\t  ");
                                 _builder.append("return entityList;");
-                                _builder.newLine();
                                 _builder.newLine();
                               }
                             };
@@ -724,10 +694,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               StringConcatenationClient _client = new StringConcatenationClient() {
                                 @Override
                                 protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                  _builder.append("  ");
                                   _builder.append("StringBuffer sb = new StringBuffer();");
                                   _builder.newLine();
-                                  _builder.append("  ");
                                   int coma = 0;
                                   _builder.newLineIfNotEmpty();
                                   {
@@ -765,10 +733,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               StringConcatenationClient _client = new StringConcatenationClient() {
                                 @Override
                                 protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                  _builder.append("  ");
                                   _builder.append("StringBuffer sb = new StringBuffer();");
                                   _builder.newLine();
-                                  _builder.append("  ");
                                   int coma = 0;
                                   _builder.newLineIfNotEmpty();
                                   {
@@ -1518,7 +1484,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               if (isCellGeomGraph) {
                 graphname = "fr.ocelet.runtime.relation.impl.GeometryCellGraph";
               }
-              final String graphTypeName = graphname;
               if (isCellGeomGraph) {
                 final Role firstRole = ((Relation)meln).getRoles().get(0);
                 final Role secondRole = ((Relation)meln).getRoles().get(1);
@@ -4766,21 +4731,34 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append(_name_3);
                                 _builder.append(");");
                                 _builder.newLineIfNotEmpty();
+                              } else {
+                                _builder.append("if ((this.");
+                                _builder.append(rolset1);
+                                _builder.append(" == null) || (!this.");
+                                _builder.append(rolset1);
+                                _builder.append(".contains(");
+                                String _name_4 = secondRole_2.getName();
+                                _builder.append(_name_4);
+                                _builder.append("))) add(");
+                                String _name_5 = secondRole_2.getName();
+                                _builder.append(_name_5);
+                                _builder.append(");");
+                                _builder.newLineIfNotEmpty();
                               }
                             }
                             final JvmTypeReference typ_edgecname = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(edgecname);
                             _builder.newLineIfNotEmpty();
                             _builder.append(typ_edgecname);
                             _builder.append(" _gen_edge_ = new ");
-                            String _name_4 = ((Relation)meln).getName();
-                            String _plus = (_name_4 + "_Edge");
+                            String _name_6 = ((Relation)meln).getName();
+                            String _plus = (_name_6 + "_Edge");
                             _builder.append(_plus);
                             _builder.append("(this,");
-                            String _name_5 = firstRole_3.getName();
-                            _builder.append(_name_5);
+                            String _name_7 = firstRole_3.getName();
+                            _builder.append(_name_7);
                             _builder.append(",");
-                            String _name_6 = secondRole_2.getName();
-                            _builder.append(_name_6);
+                            String _name_8 = secondRole_2.getName();
+                            _builder.append(_name_8);
                             _builder.append(");");
                             _builder.newLineIfNotEmpty();
                             _builder.append("addEdge(_gen_edge_);");

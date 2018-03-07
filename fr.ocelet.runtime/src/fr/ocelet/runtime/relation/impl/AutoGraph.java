@@ -37,8 +37,7 @@ import fr.ocelet.runtime.relation.RoleSet;
  * 
  * @author Pascal Degenne, Initial contribution
  */
-public abstract class AutoGraph<E extends OcltEdge, Ro extends OcltRole>
-		implements AutoGraphInterface<E, Ro> {
+public abstract class AutoGraph<E extends OcltEdge, Ro extends OcltRole> implements AutoGraphInterface<E, Ro> {
 
 	protected ArrayList<E> edges;
 	protected ArrayList<E> removed;
@@ -93,7 +92,7 @@ public abstract class AutoGraph<E extends OcltEdge, Ro extends OcltRole>
 		cleanGraph();
 		filteredIterator = null;
 	}
-	
+
 	@Override
 	public void disconnect(E edge) {
 		removed.add(edge);
@@ -137,14 +136,12 @@ public abstract class AutoGraph<E extends OcltEdge, Ro extends OcltRole>
 	}
 
 	public String toString() {
-		return "Interaction graph (" + this.getClass().getSimpleName()
-				+ ") contains " + size() + " edges.";
+		return "Interaction graph (" + this.getClass().getSimpleName() + ") contains " + size() + " edges.";
 	}
 
 	public AutoGraph<E, Ro> getComplete() {
 		CompleteIteratorAg<E, Ro> cit = new CompleteIteratorAg<E, Ro>(this);
-		if ((filteredIterator != null)
-				&& (filteredIterator instanceof EdgeFilteringIterator))
+		if ((filteredIterator != null) && (filteredIterator instanceof EdgeFilteringIterator))
 			((EdgeFilteringIterator) filteredIterator).setSourceIterator(cit);
 		else
 			filteredIterator = cit;
@@ -152,8 +149,7 @@ public abstract class AutoGraph<E extends OcltEdge, Ro extends OcltRole>
 	}
 
 	public void addFilter(EdgeFilter<Ro, Ro> ef) {
-		if ((filteredIterator == null)
-				|| !(filteredIterator instanceof EdgeFilteringIterator))
+		if ((filteredIterator == null) || !(filteredIterator instanceof EdgeFilteringIterator))
 			filteredIterator = new EdgeFilteringIteratorImpl(iterator());
 		((EdgeFilteringIterator) filteredIterator).addFilter(ef);
 	}
