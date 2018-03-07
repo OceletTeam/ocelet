@@ -58,7 +58,8 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 
 	protected Grid grid;
 	protected CompleteIteratorCell<E, Ro> cellIterator;
-
+	protected Iterator<E> filteredIterator;
+	protected CursorEdge cursorEdge;
 	
 	
 
@@ -83,6 +84,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 
 	public void setCompleteIteratorCell(E e)
 	{
+		this.cursorEdge = (CursorEdge)e;
 		cellIterator = new CompleteIteratorCell<E, Ro>(e, this);
 		setCellShapeType(grid.getCellShapeType());
 	}
@@ -91,10 +93,20 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 
 	public Iterator<E> iterator()
 	{
-		if(cellIterator != null)
-			return cellIterator;
-		else
-			return null;
+		if (filteredIterator != null)
+			return filteredIterator;
+		//cleanGraph();
+		return cellIterator;
+	}
+	
+	public void addFilter(EdgeFilter<Ro, Ro> ef) {
+		
+		if ((filteredIterator == null)
+				|| !(filteredIterator instanceof EdgeFilteringIterator))
+			filteredIterator = new EdgeFilteringIteratorImpl(iterator());
+		((EdgeFilteringIterator)filteredIterator).setSourceIterator(cellIterator);
+		((EdgeFilteringIterator) filteredIterator).addFilter(ef);
+		
 	}
 
 	public int size()
@@ -203,6 +215,12 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 	}
 
 	public CellGraph<E, Ro> getComplete() {
+		CompleteIteratorCell<E, Ro> cit = new CompleteIteratorCell<E, Ro>((E)this.cursorEdge,this);
+		if ((filteredIterator != null)
+				&& (filteredIterator instanceof EdgeFilteringIterator))
+			((EdgeFilteringIterator) filteredIterator).setSourceIterator(cit);
+		else
+			filteredIterator = cit;
 		return this;
 	}	
 

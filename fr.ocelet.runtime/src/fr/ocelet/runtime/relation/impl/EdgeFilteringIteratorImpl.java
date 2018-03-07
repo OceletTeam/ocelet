@@ -59,9 +59,12 @@ public class EdgeFilteringIteratorImpl<E extends OcltEdge, F extends EdgeFilter>
 		while ((!result) && (edgit.hasNext())) {
 			nextEdge = edgit.next();
 			boolean filt = true;
-			for (F ef : filters) {
-				filt = filt
-						& ef.filter(nextEdge.getRole(0), nextEdge.getRole(1));
+			for (F ef : filters) {	
+				try {
+				filt = filt	& ef.filter(nextEdge.getRole(0), nextEdge.getRole(1));
+				}catch(Exception e) {
+					filt = filt	& ef.filter(nextEdge.getRole(1), nextEdge.getRole(0));
+				}
 				if (!filt)
 					break;
 			}

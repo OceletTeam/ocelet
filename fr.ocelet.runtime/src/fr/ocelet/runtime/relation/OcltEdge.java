@@ -46,6 +46,7 @@ public abstract class OcltEdge implements OcltGraphElement {
 		return graph_Element_Identifier;
 	}
 
+	
 	public abstract OcltRole getRole(int i);
 	
 	@SuppressWarnings("unchecked")

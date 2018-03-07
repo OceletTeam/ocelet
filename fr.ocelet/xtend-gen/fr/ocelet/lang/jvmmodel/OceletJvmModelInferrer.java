@@ -821,7 +821,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       typeProps.put(((PropertyDef)enteln_1).getName(), ((PropertyDef)enteln_1).getType().getSimpleName());
                     }
                     if (isCell) {
-                      boolean _equals_2 = ((PropertyDef)enteln_1).getName().equals("cell");
+                      boolean _equals_2 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Cell");
                       boolean _not_1 = (!_equals_2);
                       if (_not_1) {
                         EList<JvmMember> _members = it.getMembers();
@@ -1037,8 +1037,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       @Override
                                       protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                                         _builder.append("System.out.println(\"");
-                                        String _name = ((PropertyDef)enteln_1).getName();
-                                        _builder.append(_name);
+                                        String _simpleName = ((PropertyDef)enteln_1).getType().getSimpleName();
+                                        _builder.append(_simpleName);
                                         _builder.append(" type is not allowed for a cell entity\");");
                                         _builder.newLineIfNotEmpty();
                                         _builder.append("return null;");
@@ -3929,6 +3929,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   String _name_3 = ((Filterdef)reln_2).getName();
                                   String _plus_3 = (_plus_2 + _name_3);
                                   _builder.append(_plus_3);
+                                  _builder.append("(");
                                   _builder.newLineIfNotEmpty();
                                   {
                                     int _size = ((Filterdef)reln_2).getParams().size();
@@ -3939,27 +3940,27 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                         int _minus = (_size_1 - 1);
                                         IntegerRange _upTo = new IntegerRange(0, _minus);
                                         for(final Integer i : _upTo) {
-                                          _builder.append("\treln.params.get(i).name»");
+                                          String _name_4 = ((Filterdef)reln_2).getParams().get((i).intValue()).getName();
+                                          _builder.append(_name_4);
+                                          _builder.newLineIfNotEmpty();
                                           {
                                             int _size_2 = ((Filterdef)reln_2).getParams().size();
                                             int _minus_1 = (_size_2 - 1);
                                             boolean _lessThan = ((i).intValue() < _minus_1);
                                             if (_lessThan) {
                                               _builder.append(",");
+                                              _builder.newLine();
                                             }
                                           }
                                         }
                                       }
                                     }
                                   }
-                                  _builder.append(";");
-                                  _builder.newLineIfNotEmpty();
-                                  _builder.append("                        ");
+                                  _builder.append(");");
+                                  _builder.newLine();
                                   _builder.append("super.addFilter(_filter);");
                                   _builder.newLine();
-                                  _builder.append("                        ");
                                   _builder.append("return this;");
-                                  _builder.newLine();
                                   _builder.newLine();
                                 }
                               };

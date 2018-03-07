@@ -601,11 +601,15 @@ public abstract class CursorEdge extends OcltEdge {
 		}
 	}
 
-	@Override
-	public OcltRole getRole(int arg){
-		return null;
-	}
+	
+	
 
+	public abstract OcltRole getRole(final Integer arg);
+	public OcltRole getRole(int arg) {
+		Integer i = arg;
+		return getRole(i);
+	}
+	
 	public abstract void updateCellType();
 
 

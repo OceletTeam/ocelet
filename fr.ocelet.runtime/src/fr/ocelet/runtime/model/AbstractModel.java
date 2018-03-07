@@ -66,6 +66,7 @@ public abstract class AbstractModel implements OceletModel {
 		    globalLogger.removeHandler(handler);
 		}
 		LogManager.getLogManager().reset();
+		System.setProperty("com.sun.media.jai.disableMediaLib", "true");
 	}
 
 	@Override

@@ -94,10 +94,10 @@ public class CompleteIteratorGeomCell<E extends OcltEdge, R1 extends OcltRole, R
    }
    
    public void connect(R1 r1, R2 r2){
-	 //  ((GeomCellEdge)geomCellEdge).connect(r1, r2);
+	  ((GeomCellEdge)geomCellEdge).connect(r1, r2);
    }
    public void disconnect(R1 r1, R2 r2){
-	 //  ((GeomCellEdge)geomCellEdge).disconnect(r1, r2);
+	   ((GeomCellEdge)geomCellEdge).disconnect(r1, r2);
    }
    
    public void connect(R2 r2, Geometry zone){
@@ -112,7 +112,7 @@ public class CompleteIteratorGeomCell<E extends OcltEdge, R1 extends OcltRole, R
    }
    
    public void disconnectAll(){
-	 //  ((GeomCellEdge)geomCellEdge).disconnectAll();
+	  ((GeomCellEdge)geomCellEdge).disconnectAll();
    }
 }
 

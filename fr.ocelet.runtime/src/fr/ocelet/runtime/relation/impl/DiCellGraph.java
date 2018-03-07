@@ -39,7 +39,7 @@ implements DiGraphInterface<E, R1, R2> {
     public DiCellGraph(){
     
     }
-
+	protected Iterator<E> filteredIterator;
     public void setGrid(List<R1> r1List, List<R2> r2List){
     	
     	AbstractEntity r1 = (AbstractEntity)r1List.get(0);
@@ -50,6 +50,12 @@ implements DiGraphInterface<E, R1, R2> {
         this.grid1 = c1.getGrid();
         this.grid2 = c2.getGrid();   
         }
+	public void addFilter(EdgeFilter<R1, R2> ef) {
+		if ((filteredIterator == null)
+				|| !(filteredIterator instanceof EdgeFilteringIterator))
+			filteredIterator = new EdgeFilteringIteratorImpl(iterator());
+		((EdgeFilteringIterator) filteredIterator).addFilter(ef);
+	}
 
     public void setCompleteIteratorDiCell(E e){
     
