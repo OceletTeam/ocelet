@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -32,26 +32,24 @@ import fr.ocelet.runtime.relation.AggregOperator;
  * properties.
  * 
  * @see AggregOperator
- * @author Pascal Degenne, initial contribution
+ * @author Pascal Degenne - initial contribution
  */
 public class Or implements AggregOperator<Boolean, List<Boolean>> {
 
 	/**
-	 * Computes all the candidate values and produces one unique value of the
-	 * same type to be used for property affectation. In this case the logical
-	 * OR of all values is returned.
+	 * Computes all the candidate values and produces one unique value of the same
+	 * type to be used for property affectation. In this case the logical OR of all
+	 * values is returned.
 	 * 
 	 * @param future
 	 *            Vector of candidate values.
-	 * @return The logical OR of all the values contained in the argument
-	 *         vector.
+	 * @return The logical OR of all the values contained in the argument vector.
 	 */
 	public Boolean compute(List<Boolean> future, Boolean preval) {
 
 		Boolean result = future.get(0);
 		if (future.size() > 1) {
-			for (Iterator<Boolean> it = (Iterator<Boolean>) future.iterator(); it
-					.hasNext();) {
+			for (Iterator<Boolean> it = (Iterator<Boolean>) future.iterator(); it.hasNext();) {
 				boolean val = it.next();
 				result = result | val;
 			}

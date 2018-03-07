@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -30,6 +30,9 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
+/**
+ * @author Pascal Degenne - Initial contribution
+ */
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 	public ApplicationWorkbenchWindowAdvisor(

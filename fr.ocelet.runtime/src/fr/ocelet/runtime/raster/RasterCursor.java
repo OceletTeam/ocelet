@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -21,9 +21,11 @@
 
 package fr.ocelet.runtime.raster;
 
-
+/**
+ * @author Mathieu Castets - Initial contribution
+ */
 public abstract class RasterCursor {
-	
+
 	protected int x;
 	protected int y;
 	protected int x2;
@@ -34,10 +36,9 @@ public abstract class RasterCursor {
 	protected GridCellManager gridManager;
 	protected double xRes;
 	protected double yRes;
-	
-	public RasterCursor(Grid grid){
-		
-	
+
+	public RasterCursor(Grid grid) {
+
 		this.width = grid.getWidth();
 		this.height = grid.getHeight();
 		xRes = grid.getXRes();
@@ -47,84 +48,75 @@ public abstract class RasterCursor {
 		this.x2 = 0;
 		this.y2 = 0;
 		this.gridManager = grid.getGridCellManager();
-		
+
 	}
-	public void setGridCellManager(GridCellManager gridManager){
+
+	public void setGridCellManager(GridCellManager gridManager) {
 		this.gridManager = gridManager;
 	}
-	
+
 	public abstract boolean hasNext();
-	
+
 	public abstract void next();
-	
-	 public boolean isRight()
-	    {
-	        return direction == 0;
-	    }
 
-	    public boolean isRightDown()
-	    {
-	        return direction == 1;
-	    }
+	public boolean isRight() {
+		return direction == 0;
+	}
 
-	    public boolean isDown()
-	    {
-	        return direction == 2;
-	    }
+	public boolean isRightDown() {
+		return direction == 1;
+	}
 
-	    public boolean isDownLeft()
-	    {
-	        return direction == 3;
-	    }
+	public boolean isDown() {
+		return direction == 2;
+	}
 
-	    public boolean isLeft()
-	    {
-	        return direction == 4;
-	    }
+	public boolean isDownLeft() {
+		return direction == 3;
+	}
 
-	    public boolean isUpLeft()
-	    {
-	        return direction == 5;
-	    }
+	public boolean isLeft() {
+		return direction == 4;
+	}
 
-	    public boolean isUp()
-	    {
-	        return direction == 6;
-	    }
+	public boolean isUpLeft() {
+		return direction == 5;
+	}
 
-	    public boolean isUpRight()
-	    {
-	        return direction == 7;
-	    }
-	    
-	    public abstract void move();
-	    
-	    
-	    public int getX(){
-	    	return x;
-	    }
-	    
-	    public int getY(){
-	    	return y;
-	    }
-	    
-	    public int getX2(){
-	    	return x2;
-	    }
-	    
-	    public int getY2(){
-	    	return y2;
-	    }
-	    
-	    
-	    public void reset(){
-	    	  x = 0;
-	            y = 0;
-	            x2 = 0;
-	            y2 = 0;
-	            direction = 0;        
-	           
-	            gridManager.reset();
-	    }
-		
+	public boolean isUp() {
+		return direction == 6;
+	}
+
+	public boolean isUpRight() {
+		return direction == 7;
+	}
+
+	public abstract void move();
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public int getX2() {
+		return x2;
+	}
+
+	public int getY2() {
+		return y2;
+	}
+
+	public void reset() {
+		x = 0;
+		y = 0;
+		x2 = 0;
+		y2 = 0;
+		direction = 0;
+
+		gridManager.reset();
+	}
+
 }

@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -20,10 +20,7 @@
 */
 package fr.ocelet.runtime.raster;
 
-import java.util.ArrayList;
-
 import fr.ocelet.runtime.entity.AbstractEntity;
-import fr.ocelet.runtime.relation.OcltRole;
 
 /*public class Node<R2 extends OcltRole> {
 
@@ -81,7 +78,9 @@ import fr.ocelet.runtime.relation.OcltRole;
 }*/
 
 
-
+/**
+ * @author Mathieu Castets - Initial contribution
+ */
 public class Node {
 
 	//private ArrayList<IX<R2>> nodes;

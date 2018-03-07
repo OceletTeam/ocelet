@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -18,7 +18,6 @@
 *  The fact that you are presently reading this means that you have had
 *  knowledge of the CeCILL license and that you accept its terms.
 */
-
 package fr.ocelet.runtime.styling;
 
 import java.io.BufferedInputStream;
@@ -35,9 +34,8 @@ import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
 
 /**
- * Defines a gradient of colors.
- * This class can parse gradient definition files and build
- * lists of colors according to those definitions.
+ * Defines a gradient of colors. This class can parse gradient definition files
+ * and build lists of colors according to those definitions.
  * 
  * @author Pascal Degenne - Initial contribution
  */
@@ -62,8 +60,7 @@ public class Gradient {
 		Pattern pattern = Pattern.compile(REGEX_PATTERN, Pattern.DOTALL);
 		Matcher mat1 = pattern.matcher(grdef);
 		if (mat1.matches()) {
-			Pattern pat2 = Pattern.compile(" *(?:" + Colorstop.REGEX_PATTERN
-					+ ")");
+			Pattern pat2 = Pattern.compile(" *(?:" + Colorstop.REGEX_PATTERN + ")");
 			Matcher mat2 = pat2.matcher(mat1.group(3));
 			while (mat2.find()) {
 				Colorstop cs = Colorstop.parse(mat2.group());
@@ -122,8 +119,7 @@ public class Gradient {
 				else if (sup.compareTo(ix) < 0)
 					lc.add(sup.getColor());
 				else {
-					float ixp = (ix - inf.getPos())
-							/ (sup.getPos() - inf.getPos());
+					float ixp = (ix - inf.getPos()) / (sup.getPos() - inf.getPos());
 					int infc = inf.getColor().getRed();
 					int supc = sup.getColor().getRed();
 					Float newRed = (infc * (1 - ixp) + supc * ixp);
@@ -138,11 +134,9 @@ public class Gradient {
 					Float newAlpha = (infc * (1 - ixp) + supc * ixp);
 					Color newc;
 					if (newAlpha > 254) {
-						newc = new Color(newRed.intValue(),
-								newGreen.intValue(), newBlue.intValue());
+						newc = new Color(newRed.intValue(), newGreen.intValue(), newBlue.intValue());
 					} else
-						newc = new Color(newRed.intValue(),
-								newGreen.intValue(), newBlue.intValue(),
+						newc = new Color(newRed.intValue(), newGreen.intValue(), newBlue.intValue(),
 								newAlpha.intValue());
 					if (isReverse)
 						lc.add(0, newc);
@@ -168,8 +162,7 @@ public class Gradient {
 		return sb.toString();
 	}
 
-	public static KeyMap<String, Gradient> readGradients(
-			KeyMap<String, Gradient> gmap, String filePath)
+	public static KeyMap<String, Gradient> readGradients(KeyMap<String, Gradient> gmap, String filePath)
 			throws java.io.IOException {
 		KeyMap<String, Gradient> gmapr = gmap;
 		if (gmapr == null)
@@ -196,5 +189,5 @@ public class Gradient {
 		}
 		return gmapr;
 	}
-	
+
 }

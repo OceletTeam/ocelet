@@ -2,7 +2,7 @@
 <feature
       id="fr.ocelet.platform.feature"
       label="fr.ocelet.platform.feature"
-      version="2.0.6.beta">
+      version="2.0.3">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]

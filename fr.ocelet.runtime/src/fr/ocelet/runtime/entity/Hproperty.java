@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -35,7 +35,7 @@ import fr.ocelet.runtime.relation.aggregops.Any;
  * property in the future and an AggregOperator will be used to compute the next
  * state of the property at commit time.
  * 
- * @author Pascal Degenne, Initial contribution
+ * @author Pascal Degenne - Initial contribution
  */
 public class Hproperty<T> implements Iterable<T> {
 

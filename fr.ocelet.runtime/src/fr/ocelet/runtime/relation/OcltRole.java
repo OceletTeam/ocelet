@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -32,10 +32,10 @@ import fr.ocelet.runtime.ocltypes.List;
 public interface OcltRole extends OcltGraphElement {
 
 	/**
-	 * Property getter. The returned value is the last valid state of the
-	 * property. It means that if new values have been assigned to that property
-	 * but the transaction has not been yet committed, the value returned is the
-	 * state before assigning those new values.
+	 * Property getter. The returned value is the last valid state of the property.
+	 * It means that if new values have been assigned to that property but the
+	 * transaction has not been yet committed, the value returned is the state
+	 * before assigning those new values.
 	 * 
 	 * @param pname
 	 *            Name of the property to get.
@@ -44,14 +44,14 @@ public interface OcltRole extends OcltGraphElement {
 	public <T> T getProperty(String pname);
 
 	/**
-	 * The behavior of this property setter is different if the transaction is
-	 * true or false. If transaction is false, the property is directly set to
-	 * val. If transaction is true, val is added to the property's list of new
-	 * value candidates and that list will be later processed, at the end of the
-	 * transaction. Note that when the transaction end, an AggregOperator will
-	 * be used to compute the new values candidate list. If no AggregOperator
-	 * has been given to the property, the Any is the default affectation
-	 * operator that will be used.
+	 * The behavior of this property setter is different if the transaction is true
+	 * or false. If transaction is false, the property is directly set to val. If
+	 * transaction is true, val is added to the property's list of new value
+	 * candidates and that list will be later processed, at the end of the
+	 * transaction. Note that when the transaction end, an AggregOperator will be
+	 * used to compute the new values candidate list. If no AggregOperator has been
+	 * given to the property, the Any is the default affectation operator that will
+	 * be used.
 	 * 
 	 * @param pname
 	 *            Name of the property
@@ -66,34 +66,34 @@ public interface OcltRole extends OcltGraphElement {
 	 * @param pname
 	 *            Name of the property
 	 * @param ao
-	 *            The affectation operator Class to be applied when the
-	 *            transaction will end.
+	 *            The affectation operator Class to be applied when the transaction
+	 *            will end.
 	 */
-	public <T> void setAgregOp(String pname, AggregOperator<T,List<T>> ao, boolean usePreval);
+	public <T> void setAgregOp(String pname, AggregOperator<T, List<T>> ao, boolean usePreval);
 
 	/**
-	 * Begins a transaction for this entity. Any call to setProperty will just
-	 * add the new values given to a new value candidate list and the new state
-	 * of the property will not be update until we get a call to tcommit().
+	 * Begins a transaction for this entity. Any call to setProperty will just add
+	 * the new values given to a new value candidate list and the new state of the
+	 * property will not be update until we get a call to tcommit().
 	 */
 	public void tbegin();
 
 	/**
-	 * Ends a transaction for this entity. All it's properties are assigned
-	 * their new values of any has been assigned during the transaction. It
-	 * means that the entity officially switches from state n to state n+1.
+	 * Ends a transaction for this entity. All it's properties are assigned their
+	 * new values of any has been assigned during the transaction. It means that the
+	 * entity officially switches from state n to state n+1.
 	 */
 	public void tcommit();
 
 	/**
-	 * Ends a transaction aborting any property change. All values assigned to
-	 * any property since the last tbegin() are lost.
+	 * Ends a transaction aborting any property change. All values assigned to any
+	 * property since the last tbegin() are lost.
 	 */
 	public void tabort();
-	
+
 	public SpatialType getSpatialType();
-	
+
 	public void setSpatialType(SpatialType st);
-	
+
 	public <T> String getPropName(T val);
 }

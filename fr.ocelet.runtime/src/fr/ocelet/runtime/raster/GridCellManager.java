@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -20,14 +20,16 @@
 */
 package fr.ocelet.runtime.raster;
 
-import fr.ocelet.runtime.ocltypes.List;
-import fr.ocelet.runtime.relation.CellValues;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-import java.util.*;
+import fr.ocelet.runtime.relation.CellValues;
 
 // Referenced classes of package fr.ocelet.runtime.relation:
 //            CellValues
-
+/**
+ * @author Mathieu Castets - Initial contribution
+ */
 public abstract class GridCellManager{
 	
 	    private int index;

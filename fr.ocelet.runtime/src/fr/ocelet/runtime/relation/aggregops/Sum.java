@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -32,14 +32,14 @@ import fr.ocelet.runtime.util.NumberConversion;
  * AggregOperator should only be used with number properties.
  * 
  * @see AggregOperator
- * @author Pascal Degenne, initial contribution
+ * @author Pascal Degenne - initial contribution
  */
 public class Sum<T extends Number> implements AggregOperator<T, List<T>> {
 
 	/**
-	 * Computes all the candidate values and produces one unique value of the
-	 * same type to be used for property affectation. In this case the sum of
-	 * all values is returned.
+	 * Computes all the candidate values and produces one unique value of the same
+	 * type to be used for property affectation. In this case the sum of all values
+	 * is returned.
 	 * 
 	 * @param future
 	 *            Vector of candidate values.

@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -30,7 +30,9 @@ package fr.ocelet.runtime.relation;
 public interface InteractionGraph<E extends OcltEdge> extends Iterable<E> {
 
 	public void beginTransaction();
+
 	public void abortTransaction();
+
 	public void endTransaction();
 
 	/**
@@ -52,5 +54,5 @@ public interface InteractionGraph<E extends OcltEdge> extends Iterable<E> {
 	 * @return The number of edges in this interaction graph
 	 */
 	public int size();
-	
+
 }

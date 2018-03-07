@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -27,10 +27,8 @@ import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.console.IConsoleConstants;
 
 /**
- * 
  * @author Remi Tylski - Initial contribution
  * @author Pascal Degenne - Adapted for v1.1
- *
  */
 public class Perspective implements IPerspectiveFactory {
 

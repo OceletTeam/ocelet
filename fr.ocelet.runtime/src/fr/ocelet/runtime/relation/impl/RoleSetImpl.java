@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -32,6 +32,7 @@ import fr.ocelet.runtime.util.Filter;
 
 /**
  * Represents a series of roles as defined in a Relation declaration
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  * @param <R>
@@ -57,9 +58,8 @@ public class RoleSetImpl<R extends OcltRole> implements RoleSet<R> {
 		if (store == null)
 			return false;
 		else
-			return (store.contains(role) && (!excludedRoleIds.contains(role
-					.getGraph_Element_Identifier()) && (!recentlyRemovedRoles
-					.contains(role))));
+			return (store.contains(role) && (!excludedRoleIds.contains(role.getGraph_Element_Identifier())
+					&& (!recentlyRemovedRoles.contains(role))));
 	}
 
 	@Override
@@ -101,8 +101,7 @@ public class RoleSetImpl<R extends OcltRole> implements RoleSet<R> {
 
 	protected final Filter<R> excludedFilter = new Filter<R>() {
 		public boolean passes(R role) {
-			return !(excludedRoleIds.contains(role
-					.getGraph_Element_Identifier()));
+			return !(excludedRoleIds.contains(role.getGraph_Element_Identifier()));
 		}
 	};
 
@@ -113,7 +112,7 @@ public class RoleSetImpl<R extends OcltRole> implements RoleSet<R> {
 	public void resetRemovedRoles() {
 		recentlyRemovedRoles.clear();
 	}
-	
+
 	public boolean hasRemovedRoles() {
 		return !recentlyRemovedRoles.isEmpty();
 	}

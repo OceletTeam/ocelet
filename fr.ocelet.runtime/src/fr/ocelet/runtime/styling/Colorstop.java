@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -29,6 +29,7 @@ import fr.ocelet.runtime.ocltypes.Color;
 
 /**
  * One color elements for a gradient definition
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  */
@@ -45,7 +46,8 @@ public class Colorstop implements Comparable<Colorstop> {
 	@Override
 	public int compareTo(Colorstop cs) {
 		int res = pos.compareTo(cs.pos);
-		if ((res == 0) && (!col.equals(cs.col))) return 1; 
+		if ((res == 0) && (!col.equals(cs.col)))
+			return 1;
 		return res;
 	}
 

@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2016
+*  Copyright Cirad 2010-2018
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -41,9 +41,9 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 
-import fr.ocelet.datafacer.InputDataRecord;
 import fr.ocelet.datafacer.GtDataRecord;
 import fr.ocelet.datafacer.GtDatafacer;
+import fr.ocelet.datafacer.InputDataRecord;
 import fr.ocelet.datafacer.InputDatafacer;
 import fr.ocelet.datafacer.OcltShapefileDataStore;
 import fr.ocelet.datafacer.OutputDataRecord;
@@ -51,7 +51,6 @@ import fr.ocelet.datafacer.OutputDatafacer;
 import fr.ocelet.runtime.Miscutils;
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.geom.ocltypes.Polygon;
-import fr.ocelet.runtime.model.AbstractModel;
 import fr.ocelet.runtime.util.FileUtils;
 
 /**

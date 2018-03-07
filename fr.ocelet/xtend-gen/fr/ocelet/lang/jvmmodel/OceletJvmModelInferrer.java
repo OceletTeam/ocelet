@@ -1,6 +1,6 @@
 /**
  * Ocelet spatial modelling language.   www.ocelet.org
- *  Copyright Cirad 2010-2016
+ *  Copyright Cirad 2010-2018
  * 
  *  This software is a domain specific programming language dedicated to writing
  *  spatially explicit models and performing spatial dynamics simulations.
@@ -96,6 +96,7 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
  * Java code inferrer of the Ocelet language
  * 
  * @author Pascal Degenne - Initial contribution
+ * @author Mathieu Castets - Raster related code generator
  */
 @SuppressWarnings("all")
 public class OceletJvmModelInferrer extends AbstractModelInferrer {
