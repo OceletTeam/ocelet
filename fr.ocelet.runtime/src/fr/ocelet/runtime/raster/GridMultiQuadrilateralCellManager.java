@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2018
+*  Copyright Cirad 2010-2016
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.CellValues;
 
-/**
- * @author Mathieu Castets - Initial contribution
- */
 public class GridMultiQuadrilateralCellManager extends GridCellManager {
 
 	private int size;
@@ -74,6 +71,7 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
                     	if(cao.preval() == false){
                     		d = cao.apply(values, null);
                     	}else{
+                    		values.add(grid.getDoubleValue(name, i, y));
                     		d = cao.apply(values, grid.getDoubleValue(name, i, y));
                     	}
                     	

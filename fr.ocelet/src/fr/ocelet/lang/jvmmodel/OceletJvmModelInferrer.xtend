@@ -171,7 +171,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						this.grid = createGrid(entity.getProps(), "«entname»");
 						entity.getCell().setGrid(grid);
 						List<«entname»> entityList = new List<«entname»>();
+						entityList.cellCut();
 						entityList.add(entity);
+						
 						return entityList;
                   	  '''
                   	]                  	
@@ -191,7 +193,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	    this.grid = createGrid(entity.getProps(), shp, 	"«entname»");
                   	    entity.getCell().setGrid(grid);
 					    List<«entname»> entityList = new List<«entname»>();
+					     entityList.cellCut();
 					    entityList.add(entity);
+					   
 					    return entityList;
                       '''
                     ]
@@ -212,7 +216,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                       entity.updateCellInfo("QUADRILATERAL");
                   	  entity.getCell().setGrid(grid);
 					  List<«entname»> entityList = new List<«entname»>();
+					   entityList.cellCut();
 					  entityList.add(entity);
+			
 					  return entityList;
                     '''
                   ]
@@ -385,9 +391,11 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				'''
       		  				}else if(enteln.type.simpleName.equals('Boolean')){
       		  					body= '''
-      		  						if(«enteln.name» == true)
+      		  						if(«enteln.name» == true){
 										cell.getGrid().setValue("«enteln.name»",getX(), getY(),1.0);
+									}else{
 										cell.getGrid().setValue("«enteln.name»",getX(), getY(),0.0);
+									}
 
       		  				'''
       		  				}else if(enteln.type.simpleName.equals('Byte')){
@@ -425,7 +433,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
       		  				}else if(enteln.type.simpleName.equals('Boolean')){
       		  					body= '''
       		  					Double val =cell.getGrid().getValue("«enteln.name»",getX(), getY());
-      		  					if(val == 0){
+      		  					if(val == 1.0){
       		  						return true;
       		  					} 
       		  					return false;
@@ -744,6 +752,18 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			parameters += meln.toParameter(geomNames, typeRef("fr.ocelet.runtime.ocltypes.List", geomType))
           			body = '''
           			  super(«cellListName», «geomNames»);  
+          			  this.«cellName» = new «cellType»();
+          			  this.«cellName».getCell().setGrid(grid);
+          			 
+          		  '''
+          		]
+          		
+          			members+= meln.toConstructor[
+          			parameters += meln.toParameter(cellListName, cellList1)
+          			parameters += meln.toParameter(geomNames, typeRef("fr.ocelet.runtime.ocltypes.List", geomType))
+          			parameters += meln.toParameter("distance", typeRef(Double::TYPE))
+          			body = '''
+          			  super(«cellListName», «geomNames», distance);  
           			  this.«cellName» = new «cellType»();
           			  this.«cellName».getCell().setGrid(grid);
           			 
@@ -1767,12 +1787,34 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
      		  	  setCompleteIteratorGeomCell(_gen_edge);
               	'''
               ]
+              members+= meln.toMethod("connect",typeRef(Void::TYPE))[              	
+                parameters += meln.toParameter(secondName,geomList)
+                parameters += meln.toParameter(firstName,cellList)
+                  parameters += meln.toParameter("distance",typeRef(Double::TYPE))
+                
+              	body = ''' 
+                   «typeRef(edgecname)» _gen_edge = new «meln.name+"_Edge"»(«firstName», «secondName», distance);
+     		  	  setCompleteIteratorGeomCell(_gen_edge);
+              	'''
+              ]
+
               }else{
               members+= meln.toMethod("connect",typeRef(Void::TYPE))[
               	parameters += meln.toParameter(firstName,cellList)
                 parameters += meln.toParameter(secondName,geomList)
               	body = ''' 
                    «typeRef(edgecname)» _gen_edge = new «meln.name+"_Edge"»(«firstName», «secondName»);
+     		  	  setCompleteIteratorGeomCell(_gen_edge);
+              	'''
+              ]
+              
+                  members+= meln.toMethod("connect",typeRef(Void::TYPE))[              	
+                parameters += meln.toParameter(firstName,cellList)
+                parameters += meln.toParameter(secondName,geomList)               
+                 parameters += meln.toParameter("distance",typeRef(Double::TYPE))
+                
+              	body = ''' 
+                   «typeRef(edgecname)» _gen_edge = new «meln.name+"_Edge"»(«firstName», «secondName», distance);
      		  	  setCompleteIteratorGeomCell(_gen_edge);
               	'''
               ]
@@ -1967,6 +2009,8 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	 	
                   	 	entity.getCell().setGrid(grid);
                   	 	«firstCellList» array = new «firstCellList»();
+                  	 	
+                  	 	array.cellCut();	
                   	 	array.add(entity);
                   	 	return array;
               	'''
@@ -1995,6 +2039,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			 	entity.getCell().setGrid(grid);
                   	 
                   	 	«firstCellList» array = new «firstCellList»();
+                  	 	array.cellCut();
                   	 	array.add(entity);
                   	   	connect(array);
                   	   	
@@ -2010,6 +2055,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			 	entity.getCell().setGrid(grid);
                   	 
                   	 	«firstCellList» array = new «firstCellList»();
+                  	 	array.cellCut();
                   	 	array.add(entity);
                   	   	connect(array);
                   	   	
@@ -2028,6 +2074,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           				grid =  createHexagon("«firstRoleType»",entity.getProps(), minX, minY, maxX, maxY, size);
           				entity.getCell().setGrid(grid);                  	   
                   	   	«firstCellList» array = new «firstCellList»();
+                  	   	array.cellCut();
                   	 	array.add(entity);
                   	    connect(array);
                   	   	
@@ -2042,6 +2089,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						grid = createSquare("«firstRoleType»",entity.getProps(), shp.getBounds(), xRes, yRes);
 						entity.getCell().setGrid(grid);						
 						«firstCellList» array = new «firstCellList»();
+						array.cellCut();
                   	 	array.add(entity);
 						connect(array);
 						
@@ -2056,6 +2104,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						grid = createSquare("«firstRoleType»",entity.getProps(), geometry, xRes, yRes);
 						entity.getCell().setGrid(grid);						
 						«firstCellList» array = new «firstCellList»();
+						array.cellCut();
                   	 	array.add(entity);
 						connect(array);
 						
@@ -2075,6 +2124,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						grid = createSquare("«firstRoleType»",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);
 						entity.getCell().setGrid(grid);						
 						«firstCellList» array = new «firstCellList»();
+						array.cellCut();
                   	 	array.add(entity);
 						connect(array);
 						
@@ -2088,6 +2138,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						grid = createTriangle("«firstRoleType»",entity.getProps(), geometry, size);
 						entity.getCell().setGrid(grid);						
 						«firstCellList» array = new «firstCellList»();
+						array.cellCut();
                   	 	array.add(entity);
 						connect(array);
 						
@@ -2101,6 +2152,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						grid = createTriangle("«firstRoleType»",entity.getProps(), shp.getBounds(), size);
 						entity.getCell().setGrid(grid);						
 						«firstCellList» array = new «firstCellList»();
+						array.cellCut();
                   	 	array.add(entity);
 						connect(array);
 						
@@ -2119,6 +2171,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 						grid = createTriangle("«firstRoleType»",entity.getProps(), minX, minY, maxX, maxY, size);
 						entity.getCell().setGrid(grid);						
 						«firstCellList» array = new «firstCellList»();
+						array.cellCut();
                   	 	array.add(entity);
 						connect(array);
 						

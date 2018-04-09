@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2018
+*  Copyright Cirad 2010-2016
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -21,38 +21,49 @@
 
 package fr.ocelet.runtime.raster;
 
+import com.sun.media.jai.codecimpl.util.RasterFactory;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import com.vividsolutions.jts.index.quadtree.Key;
+
+import fr.ocelet.runtime.geom.SpatialManager;
+import fr.ocelet.runtime.geom.ocltypes.Cell;
+import fr.ocelet.runtime.geom.ocltypes.Line;
+import fr.ocelet.runtime.geom.ocltypes.MultiLine;
+import fr.ocelet.runtime.geom.ocltypes.MultiPoint;
+import fr.ocelet.runtime.geom.ocltypes.MultiPolygon;
+import fr.ocelet.runtime.geom.ocltypes.Point;
+import fr.ocelet.runtime.geom.ocltypes.Polygon;
+import fr.ocelet.runtime.ocltypes.KeyMap;
+import fr.ocelet.runtime.ocltypes.List;
+import fr.ocelet.runtime.relation.CellValues;
+
+import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.coverage.grid.GridCoordinates2D;
+import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.InvalidGridGeometryException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+/* Grid class used to iterate on raster values */
 
-import fr.ocelet.runtime.geom.SpatialManager;
-import fr.ocelet.runtime.geom.ocltypes.Line;
-import fr.ocelet.runtime.geom.ocltypes.Point;
-import fr.ocelet.runtime.geom.ocltypes.Polygon;
-import fr.ocelet.runtime.ocltypes.KeyMap;
-import fr.ocelet.runtime.ocltypes.List;
-
-
-/**
- * Grid class used to iterate on raster values
- * 
- * @author Mathieu Castets - Initial contribution
- */
 public class Grid {
 
 	protected GridGeometry2D gridGeometry;
@@ -779,6 +790,34 @@ public class Grid {
 
 		bounds[0] = new Coordinate(minX, minY);
 		bounds[1] = new Coordinate(maxX, maxY);
+		
+		return bounds;
+	}
+	
+	public Coordinate[] cboundary(Polygon polygon, Double distance){
+		Coordinate bounds[] = new Coordinate[2];
+		double minX = Double.POSITIVE_INFINITY;
+		double minY = Double.POSITIVE_INFINITY;
+		double maxX = Double.NEGATIVE_INFINITY;
+		double maxY = Double.NEGATIVE_INFINITY;
+		Coordinate acoordinate[];
+		int j = (acoordinate = polygon.getExteriorRing().getCoordinates()).length;
+		for(int i = 0; i < j; i++)
+		{
+			Coordinate c = acoordinate[i];
+			if(c.x < minX)
+				minX = c.x;
+			if(c.x > maxX)
+				maxX = c.x;
+			if(c.y < minY)
+				minY = c.y;
+			if(c.y > maxY)
+				maxY = c.y;
+		}
+
+		bounds[0] = new Coordinate(minX - distance, minY - distance);
+		bounds[1] = new Coordinate(maxX + distance, maxY + distance);
+		
 		return bounds;
 	}
 
@@ -804,6 +843,31 @@ public class Grid {
 
 		bounds[0] = new Coordinate(minX, minY);
 		bounds[1] = new Coordinate(maxX, maxY);
+		return bounds;
+	}
+	
+	public Coordinate[] cboundary(Line line, Double distance){
+		Coordinate bounds[] = new Coordinate[2];
+		double minX = Double.POSITIVE_INFINITY;
+		double minY = Double.POSITIVE_INFINITY;
+		double maxX = Double.NEGATIVE_INFINITY;
+		double maxY = Double.NEGATIVE_INFINITY;
+		Coordinate acoordinate[];
+		int j = (acoordinate = line.getCoordinates()).length;
+		for(int i = 0; i < j; i++){
+			Coordinate c = acoordinate[i];
+			if(c.x < minX)
+				minX = c.x;
+			if(c.x > maxX)
+				maxX = c.x;
+			if(c.y < minY)
+				minY = c.y;
+			if(c.y > maxY)
+				maxY = c.y;
+		}
+
+		bounds[0] = new Coordinate(minX - distance, minY - distance);
+		bounds[1] = new Coordinate(maxX - distance, maxY - distance);
 		return bounds;
 	}
 
@@ -849,10 +913,65 @@ public class Grid {
 		
 		return bounds;
 	}
+	
+	public int[] intBounds(Polygon polygon, Double distance){
+		int bounds[] = new int[4];
+		Coordinate cBounds[] = cboundary(polygon, distance);
+		
+		
+		int[] gridCoord1 = null;
+		int[] gridCoord2 = null;
+		
+		try {
+		gridCoord1 = gridCoordinate(cBounds[0].x, cBounds[1].y);
+		}catch(Exception e) {
+			
+		}
+		
+		try {
+		gridCoord2 = gridCoordinate(cBounds[1].x, cBounds[0].y);
+		}catch(Exception e) {
+			
+		}
+		if(gridCoord1 == null){
+			bounds[0] = 0;
+			bounds[1] = 0; 
+		}else{
+
+			bounds[0] = gridCoord1[0];
+
+			bounds[1] = gridCoord1[1];
+		}
+
+		if(gridCoord2 == null){
+			bounds[2] = width - 1;
+			bounds[3] = height - 1; 
+		}else{
+
+
+			bounds[2] = gridCoord2[0];
+			bounds[3] = gridCoord2[1];
+		}
+
+		
+		return bounds;
+	}
 
 	public int[] intBounds(Line line){
 		int bounds[] = new int[4];
 		Coordinate cBounds[] = cboundary(line);
+		int gridCoord1[] = gridCoordinate(cBounds[0].x, cBounds[0].y);
+		int gridCoord2[] = gridCoordinate(cBounds[1].x, cBounds[1].y);
+		bounds[0] = gridCoord1[0];
+		bounds[1] = gridCoord2[1];
+		bounds[2] = gridCoord2[0];
+		bounds[3] = gridCoord1[1];
+		return bounds;
+	}
+	
+	public int[] intBounds(Line line, double distance){
+		int bounds[] = new int[4];
+		Coordinate cBounds[] = cboundary(line, distance);
 		int gridCoord1[] = gridCoordinate(cBounds[0].x, cBounds[0].y);
 		int gridCoord2[] = gridCoordinate(cBounds[1].x, cBounds[1].y);
 		bounds[0] = gridCoord1[0];

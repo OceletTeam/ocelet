@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2018
+*  Copyright Cirad 2010-2016
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -32,100 +32,99 @@ import java.util.Iterator;
 
 // Referenced classes of package fr.ocelet.runtime.relation.impl:
 //            CompleteIteratorDiCell
-/**
- * @author Mathieu Castets - Initial contribution
- *
- * @param <E>
- * @param <R1>
- * @param <R2>
- */
+
 public class DiCellGraph<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole>
-		implements DiGraphInterface<E, R1, R2> {
+implements DiGraphInterface<E, R1, R2> {
 
-	public DiCellGraph() {
-
-	}
-
+    public DiCellGraph(){
+    
+    }
 	protected Iterator<E> filteredIterator;
-
-	public void setGrid(List<R1> r1List, List<R2> r2List) {
-
-		AbstractEntity r1 = (AbstractEntity) r1List.get(0);
-		AbstractEntity r2 = (AbstractEntity) r2List.get(0);
-
-		Cell c1 = (Cell) r1.getSpatialType();
-		Cell c2 = (Cell) r2.getSpatialType();
-		this.grid1 = c1.getGrid();
-		this.grid2 = c2.getGrid();
-	}
-
+    public void setGrid(List<R1> r1List, List<R2> r2List){
+    	
+    	AbstractEntity r1 = (AbstractEntity)r1List.get(0);
+    	AbstractEntity r2 = (AbstractEntity)r2List.get(0);
+    	
+    	Cell c1 = (Cell)r1.getSpatialType();
+    	Cell c2 = (Cell)r2.getSpatialType();
+        this.grid1 = c1.getGrid();
+        this.grid2 = c2.getGrid();   
+        }
 	public void addFilter(EdgeFilter<R1, R2> ef) {
-		if ((filteredIterator == null) || !(filteredIterator instanceof EdgeFilteringIterator))
+		if ((filteredIterator == null)
+				|| !(filteredIterator instanceof EdgeFilteringIterator))
 			filteredIterator = new EdgeFilteringIteratorImpl(iterator());
 		((EdgeFilteringIterator) filteredIterator).addFilter(ef);
 	}
 
-	public void setCompleteIteratorDiCell(E e) {
+    public void setCompleteIteratorDiCell(E e){
+    
+        completeIteratorDiCell = new CompleteIteratorDiCell<E, R1, R2>(this, e);
+    }
 
-		completeIteratorDiCell = new CompleteIteratorDiCell<E, R1, R2>(this, e);
-	}
+    public void beginTransaction(){
+    }
 
-	public void beginTransaction() {
-	}
+    public void abortTransaction(){
+    }
+    
+    public void endTransaction(){
+    }
 
-	public void abortTransaction() {
-	}
+    public void disconnect(OcltEdge ocltedge){
+    }
 
-	public void endTransaction() {
-	}
+    public void disconnect(Iterable iterable){
+    	
+    }
 
-	public void disconnect(OcltEdge ocltedge) {
-	}
+    public int size(){
+        return 0;
+    }
 
-	public void disconnect(Iterable iterable) {
+    public Iterator<E> iterator()
+    {
+        return completeIteratorDiCell;
+    }
 
-	}
+    public E connect(OcltRole left, OcltRole right)
+    {
+        return null;
+    }
 
-	public int size() {
-		return 0;
-	}
+    public E createEdge(OcltRole gro, OcltRole lro)
+    {
+        return null;
+    }
 
-	public Iterator<E> iterator() {
-		return completeIteratorDiCell;
-	}
+    public DiGraphInterface<E, R1, R2> getComplete()
+    {
+        return null;
+    }
 
-	public E connect(OcltRole left, OcltRole right) {
-		return null;
-	}
+    public void cleanOperator(){
+    
+        completeIteratorDiCell.clearAggregMap();
+        grid1.clearGeomTempVal();
+        grid2.clearGeomTempVal();
+    }
 
-	public E createEdge(OcltRole gro, OcltRole lro) {
-		return null;
-	}
+    public void setCellOperator(CellAggregOperator operator)
+    {
+        completeIteratorDiCell.addOperator(operator.getName(), operator);
+    }
 
-	public DiGraphInterface<E, R1, R2> getComplete() {
-		return null;
-	}
+    public OcltEdge getEdge()
+    {
+        return completeIteratorDiCell.getEdge();
+    }
 
-	public void cleanOperator() {
+    public void updateGrid()
+    {
+        completeIteratorDiCell.updateGrid();
+    }
 
-		completeIteratorDiCell.clearAggregMap();
-		grid1.clearGeomTempVal();
-		grid2.clearGeomTempVal();
-	}
-
-	public void setCellOperator(CellAggregOperator operator) {
-		completeIteratorDiCell.addOperator(operator.getName(), operator);
-	}
-
-	public OcltEdge getEdge() {
-		return completeIteratorDiCell.getEdge();
-	}
-
-	public void updateGrid() {
-		completeIteratorDiCell.updateGrid();
-	}
-
-	protected Grid grid1;
-	protected Grid grid2;
-	private CompleteIteratorDiCell<E, R1, R2> completeIteratorDiCell;
+    protected Grid grid1;
+    protected Grid grid2;
+    private CompleteIteratorDiCell<E, R1, R2> completeIteratorDiCell;
 }

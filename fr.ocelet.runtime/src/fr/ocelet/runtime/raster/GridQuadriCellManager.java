@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2018
+*  Copyright Cirad 2010-2016
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -23,11 +23,11 @@ package fr.ocelet.runtime.raster;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.CellValues;
 
+import java.util.*;
+
 // Referenced classes of package fr.ocelet.runtime.relation:
 //            CellValues
-/**
- * @author Mathieu Castets - Initial contribution
- */
+
 public class GridQuadriCellManager extends GridCellManager{
 
 
@@ -43,8 +43,8 @@ public class GridQuadriCellManager extends GridCellManager{
        
     }
 
+    @Override
     public void reset(){
-    
        validate();
         y = 0;
         for(int i = 0; i < grid.getWidth(); i++){
@@ -78,7 +78,6 @@ public class GridQuadriCellManager extends GridCellManager{
     }
 
     public void increment(){
- 
         validate();
         CellValues temp[] = firstLine;
         firstLine = nextLine;
@@ -124,7 +123,6 @@ public class GridQuadriCellManager extends GridCellManager{
      
 
     public void validate(){
-    
         for(int i = 0; i < firstLine.length; i++){
         
             CellValues cv = firstLine[i];
@@ -142,6 +140,7 @@ public class GridQuadriCellManager extends GridCellManager{
                     	if(cao.preval() == false){
                     		d = cao.apply(values, null);
                     	}else{
+                    		values.add(grid.getDoubleValue(name, i, y));
                     		d = cao.apply(values, grid.getDoubleValue(name, i, y));
                     	}
                     	
@@ -165,15 +164,16 @@ public class GridQuadriCellManager extends GridCellManager{
             CellValues cv = firstLine[i];
             
             for(String name : properties){
-           
+            	 List<Double> values = cv.getValues(name);
                 CellAggregOperator cao = aggregMap.get(name);
                 if(aggregMap.containsKey(name)){
-                
+                	
                     if(!cv.getValues(name).isEmpty()){
                     	if(cao.preval() == false){
-	                		 grid.setCellValue(name, i, y, cao.apply(cv.getValues(name), null));	                    
+	                		 grid.setCellValue(name, i, y, cao.apply(values, null));	                    
   
 	                	  }else{
+	                		  values.add(grid.getDoubleValue(name, i, y));
 	                		  grid.setCellValue(name, i, y , cao.apply(cv.getValues(name), grid.getDoubleValue(name, i, y)));	                    
 
 	                	  }

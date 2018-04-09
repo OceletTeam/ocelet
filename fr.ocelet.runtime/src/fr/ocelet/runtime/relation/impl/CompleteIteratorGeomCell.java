@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2018
+*  Copyright Cirad 2010-2016
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -33,7 +33,6 @@ import com.vividsolutions.jts.geom.Geometry;
 
 // Referenced classes of package fr.ocelet.runtime.relation.impl:
 //            GeometryCellGraph
-
 
 public class CompleteIteratorGeomCell<E extends OcltEdge, R1 extends OcltRole, R2 extends OcltRole> implements Iterator<E>{
    
@@ -116,3 +115,4 @@ public class CompleteIteratorGeomCell<E extends OcltEdge, R1 extends OcltRole, R
 	  ((GeomCellEdge)geomCellEdge).disconnectAll();
    }
 }
+

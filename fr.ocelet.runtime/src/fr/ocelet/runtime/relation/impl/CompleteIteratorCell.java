@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2018
+*  Copyright Cirad 2010-2016
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -26,13 +26,9 @@ import fr.ocelet.runtime.relation.*;
 
 import java.util.Iterator;
 
-/**
- * 
- * @author Mathieu Castets - Initial contribution
- *
- * @param <E>
- * @param <Ro>
- */
+// Referenced classes of package fr.ocelet.runtime.relation.impl:
+//            CellGraph
+
 public class CompleteIteratorCell<E extends OcltEdge, Ro extends OcltRole> implements Iterator<E> {
 
    
@@ -116,4 +112,9 @@ public void setAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean
     	((CursorEdge)cursorEdge).setCursorType(type);
     	((CursorEdge)cursorEdge).updateCellType();
     }
+
+    
+    
+
+   
 }

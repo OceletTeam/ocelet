@@ -121,8 +121,7 @@ private Operator aggregOperator;
     	this.operator = operator;
     }
 
-	 public Double apply(List<Double> values, Double val)
-    {
+	 public Double apply(List<Double> values, Double val){
         return operator.compute(values, val);
     }
     	
@@ -140,6 +139,10 @@ private Operator aggregOperator;
  		for(Double d : values){
  			intList.add(d.intValue());
  		}
+ 		if(val == null) {
+ 			return operator.compute(intList, null).doubleValue();
+
+ 		}
         return operator.compute(intList, val.intValue()).doubleValue();
     }
  	
@@ -156,6 +159,10 @@ private Operator aggregOperator;
  		List<Byte> byteList = new List<Byte>();
  		for(Double b : values){
  			byteList.add(b.byteValue());
+ 		}
+ 		if(val == null) {
+ 			return operator.compute(byteList, null).doubleValue();
+
  		}
         return operator.compute(byteList, val.byteValue()).doubleValue();
     }
@@ -176,6 +183,10 @@ private Operator aggregOperator;
  		List<Float> floatList = new List<Float>();
  		for(Double b : values){
  			floatList.add(b.floatValue());
+ 		}
+ 		if(val == null) {
+ 			return operator.compute(floatList, null).doubleValue();
+
  		}
         return operator.compute(floatList, val.floatValue()).doubleValue();
     }

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import fr.ocelet.runtime.relation.OcltEdge;
+
 /**
  * @author Mathieu Castets - Initial contribution
  *
@@ -129,6 +131,14 @@ public class ArrayInterface<T> extends ArrayList<T>{
 	
 	
 	public void removeRange(int fromIndex, int toIndex){
+		
+	}
+	
+	public void visit(OcltEdge e) {
+		
+	}
+	
+	public void setCut() {
 		
 	}
 	

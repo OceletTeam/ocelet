@@ -30,6 +30,8 @@ import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.ocltypes.array.ArrayInterface;
 import fr.ocelet.runtime.ocltypes.array.CellArray;
 import fr.ocelet.runtime.ocltypes.array.NormalArray;
+import fr.ocelet.runtime.relation.GeomCellEdge;
+import fr.ocelet.runtime.relation.OcltEdge;
 
 /**
  * @author Pascal Degenne  - Initial contribution
@@ -38,7 +40,7 @@ import fr.ocelet.runtime.ocltypes.array.NormalArray;
 @SuppressWarnings("serial")
 public class List<T> extends ArrayList<T> {
 
-
+	private Boolean cellCut = false;
 	private ArrayInterface<T> observer;
 
 	public List(){
@@ -248,7 +250,11 @@ public void setObserver(ArrayInterface<T> obs){
 			if(value instanceof AbstractEntity){
 				AbstractEntity ae = (AbstractEntity)value;
 				if(ae.getSpatialType() instanceof Cell){
-					ai = new CellArray<T>(value);
+					CellArray<T> ca  = new CellArray<T>(value);
+					if(cellCut == true) {
+						ca.setCut();
+					}
+					ai = ca;
 				}
 			} else {
 					ai = new NormalArray<T>();
@@ -310,7 +316,10 @@ public void setObserver(ArrayInterface<T> obs){
 			ai.swap(i,  j);
 		}
 		
-		
+		@Override
+		public void visit(OcltEdge e) {
+			ai.visit(e);
+		}
 
 
 		public <U> List<U> of(U... u) {
@@ -331,9 +340,22 @@ public void setObserver(ArrayInterface<T> obs){
 
 	}
 	
+	public boolean isCellularGrid() {
+		if(observer instanceof CellArray) {
+			CellArray ca = (CellArray)observer;
+			return ca.isGrid();
+		}
+		return false;
+	}
 	
 	
+	public void visit(OcltEdge cellEdge) {
+		observer.visit(cellEdge);
+	}
 	
-	
+	public void cellCut() {
+		cellCut = true;
+		observer.setCut();
+	}
 
 }

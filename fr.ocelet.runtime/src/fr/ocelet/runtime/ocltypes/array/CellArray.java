@@ -20,14 +20,18 @@
 */
 package fr.ocelet.runtime.ocltypes.array;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import fr.ocelet.runtime.entity.AbstractEntity;
 import fr.ocelet.runtime.geom.ocltypes.Cell;
 import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.raster.Grid;
+import fr.ocelet.runtime.relation.GeomCellEdge;
+import fr.ocelet.runtime.relation.OcltEdge;
 
 /**
  * @author Mathieu Castets - Initial contribution
@@ -42,16 +46,29 @@ public class CellArray<T> extends ArrayInterface<T> {
 	private int height;
 	private Cell cell;
 	private boolean start = true;
-
+	private HashMap<Integer, ArrayList<Integer>> cells = null;
+	private Iterator<Integer> xIterator;	    
+	private Iterator<Integer> yIterator;	
+	private Integer currentX;
+	private Integer currentY;
+	private boolean newInstance = false;
+	
+	
+	public boolean isGrid() {
+		return newInstance;
+	}
 	public CellArray(T ae) {
-		this.ae = ae;
-
+		this.ae = ae;		
 		this.cell = (Cell) ((AbstractEntity) ae).getSpatialType();
 		cell.setX(0);
 		cell.setY(0);
 		this.grid = cell.getGrid();
 		this.width = grid.getWidth();
 		this.height = grid.getHeight();
+	}
+	@Override
+	public void setCut() {
+		newInstance = true;
 	}
 
 	/**
@@ -65,6 +82,37 @@ public class CellArray<T> extends ArrayInterface<T> {
 	@Override
 	public void addFill(int numberOfObjects, T value) {
 
+	}
+	@Override
+	public boolean add(T val) {
+		if(newInstance == false) {
+			if(cells == null) {
+			this.ae = val;
+			this.cell = (Cell) ((AbstractEntity) val).getSpatialType();
+			this.grid = cell.getGrid();
+			this.width = grid.getWidth();
+			this.height = grid.getHeight();
+			cells = new HashMap<Integer, ArrayList<Integer>>();
+			ArrayList<Integer> ys = new ArrayList<Integer>();
+			ys.add(cell.getY());
+			cells.put(cell.getX(), ys);
+			xIterator = cells.keySet().iterator();
+			yIterator = ys.iterator();
+			currentX = xIterator.next();
+			currentY = yIterator.next();
+		}else {
+			Cell cell = (Cell) ((AbstractEntity) ae).getSpatialType();
+		
+		if(cells.keySet().contains(cell.getX())) {
+			cells.get(cell.getX()).add(cell.getY());
+		}else {
+			ArrayList<Integer> ys = new ArrayList<Integer>();
+			ys.add(cell.getY());
+			cells.put(cell.getX(), ys);
+		}
+		}
+		}
+		return true;
 	}
 
 	@Override
@@ -148,7 +196,10 @@ public class CellArray<T> extends ArrayInterface<T> {
 
 	@Override
 	public int size() {
+		if(newInstance == false)
 		return grid.getWidth() * grid.getHeight();
+		
+		return cells.size();
 	}
 
 	/**
@@ -205,31 +256,81 @@ public class CellArray<T> extends ArrayInterface<T> {
 	 * }
 	 */
 	public class CellIterator implements Iterator<T> {
-
+		
+		
+		
 		@Override
 		public boolean hasNext() {
+			if(cells == null) {
 			if (cell.getX() == width - 1 && cell.getY() == height - 1) {
 				cell.set(0, 0);
 				start = true;
 				return false;
 			}
 			return true;
+			}else {
+				
+				if(yIterator.hasNext()) {
+					return true;
+				}else {
+					if(xIterator.hasNext()) {
+						return true;
+					}
+				}
+				xIterator = cells.keySet().iterator();
+				currentX = xIterator.next();
+				yIterator = cells.get(currentX).iterator();
+				currentY = yIterator.next();
+				return false;
+			}
+			
 		}
 
 		@Override
 		public T next() {
-			if (start) {
-				cell.set(0, 0);
-				start = false;
-			} else {
-				if (cell.getX() == width - 1) {
-					cell.setX(0);
-					cell.setY(cell.getY() + 1);
+			if(cells == null) {
+				if (start) {
+					cell.set(0, 0);
+					start = false;
 				} else {
-					cell.setX(cell.getX() + 1);
+					if (cell.getX() == width - 1) {
+						cell.setX(0);
+						cell.setY(cell.getY() + 1);
+					} else {
+						cell.setX(cell.getX() + 1);
+					}
 				}
+				return ae;
+			}else {
+				if(yIterator.hasNext()){
+					currentY = yIterator.next();
+				}else{
+
+					currentX = xIterator.next();
+					yIterator = cells.get(currentX).iterator();
+					currentY = yIterator.next();
+						
+
+				}
+				
+				
+				cell.setX(currentX);
+				cell.setY(currentY);
+				// TODO Auto-generated method stub
+				return ae;
 			}
-			return ae;
+		}
+			
+	}
+	public HashMap<Integer, ArrayList<Integer>> getCellMap(){
+		return cells;
+	}
+	
+	@Override
+	public void visit(OcltEdge cellEdge) {
+		if(cellEdge instanceof GeomCellEdge) {
+			if(cells != null)
+		((GeomCellEdge)cellEdge).setCellMap(cells);
 		}
 	}
 }

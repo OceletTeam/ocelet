@@ -33,6 +33,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Random;
 
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.List;
@@ -223,5 +224,10 @@ public class Miscutils {
 		if (ms > 0)
 			sb.append(ms + "ms");
 		return sb.toString();
+	}
+	
+	public static Double nextGaussian() {
+		Random r = new Random();
+		return r.nextGaussian();
 	}
 }

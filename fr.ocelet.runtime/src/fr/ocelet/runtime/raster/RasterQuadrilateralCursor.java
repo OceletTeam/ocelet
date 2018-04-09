@@ -1,6 +1,6 @@
 /*
 *  Ocelet spatial modelling language.   www.ocelet.org
-*  Copyright Cirad 2010-2018
+*  Copyright Cirad 2010-2016
 *
 *  This software is a domain specific programming language dedicated to writing
 *  spatially explicit models and performing spatial dynamics simulations.
@@ -20,38 +20,38 @@
 */
 package fr.ocelet.runtime.raster;
 
-/**
- * @author Mathieu Castets - Initial contribution
- */
-public class RasterQuadrilateralCursor extends RasterCursor {
+public class RasterQuadrilateralCursor  extends RasterCursor{
 
+	
+	
 	private NeighbourSide ns;
 	private NeighbourSideRight nsr;
 	private NeighbourSideRightBot nsrb;
 	private NeighbourSideBot nsb;
 	private NeighbourSideBotLeft nsbl;
-
+	
+	
+	
 	protected Incrementor incrementor;
-
 	public RasterQuadrilateralCursor(Grid grid) {
 		super(grid);
 		incrementor = new IncrementorHeight();
 		// TODO Auto-generated constructor stub
 		direction = -1;
 		x = -1;
-
+		
 		nsr = new NeighbourSideRight();
 		nsrb = new NeighbourSideRightBot();
 		nsb = new NeighbourSideBot();
 		nsbl = new NeighbourSideBotLeft();
 		ns = nsr;
 	}
-
-	public void setMode(String mode) {
-
-		if (mode.equals("Four")) {
+	
+	public void setMode(String mode){
+		
+		if(mode.equals("Four")){
 			incrementor = new IncrementorFour();
-		} else {
+		}else{
 			incrementor = new IncrementorHeight();
 		}
 	}
@@ -59,145 +59,157 @@ public class RasterQuadrilateralCursor extends RasterCursor {
 	@Override
 	public boolean hasNext() {
 
-		if (x == width - 2 && y == height - 1 && x2 == width - 1 && y2 == height - 1) {
-			x = -1;
-			y = 0;
-			x2 = 0;
-			y2 = 0;
-			direction = -1;
-
-			gridManager.reset();
-			return false;
-		} else {
-			return true;
-		}
+		if(x == width - 2 && y == height - 1 && x2 == width - 1 && y2 == height - 1)
+        {
+            gridManager.reset();
+            x = 0;
+            y = 0;
+            x2 = 0;
+            y2 = 0;
+            direction = -1;        
+          
+            return false;
+        } else
+        {
+            return true;
+        }
 	}
 
 	@Override
-	public void next() {
+	public void next() {		
 		// while(!setEnd2()) ;
-		ns.next();
-		// cursor();
-
+		 ns.next();
+		//cursor();
+	       		
 	}
-
+	
+	
 	@Override
 	public void move() {
-		if (x == width - 1) {
-			x = 0;
-			y++;
-			gridManager.increment();
-		} else {
-
-			x++;
-		}
-
+		 if(x == width - 1){
+	            x = 0;
+	            y++;
+	            gridManager.increment();
+	        } else {
+	        
+	            x++;
+	        }
+		
 	}
+	
+	public boolean inbounds(int x, int y){
+    
+        return x >= 0 && y >= 0 && x < width && y < height;
+    }
 
-	public boolean inbounds(int x, int y) {
-
-		return x >= 0 && y >= 0 && x < width && y < height;
-	}
-
-	public class IncrementorFour extends Incrementor {
-
-		public void increment() {
-			if (direction == 2) {
-
-				direction = 0;
-				move();
-			} else {
-
-				direction = direction + 2;
-			}
-		}
-	}
-
-	public class IncrementorHeight extends Incrementor {
-		public void increment() {
-
-			if (direction == 3) {
-
-				direction = 0;
-				move();
-			} else {
-
-				direction++;
-			}
+	public class IncrementorFour extends Incrementor{
+		
+		public void increment(){
+			if(direction == 2){
+		        
+	            direction = 0;
+	            move();
+	        } else {
+	        
+	            direction = direction + 2;
+	        }
 		}
 	}
 
-	public abstract class Incrementor {
-
-		public abstract void increment();
-
+	
+	
+public class IncrementorHeight extends Incrementor{
+	 public void increment(){
+		    
+	        if(direction == 3){
+	        
+	            direction = 0;
+	            move();
+	        } else {
+	        
+	            direction++;
+	        }
+	    }
 	}
 
-	public abstract class NeighbourSide {
-		public abstract void next();
+public abstract class Incrementor{
+	
+	public abstract void increment();
+	
+	
+}
 
+public abstract class NeighbourSide{
+	public abstract void next();
+		
+	
+}
+
+public class NeighbourSideRight extends NeighbourSide{
+	
+	public void next(){
+		 move();
+		 if(inbounds(x + 1, y)){
+			 x2 = x + 1;
+             y2 = y;
+             ns = nsrb;
+		 }else{
+			ns = nsrb;
+			ns.next();
+		 }
 	}
+		
+	
+}
 
-	public class NeighbourSideRight extends NeighbourSide {
+public class NeighbourSideRightBot extends NeighbourSide{
+	
+	public void next(){
+		 if(inbounds(x + 1, y + 1)){
+			 x2 = x + 1;
+			 y2 = y + 1;
+			 ns = nsb;
 
-		public void next() {
-			move();
-			if (inbounds(x + 1, y)) {
-				x2 = x + 1;
-				y2 = y;
-				ns = nsrb;
-			} else {
-				ns = nsrb;
-				ns.next();
-			}
-		}
-
+		 }else{
+			ns = nsb;
+			ns.next();
+		 }
 	}
+		
+	
+}
 
-	public class NeighbourSideRightBot extends NeighbourSide {
+public class NeighbourSideBot extends NeighbourSide{
+	public void next(){
+		 if(inbounds(x, y + 1)){
+			 x2 = x;
+			 y2 = y + 1;
+			 ns = nsbl;
 
-		public void next() {
-			if (inbounds(x + 1, y + 1)) {
-				x2 = x + 1;
-				y2 = y + 1;
-				ns = nsb;
-
-			} else {
-				ns = nsb;
-				ns.next();
-			}
-		}
-
+		 }else{
+			ns = nsbl;
+			ns.next();
+		 }
 	}
+		
+	
+}
 
-	public class NeighbourSideBot extends NeighbourSide {
-		public void next() {
-			if (inbounds(x, y + 1)) {
-				x2 = x;
-				y2 = y + 1;
-				ns = nsbl;
+public class NeighbourSideBotLeft extends NeighbourSide{
+	public void next(){
+		if(inbounds(x - 1, y + 1)){
+			 x2 = x - 1;
+			 y2 = y + 1;
+		ns = nsr;
 
-			} else {
-				ns = nsbl;
-				ns.next();
-			}
-		}
-
+		 }else{
+			 ns = nsr;
+			 ns.next();
+		 }
 	}
+		
+	
+}
 
-	public class NeighbourSideBotLeft extends NeighbourSide {
-		public void next() {
-			if (inbounds(x - 1, y + 1)) {
-				x2 = x - 1;
-				y2 = y + 1;
-				ns = nsr;
-
-			} else {
-				ns = nsr;
-				ns.next();
-			}
-		}
-
-	}
 
 }
