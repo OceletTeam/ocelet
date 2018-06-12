@@ -316,7 +316,7 @@ public class RasterHexagonalCursor extends RasterCursor {
             y2 = 0;
             direction = 0;        
           
-         //   gridManager.reset();
+            gridManager.reset();
             return false;
         } else
         {
@@ -553,7 +553,6 @@ public class RasterHexagonalCursor extends RasterCursor {
 	          
 	            
 	            gridManager.increment();
-	            gridManager.yIncrement();
 	           
 	        } else {				        
 	            x++;

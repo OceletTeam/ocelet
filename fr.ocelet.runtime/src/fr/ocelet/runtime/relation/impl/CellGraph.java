@@ -784,5 +784,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 	public int getSize(){
 		return grid.getWidth() * grid.getHeight();
 	}
+	
+	
 
 }

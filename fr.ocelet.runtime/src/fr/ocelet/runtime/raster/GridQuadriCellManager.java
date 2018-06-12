@@ -57,7 +57,7 @@ public class GridQuadriCellManager extends GridCellManager{
      
 
     }
-
+    @Override
     public void init(){
     
         firstLine = new CellValues[grid.getWidth()];
@@ -76,20 +76,20 @@ public class GridQuadriCellManager extends GridCellManager{
         }
 
     }
-
+    @Override
     public void increment(){
         validate();
         CellValues temp[] = firstLine;
         firstLine = nextLine;
         nextLine = temp;
-        for(int i = 0; i < grid.getWidth(); i++){
+        /*for(int i = 0; i < grid.getWidth(); i++){
         
         	for(String name : properties){
         		nextLine[i].clear(name);
         	}
            
 
-        }
+        }*/
 
         y++;
     }
@@ -138,7 +138,7 @@ public class GridQuadriCellManager extends GridCellManager{
                     	Double d;
                     	CellAggregOperator cao = aggregMap.get(name);
                     	if(cao.preval() == false){
-                    		d = cao.apply(values, null);
+                    		d = cao.apply(values, grid.getDoubleValue(name, i, y));
                     	}else{
                     		values.add(grid.getDoubleValue(name, i, y));
                     		d = cao.apply(values, grid.getDoubleValue(name, i, y));
@@ -151,6 +151,7 @@ public class GridQuadriCellManager extends GridCellManager{
                 
                     grid.setCellValue(name, i, y, values.get((int)(Math.random() * values.size())));
                 }
+                cv.clear(name);
             }
 
         }
@@ -169,12 +170,14 @@ public class GridQuadriCellManager extends GridCellManager{
                 if(aggregMap.containsKey(name)){
                 	
                     if(!cv.getValues(name).isEmpty()){
+                    	
+                    	Double value = grid.getDoubleValue(name, i, y);
                     	if(cao.preval() == false){
-	                		 grid.setCellValue(name, i, y, cao.apply(values, null));	                    
+	                		 grid.setCellValue(name, i, y, cao.apply(values, value));	                    
   
 	                	  }else{
 	                		  values.add(grid.getDoubleValue(name, i, y));
-	                		  grid.setCellValue(name, i, y , cao.apply(cv.getValues(name), grid.getDoubleValue(name, i, y)));	                    
+	                		  grid.setCellValue(name, i, y , cao.apply(cv.getValues(name), value));	                    
 
 	                	  }
                     }
@@ -182,6 +185,7 @@ public class GridQuadriCellManager extends GridCellManager{
                 
                     grid.setCellValue(name, i, y, cv.getValues(name).get((int)(Math.random() * cv.getValues(name).size())));
                 }
+                cv.clear(name);
             }
 
         }

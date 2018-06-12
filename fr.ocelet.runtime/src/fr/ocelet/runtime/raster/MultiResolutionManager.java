@@ -149,13 +149,15 @@ public class MultiResolutionManager {
     
     
     public void clearFirstLineName(String name){
-    	for(int i = 0; i < width; i ++){
+    	for(int i = 0; i < firstLine.length; i ++){
+    		if(firstLine[i] != null)
     		firstLine[i].clear(name);
     	}
     }
     public void clearFirstLineProperties(){
-    	for(int i = 0; i < width; i ++){
+    	for(int i = 0; i < firstLine.length; i ++){
     		for(String name : properties){
+    			if(firstLine[i] != null)
     			firstLine[i].clear(name);
     		}
     	}

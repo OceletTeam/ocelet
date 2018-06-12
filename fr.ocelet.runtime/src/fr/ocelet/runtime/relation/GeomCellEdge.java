@@ -48,9 +48,11 @@ import fr.ocelet.runtime.raster.Grid;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.LinkedHashMap;
 
 // Referenced classes of package fr.ocelet.runtime.relation:
 //            OcltEdge, OcltRole, AggregOperator
@@ -62,7 +64,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	private HashMap<String, CellAggregOperator> aggregMap = new HashMap<String, CellAggregOperator>();
 
-	private HashMap<Integer, HashMap<Integer, ArrayList<GeomContainer>>> matrice = new HashMap<Integer, HashMap<Integer,ArrayList<GeomContainer>>>();
+	private LinkedHashMap<Integer, LinkedHashMap<Integer, ArrayList<GeomContainer>>> matrice = new LinkedHashMap<Integer, LinkedHashMap<Integer,ArrayList<GeomContainer>>>();
 
 	private List<R2> geomEntities;	    
 	protected Grid grid;	    
@@ -166,7 +168,6 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	}
 	public GeomCellEdge(List<? extends AbstractEntity> cellList, List<R2> geomEntities, Double distance){ //Grid grid, List<R2> geomEntities){
-		System.out.println("DISTANCE"+distance);
 		this.distance = distance;
 		this.geomEntities = geomEntities;
 		AbstractEntity ae = cellList.get(0);
@@ -218,7 +219,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 				ArrayList<GeomContainer> newList = new ArrayList<GeomContainer>();
 				newList.add(gc);
-				HashMap<Integer, ArrayList<GeomContainer>> yHash = new HashMap<Integer, ArrayList<GeomContainer>>();
+				LinkedHashMap<Integer, ArrayList<GeomContainer>> yHash = new LinkedHashMap<Integer, ArrayList<GeomContainer>>();
 				yHash.put(y, newList);
 				matrice.put(x, yHash);
 
@@ -276,7 +277,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				triangularExtractCut(list);
 			}
 		}
-
+		
+		
+		
 		xIterator = matrice.keySet().iterator();
 		currentxKey = xIterator.next();
 		yIterator = matrice.get(currentxKey).keySet().iterator();
@@ -718,7 +721,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	private void setQuadrilateralCells(R2 r2, Polygon polygon,HashMap<Integer, ArrayList<Line>> keyLines)
 	{
-		
+		ArrayList<int[]> pixList = new ArrayList<int[]>();
+		HashMap<Integer, ArrayList<Integer>> coordList = new HashMap<Integer, ArrayList<Integer>>();
+		ArrayList<Integer> xs = new ArrayList<Integer>();
 		int bounds[] = null;
 		if(distance == grid.getXRes() / 2) {
 		bounds = grid.intBounds(polygon);
@@ -743,9 +748,11 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			bounds[2] = bounds[2] + 1;
 		}
 	
+		for(int i = bounds[0]; i < bounds[2]; i ++){
+			
 		for(int j = bounds[1]; j < bounds[3]; j++){
 
-			for(int i = bounds[0]; i < bounds[2]; i ++){
+			
 
 				Coordinate c = null;
 				try {
@@ -757,14 +764,32 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				CoordinateSequence seq = new CoordinateArraySequence(new Coordinate[]{c});
 				Point p = new Point(seq, SpatialManager.geometryFactory());
 				if(polygon.distance(p) <= distance){
+					
 					add(r2, i, j );
 					index++;
 				}
+				/*if(polygon.distance(p) <= distance){
+					
+					if(coordList.keySet().contains(i)) {
+						coordList.get(i).add(j);
+					}else {
+						ArrayList<Integer> ys = new ArrayList<Integer>();
+						ys.add(j);
+						if(!xs.contains(i)) {
+							xs.add(i);
+						}
+					
+						coordList.put(i, ys);
+					}
+					index++;
+				}*/
+				
+				
 				}
 			}
 		}
-		if(index == 0)
-		{
+		if(index == 0){
+		
 			int scaledCentroid[] = null;
 			try{
 				scaledCentroid = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
@@ -773,11 +798,24 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			}
 			if(scaledCentroid != null) {
 				if(scaledCentroid[0] < grid.getWidth() && scaledCentroid[0] >= 0 && scaledCentroid[1] < grid.getHeight() && scaledCentroid[1] >=0) {
-				add(r2, scaledCentroid[0], scaledCentroid[1]);
+				
+					
+					add(r2, scaledCentroid[0], scaledCentroid[1]);
 				}
 				
 			}
-		}
+	  }/*else {
+		 
+		  Collections.shuffle(xs);
+		  for(Integer x : xs) {
+			  ArrayList<Integer> ys = coordList.get(x);
+			  Collections.shuffle(ys);
+			  for(Integer y : ys) {
+				  add(r2, x, y);
+			  }
+		  }
+	  }*/
+	
 	} 
 	
 	private void setQuadrilateralCellsCut(R2 r2, Polygon polygon,HashMap<Integer, ArrayList<Line>> keyLines)
@@ -1418,7 +1456,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	}
 	public void disconnectAll(){
-		matrice = new HashMap<Integer, HashMap<Integer,ArrayList<GeomContainer>>>();
+		matrice = new LinkedHashMap<Integer, LinkedHashMap<Integer,ArrayList<GeomContainer>>>();
 	}
 	public void disconnect(R1 cell, R2 role){
 
@@ -1942,7 +1980,10 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 	public void setBooleanProperty(int property, Boolean value){
 		currentRoleKey.setBooleanValue(property, value);
 	}
-
+	public void shuffle() {
+		
+		//Collections.shuffle(matrice.keySet());
+	}
 	private void initEdgeProperty(){
 
 		KeyMap<String, String> properties = getEdgeProperties();

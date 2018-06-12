@@ -20,6 +20,7 @@
 */
 package fr.ocelet.runtime.raster;
 
+import fr.ocelet.runtime.ocltypes.List;
 import fr.ocelet.runtime.relation.CellValues;
 
 /**
@@ -41,7 +42,7 @@ public class GridHexaCellManager extends GridCellManager {
    
      
   }
-
+  @Override
   public void reset(){
   
 	  validateAll();
@@ -92,12 +93,13 @@ public class GridHexaCellManager extends GridCellManager {
       firstLine = midLine;
       midLine = nextLine;
       nextLine = temp;
-      for(int i = 0; i < grid.getWidth(); i++){
+     /* for(int i = 0; i < grid.getWidth(); i++){
       
       	for(String name : properties){
       		nextLine[i].clear(name);
       	}       
-      }     
+      }   */
+      y++;
   }
   
   
@@ -122,26 +124,17 @@ public class GridHexaCellManager extends GridCellManager {
   }
 
 
-
+  @Override
   public void add(int x, int y, String name, Double value){
 	  
-	    if(y + 1== this.y){
-	    	//  System.out.println("FIRST ");
-	    	// System.out.println("ADD FIRST "+x+" "+y+" "+value+" "+this.y);
+	   /* if(y + 1== this.y){
 	      }
 	      if(y == this.y){
-	    	//  System.out.println("MID ");
-	    	 // System.out.println("ADD MID "+x+" "+y+" "+value+" "+this.y);
 	      }
 	      if(y - 1 == this.y){
-	    	 // System.out.println("ADD NEXT "+x+" "+y+" "+value+" "+this.y);
-	    	//  System.out.println("NEXT ");
 	         
-	      }
-	// System.out.println("ADD "+x+" "+y+" "+value+" "+this.y);
-	  //System.out.println(get(x, y).getValues(name));
+	      }*/
       get(x, y).add(name, value);
-   //   System.out.println(get(x, y).getValues(name));
      
   }
 
@@ -178,9 +171,11 @@ public class GridHexaCellManager extends GridCellManager {
 	                	  
 	                	  
 	                	  if(cao.preval() == false){
-	                		 grid.setCellValue(name, i, y - 1, cao.apply(cv2.getValues(name), null));	                    
+	                		 grid.setCellValue(name, i, y - 1, cao.apply(cv2.getValues(name), grid.getDoubleValue(name, i, y - 1)));	                    
   
 	                	  }else{
+	                		  
+	                		  cv2.getValues(name).add(grid.getDoubleValue(name, i, y - 1));
 	                		  grid.setCellValue(name, i, y - 1, cao.apply(cv2.getValues(name), grid.getDoubleValue(name, i, y - 1)));	                    
 
 	                	  }
@@ -193,9 +188,10 @@ public class GridHexaCellManager extends GridCellManager {
 	                	/*  System.out.println(i+" "+(y ));
 	                	  System.out.println(" CV2 "+cv3);*/
 	                	  if(cao.preval() == false){
-	                		 grid.setCellValue(name, i, y, cao.apply(cv3.getValues(name), null));	                    
+	                		 grid.setCellValue(name, i, y, cao.apply(cv3.getValues(name), grid.getDoubleValue(name, i, y)));	                    
   
 	                	  }else{
+	                		  cv2.getValues(name).add(grid.getDoubleValue(name, i, y));
 	                		  grid.setCellValue(name, i, y, cao.apply(cv3.getValues(name), grid.getDoubleValue(name, i, y)));	                    
 
 	                	  }
@@ -214,12 +210,12 @@ public class GridHexaCellManager extends GridCellManager {
 	            	  if(!cv3.getValues(name).isEmpty()){
 		                  grid.setCellValue(name, i, y , cv3.getValues(name).get((int)(Math.random() * cv3.getValues(name).size())));
 		                  
-		              }
-	              
+	              }
 	          }
-	          }
-
-	      }
+	              cv2.clear(name);
+	              cv3.clear(name);
+          }
+	 }
  }
   
 @Override
@@ -238,11 +234,14 @@ public class GridHexaCellManager extends GridCellManager {
                   if(!cv.getValues(name).isEmpty()){
                 	  
                  Double d; 
+                 List<Double> values = cv.getValues(name);
+                 Double value = grid.getDoubleValue(name, i, y - 1);
                	 if(cao.preval() == false){
                		 
-               		d = cao.apply(cv.getValues(name), null); 
+               		d = cao.apply(values, value); 
                	 }else{
-               		 d = cao.apply(cv.getValues(name), grid.getDoubleValue(name, i, y - 1)); 
+               		 values.add(value);
+               		 d = cao.apply(values, value); 
 
                	 }
                 	 //System.out.println(" CV1 "+cv);
@@ -253,7 +252,7 @@ public class GridHexaCellManager extends GridCellManager {
               
                   grid.setCellValue(name, i, y - 1, cv.getValues(name).get((int)(Math.random() * cv.getValues(name).size())));
               }
-              
+              cv.clear(name);
           }
           
 

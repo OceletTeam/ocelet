@@ -44,6 +44,7 @@ implements DiGraphInterface<E, R1, R2>{
     
     }
 
+
     public void setCompleteIteratorGeomCell(E e)
     {
     	this.geomCellEdge = (GeomCellEdge)e;

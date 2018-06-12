@@ -68,11 +68,12 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
                     	
                     	Double d;
                     	CellAggregOperator cao = aggregMap.get(name);
+                    	Double value = grid.getDoubleValue(name, i, y);
                     	if(cao.preval() == false){
-                    		d = cao.apply(values, null);
+                    		d = cao.apply(values, value);
                     	}else{
-                    		values.add(grid.getDoubleValue(name, i, y));
-                    		d = cao.apply(values, grid.getDoubleValue(name, i, y));
+                    		values.add(value);
+                    		d = cao.apply(values, value);
                     	}
                     	
                         grid.setCellValue(name, i, y, d);
@@ -82,6 +83,7 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
                 
                     grid.setCellValue(name, i, y, cv.getValues(name).get((int)(Math.random() * (double)cv.getValues(name).size())));
                 }
+                cv.clear(name);
             }
 
         }		

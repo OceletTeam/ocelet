@@ -794,7 +794,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							CellAggregOperator cao = aggregMap.get(name);   
 							Double d;
 							if(cao.preval() == false){
-								d = cao.apply(values, null);
+								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
 							}else{
 								values.add(globalGrid.getDoubleValue(name, i, currentY));
 								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
@@ -810,6 +810,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				}
 
 			}
+			//mrm.clearFirstLineProperties();
 		
 	}
 
@@ -830,7 +831,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							CellAggregOperator cao = aggregMap.get(name);   
 							Double d;
 							if(cao.preval() == false){
-								d = cao.apply(values, null);
+								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
 							}else{
 								values.add(globalGrid.getDoubleValue(name, i, currentY));
 								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
@@ -910,7 +911,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				}*/
 
 			}
-		
+		//mrm.clearFirstLineProperties();
 		
 	}
 	

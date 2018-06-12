@@ -61,6 +61,7 @@ public class RasterQuadrilateralCursor  extends RasterCursor{
 
 		if(x == width - 2 && y == height - 1 && x2 == width - 1 && y2 == height - 1)
         {
+			
             gridManager.reset();
             x = 0;
             y = 0;

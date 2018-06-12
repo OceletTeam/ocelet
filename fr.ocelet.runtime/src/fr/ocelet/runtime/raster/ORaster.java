@@ -286,12 +286,12 @@ public class ORaster {
     			coverage = (GridCoverage2D) Operations.DEFAULT.resample(coverage,SpatialManager.getCrs());
     		}
     	   System.out.println("end resample");*/
-	 geometry2D = coverage.getGridGeometry();
+        geometry2D = coverage.getGridGeometry();
         RenderedImage rendImage = coverage.getRenderedImage();
         bounds[0] = geometry2D.getEnvelope2D().getMinX();
-                bounds[1] = geometry2D.getEnvelope2D().getMinY();
-                bounds[2] =geometry2D.getEnvelope2D().getMaxX();
-                bounds[3] = geometry2D.getEnvelope2D().getMaxY();
+        bounds[1] = geometry2D.getEnvelope2D().getMinY();
+        bounds[2] =geometry2D.getEnvelope2D().getMaxX();
+        bounds[3] = geometry2D.getEnvelope2D().getMaxY();
         raster = rendImage.getData();
         this.minGridX = raster.getMinX();
         this.minGridY = raster.getMinY();
@@ -336,7 +336,7 @@ public class ORaster {
 			coverage = (GridCoverage2D) Operations.DEFAULT.resample(coverage,SpatialManager.getCrs());
 		}
 	   System.out.println("end resample");*/
-	 geometry2D = coverage.getGridGeometry();
+        geometry2D = coverage.getGridGeometry();
     	double x = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[0];
     	double y = geometry2D.getEnvelope().getLowerCorner().getCoordinate()[1];
     	double x2 = geometry2D.getEnvelope().getUpperCorner().getCoordinate()[0];
@@ -556,8 +556,10 @@ public class ORaster {
         double minY = 1.7976931348623157E+308D;
         double maxX = 0.0D;
         double maxY = 0.0D;
+        
         Coordinate acoordinate[];
         int j = (acoordinate = coordinates).length;
+        
         for(int i = 0; i < j; i++)
         {
             Coordinate c = acoordinate[i];

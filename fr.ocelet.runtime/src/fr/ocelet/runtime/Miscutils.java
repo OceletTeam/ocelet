@@ -228,6 +228,10 @@ public class Miscutils {
 	
 	public static Double nextGaussian() {
 		Random r = new Random();
-		return r.nextGaussian();
+		Double gaussian = r.nextGaussian();
+		while(gaussian < - 1 || gaussian > 1) {
+			gaussian = r.nextGaussian();
+		}
+		return gaussian;
 	}
 }
