@@ -310,7 +310,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		}
 		int index = 0;
 
-
+		if(bounds != null) {
 		if(bounds[1] > 0){
 			bounds[1] = bounds[1] - 1;
 		}
@@ -349,6 +349,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			if(scaledCentroid != null)
 				add(r2, scaledCentroid[0], scaledCentroid[1]);
 		}
+		}
 	}
 	
 	private void setTriangularCellsCut(R2 r2, Polygon polygon, HashMap<Integer, ArrayList<Line>> lines)
@@ -360,8 +361,8 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			bounds = grid.intBounds(polygon, distance);
 		}
 		int index = 0;
-
-
+		
+		if(bounds != null) {
 		if(bounds[1] > 0){
 			bounds[1] = bounds[1] - 1;
 		}
@@ -410,6 +411,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				}
 			}
 		}
+		}
 	}
 
 	private void setTriangularCells(R2 r2, Line line)
@@ -419,11 +421,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		{
 			int c1[] = grid.gridCoordinate(coordinates[i].x, coordinates[i].y);
 			int c2[] = grid.gridCoordinate(coordinates[i + 1].x, coordinates[i + 1].y);
-			int x = c1[0];
-			int y = c1[1];
-			int x2 = c2[0];
-			int y2 = c2[1];
-			bresenham(x, y, x2, y2, r2);
+			if(c1!= null && c2 != null) {
+				int x = c1[0];
+				int y = c1[1];
+				int x2 = c2[0];
+				int y2 = c2[1];
+				bresenham(x, y, x2, y2, r2);
+			}
 		}
 
 	}
@@ -435,11 +439,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		{
 			int c1[] = grid.gridCoordinate(coordinates[i].x, coordinates[i].y);
 			int c2[] = grid.gridCoordinate(coordinates[i + 1].x, coordinates[i + 1].y);
-			int x = c1[0];
-			int y = c1[1];
-			int x2 = c2[0];
-			int y2 = c2[1];
+			if(c1!= null && c2 != null) {
+				int x = c1[0];
+				int y = c1[1];
+				int x2 = c2[0];
+				int y2 = c2[1];
 			bresenhamCut(x, y, x2, y2, r2);
+			}
 		}
 
 	}
@@ -449,8 +455,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		Coordinate coordinates[] = point.getCoordinates();
 
 		int c1[] = grid.gridCoordinate(coordinates[0].x, coordinates[0].y);
-		add(r2, c1[0], c1[1]);
-
+		if(c1 != null) {
+			add(r2, c1[0], c1[1]);
+		}
 
 	}
 	
@@ -459,12 +466,14 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		Coordinate coordinates[] = point.getCoordinates();
 
 		int c1[] = grid.gridCoordinate(coordinates[0].x, coordinates[0].y);
+		if(c1 != null) {
 		if(cellMap.keySet().contains(c1[0])) {
 			
 			if(cellMap.get(c1[0]).contains(c1[1])) {
 				add(r2, c1[0], c1[1]);
 			}
 			
+		}
 		}
 
 
@@ -479,7 +488,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			bounds = grid.intBounds(polygon, distance);
 		}
 		int index = 0;
-		
+		if(bounds != null) {
 		if(bounds[1] > 0){
 			bounds[1] = bounds[1] - 1;
 		}
@@ -519,7 +528,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			if(scaledCentroid != null) 
 				add(r2, scaledCentroid[0], scaledCentroid[1]);
 		}
-
+		}
 	}
 	
 	private void setHexagonalCellsCut(R2 r2, Polygon polygon){
@@ -531,7 +540,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			bounds = grid.intBounds(polygon, distance);
 		}
 		int index = 0;
-		
+		if(bounds != null) {
 		if(bounds[1] > 0){
 			bounds[1] = bounds[1] - 1;
 		}
@@ -582,7 +591,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			}
 				
 		}
-
+		}
 	}
 
 	private void setHexagonalCells(R2 r2, Line line){
@@ -592,11 +601,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		{
 			int c1[] = grid.gridCoordinate(coordinates[i].x, coordinates[i].y);
 			int c2[] = grid.gridCoordinate(coordinates[i + 1].x, coordinates[i + 1].y);
-			int x = c1[0];
-			int y = c1[1];
-			int x2 = c2[0];
-			int y2 = c2[1];
-			bresenham(x, y, x2, y2, r2);
+			if( c1 != null && c2 != null) {
+				int x = c1[0];
+				int y = c1[1];
+				int x2 = c2[0];
+				int y2 = c2[1];
+				bresenham(x, y, x2, y2, r2);
+			}
 		}
 
 	}
@@ -608,11 +619,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		{
 			int c1[] = grid.gridCoordinate(coordinates[i].x, coordinates[i].y);
 			int c2[] = grid.gridCoordinate(coordinates[i + 1].x, coordinates[i + 1].y);
-			int x = c1[0];
-			int y = c1[1];
-			int x2 = c2[0];
-			int y2 = c2[1];
-			bresenhamCut(x, y, x2, y2, r2);
+			if(c1 != null && c2 != null) {
+				int x = c1[0];
+				int y = c1[1];
+				int x2 = c2[0];
+				int y2 = c2[1];
+				bresenhamCut(x, y, x2, y2, r2);
+			}
 		}
 
 	}
@@ -623,7 +636,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		Coordinate coordinates[] = point.getCoordinates();
 
 		int c1[] = grid.gridCoordinate(coordinates[0].x, coordinates[0].y);
-		add(r2, c1[0], c1[1]);
+		if(c1 != null) {
+			add(r2, c1[0], c1[1]);
+		}
 
 
 	}
@@ -633,47 +648,17 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		Coordinate coordinates[] = point.getCoordinates();
 
 		int c1[] = grid.gridCoordinate(coordinates[0].x, coordinates[0].y);
-		if(cellMap.keySet().contains(c1[0])) {
+		if(c1 != null) {
+			if(cellMap.keySet().contains(c1[0])) {
 			
-			if(cellMap.get(c1[0]).contains(c1[1])) {
-				add(r2, c1[0], c1[1]);
-			}
-			
-		}
-		
-
-
-	}
-
-	private void setQuadrilateralCells(R2 r2, Polygon polygon)
-	{
-		
-		int bounds[] = grid.intBounds(polygon);
-		int index = 0;
-		for(int i = bounds[0]; i <= bounds[2]; i++)
-		{
-			for(int j = bounds[1]; j <= bounds[3]; j++)
-			{
-				Coordinate c = grid.gridCoordinate(i, j);
-				Point point = Point.xy(Double.valueOf(c.x), Double.valueOf(c.y));
-
-				if(polygon.touches(point) || point.within(polygon))
-				{
-					add(r2, i , j );
-					index++;
+				if(cellMap.get(c1[0]).contains(c1[1])) {
+					add(r2, c1[0], c1[1]);
 				}
 			}
-
-		}
-
-		if(index == 0)
-		{
-			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
-			if(scaledCentroid[0] < grid.getWidth() && scaledCentroid[0] >= 0 && scaledCentroid[1] < grid.getHeight() && scaledCentroid[1] >=0) {
-				add(r2, scaledCentroid[0], scaledCentroid[1]);
-			}
 		}
 	}
+
+
 
 	private HashMap<Integer, ArrayList<Line>> makeLines(){
 		HashMap<Integer, ArrayList<Line>> lines = new HashMap<Integer, ArrayList<Line>>();
@@ -731,7 +716,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			bounds = grid.intBounds(polygon, distance);
 		}
 		int index = 0;
-
+		if(bounds != null) {
 
 		if(bounds[1] > 0){
 			bounds[1] = bounds[1] - 1;
@@ -802,19 +787,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 					
 					add(r2, scaledCentroid[0], scaledCentroid[1]);
 				}
-				
 			}
-	  }/*else {
-		 
-		  Collections.shuffle(xs);
-		  for(Integer x : xs) {
-			  ArrayList<Integer> ys = coordList.get(x);
-			  Collections.shuffle(ys);
-			  for(Integer y : ys) {
-				  add(r2, x, y);
-			  }
-		  }
-	  }*/
+		}
+	  }
 	
 	} 
 	
@@ -824,7 +799,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		int bounds[] = grid.intBounds(polygon);
 		int index = 0;
 
-
+		if(bounds != null) {
 		if(bounds[1] > 0){
 			bounds[1] = bounds[1] - 1;
 		}
@@ -886,6 +861,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				
 			}
 		}
+		}
 	} 
 
 	private void setQuadrilateralCells(R2 r2, Line line)
@@ -895,11 +871,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		{
 			int c1[] = grid.gridCoordinate(coordinates[i].x, coordinates[i].y);
 			int c2[] = grid.gridCoordinate(coordinates[i + 1].x, coordinates[i + 1].y);
-			int x = c1[0];
-			int y = c1[1];
-			int x2 = c2[0];
-			int y2 = c2[1];
-			bresenham(x, y, x2, y2, r2);
+			if(c1 != null && c2 != null) {
+				int x = c1[0];
+				int y = c1[1];
+				int x2 = c2[0];
+				int y2 = c2[1];
+				bresenham(x, y, x2, y2, r2);
+			}
 		}
 
 	}
@@ -910,11 +888,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		{
 			int c1[] = grid.gridCoordinate(coordinates[i].x, coordinates[i].y);
 			int c2[] = grid.gridCoordinate(coordinates[i + 1].x, coordinates[i + 1].y);
-			int x = c1[0];
-			int y = c1[1];
-			int x2 = c2[0];
-			int y2 = c2[1];
-			bresenhamCut(x, y, x2, y2, r2);
+			if(c1 != null && c2 != null) {
+				int x = c1[0];
+				int y = c1[1];
+				int x2 = c2[0];
+				int y2 = c2[1];
+				bresenhamCut(x, y, x2, y2, r2);
+			}
 		}
 
 	}
@@ -1063,13 +1043,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		return bounds;
 	}
 
-	private Point getPoint(Coordinate coordinate)
-	{
-		Coordinate c[] = new Coordinate[1];
-		c[0] = coordinate;
-		com.vividsolutions.jts.geom.CoordinateSequence cs = new CoordinateArraySequence(c);
-		return new Point(cs, new GeometryFactory());
-	}
+	
 
 	public boolean xHasNext()
 	{
@@ -1099,11 +1073,12 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				{
 					Double d;
 					CellAggregOperator cao = aggregMap.get(name);
+					Double value = grid.getDoubleValue(name, currentxKey, currentyKey);
 					if(cao.preval() == false){
-						d = cao.apply(values, null);
+						d = cao.apply(values, value);
 					}else{
-						values.add(grid.getDoubleValue(name, currentxKey, currentyKey));
-						d = cao.apply(values, grid.getDoubleValue(name, currentxKey, currentyKey));
+						values.add(value);
+						d = cao.apply(values, value);
 					}
 
 					grid.setCellValue(name, currentxKey, currentyKey, d);

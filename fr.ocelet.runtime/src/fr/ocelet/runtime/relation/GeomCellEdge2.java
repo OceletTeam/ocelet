@@ -182,6 +182,7 @@ public abstract class GeomCellEdge2<R1 extends OcltRole, R2 extends OcltRole> ex
 	private void setTriangularCells(R2 r2, Polygon polygon) {
 		int bounds[] = grid.intBounds(polygon);
 		int index = 0;
+		if(bounds != null) {
 		for (int i = bounds[0]; i < bounds[2]; i++) {
 			for (int j = bounds[1]; j < bounds[3]; j++) {
 				Coordinate c = grid.gridCoordinate(i, j);
@@ -196,6 +197,7 @@ public abstract class GeomCellEdge2<R1 extends OcltRole, R2 extends OcltRole> ex
 
 			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
 			add((AbstractEntity) r2, scaledCentroid[0], scaledCentroid[1]);
+		}
 		}
 	}
 
@@ -225,6 +227,7 @@ public abstract class GeomCellEdge2<R1 extends OcltRole, R2 extends OcltRole> ex
 
 		int bounds[] = grid.intBounds(polygon);
 		int index = 0;
+		if(bounds != null) {
 		for (int i = bounds[0]; i <= bounds[2]; i++) {
 
 			for (int j = bounds[1]; j <= bounds[3]; j++) {
@@ -246,7 +249,7 @@ public abstract class GeomCellEdge2<R1 extends OcltRole, R2 extends OcltRole> ex
 			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
 			add((AbstractEntity) r2, scaledCentroid[0], scaledCentroid[1]);
 		}
-
+		}
 	}
 
 	private void setHexagonalCells(R2 r2, Line line) {
@@ -305,58 +308,14 @@ public abstract class GeomCellEdge2<R1 extends OcltRole, R2 extends OcltRole> ex
 		return lines;
 	}
 
-	private void setQuadrilateralCells(R2 r2, Polygon polygon, HashMap<Integer, Line> lines) {
-
-		int bounds[] = grid.intBounds(polygon);
-		int index = 0;
-		for (int j = bounds[1] - 1; j <= bounds[3] + 1; j++) {
-			Line l = lines.get(j);
-
-			if (l.intersects(polygon)) {
-
-				try {
-					MultiLine ml = l.multiLineIntersection(polygon);
-					for (Line l2 : ml.asListOfLines()) {
-						Coordinate[] c = l2.getCoordinates();
-						Coordinate c1 = c[0];
-						Coordinate c2 = c[c.length - 1];
-
-						int[] ix = grid.gridCoordinate(c1.x, c1.y);
-						int[] ix2 = grid.gridCoordinate(c2.x, c2.y);
-
-						int x1 = ix[0];
-						int x2 = ix2[0];
-						int temp1 = ix[0];
-						int temp2 = ix2[0];
-
-						if (x1 > x2) {
-							temp2 = ix[0];
-							temp1 = ix2[0];
-						}
-
-						for (int x = temp1; x < temp2; x++) {
-							add((AbstractEntity) r2, x, j - 1);
-							// System.out.print(" "+x+" "+j+" |");
-							index++;
-						}
-					}
-				} catch (Exception e) {
-					System.out.println("error");
-				}
-			}
-		}
-		if (index == 0) {
-			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
-			add((AbstractEntity) r2, scaledCentroid[0], scaledCentroid[1]);
-		}
-	}
+	
 
 	private void setQuadrilateralCells(R2 r2, Polygon polygon, HashMap<Integer, Line> lines,
 			HashMap<Integer, Integer> abs, HashMap<Integer, Integer> ordo) {
 
 		int bounds[] = grid.intBounds(polygon);
 		int index = 0;
-
+		if(bounds != null) {
 		for (int j = bounds[1] - 1; j <= bounds[3] + 1; j++) {
 			Line l = lines.get(j);
 
@@ -405,30 +364,10 @@ public abstract class GeomCellEdge2<R1 extends OcltRole, R2 extends OcltRole> ex
 			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
 			add((AbstractEntity) r2, scaledCentroid[0], scaledCentroid[1]);
 		}
-	}
-
-	private void setQuadrilateralCells(R2 r2, Polygon polygon) {
-
-		int bounds[] = grid.intBounds(polygon);
-		int index = 0;
-		for (int i = bounds[0]; i <= bounds[2]; i++) {
-			for (int j = bounds[1]; j <= bounds[3]; j++) {
-				Coordinate c = grid.gridCoordinate(i, j);
-				Point point = Point.xy(Double.valueOf(c.x), Double.valueOf(c.y));
-
-				if (polygon.touches(point) || point.within(polygon)) {
-					add((AbstractEntity) r2, i, j);
-					index++;
-				}
-			}
-
-		}
-
-		if (index == 0) {
-			int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
-			add((AbstractEntity) r2, scaledCentroid[0], scaledCentroid[1]);
 		}
 	}
+
+	
 
 	private void setQuadrilateralCells(R2 r2, Line line) {
 		Coordinate coordinates[] = line.getCoordinates();

@@ -909,7 +909,9 @@ public class Grid {
 			bounds[2] = gridCoord2[0];
 			bounds[3] = gridCoord2[1];
 		}
-
+		if(gridCoord1 == null && gridCoord2 == null) {
+			return null;
+		}
 		
 		return bounds;
 	}

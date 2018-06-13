@@ -163,6 +163,7 @@ public abstract class GeomHexaCellEdge<R1 extends OcltRole, R2 extends OcltRole>
     {
         int bounds[] = grid.intBounds(polygon);
         int index = 0;
+        if(bounds != null) {
         for(int i = bounds[0]; i < bounds[2]; i++)
         {
             for(int j = bounds[1]; j < bounds[3]; j++)
@@ -182,6 +183,7 @@ public abstract class GeomHexaCellEdge<R1 extends OcltRole, R2 extends OcltRole>
         {
             int scaledCentroid[] = grid.gridCoordinate(polygon.getCentroid().getX(), polygon.getCentroid().getY());
             add(r2, scaledCentroid[0] - grid.getMinX(), scaledCentroid[1] - grid.getMinY());
+        }
         }
     }
 
