@@ -77,6 +77,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 	private OcltRole r1;
 	private OcltRole r2;
 	private HashMap<String, CellAggregOperator> aggregMap = new HashMap<String, CellAggregOperator>();
+	private HashMap<String, CellAggregOperator> agregMapSmall = new HashMap<String, CellAggregOperator>();
 	private boolean equalGrid = false;
 	private MultiResolutionManager mrm;
 	private DiRegularCellsEdgeManager edges = new DiRegularCellsEdgeManager();
@@ -393,7 +394,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 		} else {
 
 			globalGrid.setMode(4);
-			grid.setMode(1);
+			grid.setMode(2);
 		}
 
 
@@ -415,7 +416,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 		if(equalGrid){
 			if(x == endX - 1 && y == endY){
-
+				cellSynchronisation();
 				x = startX;
 				y = startY;
 				x2 = -1;
@@ -495,6 +496,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 				if(c2 != null){
+					cellSynchronisation();
 					x = c2[0];
 					y = c2[1];
 				
@@ -510,8 +512,6 @@ public abstract class DiCursorEdge extends OcltEdge{
 				
 			}else{
 				if(colCount == endX2){
-					
-					
 
 					globalSynchronisation();
 
@@ -522,6 +522,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				//System.out.println(y+" "+y2+" "+colCount+" "+endX2);
 				if(x2 == endX2){
 					colCount = startX2;
+					cellSynchronisation();
 					x2 = startX2;
 					y2++;
 					//System.out.println(y+" "+y2+" "+colCount+" "+endX2);
@@ -561,6 +562,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							if(hasNext()){
 								next();
 							}else{
+								
 								x2 = endX2;
 								y2 = endY2;
 							}
@@ -599,6 +601,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							if(hasNext()){
 								next();
 							}else{
+							
 								x2 = endX2;
 								y2 = endY2;
 							}
@@ -606,7 +609,6 @@ public abstract class DiCursorEdge extends OcltEdge{
 					}			
 
 						
-
 				}else{
 					
 					x2++;			
@@ -622,11 +624,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 					
 
 					if(c2 != null){
+						
 						x = c2[0];
 						y = c2[1];
 						
 						if(y == currentY + 1 || y ==currentY + 2){
-
 							colCount++;
 						}
 						
@@ -640,6 +642,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							
 							next();
 						}else{
+							cellSynchronisation();
 							x2 = endX2;
 							y2 = endY2;
 						}
@@ -1207,7 +1210,45 @@ public abstract class DiCursorEdge extends OcltEdge{
 	}
 	
 
+	public void cellSynchronisation(){
 
+		for(Iterator iterator = grid.getTempName().iterator(); iterator.hasNext();)
+		{
+			String name = (String)iterator.next();
+
+			List<Double> values = grid.getGeomTempValues(name);
+			if(!values.isEmpty()){
+
+				if(aggregMap.keySet().contains(name))
+				{
+					Double d;
+					CellAggregOperator cao = aggregMap.get(name);
+					Double value = grid.getDoubleValue(name, x2, y2);
+					if(cao.preval() == false){
+						d = cao.apply(values, value);
+					}else{
+						values.add(value);
+						d = cao.apply(values, value);
+					}
+
+					grid.setCellValue(name, x2, y2, d);
+
+				} else
+				{
+
+					if(values.size() > 1){
+						grid.setCellValue(name, x2, y2, values.get((int)(Math.random() * values.size())));
+					}else{
+						grid.setCellValue(name, x2, y2, values.get(0));
+					}
+
+				}
+			}
+
+		}
+		grid.clearGeomTempVal();
+
+	}
 	
 	private void rescale2() {
 		

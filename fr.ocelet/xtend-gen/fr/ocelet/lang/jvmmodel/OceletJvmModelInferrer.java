@@ -2240,12 +2240,15 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       JvmTypeReference _agrfunc = ce.getAgrfunc();
                                       _builder.append(_agrfunc);
                                       _builder.append("(), ");
-                                      String _name = firstRole_1.getName();
+                                      String _name = ce.getRol().getName();
                                       _builder.append(_name);
                                       _builder.append(".getTypeProps(), ");
                                       boolean _isUsepreval = ce.isUsepreval();
                                       _builder.append(_isUsepreval);
-                                      _builder.append(");");
+                                      _builder.append(", ");
+                                      Role _rol = ce.getRol();
+                                      _builder.append(_rol);
+                                      _builder.append(".getCell().getGrid());");
                                       _builder.newLineIfNotEmpty();
                                       _builder.append("cvtList.add(cvt");
                                       _builder.append(index);

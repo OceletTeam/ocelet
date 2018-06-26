@@ -28,10 +28,11 @@ import fr.ocelet.runtime.relation.AggregOperator;
  * @author Mathieu Castets - Initial contribution
  */
 public class CellAggregOperator{
-private Operator aggregOperator;
+	
+	private Operator aggregOperator;
     private String name;
     private Boolean preval = false;
-
+    private Grid grid;
     public CellAggregOperator(){
     }
 
@@ -54,6 +55,31 @@ private Operator aggregOperator;
 
         }
     	
+    }
+    
+    public void setCellOperator(AggregOperator operator, KeyMap<String, String> typeProps, Boolean preval, Grid grid){
+    	this.grid = grid;
+    	this.preval = preval;
+    	if(typeProps.get(name).equals("Double")){
+        	setOperatorDouble(operator);
+        }else if(typeProps.get(name).equals("Integer")){
+        	setOperatorInteger(operator);
+
+        }else if(typeProps.get(name).equals("Float")){
+        	setOperatorFloat(operator);
+
+        }else if(typeProps.get(name).equals("Byte")){
+        	setOperatorByte(operator);
+
+        }else if(typeProps.get(name).equals("Boolean")){
+        	setOperatorBoolean(operator);
+
+        }
+    	
+    }
+    
+    public Grid getGrid() {
+    	return grid;
     }
     public void setOperatorDouble(AggregOperator<Double, List<Double>> operator){
         OperatorDouble od = new OperatorDouble();
@@ -140,7 +166,7 @@ private Operator aggregOperator;
  			intList.add(d.intValue());
  		}
  		if(val == null) {
- 			return operator.compute(intList, null).doubleValue();
+ 			return operator.compute(intList, val.intValue()).doubleValue();
 
  		}
         return operator.compute(intList, val.intValue()).doubleValue();
@@ -161,7 +187,7 @@ private Operator aggregOperator;
  			byteList.add(b.byteValue());
  		}
  		if(val == null) {
- 			return operator.compute(byteList, null).doubleValue();
+ 			return operator.compute(byteList, val.byteValue()).doubleValue();
 
  		}
         return operator.compute(byteList, val.byteValue()).doubleValue();
@@ -185,7 +211,7 @@ private Operator aggregOperator;
  			floatList.add(b.floatValue());
  		}
  		if(val == null) {
- 			return operator.compute(floatList, null).doubleValue();
+ 			return operator.compute(floatList, val.floatValue()).doubleValue();
 
  		}
         return operator.compute(floatList, val.floatValue()).doubleValue();
