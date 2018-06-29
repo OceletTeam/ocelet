@@ -375,7 +375,6 @@ public class OceletValidator extends AbstractOceletValidator {
               rangeDef = true;
             } catch (final Throwable _t) {
               if (_t instanceof NumberFormatException) {
-                final NumberFormatException nfe = (NumberFormatException)_t;
                 this.warning("Parameter range values must be valid numeric values", OceletPackage.Literals.PARAMETER__NAME);
               } else {
                 throw Exceptions.sneakyThrow(_t);
@@ -396,7 +395,6 @@ public class OceletValidator extends AbstractOceletValidator {
           }
         } catch (final Throwable _t) {
           if (_t instanceof NumberFormatException) {
-            final NumberFormatException e = (NumberFormatException)_t;
             this.warning(
               (("The parameter Range can only be used for numeric values and " + sdef) + 
                 " is not a valid numeric value."), OceletPackage.Literals.PARAMETER__NAME);

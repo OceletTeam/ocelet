@@ -1048,7 +1048,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	      		«FOR ce : reln.comitexpressions»
 								«aggregType» cvt«index» = new «aggregType»();	
 								cvt«index».setName("«ce.prop»"); 
-								cvt«index».setCellOperator(new «ce.agrfunc»(), «ce.rol.getName()».getTypeProps(), «ce.usepreval», «ce.rol».getCell().getGrid());
+								cvt«index».setCellOperator(new «ce.agrfunc»(), «ce.rol.getName()».getTypeProps(), «ce.usepreval», «ce.rol.getName()».getCell().getGrid());
 								cvtList.add(cvt«index»);
           	  	      	  	 	«{index = index + 1; null}»
 							«ENDFOR»

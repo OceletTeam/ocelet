@@ -406,7 +406,6 @@ public class OceletLabelProvider extends XbaseLabelProvider {
       }
     } catch (final Throwable _t) {
       if (_t instanceof NullPointerException) {
-        final NullPointerException npe = (NullPointerException)_t;
       } else {
         throw Exceptions.sneakyThrow(_t);
       }

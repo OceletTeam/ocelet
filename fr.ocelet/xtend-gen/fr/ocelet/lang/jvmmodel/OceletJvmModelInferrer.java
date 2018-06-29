@@ -2246,8 +2246,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       boolean _isUsepreval = ce.isUsepreval();
                                       _builder.append(_isUsepreval);
                                       _builder.append(", ");
-                                      Role _rol = ce.getRol();
-                                      _builder.append(_rol);
+                                      String _name_1 = ce.getRol().getName();
+                                      _builder.append(_name_1);
                                       _builder.append(".getCell().getGrid());");
                                       _builder.newLineIfNotEmpty();
                                       _builder.append("cvtList.add(cvt");
