@@ -1019,7 +1019,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	  	
           	  	  	
           	  	  	members+= reln.toMethod(reln.name, typeRef(Void::TYPE))[
-          	  	  		var params =""
+          	  	  	var params =""
           	  	  		
           	  	  
           	  	  	var index = 0;

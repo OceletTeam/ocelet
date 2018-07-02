@@ -77,7 +77,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 	private String cellShapeType = "QUADRILATERAL";	    
 	private HashMap<R2, ArrayList<Integer[]>> added = new HashMap<R2, ArrayList<Integer[]>>();
 	private HashMap<Integer, ArrayList<Integer>> cellMap;
-
+	private Nexter nexter;
 	private CellIterator<R1> cellIterator = new CellIterator<R1>();
 	private Double distance = 0.0;
 
@@ -279,14 +279,16 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		}
 		
 		
-		
-		xIterator = matrice.keySet().iterator();
-		currentxKey = xIterator.next();
-		yIterator = matrice.get(currentxKey).keySet().iterator();
-		currentyKey = yIterator.next();
-		roleIterator = matrice.get(currentxKey).get(currentyKey).iterator();
-
-
+		if(!matrice.isEmpty()) {
+			xIterator = matrice.keySet().iterator();
+			currentxKey = xIterator.next();
+			yIterator = matrice.get(currentxKey).keySet().iterator();
+			currentyKey = yIterator.next();
+			roleIterator = matrice.get(currentxKey).get(currentyKey).iterator();
+			nexter = new ValideNexter();
+		}else {
+			nexter = new UnValideNexter();
+		}
 	}
 
 
@@ -948,8 +950,8 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				posun_y = 1;
 			else
 				posun_y = -1;
-			while(x1 != x2 || y1 != y2) 
-			{
+			while(x1 != x2 || y1 != y2){ 
+			
 				int p = 2 * rozdil;
 				if(p > -dy)
 				{
@@ -1120,8 +1122,8 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 	}
 
 	public boolean hasNext(){
-
-		if( !xHasNext() && !yHasNext() && !roleHasNext()){
+		return nexter.hasNext();
+		/*if(!matrice.isEmpty() && !xHasNext() && !yHasNext() && !roleHasNext()){
 
 			cellSynchronisation();
 			resetIterator();
@@ -1129,31 +1131,63 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			grid.setMode(1);
 			return false;
 		}
-		return true;
+		return true;*/
 
 	}
 
-	public void next(){
+		public abstract class Nexter {
+			
+			public abstract boolean hasNext();
+			public abstract void next();
+		}
+		
+		public class ValideNexter extends Nexter{
+			public boolean hasNext() {
+				if(!matrice.isEmpty() && !xHasNext() && !yHasNext() && !roleHasNext()){
 
+					cellSynchronisation();
+					resetIterator();
+					grid.clearGeomTempVal();
+					grid.setMode(1);
+					return false;
+				}
+				return true;
+			}
+			
+			public void next() {
+				if(roleHasNext()){
 
+					roleNext();
+				}else{
+					cellSynchronisation();
 
-		if(roleHasNext()){
+					if(yHasNext()){
 
-			roleNext();
-		}else{
-			cellSynchronisation();
+						yNext();
+					}else{
 
-			if(yHasNext()){
-
-				yNext();
-			}else{
-
-				xNext();
+						xNext();
+					}
+				}
+				update();
 			}
 		}
-		update();
+		
+		public class UnValideNexter extends Nexter{
+			public boolean hasNext() {
+				return false;
+			}
+		
+		public void next(){
+		}
+
+
+		
 	}
 
+		public void next() {
+			nexter.next();
+		}
 	public List<R2> getGeomEntities()
 	{
 		return geomEntities;

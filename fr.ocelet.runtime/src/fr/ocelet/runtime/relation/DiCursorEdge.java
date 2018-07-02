@@ -77,7 +77,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 	private OcltRole r1;
 	private OcltRole r2;
 	private HashMap<String, CellAggregOperator> aggregMap = new HashMap<String, CellAggregOperator>();
-	private HashMap<String, CellAggregOperator> agregMapSmall = new HashMap<String, CellAggregOperator>();
+	private HashMap<String, CellAggregOperator> gridAggregMap = new HashMap<String, CellAggregOperator>();
 	private boolean equalGrid = false;
 	private MultiResolutionManager mrm;
 	private DiRegularCellsEdgeManager edges = new DiRegularCellsEdgeManager();
@@ -435,6 +435,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			//System.out.println("final synch " +currentY);
 			finalSynchronisation();
 			clearAggregMap();
+			cellSynchronisation();
 			////System.out.println("END CURSOR");
 			
 			colCount = startX2;
@@ -444,10 +445,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 			y = startY;
 			grid.setMode(1);
 			globalGrid.setMode(1);
+			
 			//	globalGrid.cleanOperator();
 			return false;
 		}
-
+		cellSynchronisation();
 		return true; 
 	}
 
@@ -496,7 +498,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
 
 				if(c2 != null){
-					cellSynchronisation();
+					
 					x = c2[0];
 					y = c2[1];
 				
@@ -522,7 +524,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 				//System.out.println(y+" "+y2+" "+colCount+" "+endX2);
 				if(x2 == endX2){
 					colCount = startX2;
-					cellSynchronisation();
+					
 					x2 = startX2;
 					y2++;
 					//System.out.println(y+" "+y2+" "+colCount+" "+endX2);
@@ -642,7 +644,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							
 							next();
 						}else{
-							cellSynchronisation();
+							
 							x2 = endX2;
 							y2 = endY2;
 						}
@@ -725,12 +727,75 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 	}
 
+	public void clearGridAggregMap(){    
+		gridAggregMap.clear();
+	}
+
+	public void addGridOperator(String name, CellAggregOperator operator){    
+		gridAggregMap.put(name, operator);
+	}
+
+	public void setGridCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps)
+	{
+		CellAggregOperator cao = new CellAggregOperator();
+		if(typeProps.get(name).equals("Double")){
+			setGridAggregOpDouble(name, operator, false);
+		}else if(typeProps.get(name).equals("Integer")){
+			setGridAggregOpInteger(name, operator, false);
+
+		}else if(typeProps.get(name).equals("Float")){
+			setGridAggregOpFloat(name, operator, false);
+
+		}else if(typeProps.get(name).equals("Byte")){
+			setGridAggregOpByte(name, operator, false);
+
+		}else if(typeProps.get(name).equals("Boolean")){
+			setGridAggregOpBoolean(name, operator, false);
+
+		}
+	}
+	public void setGridAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorDouble(agg);
+		gridAggregMap.put(name, cao);
+
+	}
+	public void setGridAggregOpInteger(String name, AggregOperator<Integer, List<Integer>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorInteger(agg);
+		gridAggregMap.put(name, cao);
+
+	}
+
+	public void setGridAggregOpFloat(String name, AggregOperator<Float, List<Float>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorFloat(agg);
+		gridAggregMap.put(name, cao);
+	}
+
+	public void setGridAggregOpByte(String name, AggregOperator<Byte, List<Byte>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorByte(agg);
+		gridAggregMap.put(name, cao);
+	}
+
+	public void setGridAggregOpBoolean(String name, AggregOperator<Boolean, List<Boolean>> agg, boolean val){
+		CellAggregOperator cao = new CellAggregOperator();
+		cao.setOperatorBoolean(agg);
+		gridAggregMap.put(name, cao);
+	}
+	
+	
 	public void clearAggregMap(){    
 		aggregMap.clear();
 	}
 
 	public void addOperator(String name, CellAggregOperator operator){    
-		aggregMap.put(name, operator);
+		if(operator.getGrid().equals(globalGrid)) {
+			aggregMap.put(name, operator);
+		}else {
+			gridAggregMap.put(name, operator);
+		}
 	}
 
 	public void setCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps)
@@ -1211,18 +1276,21 @@ public abstract class DiCursorEdge extends OcltEdge{
 	
 
 	public void cellSynchronisation(){
-
+		
+		
+		
 		for(Iterator iterator = grid.getTempName().iterator(); iterator.hasNext();)
 		{
 			String name = (String)iterator.next();
-
+			
 			List<Double> values = grid.getGeomTempValues(name);
+			
 			if(!values.isEmpty()){
 
-				if(aggregMap.keySet().contains(name))
+				if(gridAggregMap.keySet().contains(name))
 				{
 					Double d;
-					CellAggregOperator cao = aggregMap.get(name);
+					CellAggregOperator cao = gridAggregMap.get(name);
 					Double value = grid.getDoubleValue(name, x2, y2);
 					if(cao.preval() == false){
 						d = cao.apply(values, value);
@@ -1233,21 +1301,19 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 					grid.setCellValue(name, x2, y2, d);
 
-				} else
-				{
+				} else{
+				
 
 					if(values.size() > 1){
 						grid.setCellValue(name, x2, y2, values.get((int)(Math.random() * values.size())));
 					}else{
 						grid.setCellValue(name, x2, y2, values.get(0));
 					}
-
 				}
 			}
-
 		}
+	
 		grid.clearGeomTempVal();
-
 	}
 	
 	private void rescale2() {
