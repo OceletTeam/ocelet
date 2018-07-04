@@ -20,7 +20,6 @@
  */
 package fr.ocelet.lang.jvmmodel;
 
-import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import fr.ocelet.lang.jvmmodel.Metadatastuff;
 import fr.ocelet.lang.jvmmodel.OceletCompiler;
@@ -122,8 +121,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
     final Resource res = modl.eResource();
     final String modlName = res.getURI().segment(1);
     String _name = modl.getName();
-    boolean _equals = Objects.equal(_name, null);
-    if (_equals) {
+    boolean _tripleEquals = (_name == null);
+    if (_tripleEquals) {
       String _lowerCase = modlName.toLowerCase();
       String _plus = ("fr.ocelet.model." + _lowerCase);
       modl.setName(_plus);
@@ -137,8 +136,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
         if (meln instanceof Scenario) {
           _matched=true;
           int _compareTo = ((Scenario)meln).getName().compareTo(modlName);
-          boolean _equals_1 = (_compareTo == 0);
-          if (_equals_1) {
+          boolean _equals = (_compareTo == 0);
+          if (_equals) {
             mainScen = true;
           }
           scens.add(((Scenario)meln));
@@ -147,8 +146,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
           if (meln instanceof Metadata) {
             _matched=true;
             EList<Parameter> _paramdefs = ((Metadata)meln).getParamdefs();
-            boolean _notEquals = (!Objects.equal(_paramdefs, null));
-            if (_notEquals) {
+            boolean _tripleNotEquals = (_paramdefs != null);
+            if (_tripleNotEquals) {
               md.setModeldesc(((Metadata)meln).getDesc());
               md.setWebpage(((Metadata)meln).getWebp());
               EList<Parameter> _paramdefs_1 = ((Metadata)meln).getParamdefs();
@@ -187,8 +186,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       if (ppart instanceof Paraopt) {
                         _matched_1=true;
                         int _compareToIgnoreCase = ((Paraopt)ppart).getParopt().compareToIgnoreCase("true");
-                        boolean _equals_1 = (_compareToIgnoreCase == 0);
-                        pst.setOptionnal(Boolean.valueOf(_equals_1));
+                        boolean _equals = (_compareToIgnoreCase == 0);
+                        pst.setOptionnal(Boolean.valueOf(_equals));
                       }
                     }
                   }
@@ -240,8 +239,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 for (final Match matchdef : _matchbox) {
                   {
                     final Matchtype mt = matchdef.getMtype();
-                    boolean _notEquals = (!Objects.equal(mt, null));
-                    if (_notEquals) {
+                    if ((mt != null)) {
                       boolean _matched_1 = false;
                       if (mt instanceof Entity) {
                         _matched_1=true;
@@ -256,8 +254,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           if (eprop instanceof PropertyDef) {
                             _matched_2=true;
                             JvmTypeReference _type = ((PropertyDef)eprop).getType();
-                            boolean _notEquals_1 = (!Objects.equal(_type, null));
-                            if (_notEquals_1) {
+                            boolean _tripleNotEquals = (_type != null);
+                            if (_tripleNotEquals) {
                               propmap.put(((PropertyDef)eprop).getName(), ((PropertyDef)eprop).getType().getSimpleName());
                               propmapf.put(((PropertyDef)eprop).getName(), ((PropertyDef)eprop).getType().getQualifiedName());
                             }
@@ -265,9 +263,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         }
                         String _storetype_1 = ((Datafacer)meln).getStoretype();
                         String _plus_2 = ("" + _storetype_1);
-                        boolean _equals_1 = "RasterFile".equals(_plus_2);
-                        if (_equals_1) {
-                          final JvmTypeReference gridType = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.raster.Grid");
+                        boolean _equals = "RasterFile".equals(_plus_2);
+                        if (_equals) {
                           final JvmTypeReference tabType = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.ocltypes.List", entype);
                           EList<JvmMember> _members_1 = it.getMembers();
                           final Procedure1<JvmOperation> _function_2 = (JvmOperation it_1) -> {
@@ -282,16 +279,14 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 {
                                   EList<Mdef> _matchprops = matchdef.getMatchprops();
                                   for(final Mdef mp : _matchprops) {
-                                    _builder.append("                  \t  \t  ");
                                     final String eproptype = propmap.get(mp.getProp());
                                     _builder.newLineIfNotEmpty();
                                     {
-                                      boolean _notEquals = (!Objects.equal(eproptype, null));
-                                      if (_notEquals) {
+                                      if ((eproptype != null)) {
                                         {
                                           String _colname = mp.getColname();
-                                          boolean _notEquals_1 = (!Objects.equal(_colname, null));
-                                          if (_notEquals_1) {
+                                          boolean _tripleNotEquals = (_colname != null);
+                                          if (_tripleNotEquals) {
                                             _builder.append("addProperty(\"");
                                             String _prop = mp.getProp();
                                             _builder.append(_prop);
@@ -339,24 +334,23 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             StringConcatenationClient _client = new StringConcatenationClient() {
                               @Override
                               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                _builder.append(entname);
+                                _builder.append("                  \t    ");
+                                _builder.append(entname, "                  \t    ");
                                 _builder.append(" entity = new ");
-                                _builder.append(entname);
+                                _builder.append(entname, "                  \t    ");
                                 _builder.append("();");
                                 _builder.newLineIfNotEmpty();
                                 {
                                   EList<Mdef> _matchprops = matchdef.getMatchprops();
                                   for(final Mdef mp : _matchprops) {
-                                    _builder.append("                  \t      ");
                                     final String eproptype = propmap.get(mp.getProp());
                                     _builder.newLineIfNotEmpty();
                                     {
-                                      boolean _notEquals = (!Objects.equal(eproptype, null));
-                                      if (_notEquals) {
+                                      if ((eproptype != null)) {
                                         {
                                           String _colname = mp.getColname();
-                                          boolean _notEquals_1 = (!Objects.equal(_colname, null));
-                                          if (_notEquals_1) {
+                                          boolean _tripleNotEquals = (_colname != null);
+                                          if (_tripleNotEquals) {
                                             _builder.append("addProperty(\"");
                                             String _prop = mp.getProp();
                                             _builder.append(_prop);
@@ -377,22 +371,16 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.newLineIfNotEmpty();
                                 _builder.append("entity.getCell().setGrid(grid);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t    ");
                                 _builder.append("List<");
-                                _builder.append(entname, "\t\t\t\t\t    ");
+                                _builder.append(entname);
                                 _builder.append("> entityList = new List<");
-                                _builder.append(entname, "\t\t\t\t\t    ");
+                                _builder.append(entname);
                                 _builder.append(">();");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("\t\t\t\t\t     ");
                                 _builder.append("entityList.cellCut();");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t    ");
                                 _builder.append("entityList.add(entity);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t   ");
-                                _builder.newLine();
-                                _builder.append("\t\t\t\t\t    ");
                                 _builder.append("return entityList;");
                                 _builder.newLine();
                               }
@@ -417,16 +405,14 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 {
                                   EList<Mdef> _matchprops = matchdef.getMatchprops();
                                   for(final Mdef mp : _matchprops) {
-                                    _builder.append("                  \t    ");
                                     final String eproptype = propmap.get(mp.getProp());
                                     _builder.newLineIfNotEmpty();
                                     {
-                                      boolean _notEquals = (!Objects.equal(eproptype, null));
-                                      if (_notEquals) {
+                                      if ((eproptype != null)) {
                                         {
                                           String _colname = mp.getColname();
-                                          boolean _notEquals_1 = (!Objects.equal(_colname, null));
-                                          if (_notEquals_1) {
+                                          boolean _tripleNotEquals = (_colname != null);
+                                          if (_tripleNotEquals) {
                                             _builder.append("addProperty(\"");
                                             String _prop = mp.getProp();
                                             _builder.append(_prop);
@@ -445,27 +431,20 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 _builder.append(entname);
                                 _builder.append("\");");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("                      ");
                                 _builder.append("entity.updateCellInfo(\"QUADRILATERAL\");");
                                 _builder.newLine();
                                 _builder.append("entity.getCell().setGrid(grid);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t  ");
                                 _builder.append("List<");
-                                _builder.append(entname, "\t\t\t\t\t  ");
+                                _builder.append(entname);
                                 _builder.append("> entityList = new List<");
-                                _builder.append(entname, "\t\t\t\t\t  ");
+                                _builder.append(entname);
                                 _builder.append(">();");
                                 _builder.newLineIfNotEmpty();
-                                _builder.append("\t\t\t\t\t   ");
                                 _builder.append("entityList.cellCut();");
                                 _builder.newLine();
-                                _builder.append("\t\t\t\t\t  ");
                                 _builder.append("entityList.add(entity);");
                                 _builder.newLine();
-                                _builder.append("\t\t\t");
-                                _builder.newLine();
-                                _builder.append("\t\t\t\t\t  ");
                                 _builder.append("return entityList;");
                                 _builder.newLine();
                               }
@@ -549,12 +528,11 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       final String eproptype = propmap.get(mp.getProp());
                                       _builder.newLineIfNotEmpty();
                                       {
-                                        boolean _notEquals = (!Objects.equal(eproptype, null));
-                                        if (_notEquals) {
+                                        if ((eproptype != null)) {
                                           {
                                             String _colname = mp.getColname();
-                                            boolean _notEquals_1 = (!Objects.equal(_colname, null));
-                                            if (_notEquals_1) {
+                                            boolean _tripleNotEquals = (_colname != null);
+                                            if (_tripleNotEquals) {
                                               _builder.append("_entity.setProperty(\"");
                                               String _prop = mp.getProp();
                                               _builder.append(_prop);
@@ -598,12 +576,11 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       final String epropftype = propmapf.get(mp.getProp());
                                       _builder.newLineIfNotEmpty();
                                       {
-                                        boolean _notEquals = (!Objects.equal(epropftype, null));
-                                        if (_notEquals) {
+                                        if ((epropftype != null)) {
                                           {
                                             String _colname = mp.getColname();
-                                            boolean _notEquals_1 = (!Objects.equal(_colname, null));
-                                            if (_notEquals_1) {
+                                            boolean _tripleNotEquals = (_colname != null);
+                                            if (_tripleNotEquals) {
                                               _builder.append("hm.put(\"");
                                               String _colname_1 = mp.getColname();
                                               _builder.append(_colname_1);
@@ -804,16 +781,17 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               final List<String> cellProps = CollectionLiterals.<String>newArrayList();
               final HashMap<String, String> typeProps = CollectionLiterals.<String, String>newHashMap();
               boolean isCell = false;
+              int index = 0;
               EList<EntityElements> _entelns = ((Entity)meln).getEntelns();
               for (final EntityElements enteln : _entelns) {
                 boolean _matched_1 = false;
                 if (enteln instanceof PropertyDef) {
                   _matched_1=true;
                   String _name_2 = ((PropertyDef)enteln).getName();
-                  boolean _notEquals = (!Objects.equal(_name_2, null));
-                  if (_notEquals) {
-                    boolean _equals_1 = ((PropertyDef)enteln).getType().getSimpleName().equals("Cell");
-                    if (_equals_1) {
+                  boolean _tripleNotEquals = (_name_2 != null);
+                  if (_tripleNotEquals) {
+                    boolean _equals = ((PropertyDef)enteln).getType().getSimpleName().equals("Cell");
+                    if (_equals) {
                       isCell = true;
                     }
                   }
@@ -825,18 +803,19 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 if (enteln_1 instanceof PropertyDef) {
                   _matched_2=true;
                   String _name_2 = ((PropertyDef)enteln_1).getName();
-                  boolean _notEquals = (!Objects.equal(_name_2, null));
-                  if (_notEquals) {
+                  boolean _tripleNotEquals = (_name_2 != null);
+                  if (_tripleNotEquals) {
                     lpropdefs.add(((PropertyDef)enteln_1));
-                    boolean _equals_1 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Cell");
-                    boolean _not = (!_equals_1);
+                    boolean _equals = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Cell");
+                    boolean _not = (!_equals);
                     if (_not) {
                       cellProps.add(((PropertyDef)enteln_1).getName());
                       typeProps.put(((PropertyDef)enteln_1).getName(), ((PropertyDef)enteln_1).getType().getSimpleName());
                     }
+                    final int fIndex = index;
                     if (isCell) {
-                      boolean _equals_2 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Cell");
-                      boolean _not_1 = (!_equals_2);
+                      boolean _equals_1 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Cell");
+                      boolean _not_1 = (!_equals_1);
                       if (_not_1) {
                         EList<JvmMember> _members = it.getMembers();
                         String _firstUpper = StringExtensions.toFirstUpper(((PropertyDef)enteln_1).getName());
@@ -847,17 +826,16 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           EList<JvmFormalParameter> _parameters = it_1.getParameters();
                           JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(enteln_1, parName, ((PropertyDef)enteln_1).getType());
                           this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
-                          boolean _equals_3 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Double");
-                          if (_equals_3) {
+                          boolean _equals_2 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Double");
+                          if (_equals_2) {
                             StringConcatenationClient _client = new StringConcatenationClient() {
                               @Override
                               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                _builder.append("cell.getGrid().setValue(\"");
+                                _builder.append("cell.getGrid().setValue(");
+                                _builder.append(fIndex);
+                                _builder.append(",getX(), getY(),");
                                 String _name = ((PropertyDef)enteln_1).getName();
                                 _builder.append(_name);
-                                _builder.append("\",getX(), getY(),");
-                                String _name_1 = ((PropertyDef)enteln_1).getName();
-                                _builder.append(_name_1);
                                 _builder.append(");");
                                 _builder.newLineIfNotEmpty();
                                 _builder.append(" ");
@@ -866,42 +844,40 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             };
                             this._jvmTypesBuilder.setBody(it_1, _client);
                           } else {
-                            boolean _equals_4 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Integer");
-                            if (_equals_4) {
+                            boolean _equals_3 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Integer");
+                            if (_equals_3) {
                               StringConcatenationClient _client_1 = new StringConcatenationClient() {
                                 @Override
                                 protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                  _builder.append("cell.getGrid().setValue(\"");
+                                  _builder.append("cell.getGrid().setValue(");
+                                  _builder.append(fIndex);
+                                  _builder.append(",getX(), getY(),");
                                   String _name = ((PropertyDef)enteln_1).getName();
                                   _builder.append(_name);
-                                  _builder.append("\",getX(), getY(),");
-                                  String _name_1 = ((PropertyDef)enteln_1).getName();
-                                  _builder.append(_name_1);
                                   _builder.append(".doubleValue());");
                                   _builder.newLineIfNotEmpty();
                                 }
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client_1);
                             } else {
-                              boolean _equals_5 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Float");
-                              if (_equals_5) {
+                              boolean _equals_4 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Float");
+                              if (_equals_4) {
                                 StringConcatenationClient _client_2 = new StringConcatenationClient() {
                                   @Override
                                   protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                    _builder.append("cell.getGrid().setValue(\"");
+                                    _builder.append("cell.getGrid().setValue(");
+                                    _builder.append(fIndex);
+                                    _builder.append(",getX(), getY(),");
                                     String _name = ((PropertyDef)enteln_1).getName();
                                     _builder.append(_name);
-                                    _builder.append("\",getX(), getY(),");
-                                    String _name_1 = ((PropertyDef)enteln_1).getName();
-                                    _builder.append(_name_1);
                                     _builder.append(".doubleValue());");
                                     _builder.newLineIfNotEmpty();
                                   }
                                 };
                                 this._jvmTypesBuilder.setBody(it_1, _client_2);
                               } else {
-                                boolean _equals_6 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Boolean");
-                                if (_equals_6) {
+                                boolean _equals_5 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Boolean");
+                                if (_equals_5) {
                                   StringConcatenationClient _client_3 = new StringConcatenationClient() {
                                     @Override
                                     protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
@@ -910,40 +886,34 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       _builder.append(_name);
                                       _builder.append(" == true){");
                                       _builder.newLineIfNotEmpty();
-                                      _builder.append("\t\t\t\t\t\t\t\t\t\t");
-                                      _builder.append("cell.getGrid().setValue(\"");
-                                      String _name_1 = ((PropertyDef)enteln_1).getName();
-                                      _builder.append(_name_1, "\t\t\t\t\t\t\t\t\t\t");
-                                      _builder.append("\",getX(), getY(),1.0);");
+                                      _builder.append("\t");
+                                      _builder.append("cell.getGrid().setValue(");
+                                      _builder.append(fIndex, "\t");
+                                      _builder.append(",getX(), getY(),1.0);");
                                       _builder.newLineIfNotEmpty();
-                                      _builder.append("\t\t\t\t\t\t\t\t\t");
                                       _builder.append("}else{");
                                       _builder.newLine();
-                                      _builder.append("\t\t\t\t\t\t\t\t\t\t");
-                                      _builder.append("cell.getGrid().setValue(\"");
-                                      String _name_2 = ((PropertyDef)enteln_1).getName();
-                                      _builder.append(_name_2, "\t\t\t\t\t\t\t\t\t\t");
-                                      _builder.append("\",getX(), getY(),0.0);");
+                                      _builder.append("\t");
+                                      _builder.append("cell.getGrid().setValue(");
+                                      _builder.append(fIndex, "\t");
+                                      _builder.append(",getX(), getY(),0.0);");
                                       _builder.newLineIfNotEmpty();
-                                      _builder.append("\t\t\t\t\t\t\t\t\t");
                                       _builder.append("}");
-                                      _builder.newLine();
                                       _builder.newLine();
                                     }
                                   };
                                   this._jvmTypesBuilder.setBody(it_1, _client_3);
                                 } else {
-                                  boolean _equals_7 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Byte");
-                                  if (_equals_7) {
+                                  boolean _equals_6 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Byte");
+                                  if (_equals_6) {
                                     StringConcatenationClient _client_4 = new StringConcatenationClient() {
                                       @Override
                                       protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                        _builder.append("cell.getGrid().setValue(\"");
+                                        _builder.append("cell.getGrid().setValue(");
+                                        _builder.append(fIndex);
+                                        _builder.append(",getX(), getY(),");
                                         String _name = ((PropertyDef)enteln_1).getName();
                                         _builder.append(_name);
-                                        _builder.append("\",getX(), getY(),");
-                                        String _name_1 = ((PropertyDef)enteln_1).getName();
-                                        _builder.append(_name_1);
                                         _builder.append(".doubleValue());");
                                         _builder.newLineIfNotEmpty();
                                       }
@@ -954,8 +924,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       @Override
                                       protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                                         _builder.append("System.out.println(\"");
-                                        String _name = ((PropertyDef)enteln_1).getName();
-                                        _builder.append(_name);
+                                        String _simpleName = ((PropertyDef)enteln_1).getType().getSimpleName();
+                                        _builder.append(_simpleName);
                                         _builder.append(" type is not allowed for a cell entity\");");
                                         _builder.newLineIfNotEmpty();
                                       }
@@ -974,71 +944,66 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         String _plus_2 = ("get" + _firstUpper_1);
                         final Procedure1<JvmOperation> _function_2 = (JvmOperation it_1) -> {
                           this._jvmTypesBuilder.setDocumentation(it_1, this._jvmTypesBuilder.getDocumentation(enteln_1));
-                          boolean _equals_3 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Double");
-                          if (_equals_3) {
+                          boolean _equals_2 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Double");
+                          if (_equals_2) {
                             StringConcatenationClient _client = new StringConcatenationClient() {
                               @Override
                               protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                _builder.append("return cell.getGrid().getValue(\"");
-                                String _name = ((PropertyDef)enteln_1).getName();
-                                _builder.append(_name);
-                                _builder.append("\",getX(), getY());");
+                                _builder.append("return cell.getGrid().getValue(");
+                                _builder.append(fIndex);
+                                _builder.append(",getX(), getY());");
                                 _builder.newLineIfNotEmpty();
                               }
                             };
                             this._jvmTypesBuilder.setBody(it_1, _client);
                           } else {
-                            boolean _equals_4 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Integer");
-                            if (_equals_4) {
+                            boolean _equals_3 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Integer");
+                            if (_equals_3) {
                               StringConcatenationClient _client_1 = new StringConcatenationClient() {
                                 @Override
                                 protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                  _builder.append("return cell.getGrid().getValue(\"");
-                                  String _name = ((PropertyDef)enteln_1).getName();
-                                  _builder.append(_name);
-                                  _builder.append("\",getX(), getY()).intValue();");
+                                  _builder.append("return cell.getGrid().getValue(");
+                                  _builder.append(fIndex);
+                                  _builder.append(",getX(), getY()).intValue();");
                                   _builder.newLineIfNotEmpty();
                                 }
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client_1);
                             } else {
-                              boolean _equals_5 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Float");
-                              if (_equals_5) {
+                              boolean _equals_4 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Float");
+                              if (_equals_4) {
                                 StringConcatenationClient _client_2 = new StringConcatenationClient() {
                                   @Override
                                   protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                    _builder.append("return cell.getGrid().getValue(\"");
-                                    String _name = ((PropertyDef)enteln_1).getName();
-                                    _builder.append(_name);
-                                    _builder.append("\",getX(), getY()).floatValue();");
+                                    _builder.append("return cell.getGrid().getValue(");
+                                    _builder.append(fIndex);
+                                    _builder.append(",getX(), getY()).floatValue();");
                                     _builder.newLineIfNotEmpty();
                                   }
                                 };
                                 this._jvmTypesBuilder.setBody(it_1, _client_2);
                               } else {
-                                boolean _equals_6 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Byte");
-                                if (_equals_6) {
+                                boolean _equals_5 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Byte");
+                                if (_equals_5) {
                                   StringConcatenationClient _client_3 = new StringConcatenationClient() {
                                     @Override
                                     protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                      _builder.append("return cell.getGrid().getValue(\"");
-                                      String _name = ((PropertyDef)enteln_1).getName();
-                                      _builder.append(_name);
-                                      _builder.append("\",getX(), getY()).byteValue();");
+                                      _builder.append("return cell.getGrid().getValue(");
+                                      _builder.append(fIndex);
+                                      _builder.append(",getX(), getY()).byteValue();");
                                       _builder.newLineIfNotEmpty();
                                     }
                                   };
                                   this._jvmTypesBuilder.setBody(it_1, _client_3);
                                 } else {
-                                  boolean _equals_7 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Boolean");
-                                  if (_equals_7) {
+                                  boolean _equals_6 = ((PropertyDef)enteln_1).getType().getSimpleName().equals("Boolean");
+                                  if (_equals_6) {
                                     StringConcatenationClient _client_4 = new StringConcatenationClient() {
                                       @Override
                                       protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                                        _builder.append("Double val =cell.getGrid().getValue(\"");
-                                        String _name = ((PropertyDef)enteln_1).getName();
-                                        _builder.append(_name);
-                                        _builder.append("\",getX(), getY());");
+                                        _builder.append("Double val =cell.getGrid().getValue(");
+                                        _builder.append(fIndex);
+                                        _builder.append(",getX(), getY());");
                                         _builder.newLineIfNotEmpty();
                                         _builder.append("if(val == 1.0){");
                                         _builder.newLine();
@@ -1074,6 +1039,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         };
                         JvmOperation _method_1 = this._jvmTypesBuilder.toMethod(enteln_1, _plus_2, ((PropertyDef)enteln_1).getType(), _function_2);
                         this._jvmTypesBuilder.<JvmOperation>operator_add(_members_1, _method_1);
+                        index = (index + 1);
                       }
                     } else {
                       EList<JvmMember> _members_2 = it.getMembers();
@@ -1125,8 +1091,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   if (enteln_1 instanceof ServiceDef) {
                     _matched_2=true;
                     JvmTypeReference rtype = ((ServiceDef)enteln_1).getType();
-                    boolean _equals_1 = Objects.equal(rtype, null);
-                    if (_equals_1) {
+                    if ((rtype == null)) {
                       rtype = this._typeReferenceBuilder.typeRef(Void.TYPE);
                     }
                     EList<JvmMember> _members = it.getMembers();
@@ -1287,8 +1252,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
                       _builder.append("this.cell.setType(type);");
                       _builder.newLine();
-                      _builder.append("      \t\t  \t\t");
-                      _builder.newLine();
                     }
                   };
                   this._jvmTypesBuilder.setBody(it_1, _client);
@@ -1296,29 +1259,25 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 JvmOperation _method_2 = this._jvmTypesBuilder.toMethod(meln, "updateCellInfo", this._typeReferenceBuilder.typeRef(Void.TYPE), _function_5);
                 this._jvmTypesBuilder.<JvmOperation>operator_add(_members_4, _method_2);
                 JvmField jvmFieldCell = this._jvmTypesBuilder.toField(meln, "cell", this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.geom.ocltypes.Cell"));
-                boolean _notEquals = (!Objects.equal(jvmFieldCell, null));
-                if (_notEquals) {
+                if ((jvmFieldCell != null)) {
                   jvmFieldCell.setFinal(false);
                   EList<JvmMember> _members_5 = it.getMembers();
                   this._jvmTypesBuilder.<JvmField>operator_add(_members_5, jvmFieldCell);
                 }
                 JvmField jvmFieldX = this._jvmTypesBuilder.toField(meln, "x", this._typeReferenceBuilder.typeRef("java.lang.Integer"));
-                boolean _notEquals_1 = (!Objects.equal(jvmFieldX, null));
-                if (_notEquals_1) {
+                if ((jvmFieldX != null)) {
                   jvmFieldX.setFinal(false);
                   EList<JvmMember> _members_6 = it.getMembers();
                   this._jvmTypesBuilder.<JvmField>operator_add(_members_6, jvmFieldX);
                 }
                 JvmField jvmFieldY = this._jvmTypesBuilder.toField(meln, "y", this._typeReferenceBuilder.typeRef("java.lang.Integer"));
-                boolean _notEquals_2 = (!Objects.equal(jvmFieldY, null));
-                if (_notEquals_2) {
+                if ((jvmFieldY != null)) {
                   jvmFieldY.setFinal(false);
                   EList<JvmMember> _members_7 = it.getMembers();
                   this._jvmTypesBuilder.<JvmField>operator_add(_members_7, jvmFieldY);
                 }
                 JvmField jvmFieldNum = this._jvmTypesBuilder.toField(meln, "numGrid", this._typeReferenceBuilder.typeRef("java.lang.Integer"));
-                boolean _notEquals_3 = (!Objects.equal(jvmFieldNum, null));
-                if (_notEquals_3) {
+                if ((jvmFieldNum != null)) {
                   jvmFieldNum.setFinal(false);
                   jvmFieldNum.setStatic(true);
                   EList<JvmMember> _members_8 = it.getMembers();
@@ -1404,8 +1363,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
           if (meln instanceof Agregdef) {
             _matched=true;
             JvmTypeReference _type = ((Agregdef)meln).getType();
-            boolean _notEquals = (!Objects.equal(_type, null));
-            if (_notEquals) {
+            boolean _tripleNotEquals = (_type != null);
+            if (_tripleNotEquals) {
               final Procedure1<JvmGenericType> _function = (JvmGenericType it) -> {
                 EList<JvmTypeReference> _superTypes = it.getSuperTypes();
                 JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.AggregOperator", ((Agregdef)meln).getType(), this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.ocltypes.List", ((Agregdef)meln).getType()));
@@ -1439,7 +1398,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
             }
             final JvmTypeReference aggregType = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.raster.CellAggregOperator");
             final JvmTypeReference listype = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.ocltypes.List", aggregType);
-            final JvmTypeReference gridType = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.raster.Grid");
             final Procedure1<JvmGenericType> _function = (JvmGenericType it) -> {
               final boolean isAutoGraph = ((Relation)meln).getRoles().get(0).getType().equals(((Relation)meln).getRoles().get(1).getType());
               boolean isCellGraph = false;
@@ -1455,8 +1413,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 boolean _matched_1 = false;
                 if (e instanceof PropertyDef) {
                   _matched_1=true;
-                  boolean _equals_1 = ((PropertyDef)e).getType().getSimpleName().equals("Cell");
-                  if (_equals_1) {
+                  boolean _equals = ((PropertyDef)e).getType().getSimpleName().equals("Cell");
+                  if (_equals) {
                     testCell1 = true;
                   }
                   if (((((((((PropertyDef)e).getType().getSimpleName().equals("Line") || ((PropertyDef)e).getType().getSimpleName().equals("MultiLine")) || 
@@ -1472,8 +1430,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 boolean _matched_2 = false;
                 if (e_1 instanceof PropertyDef) {
                   _matched_2=true;
-                  boolean _equals_1 = ((PropertyDef)e_1).getType().getSimpleName().equals("Cell");
-                  if (_equals_1) {
+                  boolean _equals = ((PropertyDef)e_1).getType().getSimpleName().equals("Cell");
+                  if (_equals) {
                     testCell2 = true;
                   }
                   if (((((((((PropertyDef)e_1).getType().getSimpleName().equals("Line") || ((PropertyDef)e_1).getType().getSimpleName().equals("MultiLine")) || 
@@ -1489,20 +1447,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               }
               if (((testGeom1 && testCell2) || (testGeom2 && testCell1))) {
                 isCellGeomGraph = true;
-              }
-              String graphname = "fr.ocelet.runtime.relation.impl.AutoGraph";
-              if ((!isAutoGraph)) {
-                graphname = "fr.ocelet.runtime.relation.impl.DiGraph";
-              }
-              if (isCellGraph) {
-                if (isAutoGraph) {
-                  graphname = "fr.ocelet.runtime.relation.impl.CellGraph";
-                } else {
-                  graphname = "fr.ocelet.runtime.relation.impl.DiCellGraph";
-                }
-              }
-              if (isCellGeomGraph) {
-                graphname = "fr.ocelet.runtime.relation.impl.GeometryCellGraph";
               }
               if (isCellGeomGraph) {
                 final Role firstRole = ((Relation)meln).getRoles().get(0);
@@ -1527,10 +1471,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 EList<JvmTypeReference> _superTypes = it.getSuperTypes();
                 JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.GeomCellEdge", cellType, geomType);
                 this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef);
-                if ((((((((((((Relation)meln).getRoles().size() >= 2) && (!Objects.equal(((Relation)meln).getRoles().get(0), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getType(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getType(), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getName(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getName(), null)))) {
+                if ((((((((((((Relation)meln).getRoles().size() >= 2) && (((Relation)meln).getRoles().get(0) != null)) && (((Relation)meln).getRoles().get(1) != null)) && (((Relation)meln).getRoles().get(0).getType() != null)) && (((Relation)meln).getRoles().get(1).getType() != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()) != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()) != null)) && (((Relation)meln).getRoles().get(0).getName() != null)) && (((Relation)meln).getRoles().get(1).getName() != null))) {
                   JvmField jvmField = this._jvmTypesBuilder.toField(meln, cellName, cellType);
-                  boolean _notEquals = (!Objects.equal(jvmField, null));
-                  if (_notEquals) {
+                  if ((jvmField != null)) {
                     jvmField.setFinal(false);
                     EList<JvmMember> _members = it.getMembers();
                     this._jvmTypesBuilder.<JvmField>operator_add(_members, jvmField);
@@ -1542,8 +1485,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     this._jvmTypesBuilder.<JvmOperation>operator_add(_members_2, _getter);
                   }
                   jvmField = this._jvmTypesBuilder.toField(meln, geomName, geomType);
-                  boolean _notEquals_1 = (!Objects.equal(jvmField, null));
-                  if (_notEquals_1) {
+                  if ((jvmField != null)) {
                     jvmField.setFinal(false);
                     EList<JvmMember> _members_3 = it.getMembers();
                     this._jvmTypesBuilder.<JvmField>operator_add(_members_3, jvmField);
@@ -1581,8 +1523,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         _builder.append(cellName);
                         _builder.append(".getCell().setGrid(grid);");
                         _builder.newLineIfNotEmpty();
-                        _builder.append("          \t\t\t ");
-                        _builder.newLine();
                       }
                     };
                     this._jvmTypesBuilder.setBody(it_1, _client);
@@ -1617,10 +1557,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         _builder.newLineIfNotEmpty();
                         _builder.append("this.");
                         _builder.append(cellName);
-                        _builder.append(".getCell().setGrid(grid);");
+                        _builder.append(".getCell().setGrid(grid); ");
                         _builder.newLineIfNotEmpty();
-                        _builder.append("          \t\t\t ");
-                        _builder.newLine();
                       }
                     };
                     this._jvmTypesBuilder.setBody(it_1, _client);
@@ -1708,13 +1646,11 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           StringConcatenationClient _client = new StringConcatenationClient() {
                             @Override
                             protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                              _builder.append("          \t  \t      \t\t");
                               int index = 0;
                               _builder.newLineIfNotEmpty();
-                              _builder.append("          \t  \t      \t\t");
-                              _builder.append(listype, "          \t  \t      \t\t");
+                              _builder.append(listype);
                               _builder.append(" cvtList = new ");
-                              _builder.append(listype, "          \t  \t      \t\t");
+                              _builder.append(listype);
                               _builder.append("();");
                               _builder.newLineIfNotEmpty();
                               {
@@ -1723,47 +1659,42 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   {
                                     boolean _equals = OceletJvmModelInferrer.this._iQualifiedNameProvider.getFullyQualifiedName(ce.getRol().getType()).toString().equals(cellType.getQualifiedName().toString());
                                     if (_equals) {
-                                      _builder.append("          \t  \t      \t  ");
-                                      _builder.append(aggregType, "          \t  \t      \t  ");
+                                      _builder.append(aggregType);
                                       _builder.append(" cvt");
-                                      _builder.append(index, "          \t  \t      \t  ");
+                                      _builder.append(index);
                                       _builder.append(" = new ");
-                                      _builder.append(aggregType, "          \t  \t      \t  ");
+                                      _builder.append(aggregType);
                                       _builder.append("();");
                                       _builder.newLineIfNotEmpty();
-                                      _builder.append("\t\t\t\t\t\t\t\t");
                                       _builder.append("cvt");
-                                      _builder.append(index, "\t\t\t\t\t\t\t\t");
+                                      _builder.append(index);
                                       _builder.append(".setName(\"");
                                       String _prop = ce.getProp();
-                                      _builder.append(_prop, "\t\t\t\t\t\t\t\t");
+                                      _builder.append(_prop);
                                       _builder.append("\"); ");
                                       _builder.newLineIfNotEmpty();
-                                      _builder.append("\t\t\t\t\t\t\t\t");
                                       _builder.append("cvt");
-                                      _builder.append(index, "\t\t\t\t\t\t\t\t");
+                                      _builder.append(index);
                                       _builder.append(".setCellOperator(new  ");
                                       JvmTypeReference _agrfunc = ce.getAgrfunc();
-                                      _builder.append(_agrfunc, "\t\t\t\t\t\t\t\t");
+                                      _builder.append(_agrfunc);
                                       _builder.append("(), ");
-                                      _builder.append(cellName, "\t\t\t\t\t\t\t\t");
+                                      _builder.append(cellName);
                                       _builder.append(".getTypeProps(), ");
                                       boolean _isUsepreval = ce.isUsepreval();
-                                      _builder.append(_isUsepreval, "\t\t\t\t\t\t\t\t");
+                                      _builder.append(_isUsepreval);
                                       _builder.append(");");
                                       _builder.newLineIfNotEmpty();
-                                      _builder.append("\t\t\t\t\t\t\t\t");
                                       _builder.append("cvtList.add(cvt");
-                                      _builder.append(index, "\t\t\t\t\t\t\t\t");
+                                      _builder.append(index);
                                       _builder.append(");");
                                       _builder.newLineIfNotEmpty();
-                                      _builder.append("          \t  \t      \t  \t \t");
                                       Object _xblockexpression = null;
                                       {
                                         index = (index + 1);
                                         _xblockexpression = null;
                                       }
-                                      _builder.append(_xblockexpression, "          \t  \t      \t  \t \t");
+                                      _builder.append(_xblockexpression);
                                       _builder.newLineIfNotEmpty();
                                     }
                                   }
@@ -1784,7 +1715,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           StringConcatenationClient _client = new StringConcatenationClient() {
                             @Override
                             protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                              _builder.newLine();
                               {
                                 EList<Comitexpr> _comitexpressions = ((InteractionDef)reln).getComitexpressions();
                                 for(final Comitexpr ce : _comitexpressions) {
@@ -1847,8 +1777,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 Set<String> _keySet = typeProps.keySet();
                 for (final String name : _keySet) {
                   {
-                    boolean _equals_1 = typeProps.get(name).getSimpleName().equals("Double");
-                    if (_equals_1) {
+                    boolean _equals = typeProps.get(name).getSimpleName().equals("Double");
+                    if (_equals) {
                       final int index = indexDouble;
                       EList<JvmMember> _members_10 = it.getMembers();
                       String _firstUpper = StringExtensions.toFirstUpper(name);
@@ -1889,8 +1819,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_11, _method_3);
                       indexDouble = (indexDouble + 1);
                     }
-                    boolean _equals_2 = typeProps.get(name).getSimpleName().equals("Integer");
-                    if (_equals_2) {
+                    boolean _equals_1 = typeProps.get(name).getSimpleName().equals("Integer");
+                    if (_equals_1) {
                       final int index_1 = indexInteger;
                       EList<JvmMember> _members_12 = it.getMembers();
                       String _firstUpper_2 = StringExtensions.toFirstUpper(name);
@@ -1931,8 +1861,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_13, _method_5);
                       indexInteger = (indexInteger + 1);
                     }
-                    boolean _equals_3 = typeProps.get(name).getSimpleName().equals("Boolean");
-                    if (_equals_3) {
+                    boolean _equals_2 = typeProps.get(name).getSimpleName().equals("Boolean");
+                    if (_equals_2) {
                       final int index_2 = indexBoolean;
                       EList<JvmMember> _members_14 = it.getMembers();
                       String _firstUpper_4 = StringExtensions.toFirstUpper(name);
@@ -2021,15 +1951,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     String _name_3 = secondRole_1.getName();
                     final String secondName = (_name_3 + "s");
                     JvmField jvmField_1 = this._jvmTypesBuilder.toField(meln, firstRole_1.getName(), firstRoleType);
-                    boolean _notEquals_2 = (!Objects.equal(jvmField_1, null));
-                    if (_notEquals_2) {
+                    if ((jvmField_1 != null)) {
                       jvmField_1.setFinal(false);
                       EList<JvmMember> _members_11 = it.getMembers();
                       this._jvmTypesBuilder.<JvmField>operator_add(_members_11, jvmField_1);
                     }
                     jvmField_1 = this._jvmTypesBuilder.toField(meln, secondRole_1.getName(), secondRoleType);
-                    boolean _notEquals_3 = (!Objects.equal(jvmField_1, null));
-                    if (_notEquals_3) {
+                    if ((jvmField_1 != null)) {
                       jvmField_1.setFinal(false);
                       EList<JvmMember> _members_12 = it.getMembers();
                       this._jvmTypesBuilder.<JvmField>operator_add(_members_12, jvmField_1);
@@ -2071,19 +1999,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(_name_3);
                           _builder.append(".getCell().setGrid(grid2);");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("          \t\t\t ");
-                          _builder.append("// e1 = new ");
-                          _builder.append(firstRoleType, "          \t\t\t ");
-                          _builder.append("();");
-                          _builder.newLineIfNotEmpty();
-                          _builder.append("//e2 = new ");
-                          _builder.append(secondRoleType);
-                          _builder.append("();");
-                          _builder.newLineIfNotEmpty();
-                          _builder.append("//e1.updateCellInfo(getCellType());");
-                          _builder.newLine();
-                          _builder.append("//e2.updateCellInfo(getCellType());");
-                          _builder.newLine();
                           _builder.append("updateRoleInfo();");
                           _builder.newLine();
                         }
@@ -2180,8 +2095,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(reln_1, p.getName(), p.getParameterType());
                                 this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
                                 int _size_1 = ((InteractionDef)reln_1).getParams().size();
-                                boolean _equals_1 = (index == _size_1);
-                                if (_equals_1) {
+                                boolean _equals = (index == _size_1);
+                                if (_equals) {
                                   String _name_4 = p.getName();
                                   String _plus_1 = (params + _name_4);
                                   params = _plus_1;
@@ -2193,7 +2108,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 }
                               }
                             }
-                            final String finalParams = params;
                             this._jvmTypesBuilder.setBody(it_1, ((InteractionDef)reln_1).getBody());
                           };
                           JvmOperation _method_5 = this._jvmTypesBuilder.toMethod(reln_1, ((InteractionDef)reln_1).getName(), this._typeReferenceBuilder.typeRef(Void.TYPE), _function_9);
@@ -2298,8 +2212,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     Set<String> _keySet_1 = typeProps_1.keySet();
                     for (final String name_1 : _keySet_1) {
                       {
-                        boolean _equals_1 = typeProps_1.get(name_1).getSimpleName().equals("Double");
-                        if (_equals_1) {
+                        boolean _equals = typeProps_1.get(name_1).getSimpleName().equals("Double");
+                        if (_equals) {
                           final int index = indexDouble_1;
                           EList<JvmMember> _members_16 = it.getMembers();
                           String _firstUpper = StringExtensions.toFirstUpper(name_1);
@@ -2340,8 +2254,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           this._jvmTypesBuilder.<JvmOperation>operator_add(_members_17, _method_6);
                           indexDouble_1 = (indexDouble_1 + 1);
                         }
-                        boolean _equals_2 = typeProps_1.get(name_1).getSimpleName().equals("Integer");
-                        if (_equals_2) {
+                        boolean _equals_1 = typeProps_1.get(name_1).getSimpleName().equals("Integer");
+                        if (_equals_1) {
                           final int index_1 = indexInteger_1;
                           EList<JvmMember> _members_18 = it.getMembers();
                           String _firstUpper_2 = StringExtensions.toFirstUpper(name_1);
@@ -2382,8 +2296,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           this._jvmTypesBuilder.<JvmOperation>operator_add(_members_19, _method_8);
                           indexInteger_1 = (indexInteger_1 + 1);
                         }
-                        boolean _equals_3 = typeProps_1.get(name_1).getSimpleName().equals("Boolean");
-                        if (_equals_3) {
+                        boolean _equals_2 = typeProps_1.get(name_1).getSimpleName().equals("Boolean");
+                        if (_equals_2) {
                           final int index_2 = indexBoolean_1;
                           EList<JvmMember> _members_20 = it.getMembers();
                           String _firstUpper_4 = StringExtensions.toFirstUpper(name_1);
@@ -2466,18 +2380,14 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     final JvmTypeReference cellList = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.ocltypes.List", firstRoleType_1);
                     String _name_4 = firstRole_2.getName();
                     final String firstName_1 = (_name_4 + "s");
-                    String _name_5 = secondRole_2.getName();
-                    final String secondName_1 = (_name_5 + "s");
                     JvmField jvmField_2 = this._jvmTypesBuilder.toField(meln, firstRole_2.getName(), firstRoleType_1);
-                    boolean _notEquals_4 = (!Objects.equal(jvmField_2, null));
-                    if (_notEquals_4) {
+                    if ((jvmField_2 != null)) {
                       jvmField_2.setFinal(false);
                       EList<JvmMember> _members_17 = it.getMembers();
                       this._jvmTypesBuilder.<JvmField>operator_add(_members_17, jvmField_2);
                     }
                     jvmField_2 = this._jvmTypesBuilder.toField(meln, secondRole_2.getName(), secondRoleType_1);
-                    boolean _notEquals_5 = (!Objects.equal(jvmField_2, null));
-                    if (_notEquals_5) {
+                    if ((jvmField_2 != null)) {
                       jvmField_2.setFinal(false);
                       EList<JvmMember> _members_18 = it.getMembers();
                       this._jvmTypesBuilder.<JvmField>operator_add(_members_18, jvmField_2);
@@ -2494,32 +2404,26 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(firstName_1);
                           _builder.append(");");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("          \t\t\t    ");
                           String _name = firstRole_2.getName();
-                          _builder.append(_name, "          \t\t\t    ");
+                          _builder.append(_name);
                           _builder.append(" = new ");
-                          _builder.append(firstRoleType_1, "          \t\t\t    ");
+                          _builder.append(firstRoleType_1);
                           _builder.append("();");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("          \t\t\t    ");
                           String _name_1 = secondRole_2.getName();
-                          _builder.append(_name_1, "          \t\t\t    ");
+                          _builder.append(_name_1);
                           _builder.append(" = new ");
-                          _builder.append(secondRoleType_1, "          \t\t\t    ");
+                          _builder.append(secondRoleType_1);
                           _builder.append("();");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("          \t\t\t    ");
                           String _name_2 = firstRole_2.getName();
-                          _builder.append(_name_2, "          \t\t\t    ");
+                          _builder.append(_name_2);
                           _builder.append(".getCell().setGrid(grid);");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("          \t\t\t    ");
                           String _name_3 = secondRole_2.getName();
-                          _builder.append(_name_3, "          \t\t\t    ");
+                          _builder.append(_name_3);
                           _builder.append(".getCell().setGrid(grid);           \t\t\t    ");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("          \t\t\t ");
-                          _builder.newLine();
                         }
                       };
                       this._jvmTypesBuilder.setBody(it_1, _client);
@@ -2624,14 +2528,14 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(reln_2, p.getName(), p.getParameterType());
                                 this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
                                 int _size_1 = ((InteractionDef)reln_2).getParams().size();
-                                boolean _equals_1 = (index == _size_1);
-                                if (_equals_1) {
-                                  String _name_6 = p.getName();
-                                  String _plus_1 = (params + _name_6);
+                                boolean _equals = (index == _size_1);
+                                if (_equals) {
+                                  String _name_5 = p.getName();
+                                  String _plus_1 = (params + _name_5);
                                   params = _plus_1;
                                 } else {
-                                  String _name_7 = p.getName();
-                                  String _plus_2 = (params + _name_7);
+                                  String _name_6 = p.getName();
+                                  String _plus_2 = (params + _name_6);
                                   String _plus_3 = (_plus_2 + ",");
                                   params = _plus_3;
                                 }
@@ -2645,8 +2549,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           boolean _greaterThan_1 = (_size_1 > 0);
                           if (_greaterThan_1) {
                             EList<JvmMember> _members_24 = it.getMembers();
-                            String _name_6 = ((InteractionDef)reln_2).getName();
-                            String _plus_1 = ("get_agr_" + _name_6);
+                            String _name_5 = ((InteractionDef)reln_2).getName();
+                            String _plus_1 = ("get_agr_" + _name_5);
                             final Procedure1<JvmOperation> _function_15 = (JvmOperation it_1) -> {
                               StringConcatenationClient _client = new StringConcatenationClient() {
                                 @Override
@@ -2715,8 +2619,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             this._jvmTypesBuilder.<JvmOperation>operator_add(_members_24, _method_10);
                           } else {
                             EList<JvmMember> _members_25 = it.getMembers();
-                            String _name_7 = ((InteractionDef)reln_2).getName();
-                            String _plus_2 = ("get_agr_" + _name_7);
+                            String _name_6 = ((InteractionDef)reln_2).getName();
+                            String _plus_2 = ("get_agr_" + _name_6);
                             final Procedure1<JvmOperation> _function_16 = (JvmOperation it_1) -> {
                               StringConcatenationClient _client = new StringConcatenationClient() {
                                 @Override
@@ -2739,8 +2643,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     Set<String> _keySet_2 = typeProps_2.keySet();
                     for (final String name_2 : _keySet_2) {
                       {
-                        boolean _equals_1 = typeProps_2.get(name_2).getSimpleName().equals("Double");
-                        if (_equals_1) {
+                        boolean _equals = typeProps_2.get(name_2).getSimpleName().equals("Double");
+                        if (_equals) {
                           final int index = indexDouble_2;
                           EList<JvmMember> _members_23 = it.getMembers();
                           String _firstUpper = StringExtensions.toFirstUpper(name_2);
@@ -2781,8 +2685,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           this._jvmTypesBuilder.<JvmOperation>operator_add(_members_24, _method_10);
                           indexDouble_2 = (indexDouble_2 + 1);
                         }
-                        boolean _equals_2 = typeProps_2.get(name_2).getSimpleName().equals("Integer");
-                        if (_equals_2) {
+                        boolean _equals_1 = typeProps_2.get(name_2).getSimpleName().equals("Integer");
+                        if (_equals_1) {
                           final int index_1 = indexInteger_2;
                           EList<JvmMember> _members_25 = it.getMembers();
                           String _firstUpper_2 = StringExtensions.toFirstUpper(name_2);
@@ -2823,8 +2727,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           this._jvmTypesBuilder.<JvmOperation>operator_add(_members_26, _method_12);
                           indexInteger_2 = (indexInteger_2 + 1);
                         }
-                        boolean _equals_3 = typeProps_2.get(name_2).getSimpleName().equals("Boolean");
-                        if (_equals_3) {
+                        boolean _equals_2 = typeProps_2.get(name_2).getSimpleName().equals("Boolean");
+                        if (_equals_2) {
                           final int index_2 = indexBoolean_2;
                           EList<JvmMember> _members_27 = it.getMembers();
                           String _firstUpper_4 = StringExtensions.toFirstUpper(name_2);
@@ -2901,14 +2805,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   EList<JvmTypeReference> _superTypes_3 = it.getSuperTypes();
                   JvmTypeReference _typeRef_3 = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.OcltEdge");
                   this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_3, _typeRef_3);
-                  if ((((((((((((Relation)meln).getRoles().size() >= 2) && (!Objects.equal(((Relation)meln).getRoles().get(0), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getType(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getType(), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getName(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getName(), null)))) {
+                  if ((((((((((((Relation)meln).getRoles().size() >= 2) && (((Relation)meln).getRoles().get(0) != null)) && (((Relation)meln).getRoles().get(1) != null)) && (((Relation)meln).getRoles().get(0).getType() != null)) && (((Relation)meln).getRoles().get(1).getType() != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()) != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()) != null)) && (((Relation)meln).getRoles().get(0).getName() != null)) && (((Relation)meln).getRoles().get(1).getName() != null))) {
                     final Role firstRole_3 = ((Relation)meln).getRoles().get(0);
                     final Role secondRole_3 = ((Relation)meln).getRoles().get(1);
                     final JvmTypeReference firstRoleType_2 = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(firstRole_3.getType()).toString());
                     final JvmTypeReference secondRoleType_2 = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(secondRole_3.getType()).toString());
                     JvmField jvmField_3 = this._jvmTypesBuilder.toField(meln, firstRole_3.getName(), firstRoleType_2);
-                    boolean _notEquals_6 = (!Objects.equal(jvmField_3, null));
-                    if (_notEquals_6) {
+                    if ((jvmField_3 != null)) {
                       jvmField_3.setFinal(false);
                       EList<JvmMember> _members_24 = it.getMembers();
                       this._jvmTypesBuilder.<JvmField>operator_add(_members_24, jvmField_3);
@@ -2920,8 +2823,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_26, _getter_2);
                     }
                     jvmField_3 = this._jvmTypesBuilder.toField(meln, secondRole_3.getName(), secondRoleType_2);
-                    boolean _notEquals_7 = (!Objects.equal(jvmField_3, null));
-                    if (_notEquals_7) {
+                    if ((jvmField_3 != null)) {
                       jvmField_3.setFinal(false);
                       EList<JvmMember> _members_27 = it.getMembers();
                       this._jvmTypesBuilder.<JvmField>operator_add(_members_27, jvmField_3);
@@ -2995,8 +2897,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     if (reln_3 instanceof RelPropertyDef) {
                       _matched_6=true;
                       final JvmField rField = this._jvmTypesBuilder.toField(reln_3, ((RelPropertyDef)reln_3).getName(), ((RelPropertyDef)reln_3).getType());
-                      boolean _notEquals_8 = (!Objects.equal(rField, null));
-                      if (_notEquals_8) {
+                      if ((rField != null)) {
                         rField.setFinal(false);
                         EList<JvmMember> _members_32 = it.getMembers();
                         this._jvmTypesBuilder.<JvmField>operator_add(_members_32, rField);
@@ -3027,8 +2928,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         boolean _greaterThan_1 = (_size_1 > 0);
                         if (_greaterThan_1) {
                           EList<JvmMember> _members_33 = it.getMembers();
-                          String _name_6 = ((InteractionDef)reln_3).getName();
-                          String _plus_1 = ("_agr_" + _name_6);
+                          String _name_5 = ((InteractionDef)reln_3).getName();
+                          String _plus_1 = ("_agr_" + _name_5);
                           final Procedure1<JvmOperation> _function_18 = (JvmOperation it_1) -> {
                             StringConcatenationClient _client = new StringConcatenationClient() {
                               @Override
@@ -3085,14 +2986,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   boolean testGeom2 = false;
                   final Entity rol1 = ((Relation)meln).getRoles().get(0).getType();
                   final Entity rol2 = ((Relation)meln).getRoles().get(1).getType();
-                  int graphType = 0;
                   EList<EObject> _eContents = rol1.eContents();
                   for (final EObject e : _eContents) {
                     boolean _matched_2 = false;
                     if (e instanceof PropertyDef) {
                       _matched_2=true;
-                      boolean _equals_1 = ((PropertyDef)e).getType().getSimpleName().equals("Cell");
-                      if (_equals_1) {
+                      boolean _equals = ((PropertyDef)e).getType().getSimpleName().equals("Cell");
+                      if (_equals) {
                         testCell1 = true;
                       }
                       if (((((((((PropertyDef)e).getType().getSimpleName().equals("Line") || ((PropertyDef)e).getType().getSimpleName().equals("MultiLine")) || 
@@ -3108,8 +3008,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     boolean _matched_3 = false;
                     if (e_1 instanceof PropertyDef) {
                       _matched_3=true;
-                      boolean _equals_1 = ((PropertyDef)e_1).getType().getSimpleName().equals("Cell");
-                      if (_equals_1) {
+                      boolean _equals = ((PropertyDef)e_1).getType().getSimpleName().equals("Cell");
+                      if (_equals) {
                         testCell2 = true;
                       }
                       if (((((((((PropertyDef)e_1).getType().getSimpleName().equals("Line") || ((PropertyDef)e_1).getType().getSimpleName().equals("MultiLine")) || 
@@ -3126,34 +3026,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   if (((testGeom1 && testCell2) || (testGeom2 && testCell1))) {
                     isCellGeomGraph = true;
                   }
-                  String graphname = "fr.ocelet.runtime.relation.impl.AutoGraph";
-                  if ((!isAutoGraph)) {
-                    graphname = "fr.ocelet.runtime.relation.impl.DiGraph";
-                  }
-                  if (isCellGraph) {
-                    if (isAutoGraph) {
-                      graphname = "fr.ocelet.runtime.relation.impl.CellGraph";
-                    } else {
-                      graphname = "fr.ocelet.runtime.relation.impl.DiCellGraph";
-                    }
-                  }
-                  if (isCellGeomGraph) {
-                    graphname = "fr.ocelet.runtime.relation.impl.GeometryCellGraph";
-                  }
-                  final String graphTypeName = graphname;
                   if (isCellGeomGraph) {
                     final Role firstRole = ((Relation)meln).getRoles().get(0);
                     final Role secondRole = ((Relation)meln).getRoles().get(1);
-                    JvmTypeReference tempcellType = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(firstRole.getType()).toString());
-                    JvmTypeReference tempgeomType = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(secondRole.getType()).toString());
-                    String tempCellName = firstRole.getName();
-                    String tempGeomName = secondRole.getName();
-                    if (testCell2) {
-                      tempcellType = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(secondRole.getType()).toString());
-                      tempCellName = secondRole.getName();
-                      tempgeomType = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(firstRole.getType()).toString());
-                      tempGeomName = firstRole.getName();
-                    }
                     final JvmTypeReference firstRoleType = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(firstRole.getType()).toString());
                     final JvmTypeReference secondRoleType = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(secondRole.getType()).toString());
                     EList<JvmTypeReference> _superTypes = it.getSuperTypes();
@@ -3163,8 +3038,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                     for (final JvmFormalParameter p : _params) {
                       {
                         final JvmField pfield = this._jvmTypesBuilder.toField(reln, p.getName(), p.getParameterType());
-                        boolean _notEquals = (!Objects.equal(pfield, null));
-                        if (_notEquals) {
+                        if ((pfield != null)) {
                           pfield.setFinal(false);
                           EList<JvmMember> _members = it.getMembers();
                           this._jvmTypesBuilder.<JvmField>operator_add(_members, pfield);
@@ -3195,7 +3069,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               _builder.newLineIfNotEmpty();
                             }
                           }
-                          _builder.newLine();
                         }
                       };
                       this._jvmTypesBuilder.setBody(it_1, _client);
@@ -3228,8 +3101,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         for (final JvmFormalParameter p_1 : _params_1) {
                           {
                             final JvmField pfield = this._jvmTypesBuilder.toField(reln, p_1.getName(), p_1.getParameterType());
-                            boolean _notEquals = (!Objects.equal(pfield, null));
-                            if (_notEquals) {
+                            if ((pfield != null)) {
                               pfield.setFinal(false);
                               EList<JvmMember> _members_2 = it.getMembers();
                               this._jvmTypesBuilder.<JvmField>operator_add(_members_2, pfield);
@@ -3290,8 +3162,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         for (final JvmFormalParameter p_2 : _params_2) {
                           {
                             final JvmField pfield = this._jvmTypesBuilder.toField(reln, p_2.getName(), p_2.getParameterType());
-                            boolean _notEquals = (!Objects.equal(pfield, null));
-                            if (_notEquals) {
+                            if ((pfield != null)) {
                               pfield.setFinal(false);
                               EList<JvmMember> _members_4 = it.getMembers();
                               this._jvmTypesBuilder.<JvmField>operator_add(_members_4, pfield);
@@ -3342,7 +3213,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         this._jvmTypesBuilder.<JvmOperation>operator_add(_members_5, _method_2);
                       }
                     } else {
-                      if ((((((((((((Relation)meln).getRoles().size() >= 2) && (!Objects.equal(((Relation)meln).getRoles().get(0), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getType(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getType(), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getName(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getName(), null)))) {
+                      if ((((((((((((Relation)meln).getRoles().size() >= 2) && (((Relation)meln).getRoles().get(0) != null)) && (((Relation)meln).getRoles().get(1) != null)) && (((Relation)meln).getRoles().get(0).getType() != null)) && (((Relation)meln).getRoles().get(1).getType() != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()) != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()) != null)) && (((Relation)meln).getRoles().get(0).getName() != null)) && (((Relation)meln).getRoles().get(1).getName() != null))) {
                         final Role firstRole_3 = ((Relation)meln).getRoles().get(0);
                         final Role secondRole_3 = ((Relation)meln).getRoles().get(1);
                         final JvmTypeReference firstRoleType_3 = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(firstRole_3.getType()).toString());
@@ -3354,8 +3225,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         for (final JvmFormalParameter p_3 : _params_3) {
                           {
                             final JvmField pfield = this._jvmTypesBuilder.toField(reln, p_3.getName(), p_3.getParameterType());
-                            boolean _notEquals = (!Objects.equal(pfield, null));
-                            if (_notEquals) {
+                            if ((pfield != null)) {
                               pfield.setFinal(false);
                               EList<JvmMember> _members_6 = it.getMembers();
                               this._jvmTypesBuilder.<JvmField>operator_add(_members_6, pfield);
@@ -3412,8 +3282,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               }
             }
             JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(edgecname);
-            boolean _notEquals = (!Objects.equal(_typeRef, null));
-            if (_notEquals) {
+            boolean _tripleNotEquals = (_typeRef != null);
+            if (_tripleNotEquals) {
               final Procedure1<JvmGenericType> _function_1 = (JvmGenericType it) -> {
                 this._jvmTypesBuilder.setDocumentation(it, this._jvmTypesBuilder.getDocumentation(meln));
                 final boolean isAutoGraph = ((Relation)meln).getRoles().get(0).getType().equals(((Relation)meln).getRoles().get(1).getType());
@@ -3425,14 +3295,13 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                 boolean testGeom2 = false;
                 final Entity rol1 = ((Relation)meln).getRoles().get(0).getType();
                 final Entity rol2 = ((Relation)meln).getRoles().get(1).getType();
-                int graphType = 0;
                 EList<EObject> _eContents = rol1.eContents();
                 for (final EObject e : _eContents) {
                   boolean _matched_2 = false;
                   if (e instanceof PropertyDef) {
                     _matched_2=true;
-                    boolean _equals_1 = ((PropertyDef)e).getType().getSimpleName().equals("Cell");
-                    if (_equals_1) {
+                    boolean _equals = ((PropertyDef)e).getType().getSimpleName().equals("Cell");
+                    if (_equals) {
                       testCell1 = true;
                     }
                     if (((((((((PropertyDef)e).getType().getSimpleName().equals("Line") || ((PropertyDef)e).getType().getSimpleName().equals("MultiLine")) || 
@@ -3448,8 +3317,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   boolean _matched_3 = false;
                   if (e_1 instanceof PropertyDef) {
                     _matched_3=true;
-                    boolean _equals_1 = ((PropertyDef)e_1).getType().getSimpleName().equals("Cell");
-                    if (_equals_1) {
+                    boolean _equals = ((PropertyDef)e_1).getType().getSimpleName().equals("Cell");
+                    if (_equals) {
                       testCell2 = true;
                     }
                     if (((((((((PropertyDef)e_1).getType().getSimpleName().equals("Line") || ((PropertyDef)e_1).getType().getSimpleName().equals("MultiLine")) || 
@@ -3542,7 +3411,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(secondName);
                           _builder.append(");");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("     \t\t  \t  ");
                           _builder.append("setCompleteIteratorGeomCell(_gen_edge);");
                           _builder.newLine();
                         }
@@ -3577,7 +3445,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(secondName);
                           _builder.append(", distance);");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("     \t\t  \t  ");
                           _builder.append("setCompleteIteratorGeomCell(_gen_edge);");
                           _builder.newLine();
                         }
@@ -3610,7 +3477,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(secondName);
                           _builder.append(");");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("     \t\t  \t  ");
                           _builder.append("setCompleteIteratorGeomCell(_gen_edge);");
                           _builder.newLine();
                         }
@@ -3645,7 +3511,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(secondName);
                           _builder.append(", distance);");
                           _builder.newLineIfNotEmpty();
-                          _builder.append("     \t\t  \t  ");
                           _builder.append("setCompleteIteratorGeomCell(_gen_edge);");
                           _builder.newLine();
                         }
@@ -3703,6 +3568,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLine();
                             _builder.append("beginTransaction();");
                             _builder.newLine();
+                            _builder.append("initInteraction();");
+                            _builder.newLine();
                             _builder.append("for(");
                             JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(edgecname);
                             _builder.append(_typeRef_1);
@@ -3738,6 +3605,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               int _size = ((InteractionDef)reln_1).getComitexpressions().size();
                               boolean _greaterThan = (_size > 0);
                               if (_greaterThan) {
+                                _builder.append("                      \t \t");
                                 boolean test = false;
                                 _builder.newLineIfNotEmpty();
                                 {
@@ -3760,10 +3628,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                 }
                                 {
                                   if (test = true) {
-                                    _builder.append("          \t  \t      \t   \t\t");
                                     _builder.append("_edg_._agr_");
                                     String _name_3 = ((InteractionDef)reln_1).getName();
-                                    _builder.append(_name_3, "          \t  \t      \t   \t\t");
+                                    _builder.append(_name_3);
                                     _builder.append("();");
                                     _builder.newLineIfNotEmpty();
                                   }
@@ -3773,6 +3640,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append("}");
                             _builder.newLine();
                             _builder.append("endTransaction();");
+                            _builder.newLine();
+                            _builder.append("endInteraction();");
                             _builder.newLine();
                           }
                         };
@@ -3888,27 +3757,24 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         StringConcatenationClient _client = new StringConcatenationClient() {
                           @Override
                           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                            _builder.newLine();
                             _builder.append("super.setGrid(");
                             _builder.append(firstName_1);
                             _builder.append(", ");
                             _builder.append(secondName_1);
                             _builder.append(");");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("                   ");
                             JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(edgecname);
-                            _builder.append(_typeRef, "                   ");
+                            _builder.append(_typeRef);
                             _builder.append(" _gen_edge_ = new ");
                             String _name = ((Relation)meln).getName();
                             String _plus = (_name + "_Edge");
-                            _builder.append(_plus, "                   ");
+                            _builder.append(_plus);
                             _builder.append("(");
-                            _builder.append(firstName_1, "                   ");
+                            _builder.append(firstName_1);
                             _builder.append(", ");
-                            _builder.append(secondName_1, "                   ");
+                            _builder.append(secondName_1);
                             _builder.append(");");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("                \t\t");
                             _builder.append("setCompleteIteratorDiCell(_gen_edge_ );");
                             _builder.newLine();
                           }
@@ -3986,7 +3852,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   _builder.append(aggregType, "\t");
                                   _builder.append(" cvt : cvtList){");
                                   _builder.newLineIfNotEmpty();
-                                  _builder.append(" \t\t");
+                                  _builder.append("\t\t");
                                   _builder.append("setCellOperator(cvt);");
                                   _builder.newLine();
                                   _builder.append("\t");
@@ -3994,15 +3860,17 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   _builder.newLine();
                                   _builder.append("}");
                                   _builder.newLine();
-                                  _builder.append("                       \t");
+                                  _builder.append("initInteraction();");
+                                  _builder.newLine();
                                   _builder.append("for(");
                                   JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(edgecname);
-                                  _builder.append(_typeRef_1, "                       \t");
+                                  _builder.append(_typeRef_1);
                                   _builder.append(" _edg_ : this) {");
                                   _builder.newLineIfNotEmpty();
+                                  _builder.append("\t");
                                   _builder.append("_edg_.");
                                   String _name_1 = ((InteractionDef)reln_2).getName();
-                                  _builder.append(_name_1);
+                                  _builder.append(_name_1, "\t");
                                   _builder.append("(");
                                   int ci = 0;
                                   {
@@ -4014,18 +3882,20 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                         }
                                       }
                                       String _name_2 = p.getName();
-                                      _builder.append(_name_2);
+                                      _builder.append(_name_2, "\t");
                                       Object _xblockexpression = null;
                                       {
                                         ci = 1;
                                         _xblockexpression = null;
                                       }
-                                      _builder.append(_xblockexpression);
+                                      _builder.append(_xblockexpression, "\t");
                                     }
                                   }
                                   _builder.append(");");
                                   _builder.newLineIfNotEmpty();
                                   _builder.append("}");
+                                  _builder.newLine();
+                                  _builder.append("endInteraction();");
                                   _builder.newLine();
                                 }
                               };
@@ -4131,36 +4001,22 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         StringConcatenationClient _client = new StringConcatenationClient() {
                           @Override
                           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                            _builder.newLine();
-                            _builder.newLine();
-                            _builder.append("                  ");
-                            _builder.append(firstRoleType_1, "                  ");
+                            _builder.append(firstRoleType_1);
                             _builder.append(" entity = new ");
-                            _builder.append(firstRoleType_1, "                  ");
+                            _builder.append(firstRoleType_1);
                             _builder.append("();");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("          \t\t\t\t");
-                            _builder.newLine();
-                            _builder.append("                  \t \t");
-                            _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
-                            _builder.append(firstCellList_1, "                  \t \t");
+                            _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
-                            _builder.append(firstCellList_1, "                  \t \t");
+                            _builder.append(firstCellList_1);
                             _builder.append("();");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("                  \t \t");
+                            _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
-                            _builder.append("array.cellCut();\t");
-                            _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("return array;");
                             _builder.newLine();
                           }
@@ -4177,25 +4033,20 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         StringConcatenationClient _client = new StringConcatenationClient() {
                           @Override
                           protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
-                            _builder.newLine();
-                            _builder.newLine();
-                            _builder.append("                  ");
                             _builder.append("super.setGrid(");
-                            _builder.append(firstName_2, "                  ");
+                            _builder.append(firstName_2);
                             _builder.append(");");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("                   ");
                             JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(edgecname);
-                            _builder.append(_typeRef, "                   ");
+                            _builder.append(_typeRef);
                             _builder.append(" _gen_edge_ = new ");
                             String _name = ((Relation)meln).getName();
                             String _plus = (_name + "_Edge");
-                            _builder.append(_plus, "                   ");
+                            _builder.append(_plus);
                             _builder.append("(");
-                            _builder.append(firstName_2, "                   ");
+                            _builder.append(firstName_2);
                             _builder.append(");");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("     \t\t  \t  ");
                             _builder.append("setCompleteIteratorCell(_gen_edge_ );");
                             _builder.newLine();
                           }
@@ -4222,29 +4073,20 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("grid = createHexagon(\"");
                             _builder.append(firstRoleType_1);
-                            _builder.append("\",entity.getProps(), shp.getBounds(), size);          \t\t\t\t");
+                            _builder.append("\",entity.getProps(), shp.getBounds(), size);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("          \t\t\t \t");
                             _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
-                            _builder.append("                  \t ");
-                            _builder.newLine();
-                            _builder.append("                  \t \t");
-                            _builder.append(firstCellList_1, "                  \t \t");
+                            _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
-                            _builder.append(firstCellList_1, "                  \t \t");
+                            _builder.append(firstCellList_1);
                             _builder.append("();");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("                  \t \t");
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
-                            _builder.append("                  \t   \t");
                             _builder.append("connect(array);");
-                            _builder.newLine();
-                            _builder.append("                  \t   \t");
                             _builder.newLine();
                           }
                         };
@@ -4270,29 +4112,20 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("grid = createHexagon(\"");
                             _builder.append(firstRoleType_1);
-                            _builder.append("\",entity.getProps(), geometry, size);          \t\t\t\t");
+                            _builder.append("\",entity.getProps(), geometry, size);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("          \t\t\t \t");
                             _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
-                            _builder.append("                  \t ");
-                            _builder.newLine();
-                            _builder.append("                  \t \t");
-                            _builder.append(firstCellList_1, "                  \t \t");
+                            _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
-                            _builder.append(firstCellList_1, "                  \t \t");
+                            _builder.append(firstCellList_1);
                             _builder.append("();");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("                  \t \t");
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
-                            _builder.append("                  \t   \t");
                             _builder.append("connect(array);");
-                            _builder.newLine();
-                            _builder.append("                  \t   \t");
                             _builder.newLine();
                           }
                         };
@@ -4329,24 +4162,18 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), minX, minY, maxX, maxY, size);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("entity.getCell().setGrid(grid);                  \t   ");
+                            _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
-                            _builder.append("                  \t   \t");
-                            _builder.append(firstCellList_1, "                  \t   \t");
+                            _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
-                            _builder.append(firstCellList_1, "                  \t   \t");
+                            _builder.append(firstCellList_1);
                             _builder.append("();");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("                  \t   \t");
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
-                            _builder.append("                  \t    ");
                             _builder.append("connect(array);");
-                            _builder.newLine();
-                            _builder.append("                  \t   \t");
                             _builder.newLine();
                           }
                         };
@@ -4377,7 +4204,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), shp.getBounds(), xRes, yRes);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("entity.getCell().setGrid(grid);\t\t\t\t\t\t");
+                            _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
                             _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
@@ -4386,11 +4213,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
                             _builder.append("connect(array);");
-                            _builder.newLine();
                             _builder.newLine();
                           }
                         };
@@ -4421,7 +4246,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), geometry, xRes, yRes);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("entity.getCell().setGrid(grid);\t\t\t\t\t\t");
+                            _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
                             _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
@@ -4430,11 +4255,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
                             _builder.append("connect(array);");
-                            _builder.newLine();
                             _builder.newLine();
                           }
                         };
@@ -4474,7 +4297,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), minX, minY, maxX, maxY, xRes, yRes);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("entity.getCell().setGrid(grid);\t\t\t\t\t\t");
+                            _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
                             _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
@@ -4483,11 +4306,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
                             _builder.append("connect(array);");
-                            _builder.newLine();
                             _builder.newLine();
                           }
                         };
@@ -4515,7 +4336,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), geometry, size);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("entity.getCell().setGrid(grid);\t\t\t\t\t\t");
+                            _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
                             _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
@@ -4524,7 +4345,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
                             _builder.append("connect(array);");
@@ -4556,7 +4376,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.append(firstRoleType_1);
                             _builder.append("\",entity.getProps(), shp.getBounds(), size);");
                             _builder.newLineIfNotEmpty();
-                            _builder.append("entity.getCell().setGrid(grid);\t\t\t\t\t\t");
+                            _builder.append("entity.getCell().setGrid(grid);");
                             _builder.newLine();
                             _builder.append(firstCellList_1);
                             _builder.append(" array = new ");
@@ -4565,7 +4385,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
                             _builder.append("connect(array);");
@@ -4615,7 +4434,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             _builder.newLineIfNotEmpty();
                             _builder.append("array.cellCut();");
                             _builder.newLine();
-                            _builder.append("                  \t \t");
                             _builder.append("array.add(entity);");
                             _builder.newLine();
                             _builder.append("connect(array);");
@@ -4705,6 +4523,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   _builder.newLine();
                                   _builder.append("}");
                                   _builder.newLine();
+                                  _builder.append("initInteraction();");
+                                  _builder.newLine();
                                   _builder.append("for(");
                                   JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef(edgecname);
                                   _builder.append(_typeRef_1);
@@ -4738,6 +4558,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                   _builder.append(");");
                                   _builder.newLineIfNotEmpty();
                                   _builder.append("}");
+                                  _builder.newLine();
+                                  _builder.append("endInteraction();");
                                   _builder.newLine();
                                 }
                               };
@@ -4791,7 +4613,6 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                             int _minus_1 = (_size_2 - 1);
                                             boolean _lessThan = ((i).intValue() < _minus_1);
                                             if (_lessThan) {
-                                              _builder.append("\t");
                                               _builder.append(",");
                                               _builder.newLine();
                                             }
@@ -4800,15 +4621,10 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       }
                                     }
                                   }
-                                  _builder.append("\t\t");
                                   _builder.append(");");
                                   _builder.newLine();
-                                  _builder.append("\t\t\t");
-                                  _builder.newLine();
-                                  _builder.append("                        ");
                                   _builder.append("super.addFilter(_filter);");
                                   _builder.newLine();
-                                  _builder.append("                        ");
                                   _builder.append("return this;");
                                   _builder.newLine();
                                 }
@@ -4822,7 +4638,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       }
                     }
                   } else {
-                    if ((((((((((((Relation)meln).getRoles().size() >= 2) && (!Objects.equal(((Relation)meln).getRoles().get(0), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getType(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getType(), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()), null))) && (!Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()), null))) && (!Objects.equal(((Relation)meln).getRoles().get(0).getName(), null))) && (!Objects.equal(((Relation)meln).getRoles().get(1).getName(), null)))) {
+                    if ((((((((((((Relation)meln).getRoles().size() >= 2) && (((Relation)meln).getRoles().get(0) != null)) && (((Relation)meln).getRoles().get(1) != null)) && (((Relation)meln).getRoles().get(0).getType() != null)) && (((Relation)meln).getRoles().get(1).getType() != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(0).getType()) != null)) && (this._iQualifiedNameProvider.getFullyQualifiedName(((Relation)meln).getRoles().get(1).getType()) != null)) && (((Relation)meln).getRoles().get(0).getName() != null)) && (((Relation)meln).getRoles().get(1).getName() != null))) {
                       final Role firstRole_3 = ((Relation)meln).getRoles().get(0);
                       final Role secondRole_2 = ((Relation)meln).getRoles().get(1);
                       final JvmTypeReference firstRoleType_2 = this._typeReferenceBuilder.typeRef(this._iQualifiedNameProvider.getFullyQualifiedName(firstRole_3.getType()).toString());
@@ -5013,8 +4829,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       this._jvmTypesBuilder.<JvmOperation>operator_add(_members_24, _method_20);
                       final JvmTypeReference rsetype = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.RoleSet", firstRoleType_2);
                       final JvmField rsfield = this._jvmTypesBuilder.toField(meln, rolset1, rsetype);
-                      boolean _notEquals_1 = (!Objects.equal(rsfield, null));
-                      if (_notEquals_1) {
+                      if ((rsfield != null)) {
                         EList<JvmMember> _members_25 = it.getMembers();
                         this._jvmTypesBuilder.<JvmField>operator_add(_members_25, rsfield);
                         EList<JvmMember> _members_26 = it.getMembers();
@@ -5060,8 +4875,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         if ((!isAutoGraph)) {
                           final JvmTypeReference rsetype2 = this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.relation.RoleSet", secondRoleType_1);
                           final JvmField rsfield2 = this._jvmTypesBuilder.toField(meln, rolset2, rsetype2);
-                          boolean _notEquals_2 = (!Objects.equal(rsfield2, null));
-                          if (_notEquals_2) {
+                          if ((rsfield2 != null)) {
                             EList<JvmMember> _members_28 = it.getMembers();
                             this._jvmTypesBuilder.<JvmField>operator_add(_members_28, rsfield2);
                             EList<JvmMember> _members_29 = it.getMembers();
@@ -5392,8 +5206,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       if (reln_4 instanceof RelPropertyDef) {
                         _matched_7=true;
                         String _name_6 = ((RelPropertyDef)reln_4).getName();
-                        boolean _notEquals_3 = (!Objects.equal(_name_6, null));
-                        if (_notEquals_3) {
+                        boolean _tripleNotEquals_1 = (_name_6 != null);
+                        if (_tripleNotEquals_1) {
                           EList<JvmMember> _members_43 = it.getMembers();
                           String _firstUpper_4 = StringExtensions.toFirstUpper(((RelPropertyDef)reln_4).getName());
                           String _plus_14 = ("set" + _firstUpper_4);
@@ -5435,8 +5249,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         if (reln_4 instanceof InteractionDef) {
                           _matched_7=true;
                           String _name_6 = ((InteractionDef)reln_4).getName();
-                          boolean _notEquals_3 = (!Objects.equal(_name_6, null));
-                          if (_notEquals_3) {
+                          boolean _tripleNotEquals_1 = (_name_6 != null);
+                          if (_tripleNotEquals_1) {
                             EList<JvmMember> _members_43 = it.getMembers();
                             final Procedure1<JvmOperation> _function_43 = (JvmOperation it_1) -> {
                               EList<JvmFormalParameter> _params = ((InteractionDef)reln_4).getParams();
@@ -5508,8 +5322,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                         if (reln_4 instanceof Filterdef) {
                           _matched_7=true;
                           String _name_6 = ((Filterdef)reln_4).getName();
-                          boolean _notEquals_3 = (!Objects.equal(_name_6, null));
-                          if (_notEquals_3) {
+                          boolean _tripleNotEquals_1 = (_name_6 != null);
+                          if (_tripleNotEquals_1) {
                             EList<JvmMember> _members_43 = it.getMembers();
                             final Procedure1<JvmOperation> _function_43 = (JvmOperation it_1) -> {
                               EList<JvmFormalParameter> _params = ((Filterdef)reln_4).getParams();
@@ -5584,23 +5398,23 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
             _matched=true;
             final Procedure1<JvmGenericType> _function = (JvmGenericType it) -> {
               String _typeArgument = ((Strucdef)meln).getTypeArgument();
-              boolean _notEquals = (!Objects.equal(_typeArgument, null));
-              if (_notEquals) {
+              boolean _tripleNotEquals = (_typeArgument != null);
+              if (_tripleNotEquals) {
                 final JvmTypeParameter param = TypesFactory.eINSTANCE.createJvmTypeParameter();
                 param.setName(((Strucdef)meln).getTypeArgument());
                 EList<JvmTypeParameter> _typeParameters = it.getTypeParameters();
                 this._jvmTypesBuilder.<JvmTypeParameter>operator_add(_typeParameters, param);
                 String _superType = ((Strucdef)meln).getSuperType();
-                boolean _notEquals_1 = (!Objects.equal(_superType, null));
-                if (_notEquals_1) {
+                boolean _tripleNotEquals_1 = (_superType != null);
+                if (_tripleNotEquals_1) {
                   EList<JvmTypeReference> _superTypes = it.getSuperTypes();
                   JvmTypeReference _typeRef = this._typeReferenceBuilder.typeRef(((Strucdef)meln).getSuperType(), this._typeReferenceBuilder.typeRef(param));
                   this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes, _typeRef);
                 }
               } else {
                 String _superType_1 = ((Strucdef)meln).getSuperType();
-                boolean _notEquals_2 = (!Objects.equal(_superType_1, null));
-                if (_notEquals_2) {
+                boolean _tripleNotEquals_2 = (_superType_1 != null);
+                if (_tripleNotEquals_2) {
                   EList<JvmTypeReference> _superTypes_1 = it.getSuperTypes();
                   JvmTypeReference _typeRef_1 = this._typeReferenceBuilder.typeRef(((Strucdef)meln).getSuperType());
                   this._jvmTypesBuilder.<JvmTypeReference>operator_add(_superTypes_1, _typeRef_1);
@@ -5614,8 +5428,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   _matched_1=true;
                   lvdefs.add(((StrucVarDef)steln));
                   JvmField jvmField = this._jvmTypesBuilder.toField(steln, ((StrucVarDef)steln).getName(), ((StrucVarDef)steln).getType());
-                  boolean _notEquals_3 = (!Objects.equal(jvmField, null));
-                  if (_notEquals_3) {
+                  if ((jvmField != null)) {
                     jvmField.setFinal(false);
                     EList<JvmMember> _members = it.getMembers();
                     this._jvmTypesBuilder.<JvmField>operator_add(_members, jvmField);
@@ -5631,8 +5444,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   if (steln instanceof StrucFuncDef) {
                     _matched_1=true;
                     JvmTypeReference _type = ((StrucFuncDef)steln).getType();
-                    boolean _equals_1 = Objects.equal(_type, null);
-                    if (_equals_1) {
+                    boolean _tripleEquals_1 = (_type == null);
+                    if (_tripleEquals_1) {
                       ((StrucFuncDef)steln).setType(this._typeReferenceBuilder.typeRef(Void.TYPE));
                     }
                     EList<JvmMember> _members = it.getMembers();
@@ -5728,8 +5541,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               _builder.newLineIfNotEmpty();
               {
                 String _modeldesc = md.getModeldesc();
-                boolean _notEquals = (!Objects.equal(_modeldesc, null));
-                if (_notEquals) {
+                boolean _tripleNotEquals = (_modeldesc != null);
+                if (_tripleNotEquals) {
                   _builder.append("modDescription = \"");
                   String _modeldesc_1 = md.getModeldesc();
                   _builder.append(_modeldesc_1);
@@ -5739,8 +5552,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
               _builder.newLineIfNotEmpty();
               {
                 String _webpage = md.getWebpage();
-                boolean _notEquals_1 = (!Objects.equal(_webpage, null));
-                if (_notEquals_1) {
+                boolean _tripleNotEquals_1 = (_webpage != null);
+                if (_tripleNotEquals_1) {
                   _builder.append("modelWebPage = \"");
                   String _webpage_1 = md.getWebpage();
                   _builder.append(_webpage_1);
@@ -5781,8 +5594,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(_dvalueString);
                           {
                             Object _minvalue = pstuff.getMinvalue();
-                            boolean _equals = Objects.equal(_minvalue, null);
-                            if (_equals) {
+                            boolean _tripleEquals = (_minvalue == null);
+                            if (_tripleEquals) {
                               _builder.append(",null");
                             } else {
                               _builder.append(",");
@@ -5792,8 +5605,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           }
                           {
                             Object _maxvalue = pstuff.getMaxvalue();
-                            boolean _equals_1 = Objects.equal(_maxvalue, null);
-                            if (_equals_1) {
+                            boolean _tripleEquals_1 = (_maxvalue == null);
+                            if (_tripleEquals_1) {
                               _builder.append(",null");
                             } else {
                               _builder.append(",");
@@ -5803,8 +5616,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           }
                           {
                             String _unit = pstuff.getUnit();
-                            boolean _equals_2 = Objects.equal(_unit, null);
-                            if (_equals_2) {
+                            boolean _tripleEquals_2 = (_unit == null);
+                            if (_tripleEquals_2) {
                               _builder.append(",null");
                             } else {
                               _builder.append(",");
@@ -5837,8 +5650,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                           _builder.append(_dvalueString_1);
                           {
                             String _unit_2 = pstuff.getUnit();
-                            boolean _equals_3 = Objects.equal(_unit_2, null);
-                            if (_equals_3) {
+                            boolean _tripleEquals_3 = (_unit_2 == null);
+                            if (_tripleEquals_3) {
                               _builder.append(",null");
                             } else {
                               _builder.append(",\"");
@@ -5858,8 +5671,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                       _builder.newLineIfNotEmpty();
                       {
                         Object _dvalue = pstuff.getDvalue();
-                        boolean _notEquals_2 = (!Objects.equal(_dvalue, null));
-                        if (_notEquals_2) {
+                        boolean _tripleNotEquals_2 = (_dvalue != null);
+                        if (_tripleNotEquals_2) {
                           _builder.append(pstuff.name);
                           _builder.append(" = ");
                           String _dvalueString_2 = pstuff.getDvalueString();
@@ -5880,8 +5693,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
         this._jvmTypesBuilder.<JvmConstructor>operator_add(_members, _constructor);
         for (final Scenario scen : scens) {
           int _compareTo = scen.getName().compareTo(modlName);
-          boolean _equals_1 = (_compareTo == 0);
-          if (_equals_1) {
+          boolean _equals = (_compareTo == 0);
+          if (_equals) {
             EList<JvmMember> _members_1 = it.getMembers();
             final Procedure1<JvmOperation> _function_2 = (JvmOperation it_1) -> {
               EList<JvmFormalParameter> _parameters = it_1.getParameters();
@@ -5969,8 +5782,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
             this._jvmTypesBuilder.<JvmOperation>operator_add(_members_3, _method_2);
           } else {
             JvmTypeReference rtype = scen.getType();
-            boolean _equals_2 = Objects.equal(rtype, null);
-            if (_equals_2) {
+            if ((rtype == null)) {
               rtype = this._typeReferenceBuilder.typeRef(Void.TYPE);
             }
             EList<JvmMember> _members_4 = it.getMembers();
@@ -5993,8 +5805,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
           for (final Parameterstuff pstuff : _params) {
             {
               JvmField jvmField = this._jvmTypesBuilder.toField(modl, pstuff.name, pstuff.type);
-              boolean _notEquals = (!Objects.equal(jvmField, null));
-              if (_notEquals) {
+              if ((jvmField != null)) {
                 jvmField.setFinal(false);
                 EList<JvmMember> _members_5 = it.getMembers();
                 this._jvmTypesBuilder.<JvmField>operator_add(_members_5, jvmField);

@@ -75,8 +75,10 @@ public abstract class GridCellManager{
         properties.clear();
     }
 
-    public void add(int x, int y, String name, Double value){
-        get(x, y).add(name, value);       
+       
+    
+    public void add(int x, int y, int band, Double value){
+        get(x, y).add(band, value);       
     }   
 
     public void clearAggregMap(){    

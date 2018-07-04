@@ -43,8 +43,12 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
         y = 0;
         for(int i = 0; i < grid.getWidth(); i++){
         for(CellValues[] cv : cvArray){	
-        	for(String name : properties){
+        	/*for(String name : properties){
         		cv[i].clear(name);
+        	}*/
+        	
+        	for(int b = 0; b < properties.size(); b++){
+        		cv[i].clear(b);
         	}
         	}
         }		
@@ -54,7 +58,42 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
 	@Override
 	public void validate() {
 		CellValues[] firstLine = cvArray.get(0);
+		
 		for(int i = 0; i < firstLine.length; i++){
+	        
+            CellValues cv = firstLine[i];
+            
+            for(int b = 0; b < properties.size(); b++){
+            		
+            	String name = properties.get(b);
+            			List<Double> values = cv.getValues(b);
+                
+                if(aggregMap.containsKey(name)){
+                
+                    if(!values.isEmpty()){
+                    	
+                    	Double d;
+                    	CellAggregOperator cao = aggregMap.get(name);
+                    	Double value = grid.getDoubleValue(b, i, y);
+                    	if(cao.preval() == false){
+                    		d = cao.apply(values, value);
+                    	}else{
+                    		values.add(value);
+                    		d = cao.apply(values, value);
+                    	}
+                    	
+                        grid.setCellValue(b, i, y, d);
+                    	
+                    }
+                } else if(!cv.getValues(b).isEmpty()){
+                
+                    grid.setCellValue(b, i, y, cv.getValues(b).get((int)(Math.random() * (double)cv.getValues(b).size())));
+                }
+                cv.clear(b);
+            }
+        }	
+		
+		/*for(int i = 0; i < firstLine.length; i++){
         
             CellValues cv = firstLine[i];
             
@@ -85,8 +124,7 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
                 }
                 cv.clear(name);
             }
-
-        }		
+        }*/		
 	}
 
 	@Override
@@ -99,8 +137,8 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
 		for(int i = 0; i < grid.getWidth(); i ++){
 			for(CellValues[] cv : cvArray){
 				cv[i] = new CellValues();
-				for(String name : properties){
-					cv[i].set(name);
+				  for(int b = 0; b < properties.size(); b++){
+					cv[i].set(b);
 
 				}
 
@@ -116,8 +154,8 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
         cvArray.remove(0);
         for(int i = 0; i < grid.getWidth(); i++){
         
-        	for(String name : properties){
-        		temp[i].clear(name);
+        	  for(int b = 0; b < properties.size(); b++){
+        		temp[i].clear(b);
         	}
            
 
@@ -131,9 +169,9 @@ public class GridMultiQuadrilateralCellManager extends GridCellManager {
             return cvArray.get(y - this.y)[x];
 	}
 	@Override
-public void add(int x, int y, String name, Double value){
+public void add(int x, int y, int band, Double value){
 
-        get(x, y).add(name, value);
+        get(x, y).add(band, value);
        
     }
 	@Override

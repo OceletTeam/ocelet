@@ -41,10 +41,15 @@ public class GridTriangularCellManager extends GridCellManager {
 		y = 0;
 		for (int i = 0; i < grid.getWidth(); i++) {
 
-			for (String name : properties) {
+			/*for (String name : properties) {
 				nextLine[i].clear(name);
 				firstLine[i].clear(name);
-			}
+			}*/
+			
+			 for(int band = 0; band < properties.size(); band ++) {
+	            	nextLine[i].clear(band);
+	            	firstLine[i].clear(band);
+	            }
 		}
 	}
 
@@ -57,10 +62,15 @@ public class GridTriangularCellManager extends GridCellManager {
 
 			firstLine[i] = new CellValues();
 			nextLine[i] = new CellValues();
-			for (String name : properties) {
+			
+			 for(int band = 0; band < properties.size(); band ++) {
+	            	nextLine[i].set(band);
+	            	firstLine[i].set(band);
+	            }
+			/*for (String name : properties) {
 				nextLine[i].set(name);
 				firstLine[i].set(name);
-			}
+			}*/
 
 		}
 
@@ -104,7 +114,7 @@ public class GridTriangularCellManager extends GridCellManager {
 		return null;
 	}
 
-	public void add(int x, int y, String name, Double value) {
+	public void add(int x, int y, int band, Double value) {
 
 		if (y + 1 == this.y) {
 			// System.out.println("FIRST ");
@@ -121,9 +131,8 @@ public class GridTriangularCellManager extends GridCellManager {
 		}
 		// System.out.println("ADD "+x+" "+y+" "+value+" "+this.y);
 		// System.out.println(get(x, y).getValues(name));
-		get(x, y).add(name, value);
+		get(x, y).add(band, value);
 		// System.out.println(get(x, y).getValues(name));
-
 	}
 
 	@Override
@@ -134,10 +143,65 @@ public class GridTriangularCellManager extends GridCellManager {
 
 	public void validateAll() {
 
-		// System.out.println("VALIDATE ALL "+this.y);
+		
 		for (int i = 0; i < firstLine.length; i++) {
 
-			// CellValues cv = firstLine[i];
+			
+			CellValues cv2 = firstLine[i];
+			CellValues cv3 = nextLine[i];
+
+			for (int b = 0; b < properties.size(); b ++) {
+				
+				String name = properties.get(b);
+				if (aggregMap.containsKey(name)) {
+
+					CellAggregOperator cao = aggregMap.get(name);
+					
+
+					if (!cv2.getValues(b).isEmpty()) {
+						
+						if (cao.preval() == false) {
+							grid.setCellValue(b, i, y, cao.apply(cv2.getValues(b), grid.getDoubleValue(b, i, y)));
+						} else {
+							cv2.getValues(b).add(grid.getDoubleValue(b, i, y));
+							grid.setCellValue(b, i, y, cao.apply(cv2.getValues(b), grid.getDoubleValue(b, i, y)));
+
+						}
+					}
+
+					if (!cv3.getValues(b).isEmpty()) {
+						
+						if (cao.preval() == false) {
+							grid.setCellValue(b, i, y + 1, cao.apply(cv3.getValues(b),  grid.getDoubleValue(b, i, y + 1)));
+						} else {
+							cv3.getValues(b).add( grid.getDoubleValue(b, i, y + 1));
+							grid.setCellValue(b, i, y + 1, cao.apply(cv3.getValues(b), grid.getDoubleValue(b, i, y + 1)));
+
+						}
+					
+					}
+
+				} else {
+					
+					if (!cv2.getValues(b).isEmpty()) {
+						grid.setCellValue(b, i, y,
+								cv2.getValues(b).get((int) (Math.random() * cv2.getValues(b).size())));
+
+					}
+					if (!cv3.getValues(b).isEmpty()) {
+						grid.setCellValue(b, i, y + 1,
+								cv3.getValues(b).get((int) (Math.random() * cv3.getValues(b).size())));
+					}
+				}
+				cv2.clear(b);
+				cv3.clear(b);
+			}
+
+		}
+		
+		/*for (int i = 0; i < firstLine.length; i++) {
+
+		
 			CellValues cv2 = firstLine[i];
 			CellValues cv3 = nextLine[i];
 
@@ -146,17 +210,10 @@ public class GridTriangularCellManager extends GridCellManager {
 				if (aggregMap.containsKey(name)) {
 
 					CellAggregOperator cao = aggregMap.get(name);
-					/*
-					 * if(!cv.getValues(name).isEmpty()){
-					 * 
-					 * grid.setCellValue(name, i, y - 1,
-					 * aggregMap.get(name).apply(cv.getValues(name), 0.0)); }
-					 */
+					
 
 					if (!cv2.getValues(name).isEmpty()) {
-						/*
-						 * System.out.println(i+" "+(y - 1)); System.out.println(" CV2 "+cv2);
-						 */
+						
 						if (cao.preval() == false) {
 							grid.setCellValue(name, i, y, cao.apply(cv2.getValues(name), grid.getDoubleValue(name, i, y)));
 						} else {
@@ -167,9 +224,7 @@ public class GridTriangularCellManager extends GridCellManager {
 					}
 
 					if (!cv3.getValues(name).isEmpty()) {
-						/*
-						 * System.out.println(i+" "+(y )); System.out.println(" CV2 "+cv3);
-						 */
+						
 						if (cao.preval() == false) {
 							grid.setCellValue(name, i, y + 1, cao.apply(cv3.getValues(name),  grid.getDoubleValue(name, i, y + 1)));
 						} else {
@@ -177,18 +232,11 @@ public class GridTriangularCellManager extends GridCellManager {
 							grid.setCellValue(name, i, y + 1, cao.apply(cv3.getValues(name), grid.getDoubleValue(name, i, y + 1)));
 
 						}
-						// grid.setCellValue(name, i, y + 1,
-						// aggregMap.get(name).apply(cv3.getValues(name), null));
+					
 					}
 
 				} else {
-					/*
-					 * if(!cv.getValues(name).isEmpty()){ grid.setCellValue(name, i, y- 1,
-					 * (Double)cv.getValues(name).get((int)(Math.random() *
-					 * (double)cv.getValues(name).size())));
-					 * 
-					 * }
-					 */
+					
 					if (!cv2.getValues(name).isEmpty()) {
 						grid.setCellValue(name, i, y,
 								cv2.getValues(name).get((int) (Math.random() * cv2.getValues(name).size())));
@@ -203,15 +251,50 @@ public class GridTriangularCellManager extends GridCellManager {
 				cv3.clear(name);
 			}
 
-		}
+		}*/
 	}
 
 	@Override
 	public void validate() {
 
-		// System.out.println("VALIDATE "+(y-1));
+		
 		for (int i = 0; i < firstLine.length; i++) {
-			// System.out.println(i+" "+(y - 1));
+			
+			CellValues cv = firstLine[i];
+
+			for (int b = 0; b < properties.size(); b++ ) {
+				String name = properties.get(b);
+				List<Double> values = cv.getValues(b);
+
+				if (aggregMap.containsKey(name)) {
+
+					if (!values.isEmpty()) {
+
+						Double d;
+						CellAggregOperator cao = aggregMap.get(name);
+						Double value = grid.getDoubleValue(b, i, y);
+						if (cao.preval() == false) {
+							d = cao.apply(values, value);
+						} else {
+							values.add(value);
+							d = cao.apply(values, value);
+						}
+
+						grid.setCellValue(b, i, y, d);
+
+					}
+				} else if (!cv.getValues(b).isEmpty()) {
+
+					grid.setCellValue(b, i, y, (Double) cv.getValues(b)
+							.get((int) (Math.random() * (double) cv.getValues(b).size())));
+				}
+				cv.clear(b);
+			}
+
+		}
+		
+		/*for (int i = 0; i < firstLine.length; i++) {
+			
 			CellValues cv = firstLine[i];
 
 			for (String name : properties) {
@@ -242,7 +325,7 @@ public class GridTriangularCellManager extends GridCellManager {
 				cv.clear(name);
 			}
 
-		}
+		}*/
 
 	}
 

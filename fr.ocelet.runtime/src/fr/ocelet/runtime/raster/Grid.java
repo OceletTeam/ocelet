@@ -86,7 +86,8 @@ public class Grid {
 	protected HashMap<String, Integer> rasterProps = new HashMap<String, Integer>();
 	protected GridCellManager gridCellManager;
 	protected MultiResolutionManager mrm;
-	protected HashMap<String, List<Double>> geomTempVal = new HashMap<String, List<Double>>();
+	//protected HashMap<String, List<Double>> geomTempVal = new HashMap<String, List<Double>>();
+	protected HashMap<Integer, List<Double>> geomTempVal2 = new HashMap<Integer, List<Double>>();
 	protected String cellShapeType = "QUADRILATERAL";
 	protected Coordinate initCoordinates;
 	protected Double[] worldBounds;
@@ -104,7 +105,8 @@ public class Grid {
 	public void flush() {
 		raster = null;
 		gridCellManager = null;
-		geomTempVal = null;
+		geomTempVal2 = null;
+		
 	}
 	public String getName() {
 		return name;
@@ -198,29 +200,7 @@ public class Grid {
 		
 		Double[] rBounds = raster.getWorldBounds();
 		Double[] scaled = new Double[4];
-		/*if(worldBounds[0] < rBounds[0]) {
-			scaled[0] = rBounds[0];
-		}else {
-			scaled[0] = worldBounds[0];
-		}
 		
-		if(worldBounds[1] < rBounds[1]) {
-			scaled[1] = rBounds[1];
-		}else {
-			scaled[1] = worldBounds[1];
-		}
-		
-		if(worldBounds[2] > rBounds[2]) {
-			scaled[2] = rBounds[2];
-		}else {
-			scaled[2] = worldBounds[2];
-		}
-		
-		if(worldBounds[3] > rBounds[3]) {
-			scaled[3] = rBounds[3];
-		}else {
-			scaled[3] = worldBounds[3];
-		}*/
 		if(worldBounds[0] < rBounds[0]) {
 			scaled[0] = rBounds[0];
 		}else {
@@ -250,56 +230,26 @@ public class Grid {
 		
 		
 		Double[] scaled = scale(raster);
-	
-		
-	
 		
 		int[] gridMin = gridCoordinate(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
 		int[] gridMax = gridCoordinate(scaled[2] - xRes / 2, scaled[1] + yRes / 2);
 	
 		int[] rasterMin = raster.worldToGrid(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
-		int[] rasterMax = raster.worldToGrid(scaled[2], scaled[1]);
-		
-		
-	
+
 		int diffX = rasterMin[0] - gridMin[0];
 		int diffY = rasterMin[1] - gridMin[1];
 
-		
-		
-	
-		int w = gridMax[0] - gridMin[0];
-		int h = gridMax[1] - gridMin[1];
-		
+			
 		int maxX = gridMax[0] + 1;
-		int maxY = gridMax[1] + 1;
-	
-		/*System.out.println(width + " "+height+" "+raster.getGridWidth()+" "+raster.getGridHeight());
-		printWorldBounds();
-		raster.printWorldBounds();*/
-		/*if(w < width  && w < raster.getGridWidth()  ) {
-			maxX ++;
-		}
-		if(h < height  && h < raster.getGridHeight() ) {
-			maxY ++;
-		}*/
+		int maxY = gridMax[1] + 1;	
+		
 
 		
 		for(int i = gridMin[0]; i < maxX; i ++){
 			for(int j = gridMin[1]; j < maxY; j ++){
 				for(String name : matchedBand.keySet()){
-					//try{
-						//System.out.println(i +" "+j+" "+(i + diffX)+" "+(j + diffY));
-						/*Coordinate worlds = this.gridCoordinate(i, j);
-						int[] convert = raster.worldToGrid(worlds.x, worlds.y);
-						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(convert[0], convert[1], matchedBand.get(name)));*/
+					
 						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(i + diffX, j + diffY , matchedBand.get(name)));
-						
-					//}catch (Exception e){
-					//	System.out.println(i +" "+j+" "+(i+diffX)+" "+(j+diffY));
-						
-						//e.printStackTrace();
-					//}
 				}    			
 			}
 		}
@@ -311,9 +261,8 @@ public class Grid {
 	
 	public Grid(Double bounds[], GridGeometry2D gridGeometry, ORaster raster){
 		this.ts = normSetter;
-		//initRasterProps = new HashMap<String, Integer>();
-		rasterProps = new HashMap<String, Integer>();
 		
+		rasterProps = new HashMap<String, Integer>();		
 		this.gridGeometry = gridGeometry;
 		int iBounds[] = intBounds(bounds);
 		minX = iBounds[0];
@@ -1012,31 +961,46 @@ public class Grid {
 	}
 
 
-	public Double getDoubleValue(String name, int x, int y){
+	/*public Double getDoubleValue(String name, int x, int y){
 		return raster.getSampleDouble(x, y, rasterProps.get(name));
+	}*/
+	
+	public Double getDoubleValue(int band, int x, int y){
+		return raster.getSampleDouble(x, y, band);
 	}
 
-	public Integer getIntegerValue(String name, int x, int y){
+	/*public Integer getIntegerValue(String name, int x, int y){
 		return raster.getSample(x, y, rasterProps.get(name));
+	}*/
+	
+	public Integer getIntegerValue(int band, int x, int y){
+		return raster.getSample(x, y, band);
 	}
 
-	public Double getValue(String name, int x, int y){
-		// Double value = null;
-		//if(rasterProps.keySet().contains(name))
-		//{
+	/*public Double getValue(String name, int x, int y){
+		
 		return raster.getSampleDouble(x, y, rasterProps.get(name));
-		//return value;
-		//} else
-		//{
-		//  value = initRaster.getSampleDouble(x + 2, y + 2, initRasterProps.get(name));
-		//return value;
-		//}
+		
+	}*/
+	
+	public Double getValue(int band, int x, int y){
+		
+		return raster.getSampleDouble(x, y, band);
+		
 	}
 
-	public void setCellValue(String name, int x, int y, Double value){
+	/*public void setCellValue(String name, int x, int y, Double value){
 
 		//if(rasterProps.keySet().contains(name))
 		raster.setSample(x, y, rasterProps.get(name), value);
+		//else
+		//  initRaster.setSample(x + 2, y + 2, initRasterProps.get(name), value);
+	}*/
+	
+	public void setCellValue(int band, int x, int y, Double value){
+
+		//if(rasterProps.keySet().contains(name))
+		raster.setSample(x, y, band, value);
 		//else
 		//  initRaster.setSample(x + 2, y + 2, initRasterProps.get(name), value);
 	}
@@ -1075,36 +1039,79 @@ public class Grid {
 	public MultiResolutionManager getMrm(){
 		return mrm;	
 	}
-	private void addMrmValue(String name, int x,int y, Double value){
+	
+	
+	private void addMrmValue(int band, int x,int y, Double value){
+		try{
+			mrm.add(x, y,band, value);
+		}catch(Exception e){
+		}
+	}
+	/*public void addTempValue(String name, int x, int y, Double value){
+		gridCellManager.add(x, y, name, value);
+	}*/
+	
+	public void addTempValue(int band, int x, int y, Double value){
+		gridCellManager.add(x, y, band, value);
+	}
+
+	
+	
+	public void setValue(int band, int x, int y, Double value){
+		ts.setValue(band, x, y, value);
+	}
+
+	
+	
+	
+	/*
+	  
+	  
+	 private void addMrmValue(String name, int x,int y, Double value){
 		try{
 			mrm.add(x, y,name, value);
 		}catch(Exception e){
 		}
-	}
-	public void addTempValue(String name, int x, int y, Double value){
-		gridCellManager.add(x, y, name, value);
-	}
-
-	public void setValue(String name, int x, int y, Double value){
+	}public void setValue(String name, int x, int y, Double value){
 		ts.setValue(name, x, y, value);
+	}
+	public void clearGeomTemVal(String name){
+		geomTempVal.get(name).clear();
 	}
 
 	public List<Double> getGeomTempValues(String name){
 		return geomTempVal.get(name);
 	}
-
-	public void clearGeomTemVal(String name){
-		geomTempVal.get(name).clear();
-	}
-
 	public Set<String> getTempName(){
 		return geomTempVal.keySet();
 	}
-
 	public void clearGeomTempVal(){
 
 		for(String name : geomTempVal.keySet()){
 			geomTempVal.get(name).clear();
+		}    
+
+	}*/
+	
+	public List<Double> getGeomTemp2Values(int band){
+		return geomTempVal2.get(band);
+	}
+
+	
+	
+	public void clearGeomTemVal2(int band){
+		geomTempVal2.get(band).clear();
+	}
+	public Set<Integer> getTempBand(){
+		return geomTempVal2.keySet();
+	}
+
+	
+	
+	public void clearGeomTempVal2(){
+
+		for(Integer band : geomTempVal2.keySet()){
+			geomTempVal2.get(band).clear();
 		}    
 
 	}
@@ -1179,28 +1186,40 @@ public class Grid {
 
 	public abstract class TypeSetter{
 
-		public abstract void setValue(String name, int x, int y, Double value);
+		//public abstract void setValue(String name, int x, int y, Double value);
+		
+		public abstract void setValue(int band, int x, int y, Double value);
 
 	}
 
 	public class TempSetter extends TypeSetter{
 
-		public void setValue(String name, int x, int y, Double value){
+		/*public void setValue(String name, int x, int y, Double value){
+			
 			addTempValue(name, x, y, value);
+
+		}*/
+		
+		public void setValue(int band, int x, int y, Double value){
+			addTempValue(band, x, y, value);
 
 		}
 	}
 
 	public class NormSetter extends TypeSetter{
 
-		public void setValue(String name, int x, int y, Double value){
+		/*public void setValue(String name, int x, int y, Double value){
 			setCellValue(name, x, y, value);
+		}*/
+		
+		public void setValue(int band, int x, int y, Double value){
+			setCellValue(band, x, y, value);
 		}
 	}
 
 	public class GeomSetter extends TypeSetter{
 
-		public void setValue(String name, int x, int y, Double value){
+		/*public void setValue(String name, int x, int y, Double value){
 			if(geomTempVal.keySet().contains(name)){
 				geomTempVal.get(name).add(value);
 			} else {
@@ -1208,13 +1227,28 @@ public class Grid {
 				values.add(value);
 				geomTempVal.put(name, values);
 			}
+		}*/
+		
+		public void setValue(int band, int x, int y, Double value){
+		
+			if(geomTempVal2.keySet().contains(band)){
+				geomTempVal2.get(band).add(value);
+			} else {
+				List<Double> values = new List<Double>();
+				values.add(value);
+				geomTempVal2.put(band, values);
+			}
 		}
 	}
 
 	public class MrmSetter extends TypeSetter{
 
-		public void setValue(String name, int x, int y, Double value){
+		/*public void setValue(String name, int x, int y, Double value){
 			addMrmValue(name, x, y, value);
+		}*/
+		
+		public void setValue(int band, int x, int y, Double value){
+			addMrmValue(band, x, y, value);
 		}
 	}
 	private double[] scalingdouble(Double[] bounds1, double[] bounds2){

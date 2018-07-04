@@ -31,41 +31,47 @@ import fr.ocelet.runtime.ocltypes.List;
 public class CellValues {
 
 	public CellValues() {
-		values = new HashMap<String, List<Double>>();
+		
+		iValues = new HashMap<Integer, List<Double>>();
 	}
 
-	public void set(String name) {
+	
+	
+	public void set(int band) {
 		List<Double> aList = new List<Double>();
-		values.put(name, aList);
+		iValues.put(band, aList);
 	}
 
-	public void add(String name, Double value) {
-		values.get(name).add(value);
+	
+	
+	public void add(int band, Double value) {
+		iValues.get(band).add(value);
 	}
 
-	public void clear(String name) {
-		values.get(name).clear();
+
+	
+	public void clear(int band) {
+		iValues.get(band).clear();
 	}
 
-	public List<Double> getValues(String name) {
-		return values.get(name);
+	
+	
+	public List<Double> getValues(int band) {
+		return iValues.get(band);
 	}
 
+	
+	
 	public void clearAll() {
-		String name;
-		for (Iterator<String> iterator = values.keySet().iterator(); iterator.hasNext(); values.get(name).clear())
-			name = (String) iterator.next();
-
-	}
-
-	@Override
-	public String toString() {
-		String s = "";
-		for (String name : values.keySet()) {
-			s += values.get(name).toString();
+		for(Integer k : iValues.keySet()) {
+			iValues.get(k).clear();
 		}
-		return s;
+		
+
 	}
 
-	private HashMap<String, List<Double>> values;
+	
+
+	
+	private HashMap<Integer, List<Double>> iValues;
 }

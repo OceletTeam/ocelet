@@ -190,7 +190,7 @@ public class CellAggregOperator{
  			return operator.compute(byteList, val.byteValue()).doubleValue();
 
  		}
-        return operator.compute(byteList, val.byteValue()).doubleValue();
+        return (Double)operator.compute(byteList, val.byteValue()).doubleValue();
     }
  	
  	
@@ -214,7 +214,7 @@ public class CellAggregOperator{
  			return operator.compute(floatList, val.floatValue()).doubleValue();
 
  		}
-        return operator.compute(floatList, val.floatValue()).doubleValue();
+        return (Double)operator.compute(floatList, val.floatValue()).doubleValue();
     }
  	
  }

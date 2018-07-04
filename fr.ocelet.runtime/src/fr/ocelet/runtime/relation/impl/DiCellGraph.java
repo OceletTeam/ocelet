@@ -56,7 +56,12 @@ implements DiGraphInterface<E, R1, R2> {
 			filteredIterator = new EdgeFilteringIteratorImpl(iterator());
 		((EdgeFilteringIterator) filteredIterator).addFilter(ef);
 	}
-
+	public void initInteraction() {
+		completeIteratorDiCell.initInteraction();
+	}
+	public void endInteraction() {
+		
+	}
     public void setCompleteIteratorDiCell(E e){
     
         completeIteratorDiCell = new CompleteIteratorDiCell<E, R1, R2>(this, e);
@@ -105,8 +110,8 @@ implements DiGraphInterface<E, R1, R2> {
     public void cleanOperator(){
     
         completeIteratorDiCell.clearAggregMap();
-        grid1.clearGeomTempVal();
-        grid2.clearGeomTempVal();
+        grid1.clearGeomTempVal2();
+        grid2.clearGeomTempVal2();
     }
 
     public void setCellOperator(CellAggregOperator operator)

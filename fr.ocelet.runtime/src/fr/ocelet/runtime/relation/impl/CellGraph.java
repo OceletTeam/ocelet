@@ -89,8 +89,12 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 		setCellShapeType(grid.getCellShapeType());
 	}
 
-
-
+	public void initInteraction() {
+		
+	}
+	public void endInteraction() {
+		
+	}
 	public Iterator<E> iterator()
 	{
 		if (filteredIterator != null)
@@ -156,7 +160,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 
 	protected void cleanOperator(){
 		grid.cleanOperator();
-		grid.clearGeomTempVal();
+		grid.clearGeomTempVal2();
 	}
 
 	protected void setMode(int mode){
@@ -366,7 +370,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 
 	}
 
-	protected void update(Grid upGrid){		
+	/*protected void update(Grid upGrid){		
 
 		HashMap<String , Integer> bands = grid.getBands();
 
@@ -379,16 +383,16 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 				}
 			}
 		}
-	}
+	}*/
 
 
-	private Double[] getMinMaxValueOf(String propertyName){
+	private Double[] getMinMaxValueOf(int band){
 
 		Double max = 0.0;
 		Double min = Double.POSITIVE_INFINITY;
 		for(int i = 0 ; i < grid.getWidth(); i ++){
 			for(int j = 0; j < grid.getHeight(); j ++){
-				Double gridVal = grid.getValue(propertyName, i, j);
+				Double gridVal = grid.getValue(band, i, j);
 				if(gridVal > max)
 					max = gridVal;
 				if(gridVal < min)
@@ -403,7 +407,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 		HashMap<Double[], Integer> indexed = new HashMap<Double[], Integer>();	    	
 		int[][] structure = new int[grid.getWidth()][grid.getHeight()];
 		int index = 0;
-		Double[] bounds = getMinMaxValueOf(propertyName);
+		Double[] bounds = getMinMaxValueOf(grid.getBand(propertyName));
 		int min = bounds[0].intValue();
 		int max = bounds[1].intValue();
 
@@ -589,7 +593,7 @@ public abstract class CellGraph<E extends OcltEdge, Ro extends OcltRole> impleme
 		for(int i = 0; i < grid.getWidth(); i ++){
 			for(int j = 0; j < grid.getHeight(); j ++){
 
-				Double val = grid.getValue(propertyName, i, j);
+				Double val = grid.getValue(grid.getBand(propertyName), i, j);
 				if(val >= d[0] && val < d[1]){
 
 					structure[i][j] = 1;

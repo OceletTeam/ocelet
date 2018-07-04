@@ -63,8 +63,6 @@ implements DiGraphInterface<E, R1, R2>{
     		
     		r2.tbegin();
     	}
-       
-
     }
 
     public void endTransaction(){
@@ -72,8 +70,14 @@ implements DiGraphInterface<E, R1, R2>{
     	for(R2 r2 : completeIteratorCellGeom.getGeomEntities()){
     		r2.tcommit();
     	}       
-
-
+    }
+    
+    public void initInteraction() {
+    	geomCellEdge.initInteraction();
+    }
+    
+    public void endInteraction() {
+    	
     }
 
     public void abortTransaction()

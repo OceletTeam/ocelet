@@ -47,6 +47,9 @@ public class CompleteIteratorDiCell<E extends OcltEdge, R1 extends OcltRole, R2 
     
         return ((DiCursorEdge)diCursorEdge).hasNext();
     }
+    public void initInteraction() {
+    	//((DiCursorEdge)diCursorEdge).initInteraction();
+    }
 
     public E next(){
     

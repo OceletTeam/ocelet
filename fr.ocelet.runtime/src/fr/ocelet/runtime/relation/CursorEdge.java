@@ -429,32 +429,32 @@ public abstract class CursorEdge extends OcltEdge {
 		}
 	}
 
-	public int[] getEndPos()
-	{
+	public int[] getEndPos(){
+	
 		return (new int[] {
 				x2, y2
 		});
 	}
 
-	public int[] getFirstPos()
-	{
+	public int[] getFirstPos(){
+	
 		return (new int[] {
 				x, y
 		});
 	}
 
-	public OcltRole getEnd()
-	{
+	public OcltRole getEnd(){
+	
 		return (OcltRole)gridManager.get(x2, y2);
 	}
 
-	public OcltRole getFirst()
-	{
+	public OcltRole getFirst(){
+	
 		return (OcltRole)gridManager.get(x, y);
 	}
 
-	public void clearProperties()
-	{
+	public void clearProperties(){
+	
 		gridManager.clearProperties();
 	}
 
@@ -472,13 +472,13 @@ public abstract class CursorEdge extends OcltEdge {
 		});
 	}
 
-	public void setCellOperator(CellAggregOperator operator)
-	{
+	public void setCellOperator(CellAggregOperator operator){
+	
 		gridManager.addOperator(operator, operator.getName());
 	}
 
-	public void setCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps, Boolean preval)
-	{
+	public void setCellOperator(String name, AggregOperator operator, KeyMap<String, String> typeProps, Boolean preval){
+	
 		CellAggregOperator cao = new CellAggregOperator();
 		if(typeProps.get(name).equals("Double")){
 			setAggregOpDouble(name, operator, preval);

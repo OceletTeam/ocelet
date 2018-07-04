@@ -304,7 +304,22 @@ public abstract class GeomHexaCellEdge<R1 extends OcltRole, R2 extends OcltRole>
 
     public void cellSynchronisation()
     {
-        for(Iterator iterator = grid.getTempName().iterator(); iterator.hasNext();)
+    	for(int b = 0; b < grid.getPropertiesName().size(); b++) {
+    		String name = grid.getPropertiesName().get(b);
+            List<Double> values = grid.getGeomTemp2Values(b);
+            if(aggregMap.keySet().contains(name))
+            {
+                CellAggregOperator cao = (CellAggregOperator)aggregMap.get(name);
+                Double d = cao.apply(values, Double.valueOf(0.0D));
+                grid.setCellValue(b, currentxKey, currentyKey, d);
+            } else
+            {
+                grid.setCellValue(b, currentxKey, currentyKey, (Double)values.get((int)(Math.random() * (double)values.size())));
+            }
+    	}
+    	
+    	
+        /*for(Iterator iterator = grid.getTempName().iterator(); iterator.hasNext();)
         {
             String name = (String)iterator.next();
             List<Double> values = grid.getGeomTempValues(name);
@@ -317,7 +332,7 @@ public abstract class GeomHexaCellEdge<R1 extends OcltRole, R2 extends OcltRole>
             {
                 grid.setCellValue(name, currentxKey, currentyKey, (Double)values.get((int)(Math.random() * (double)values.size())));
             }
-        }
+        }*/
 
     }
 
@@ -333,7 +348,7 @@ public abstract class GeomHexaCellEdge<R1 extends OcltRole, R2 extends OcltRole>
         currentyKey = ((Integer)yIterator.next()).intValue();
         roleIterator = matrice.get(currentxKey).get(currentyKey).iterator();
         cellSynchronisation();
-        grid.clearGeomTempVal();
+        grid.clearGeomTempVal2();
         roleNext();
     }
 

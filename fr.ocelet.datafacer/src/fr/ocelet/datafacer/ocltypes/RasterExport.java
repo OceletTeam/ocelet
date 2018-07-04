@@ -89,7 +89,7 @@ public class RasterExport implements Datafacer{
  			for(int j = 0; j < grid.getHeight(); j ++){
  				
  				for(int n = 0 ; n < names.length; n ++){
- 					raster.setSample(i, j, n, grid.getValue(names[n], i, j));
+ 					raster.setSample(i, j, n, grid.getValue(grid.getBand(names[n]), i, j));
  					//System.out.println( grid.getValue(names[n], i, j));
  				}
  			}
@@ -154,7 +154,7 @@ public class RasterExport implements Datafacer{
  			for(int j = 0; j < grid.getHeight(); j ++){
  				
  				for(int n = 0 ; n < names.length; n ++){
- 					raster.setSample(i, j, n, grid.getValue(names[n], i, j).longValue());
+ 					raster.setSample(i, j, n, grid.getValue(grid.getBand(names[n]), i, j).longValue());
  					//System.out.println( grid.getValue(names[n], i, j));
  				}
  			}

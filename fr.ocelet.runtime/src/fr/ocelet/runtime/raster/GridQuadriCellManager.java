@@ -32,14 +32,12 @@ public class GridQuadriCellManager extends GridCellManager{
 
 
 	  private CellValues firstLine[];
-	    private CellValues nextLine[];
+	  private CellValues nextLine[];
 	  
 	  
 	
-    public GridQuadriCellManager(Grid grid){
-    
-    	super(grid);
-     
+    public GridQuadriCellManager(Grid grid){    
+    	super(grid);     
        
     }
 
@@ -49,10 +47,14 @@ public class GridQuadriCellManager extends GridCellManager{
         y = 0;
         for(int i = 0; i < grid.getWidth(); i++){
         	
-        	for(String name : properties){
+        	 for(int band = 0; band < properties.size(); band ++) {
+             	nextLine[i].clear(band);
+             	firstLine[i].clear(band);
+             }
+        	/*for(String name : properties){
         		nextLine[i].clear(name);
         		firstLine[i].clear(name);
-        	}
+        	}*/
         }
      
 
@@ -66,11 +68,14 @@ public class GridQuadriCellManager extends GridCellManager{
         
             firstLine[i] = new CellValues();
             nextLine[i] = new CellValues();
-            
-            for(String name : properties){
+            for(int band = 0; band < properties.size(); band ++) {
+            	nextLine[i].set(band);
+            	firstLine[i].set(band);
+            }
+           /* for(String name : properties){
             	nextLine[i].set(name);
             	firstLine[i].set(name);
-            }
+            }*/
            
 
         }
@@ -109,9 +114,9 @@ public class GridQuadriCellManager extends GridCellManager{
 
   
 
-    public void add(int x, int y, String name, Double value){
+    public void add(int x, int y, int band, Double value){
 
-        get(x, y).add(name, value);
+        get(x, y).add(band, value);
        
     }
 
@@ -127,7 +132,34 @@ public class GridQuadriCellManager extends GridCellManager{
         
             CellValues cv = firstLine[i];
             
-            for(String name : properties){
+            
+            for(int b = 0; b< properties.size(); b ++){
+                
+                List<Double> values = cv.getValues(b);
+                String name = properties.get(b);
+                if(aggregMap.containsKey(name)){
+                
+                    if(!values.isEmpty()){
+                    	
+                    	Double d;
+                    	CellAggregOperator cao = aggregMap.get(name);
+                    	if(cao.preval() == false){
+                    		d = cao.apply(values, grid.getDoubleValue(b, i, y));
+                    	}else{
+                    		values.add(grid.getDoubleValue(b, i, y));
+                    		d = cao.apply(values, grid.getDoubleValue(b, i, y));
+                    	}
+                    	
+                        grid.setCellValue(b, i, y, d);
+                    	
+                    }              
+                } else if(!cv.getValues(b).isEmpty()){
+                
+                    grid.setCellValue(b, i, y, values.get((int)(Math.random() * values.size())));
+                }
+                cv.clear(b);
+            }
+            /*for(String name : properties){
            
                 List<Double> values = cv.getValues(name);
                 
@@ -152,7 +184,7 @@ public class GridQuadriCellManager extends GridCellManager{
                     grid.setCellValue(name, i, y, values.get((int)(Math.random() * values.size())));
                 }
                 cv.clear(name);
-            }
+            }*/
 
         }
 
@@ -160,7 +192,40 @@ public class GridQuadriCellManager extends GridCellManager{
     
     public void validateAll(){
     	
-        for(int i = 0; i < firstLine.length; i++){
+       for(int i = 0; i < firstLine.length; i++){
+            
+            CellValues cv = firstLine[i];
+            
+            for(int b = 0; b < properties.size(); b ++){
+            	
+            	 List<Double> values = cv.getValues(b);
+            	 String name = properties.get(b);
+                CellAggregOperator cao = aggregMap.get(name);
+                if(aggregMap.containsKey(name)){
+                	
+                    if(!cv.getValues(b).isEmpty()){
+                    	
+                    	Double value = grid.getDoubleValue(b, i, y);
+                    	if(cao.preval() == false){
+	                		 grid.setCellValue(b, i, y, cao.apply(values, value));	                    
+  
+	                	  }else{
+	                		  values.add(grid.getDoubleValue(b, i, y));
+	                		  grid.setCellValue(b, i, y , cao.apply(cv.getValues(b), value));	                    
+
+	                	  }
+                    }
+                } else if(!cv.getValues(b).isEmpty()){
+                
+                    grid.setCellValue(b, i, y, cv.getValues(b).get((int)(Math.random() * cv.getValues(b).size())));
+                }
+                cv.clear(b);
+            }
+
+        }
+       
+    	
+       /* for(int i = 0; i < firstLine.length; i++){
             
             CellValues cv = firstLine[i];
             
@@ -188,7 +253,7 @@ public class GridQuadriCellManager extends GridCellManager{
                 cv.clear(name);
             }
 
-        }
+        }*/
     	
     }
 

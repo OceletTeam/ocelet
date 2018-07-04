@@ -35,7 +35,7 @@ public class MultiResolutionManager {
     private int end;
     private int currentY;
     
-    public void add(int x, int y, String name, double value){
+   /* public void add(int x, int y, String name, double value){
     	
     	if(y == currentY){
     		//System.out.println("add 1");
@@ -47,6 +47,25 @@ public class MultiResolutionManager {
     	}
     	else if(y == currentY + 2){
     		addThirdLine(x, name, value);
+    		//System.out.println("add 3");
+    	}
+    else{
+    		//System.out.println("WARNING : Unable to reference world coordinate "+x +" "+y+" "+currentY );
+    	}
+    }*/
+    
+  public void add(int x, int y, int band, double value){
+    	
+    	if(y == currentY){
+    		//System.out.println("add 1");
+    		addFirstLine(x, band, value);
+    	}
+    	else if(y == currentY + 1){
+    		addSecondLine(x, band, value);
+    		//System.out.println("add 2");
+    	}
+    	else if(y == currentY + 2){
+    		addThirdLine(x, band, value);
     		//System.out.println("add 3");
     	}
     else{
@@ -91,16 +110,25 @@ public class MultiResolutionManager {
     	this.currentY = currentY;
     	init();
     }
-    public void addFirstLine(int x, String name, Double value){
+   /* public void addFirstLine(int x, String name, Double value){
     	firstLine[x - start].add(name,  value);
     }
-    
     public void addSecondLine(int x, String name, Double value){
     	secondLine[x - start].add(name,  value);
     }
-    
     public void addThirdLine(int x, String name, Double value){
     	thirdLine[x - start].add(name,  value);
+    }*/
+    public void addFirstLine(int x, int band, Double value){
+    	firstLine[x - start].add(band,  value);
+    }  
+  
+    public void addSecondLine(int x, int band, Double value){
+    	secondLine[x - start].add(band,  value);
+    }
+    
+    public void addThirdLine(int x, int band, Double value){
+    	thirdLine[x - start].add(band,  value);
     }
     
     public CellValues getFirstLineValue(int x){
@@ -115,19 +143,22 @@ public class MultiResolutionManager {
     	return thirdLine[x - start];
     }
     
-    
-    
     public void resetAllTempValues(){
     	for(int i = 0; i < width; i ++){
     		firstLine[i] = new CellValues();
     		secondLine[i] = new CellValues();
     		thirdLine[i] = new CellValues();
-    		for(String name : properties){
+    		for(int b =0; b< properties.size(); b++){
+    			firstLine[i].set(b);
+    			secondLine[i].set(b);
+    			thirdLine[i].set(b);
+    		}
+    		/*for(String name : properties){
     			firstLine[i].set(name);
     			secondLine[i].set(name);
     			thirdLine[i].set(name);
 
-    		}
+    		}*/
     	}
     }
     public void init(){
@@ -139,52 +170,62 @@ public class MultiResolutionManager {
     		firstLine[i] = new CellValues();
     		secondLine[i] = new CellValues();
     		thirdLine[i] = new CellValues();
-    		for(String name : properties){
-    			firstLine[i].set(name);
-    			secondLine[i].set(name);
-    			thirdLine[i].set(name);
+    		for(int b =0; b< properties.size(); b++){
+    			firstLine[i].set(b);
+    			secondLine[i].set(b);
+    			thirdLine[i].set(b);
     		}
     	}
     }
     
     
-    public void clearFirstLineName(String name){
+    /*public void clearFirstLineName(String name){
     	for(int i = 0; i < firstLine.length; i ++){
     		if(firstLine[i] != null)
     		firstLine[i].clear(name);
     	}
     }
-    public void clearFirstLineProperties(){
-    	for(int i = 0; i < firstLine.length; i ++){
-    		for(String name : properties){
-    			if(firstLine[i] != null)
-    			firstLine[i].clear(name);
-    		}
-    	}
-    }
-    
     public void clearSecondLineName(String name){
     	for(int i = 0; i < width; i ++){
     		secondLine[i].clear(name);
     	}
     }
-    public void clearSecondLineProperties(){
-    	for(int i = 0; i < width; i ++){
-    		for(String name : properties){
-    			secondLine[i].clear(name);
-    		}
-    	}
-    }
-    
     public void clearThirdLineName(String name){
     	for(int i = 0; i < width; i ++){
     		thirdLine[i].clear(name);
     	}
+    }*/
+    
+    
+    public void clearFirstLineName(int band){
+    	for(int i = 0; i < firstLine.length; i ++){
+    		if(firstLine[i] != null)
+    		firstLine[i].clear(band);
+    	}
     }
+    public void clearFirstLineProperties(){
+    	for(int i = 0; i < firstLine.length; i ++){
+    		for(int b = 0; b < properties.size(); b ++){
+    			if(firstLine[i] != null)
+    			firstLine[i].clear(b);
+    		}
+    	}
+    }
+    
+   
+    public void clearSecondLineProperties(){
+    	for(int i = 0; i < width; i ++){
+    		  for(int b = 0; b < properties.size(); b++){
+    			secondLine[i].clear(b);
+    		}
+    	}
+    }
+    
+    
     public void clearThirdLineProperties(){
     	for(int i = 0; i < width; i ++){
-    		for(String name : properties){
-    			thirdLine[i].clear(name);
+    		  for(int b = 0; b < properties.size(); b++){
+    			thirdLine[i].clear(b);
     		}
     	}
     }

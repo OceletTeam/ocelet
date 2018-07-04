@@ -66,20 +66,28 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	private LinkedHashMap<Integer, LinkedHashMap<Integer, ArrayList<GeomContainer>>> matrice = new LinkedHashMap<Integer, LinkedHashMap<Integer,ArrayList<GeomContainer>>>();
 
-	private List<R2> geomEntities;	    
-	protected Grid grid;	    
-	private int currentxKey;	    
-	private int currentyKey;	    
-	private GeomContainer currentRoleKey;	    
-	private Iterator<Integer> xIterator;	    
-	private Iterator<Integer> yIterator;	    
-	private Iterator<GeomContainer> roleIterator;	    
+	private List<R2> geomEntities;	//List of non cells entities to synchronize at the end    
+	protected Grid grid; // the grid	    
+	private int currentxKey; // current x cells coordinate	    
+	private int currentyKey; // current y cells coordinate
+	
+	private GeomContainer currentRoleKey; // current non cell entity 	    
+	private Iterator<Integer> xIterator; // iterator on x cells coordinate	    
+	private Iterator<Integer> yIterator; // iterator on y cells coodinate bounded on the x ones	    
+	private Iterator<GeomContainer> roleIterator; // iterator on non cell entities bounded on the y ones	    
 	private String cellShapeType = "QUADRILATERAL";	    
 	private HashMap<R2, ArrayList<Integer[]>> added = new HashMap<R2, ArrayList<Integer[]>>();
-	private HashMap<Integer, ArrayList<Integer>> cellMap;
+	private HashMap<Integer, ArrayList<Integer>> cellMap; // cellmap contained specific cells
+	
 	private Nexter nexter;
 	private CellIterator<R1> cellIterator = new CellIterator<R1>();
+	
 	private Double distance = 0.0;
+	
+	private int[] aggregIndex = null;
+	private int[] notAggregIndex = null;
+	
+	private ArrayList<String> gridProperties;
 
 	public String getCellType(){
 		return grid.getCellShapeType();
@@ -99,6 +107,34 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		aggregMap.put(name, operator);
 	}
 
+	public void setAggregIndex() {
+			
+		ArrayList<Integer> aggregBand = new ArrayList<Integer>();
+		
+		for(String name : aggregMap.keySet()) {
+			
+			aggregBand.add(grid.getBand(name));
+		}
+		notAggregIndex = new int[gridProperties.size() - aggregBand.size()];
+		aggregIndex = new int[aggregBand.size()];
+		
+		int indexNot = 0;
+		int index = 0;
+		for(int i = 0; i < gridProperties.size(); i ++) {
+			
+			if(!aggregBand.contains(i)) {
+				notAggregIndex[indexNot] = i;
+				indexNot++;
+			}else {
+				aggregIndex[index] = i;
+				index++;
+			}
+		}
+	}
+	
+	public void initInteraction() {
+		setAggregIndex();
+	}
 	/*public void setCellOperator(String name, AggregOperator operator)
 {
   CellAggregOperator cao = new CellAggregOperator(operator, name);
@@ -122,6 +158,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			setAggregOpBoolean(name, operator, false);
 
 		}
+		
+		
+		
 	}
 	public void setAggregOpDouble(String name, AggregOperator<Double, List<Double>> agg, boolean val){
 		CellAggregOperator cao = new CellAggregOperator();
@@ -162,6 +201,9 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		cellList.visit(this);
 		
 		this.grid = cell.getGrid();
+		gridProperties = grid.getPropertiesName();
+		
+		
 		this.distance = grid.getXRes() / 2;
 		initEdgeProperty();
 		fill(this.geomEntities);
@@ -175,6 +217,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		cellList.visit(this);
 		
 		this.grid = cell.getGrid();
+		gridProperties = grid.getPropertiesName();
 		
 		initEdgeProperty();
 		fill(this.geomEntities);
@@ -240,9 +283,6 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				}
 			}
 		}
-
-
-
 	}
 
 	/*  public ArrayList<OcltRole> get(int x, int y){
@@ -341,9 +381,6 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 			}
 		}
-
-
-
 
 		if(index == 0)
 		{
@@ -469,13 +506,13 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 		int c1[] = grid.gridCoordinate(coordinates[0].x, coordinates[0].y);
 		if(c1 != null) {
-		if(cellMap.keySet().contains(c1[0])) {
-			
-			if(cellMap.get(c1[0]).contains(c1[1])) {
-				add(r2, c1[0], c1[1]);
+			if(cellMap.keySet().contains(c1[0])) {
+				
+				if(cellMap.get(c1[0]).contains(c1[1])) {
+					add(r2, c1[0], c1[1]);
+				}
+				
 			}
-			
-		}
 		}
 
 
@@ -1064,6 +1101,45 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	public void cellSynchronisation(){
 
+		for(int b = 0; b < grid.getTempBand().size(); b ++){
+		
+			String name = grid.getPropertiesName().get(b);
+
+			List<Double> values = grid.getGeomTemp2Values(b);
+			if(!values.isEmpty()){
+
+				if(aggregMap.keySet().contains(name)){
+				
+					Double d;
+					CellAggregOperator cao = aggregMap.get(name);
+					Double value = grid.getDoubleValue(b, currentxKey, currentyKey);
+					if(cao.preval() == false){
+						d = cao.apply(values, value);
+					}else{
+						values.add(value);
+						d = cao.apply(values, value);
+					}
+
+					grid.setCellValue(b, currentxKey, currentyKey, d);
+
+				} else{				
+
+					if(values.size() > 1){
+						grid.setCellValue(b, currentxKey, currentyKey, values.get((int)(Math.random() * values.size())));
+					}else{
+						grid.setCellValue(b, currentxKey, currentyKey, values.get(0));
+					}
+
+				}
+			}
+
+		}
+		grid.clearGeomTempVal2();
+
+	}
+	
+	/*public void cellSynchronisation(){
+
 		for(Iterator iterator = grid.getTempName().iterator(); iterator.hasNext();)
 		{
 			String name = (String)iterator.next();
@@ -1085,8 +1161,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 					grid.setCellValue(name, currentxKey, currentyKey, d);
 
-				} else
-				{
+				} else{				
 
 					if(values.size() > 1){
 						grid.setCellValue(name, currentxKey, currentyKey, values.get((int)(Math.random() * values.size())));
@@ -1100,7 +1175,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		}
 		grid.clearGeomTempVal();
 
-	}
+	}*/
 
 	public void xNext(){
 
@@ -1143,11 +1218,11 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		
 		public class ValideNexter extends Nexter{
 			public boolean hasNext() {
-				if(!matrice.isEmpty() && !xHasNext() && !yHasNext() && !roleHasNext()){
+				if(!xHasNext() && !yHasNext() && !roleHasNext()){
 
 					cellSynchronisation();
 					resetIterator();
-					grid.clearGeomTempVal();
+					grid.clearGeomTempVal2();
 					grid.setMode(1);
 					return false;
 				}
