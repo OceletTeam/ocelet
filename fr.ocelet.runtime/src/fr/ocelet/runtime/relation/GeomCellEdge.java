@@ -1106,7 +1106,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			String name = grid.getPropertiesName().get(b);
 
 			List<Double> values = grid.getGeomTemp2Values(b);
-			if(!values.isEmpty()){
+			if(values != null && !values.isEmpty()){
 
 				if(aggregMap.keySet().contains(name)){
 				

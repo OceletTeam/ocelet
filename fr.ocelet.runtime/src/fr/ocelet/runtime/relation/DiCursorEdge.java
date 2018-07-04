@@ -378,7 +378,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 							if(hasNext()){
 								next();
 							}else{
-								System.out.println("end1"+" "+x+" "+y);
+								
 								x2 = endX2;
 								y2 = endY2;
 							}
@@ -404,20 +404,17 @@ public abstract class DiCursorEdge extends OcltEdge{
 								colCount++;
 							}
 
-
-						
 						}else{
 							
 							if(y == currentY + 1 || y == currentY + 2){
 
 								colCount++;
 
-							
 							}
 							if(hasNext()){
 								next();
 							}else{
-								System.out.println("end2"+" "+x+" "+y);
+								
 								x2 = endX2;
 								y2 = endY2;
 							}
