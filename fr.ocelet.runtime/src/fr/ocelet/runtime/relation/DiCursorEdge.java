@@ -233,7 +233,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 	public boolean hasNext(){
 
-		if(equalGrid){
+		/*if(equalGrid){
 			if(x == endX - 1 && y == endY){
 				cellSynchronisation();
 				x = startX;
@@ -245,7 +245,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			} else {            
 				return true;
 			}
-		}
+		}*/
 		if((x2 == endX2 && y2 == endY2)){// || (x == endX && y == endY)){
 
 			
@@ -375,10 +375,11 @@ public abstract class DiCursorEdge extends OcltEdge{
 							if(y == currentY + 1 || y == currentY + 2){
 								colCount++;
 							}
-							if(hasNext()){
+							if(innerHasNext()){
 								next();
 							}else{
-								
+								x = endX;
+								y = endY;
 								x2 = endX2;
 								y2 = endY2;
 							}
@@ -411,12 +412,14 @@ public abstract class DiCursorEdge extends OcltEdge{
 								colCount++;
 
 							}
-							if(hasNext()){
+							if(innerHasNext()){
 								next();
 							}else{
 								
 								x2 = endX2;
 								y2 = endY2;
+								x = endX;
+								y = endY;
 							}
 						}
 					}			
@@ -451,7 +454,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 
 							colCount++;
 						}
-						if(hasNext()){
+						if(innerHasNext()) {
 							
 							next();
 						}else{
@@ -470,7 +473,22 @@ public abstract class DiCursorEdge extends OcltEdge{
 	}
 
 
+	private boolean innerHasNext() {
+		
+		if((x2 == endX2 && y2 == endY2)){// || (x == endX && y == endY)){
 
+			
+			
+			//	globalGrid.cleanOperator();
+			return false;
+		}
+		//if(x2 != -1 && y2 != -1)
+		
+		return true; 	
+		
+		
+	}
+		
 
 	private double[] scalingdouble(Double[] bounds1, Double[] bounds2){
 

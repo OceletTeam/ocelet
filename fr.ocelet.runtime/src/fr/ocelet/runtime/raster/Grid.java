@@ -229,30 +229,51 @@ public class Grid {
 	public void  copy(ORaster raster, KeyMap<String, Integer> matchedBand){
 		
 		
-		Double[] scaled = scale(raster);
 		
-		int[] gridMin = gridCoordinate(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
-		int[] gridMax = gridCoordinate(scaled[2] - xRes / 2, scaled[1] + yRes / 2);
-	
-		int[] rasterMin = raster.worldToGrid(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
-
-		int diffX = rasterMin[0] - gridMin[0];
-		int diffY = rasterMin[1] - gridMin[1];
-
 			
-		int maxX = gridMax[0] + 1;
-		int maxY = gridMax[1] + 1;	
+			Double[] scaled = scale(raster);
+			
+			int[] gridMin = gridCoordinate(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
+			int[] gridMax = gridCoordinate(scaled[2] - xRes / 2, scaled[1] + yRes / 2);
 		
-
+			int[] rasterMin = raster.worldToGrid(scaled[0] + xRes / 2, scaled[3] - yRes / 2);
+	
+			int diffX = rasterMin[0] - gridMin[0];
+			int diffY = rasterMin[1] - gridMin[1];
+	
+				
+			int maxX = gridMax[0] + 1;
+			int maxY = gridMax[1] + 1;	
+			
 		
-		for(int i = gridMin[0]; i < maxX; i ++){
-			for(int j = gridMin[1]; j < maxY; j ++){
-				for(String name : matchedBand.keySet()){
-					
-						this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(i + diffX, j + diffY , matchedBand.get(name)));
-				}    			
+				for(int i = gridMin[0]; i < maxX; i ++){
+					for(int j = gridMin[1]; j < maxY; j ++){
+						for(String name : matchedBand.keySet()){
+							
+								this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(i + diffX, j + diffY , matchedBand.get(name)));
+						}    			
+					}
+				}
+			
+		
+	}
+	
+	public void multiScaleCopy(ORaster raster, KeyMap<String, Integer> matchedBand) {
+		
+		
+			
+			for(int i = minX; i < width + minX; i ++){
+				for(int j = minY; j < height + minY; j ++){
+					for(String name : matchedBand.keySet()){
+							
+							Coordinate c =gridCoordinate(i, j);
+							int[] rCoord = raster.worldToGrid(c.x, c.y);
+							this.raster.setSample(i, j, rasterProps.get(name), raster.getDoubleValue(rCoord[0] , rCoord[1], matchedBand.get(name)));
+					}    			
+				}
 			}
-		}
+			
+		
 	}
 	
 	public void printWorldBounds() {
@@ -618,6 +639,8 @@ public class Grid {
 		return null;
 		
 	}
+	
+	
 	private Coordinate hexagonalGridToWorld(int x, int y){
 		double dx = initCoordinates.x;
 		double dy = initCoordinates.y;
@@ -711,6 +734,34 @@ public class Grid {
 		}
 		if(dp != null)
 			return new Coordinate(dp.getCoordinate()[0], dp.getCoordinate()[1]);
+		return null;
+		}
+		return null;
+	}
+	
+	public double[] gridDoubleCoordinate(int x, int y){
+
+		if(inGridBounds(x, y)) {
+		if(cellShapeType.equals("HEXAGONAL")){
+			Coordinate c = hexagonalGridToWorld(x, y);
+			return new double[] {c.x, c.y};
+		}
+		if(cellShapeType.equals("TRIANGULAR")){
+			Coordinate c = triangularGridToWorld(x, y);
+			return new double[] {c.x, c.y};
+		}
+		DirectPosition dp = null;
+		try{
+		 dp = gridGeometry.gridToWorld(new GridCoordinates2D(x, y));
+			
+		}
+		catch(TransformException ex){
+			//return null;
+			//ex.printStackTrace();
+			// Logger.getLogger(fr/ocelet/runtime/raster/Grid.getName()).log(Level.SEVERE, null, ex);
+		}
+		if(dp != null)
+			return new double[] {dp.getCoordinate()[0], dp.getCoordinate()[1]};
 		return null;
 		}
 		return null;
