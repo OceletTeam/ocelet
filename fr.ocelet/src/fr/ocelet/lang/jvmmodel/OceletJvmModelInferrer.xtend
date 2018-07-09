@@ -1063,8 +1063,8 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 								«aggregType» cvt«index» = new «aggregType»();	
 								cvt«index».setName("«ce.prop»"); 
 							
-								«typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")» sldfjsdlfkjs = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«ce.rol.getName()».getSpatialType();
-								cvt«index».setCellOperator(new «ce.agrfunc»(), «ce.rol.getName()».getTypeProps(), «ce.usepreval», sldfjsdlfkjs.getGrid());
+								«typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")» cellIndex«index» = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«ce.rol.getName()».getSpatialType();
+								cvt«index».setCellOperator(new «ce.agrfunc»(), «ce.rol.getName()».getTypeProps(), «ce.usepreval», cellIndex«index».getGrid());
 								cvtList.add(cvt«index»);
           	  	      	  	 	«{index = index + 1; null}»
 							«ENDFOR»

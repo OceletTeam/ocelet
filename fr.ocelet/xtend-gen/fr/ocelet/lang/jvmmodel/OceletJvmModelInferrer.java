@@ -2338,7 +2338,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       _builder.newLine();
                                       JvmTypeReference _typeRef = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.geom.ocltypes.Cell");
                                       _builder.append(_typeRef);
-                                      _builder.append(" sldfjsdlfkjs = (");
+                                      _builder.append(" cellIndex");
+                                      _builder.append(index);
+                                      _builder.append(" = (");
                                       JvmTypeReference _typeRef_1 = OceletJvmModelInferrer.this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.geom.ocltypes.Cell");
                                       _builder.append(_typeRef_1);
                                       _builder.append(")");
@@ -2357,7 +2359,9 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                                       _builder.append(".getTypeProps(), ");
                                       boolean _isUsepreval = ce.isUsepreval();
                                       _builder.append(_isUsepreval);
-                                      _builder.append(", sldfjsdlfkjs.getGrid());");
+                                      _builder.append(", cellIndex");
+                                      _builder.append(index);
+                                      _builder.append(".getGrid());");
                                       _builder.newLineIfNotEmpty();
                                       _builder.append("cvtList.add(cvt");
                                       _builder.append(index);

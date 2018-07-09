@@ -75,7 +75,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 	private boolean equalGrid = false;
 	private MultiResolutionManager mrm;
 	private DiRegularCellsEdgeManager edges = new DiRegularCellsEdgeManager();
-
+	private int edgeCount = 0;
 	public abstract KeyMap<String, String> getEdgeProperties();
 
 	public void setIntegerPropertySize(int size){
@@ -246,13 +246,14 @@ public abstract class DiCursorEdge extends OcltEdge{
 				return true;
 			}
 		}*/
+		edgeCount++;
 		if((x2 == endX2 && y2 == endY2)){// || (x == endX && y == endY)){
 
 			
 			finalSynchronisation();
 			clearAggregMap();
 			cellSynchronisation();
-			
+			System.out.println("edges "+edgeCount+" pix : "+((endX2 - startX2) * (endY2 - startY2)));
 			
 			colCount = startX2;
 			x2 = -1;
@@ -261,7 +262,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			y = startY;
 			grid.setMode(1);
 			globalGrid.setMode(1);
-			
+			edgeCount = 0;
 			//	globalGrid.cleanOperator();
 			return false;
 		}
