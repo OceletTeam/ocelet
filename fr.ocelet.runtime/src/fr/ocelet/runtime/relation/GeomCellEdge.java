@@ -326,6 +326,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			currentyKey = yIterator.next();
 			roleIterator = matrice.get(currentxKey).get(currentyKey).iterator();
 			nexter = new ValideNexter();
+			System.out.println("Valide Nexter");
 		}else {
 			nexter = new UnValideNexter();
 		}
@@ -334,14 +335,16 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	public void resetIterator(){
 
-
 		xIterator = matrice.keySet().iterator();
 		currentxKey = xIterator.next();
 		yIterator = matrice.get(currentxKey).keySet().iterator();
 		currentyKey = yIterator.next();
 		roleIterator = matrice.get(currentxKey).get(currentyKey).iterator();
 		update();
+		
 	}
+	
+	
 	private void setTriangularCells(R2 r2, Polygon polygon, HashMap<Integer, ArrayList<Line>> lines)
 	{
 		int bounds[] = null;
@@ -1101,7 +1104,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	public void cellSynchronisation(){
 
-		for(int b = 0; b < grid.getTempBand().size(); b ++){
+		for(int b = 0; b < grid.getPropertiesName().size(); b ++){
 		
 			String name = grid.getPropertiesName().get(b);
 

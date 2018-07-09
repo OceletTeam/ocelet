@@ -976,9 +976,9 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			parameters += meln.toParameter(firstRole.name,firstRoleType)
           						body = '''
           							Cell «firstRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«firstRole.name».getSpatialType();
-          							double[] «firstRole.name»Coordinate = grid1.gridDoubleCoordinate(c.getX(), c.getY());
+          							double[] «firstRole.name»Coordinate = «firstRole.name»Cell.getGrid().gridDoubleCoordinate(«firstRole.name»Cell.getX(), «firstRole.name»Cell.getY());
           							Cell «secondRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«secondRole.name».getSpatialType();
-          							int[] newCoords = grid2.gridCoordinate(«firstRole.name»Coordinate[0], «firstRole.name»Coordinate[1]);
+          							int[] newCoords = «secondRole.name»Cell.getGrid().gridCoordinate(«firstRole.name»Coordinate[0], «firstRole.name»Coordinate[1]);
           							«secondRole.name»Cell.setX(newCoords[0]);
           							«secondRole.name»Cell.setY(newCoords[1]);
           							return «secondRole.name»;
@@ -990,12 +990,42 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			parameters += meln.toParameter(secondRole.name,secondRoleType)
           						body = '''
           							Cell «secondRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«secondRole.name».getSpatialType();
-          							double[] «secondRole.name»Coordinate = grid1.gridDoubleCoordinate(c.getX(), c.getY());
+          							double[] «secondRole.name»Coordinate = «secondRole.name»Cell.getGrid().gridDoubleCoordinate(«secondRole.name»Cell.getX(), «secondRole.name»Cell.getY());
           							Cell «firstRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«firstRole.name».getSpatialType();
-          							int[] newCoords = grid2.gridCoordinate(«secondRole.name»Coordinate[0], «secondRole.name»Coordinate[1]);
+          							int[] newCoords = «firstRole.name»Cell.getGrid().gridCoordinate(«secondRole.name»Coordinate[0], «secondRole.name»Coordinate[1]);
           							«firstRole.name»Cell.setX(newCoords[0]);
           							«firstRole.name»Cell.setY(newCoords[1]);
           							return «firstRole.name»;
+          			'''
+          			
+          		]
+          		
+          			members += meln.toMethod("hasNearest",typeRef(Boolean::TYPE))[
+          			parameters += meln.toParameter(firstRole.name,firstRoleType)
+          						body = '''
+          							Cell «firstRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«firstRole.name».getSpatialType();
+          							double[] «firstRole.name»Coordinate = «firstRole.name»Cell.getGrid().gridDoubleCoordinate(«firstRole.name»Cell.getX(), «firstRole.name»Cell.getY());
+          							Cell «secondRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«secondRole.name».getSpatialType();
+          							int[] newCoords = «secondRole.name»Cell.getGrid().gridCoordinate(«firstRole.name»Coordinate[0], «firstRole.name»Coordinate[1]);
+          							if(newCoords == null){
+          							   	return false;
+          							}
+          							return true;
+          			'''
+          			
+          		]
+          		
+          		members += meln.toMethod("hasNearest",typeRef(Boolean::TYPE))[
+          			parameters += meln.toParameter(secondRole.name,secondRoleType)
+          						body = '''
+          							Cell «secondRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«secondRole.name».getSpatialType();
+          							double[] «secondRole.name»Coordinate = «secondRole.name»Cell.getGrid().gridDoubleCoordinate(«secondRole.name»Cell.getX(), «secondRole.name»Cell.getY());
+          							Cell «firstRole.name»Cell = («typeRef("fr.ocelet.runtime.geom.ocltypes.Cell")»)«firstRole.name».getSpatialType();
+          							int[] newCoords = «firstRole.name»Cell.getGrid().gridCoordinate(«secondRole.name»Coordinate[0], «secondRole.name»Coordinate[1]);
+          							if(newCoords == null){
+          								return false;
+          							}          							
+          							return true;
           			'''
           			
           		]
@@ -1934,6 +1964,23 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           			parameters += meln.toParameter(secondRole.name,secondRoleType)
           						body = '''
           							return ((«typeRef(edgecname)»)getEdge()).getNearest(«secondRole.name»);
+          			'''
+          			
+          		]
+          		
+          		 members += meln.toMethod("hasNearest",typeRef(Boolean::TYPE))[
+          			parameters += meln.toParameter(firstRole.name,firstRoleType)
+          						body = '''
+          						
+          							return ((«typeRef(edgecname)»)getEdge()).hasNearest(«firstRole.name»);
+          			'''
+          			
+          		]
+          		
+          		members += meln.toMethod("hasNearest",typeRef(Boolean::TYPE))[
+          			parameters += meln.toParameter(secondRole.name,secondRoleType)
+          						body = '''
+          							return ((«typeRef(edgecname)»)getEdge()).hasNearest(«secondRole.name»);
           			'''
           			
           		]
