@@ -75,7 +75,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 	private boolean equalGrid = false;
 	private MultiResolutionManager mrm;
 	private DiRegularCellsEdgeManager edges = new DiRegularCellsEdgeManager();
-	private int edgeCount = 0;
+	
 	public abstract KeyMap<String, String> getEdgeProperties();
 
 	public void setIntegerPropertySize(int size){
@@ -246,14 +246,14 @@ public abstract class DiCursorEdge extends OcltEdge{
 				return true;
 			}
 		}*/
-		edgeCount++;
+	
 		if((x2 == endX2 && y2 == endY2)){// || (x == endX && y == endY)){
 
 			
 			finalSynchronisation();
 			clearAggregMap();
 			cellSynchronisation();
-			System.out.println("edges "+edgeCount+" pix : "+((endX2 - startX2) * (endY2 - startY2)));
+		
 			
 			colCount = startX2;
 			x2 = -1;
@@ -262,7 +262,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			y = startY;
 			grid.setMode(1);
 			globalGrid.setMode(1);
-			edgeCount = 0;
+			
 			//	globalGrid.cleanOperator();
 			return false;
 		}
@@ -311,9 +311,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 					if(c != null)
 					c2 = globalGrid.gridCoordinate(c.x, c.y);
 			
-				//colCount++;
-
-				////System.out.println(x+" "+y+" "+x2+" "+y2+" " +colCount);
+				
 
 				if(c2 != null){
 					
@@ -323,7 +321,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 					if(y == currentY + 1 || y == currentY + 2){
 						colCount++;
 
-						////System.out.print("  "+colCount);
+						
 					}
 				}
 				currentY = y;
@@ -348,15 +346,12 @@ public abstract class DiCursorEdge extends OcltEdge{
 				
 					if(colCount == endX2){
 					
-						
-
-					//	globalSynchronisation();
-
+					
 						y = currentY + 1;
-						//mrm.switchLine();
+						
 						currentY = y;
 						x = startX;
-					//	colCount = startX2;
+					
 						Coordinate c = null;
 						int[] c2 = null;
 							c = grid.gridCoordinate(x2, y2);
@@ -690,36 +685,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			}
 
 		}
-			/*for(int i = startX; i < endX + 1; i ++){
-
-				CellValues cv = mrm.getFirstLineValue(i); 
-				for(String name : mrm.getProperties()){
-
-					List<Double> values  =cv.getValues(name);
-					if(!values.isEmpty()){
-
-						if(aggregMap.keySet().contains(name)){
-
-							CellAggregOperator cao = aggregMap.get(name);   
-							Double d;
-							if(cao.preval() == false){
-								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
-							}else{
-								values.add(globalGrid.getDoubleValue(name, i, currentY));
-								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
-							}
-							globalGrid.setCellValue(name, i, currentY, d);
-
-						} else{
-
-							globalGrid.setCellValue(name, i, currentY, values.get((int)(Math.random() * values.size())));
-						}
-					}
-					cv.clear(name);
-				}
-
-			}*/
-			//mrm.clearFirstLineProperties();
+			
 		
 	}
 
@@ -759,103 +725,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			
 			}
 		}
-		/*
-			for(int i = startX; i < endX +  1; i ++){
-
-				CellValues cv = mrm.getFirstLineValue(i); 
-				
-				for(String name : mrm.getProperties()){
-
-					List<Double> values  =cv.getValues(name);
-					if(!values.isEmpty()){
-
-						
-						if(aggregMap.keySet().contains(name)){
-
-							CellAggregOperator cao = aggregMap.get(name);   
-							Double d;
-							if(cao.preval() == false){
-								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
-							}else{
-								values.add(globalGrid.getDoubleValue(name, i, currentY));
-								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY));
-							}
-							globalGrid.setCellValue(name, i, currentY, d);
-							
-
-						} else{
-
-							globalGrid.setCellValue(name, i, currentY, values.get((int)(Math.random() * values.size())));
-							
-						}
-					}
-					cv.clear(name);
-				
-				}
-			}*/
-					/*
-				cv = mrm.getSecondLineValue(i); 
-				for(String name : mrm.getProperties()){
-
-					List<Double> values  =cv.getValues(name);
-					if(!values.isEmpty()){
-
-						// .println("Size "+i+" "+y+" "+ values.size() +" "+name);
-						if(aggregMap.keySet().contains(name)){
-
-							CellAggregOperator cao = aggregMap.get(name);   
-							Double d;
-							if(cao.preval() == false){
-								d = cao.apply(values, null);
-							}else{
-								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY + 1));
-							}
-							globalGrid.setCellValue(name, i, currentY + 1, d);
-							//   globalGrid.cleanOperator();
-
-						} else{
-
-							globalGrid.setCellValue(name, i, currentY + 1, values.get((int)(Math.random() * values.size())));
-							//globalGrid.clearGeomTempVal();
-						}
-					}
-					cv.clear(name);
-					//  CellValues v = mrm.get(globalGrid.getWidth());
-					// v.clear(name);
-				}
-
-				cv = mrm.getThirdLineValue(i); 
-				for(String name : mrm.getProperties()){
-
-					List<Double> values  =cv.getValues(name);
-					if(!values.isEmpty()){
-
-						// .println("Size "+i+" "+y+" "+ values.size() +" "+name);
-						if(aggregMap.keySet().contains(name)){
-
-							CellAggregOperator cao = aggregMap.get(name);   
-							Double d;
-							if(cao.preval() == false){
-								d = cao.apply(values, null);
-							}else{
-								d = cao.apply(values, globalGrid.getDoubleValue(name, i, currentY + 2));
-							}
-							globalGrid.setCellValue(name, i, currentY + 2, d);
-							//   globalGrid.cleanOperator();
-
-						} else{
-
-							globalGrid.setCellValue(name, i, currentY + 2, values.get((int)(Math.random() * values.size())));
-							//globalGrid.clearGeomTempVal();
-						}
-					}
-					cv.clear(name);
-					//  CellValues v = mrm.get(globalGrid.getWidth());
-					// v.clear(name);
-				}*/
-
-			
-		//mrm.clearFirstLineProperties();
+	
 		
 	}
 	
@@ -943,17 +813,13 @@ public abstract class DiCursorEdge extends OcltEdge{
 		int[] minUpper = grid.gridCoordinate(upperLeftGrid.x, upperLeftGrid.y);
 	
 		
-		/*int[] globalToGridUpperLeft = globalGrid.gridCoordinate(upperLeftGrid.x, upperLeftGrid.y);
-		int[] globalToGridDownRight = globalGrid.gridCoordinate(downRightGrid.x, downRightGrid.y);
-		
-		int[] gridToGlobalUpperLeft = grid.gridCoordinate(upperLeftGlobal.x, upperLeftGlobal.y);
-		int[] gridToGlobalDownRight = grid.gridCoordinate(downRightGlobal.x, downRightGlobal.y);*/
+	
 		
 		Double[] gridBounds = new Double[]{upperLeftGrid.x, downRightGrid.y, downRightGrid.x, upperLeftGrid.y};
 		Double[] globalBounds = new Double[]{upperLeftGlobal.x, downRightGlobal.y, downRightGlobal.x, upperLeftGlobal.y};
 		 
 		double[] scaled = scalingdouble(gridBounds, globalBounds);
-		// //System.out.println("cScale "+scaled[0]+" "+scaled[1]+" "+scaled[2]+" "+scaled[3]);
+		
 		double xResFactor = 0.0;
 		double yResFactor = 0.0;
 		double precision = 1.0;
@@ -1018,53 +884,15 @@ public abstract class DiCursorEdge extends OcltEdge{
 		Coordinate globalCMin = globalGrid.gridCoordinate(globalMin[0], globalMin[1]);
 		Coordinate globalCMax = globalGrid.gridCoordinate(globalMax[0], globalMax[1]);
 		
-		////System.out.println(globalCMin);
-		int[] t1 = globalGrid.gridCoordinate(globalCMin.x, globalCMin.y);
-		////System.out.println(t1[0]+" "+t1[1]);
 	
+		int[] t1 = globalGrid.gridCoordinate(globalCMin.x, globalCMin.y);
 		
-		////System.out.println(globalCMax);
 		int[] t2 = globalGrid.gridCoordinate(globalCMax.x, globalCMax.y);
-		////System.out.println(t2[0]+" "+t2[1]);
+		
 		
 		Double[] chainRescaledGrid = new Double[] {gridCMin.x, gridCMax.y, gridCMax.x, gridCMin.y};
 		Double[] chainRescaledGlobal = new Double[] {globalCMin.x, globalCMax.y, globalCMax.x, globalCMin.y};
-	
-		double[] chainedScale = scalingdouble(chainRescaledGrid, chainRescaledGlobal);
-		
-		 /*gridMin = grid.gridCoordinate(chainedScale[0], chainedScale[3]);
-		 gridMax = grid.gridCoordinate(chainedScale[2], chainedScale[1]);
-		 globalMin = globalGrid.gridCoordinate(chainedScale[0], chainedScale[3]);
-		 globalMax = globalGrid.gridCoordinate(chainedScale[2], chainedScale[1]);*/
-		// //System.out.println("chainedScale "+chainedScale[0]+" "+chainedScale[1]+" "+chainedScale[2]+" "+chainedScale[3]);
-		/*if(globalMin == null){
-			startX = 0;
-			startY = 0;
-		}else{
-			startX = globalMin[0];
-			startY = globalMin[1];
-		}
-		if(globalMax == null){
-			endX = globalGrid.getWidth()-1;
-			endY = globalGrid.getHeight()-1;
-		}else{
-			endX = globalMax[0];
-			endY = globalMax[1];
-		}
-		if(gridMin == null){
-			startX2 = 0;
-			startY2 = 0;
-		}else{
-			startX2 = gridMin[0];
-			startY2 = gridMin[1];
-		}
-		if(gridMax == null){
-			endX2 = grid.getWidth()-1;
-			endY2 = grid.getHeight()-1;
-		}else{
-			endX2 = gridMax[0];
-			endY2 = gridMax[1];
-		}*/
+
 		 	
 			startX = globalMin[0];
 			startY = globalMin[1];		
@@ -1091,34 +919,7 @@ public abstract class DiCursorEdge extends OcltEdge{
 			endX2 = gridMax[0];
 			endY2 = gridMax[1];
 		Coordinate mG = globalGrid.gridCoordinate(endX, endY);
-		
-		/*double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
-		int[] img = grid.gridCoordinate(mG.x + xResDiff, mG.y );
-		while(img == null) {
-			xResDiff = xResDiff - grid.getXRes() / 2;
-			img = grid.gridCoordinate(mG.x + xResDiff, mG.y );
-			
-		}
-		endX2 = img[0];
-		double yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
-		img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
-		while(img == null) {
-			yResDiff =yResDiff + grid.getYRes() / 2;
-			img = grid.gridCoordinate(mG.x , mG.y + yResDiff);
-			
-		}*/
-		/*double xResDiff = globalGrid.getXRes() / 2 - grid.getXRes() / 2;
-		double yResDiff = - globalGrid.getYRes() / 2 + grid.getYRes() / 2;
-		int[] img = grid.gridCoordinate(mG.x + xResDiff, mG.y + yResDiff );
-	
-		
-		while(img == null) {
-			yResDiff =yResDiff + grid.getYRes() / 2;
-			xResDiff = xResDiff - grid.getXRes() / 2;
-			img = grid.gridCoordinate(mG.x + xResDiff , mG.y + yResDiff);
-			
-		}
-		endY2 = img[1];*/
+
 		if(endX2 > grid.getMaxX()) {
 			endX2 = grid.getMaxX();
 		}
@@ -1127,12 +928,6 @@ public abstract class DiCursorEdge extends OcltEdge{
 			endY2 = grid.getMaxY();
 		}
 		
-		
-		
-		////System.out.println(startX+" "+startY+" "+endX+" "+endY);
-		////System.out.println(startX2+" "+startY2+" "+endX2+" "+endY2);
-		//printMatchCoord();
-		////System.out.println(globalGrid.getMaxX()+" "+globalGrid.getMaxY());
 		equalGrid = false;
 		x = startX;
 		y = startY;

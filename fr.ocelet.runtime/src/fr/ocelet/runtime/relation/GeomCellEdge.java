@@ -326,7 +326,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			currentyKey = yIterator.next();
 			roleIterator = matrice.get(currentxKey).get(currentyKey).iterator();
 			nexter = new ValideNexter();
-			System.out.println("Valide Nexter");
+			
 		}else {
 			nexter = new UnValideNexter();
 		}
@@ -437,9 +437,6 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 			}
 		}
-
-
-
 
 		if(index == 0)
 		{
