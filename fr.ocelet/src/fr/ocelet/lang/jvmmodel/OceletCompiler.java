@@ -48,7 +48,7 @@ public class OceletCompiler extends XbaseCompiler {
 	@Override
 	protected void toJavaExpression(XStringLiteral literal,
 			ITreeAppendable appendable, boolean useUnicodeEscapes) {
-		LightweightTypeReference type = getLightweightType(literal);
+		LightweightTypeReference type = getLightweightType(literal);		
 		if (type == null) {
 			String javaString = Strings.convertToJavaString(literal.getValue(),
 					useUnicodeEscapes);

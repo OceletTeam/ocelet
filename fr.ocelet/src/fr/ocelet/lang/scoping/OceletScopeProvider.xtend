@@ -3,6 +3,9 @@
  */
 package fr.ocelet.lang.scoping
 
+import org.eclipse.xtext.scoping.IScope
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 
 /**
  * This class contains custom scoping description.
@@ -10,6 +13,11 @@ package fr.ocelet.lang.scoping
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
  * on how and when to use it.
  */
+
 class OceletScopeProvider extends AbstractOceletScopeProvider {
+
+	/*override IScope getScope(EObject context, EReference reference){
+		super.getScope(context, reference);
+	}*/
 
 }

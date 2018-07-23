@@ -22,6 +22,11 @@ package fr.ocelet.lang.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
+import org.eclipse.xtext.resource.clustering.DynamicResourceClusteringPolicy;
+import org.eclipse.xtext.resource.clustering.IResourceClusteringPolicy;
+import org.eclipse.xtext.ui.resource.IResourceSetProvider;
+import org.eclipse.xtext.ui.resource.SimpleResourceSetProvider;
+import org.eclipse.xtext.ui.resource.XtextResourceSetProvider;
 
 import com.google.inject.Binder;
 import com.google.inject.Singleton;
@@ -34,6 +39,7 @@ import fr.ocelet.lang.OcltOutputConfigurationProvider;
  * @author Pascal Degenne - Initial contribution
  */
 public class OceletUiModule extends fr.ocelet.lang.ui.AbstractOceletUiModule {
+	
 	public OceletUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
 	}
@@ -41,8 +47,21 @@ public class OceletUiModule extends fr.ocelet.lang.ui.AbstractOceletUiModule {
 	@Override
 	public void configure(Binder binder) {
 		super.configure(binder);
-
 		binder.bind(IOutputConfigurationProvider.class).to(OcltOutputConfigurationProvider.class).in(Singleton.class);
 	}
+	
+	
+	public Class<? extends IResourceClusteringPolicy> bindIResourceClusteringPolicy() {
+		return DynamicResourceClusteringPolicy.class;
+	}
+	/* @Override
+	    public Class<? extends IResourceSetProvider> bindIResourceSetProvider() {
+	        return  SimpleResourceSetProvider.class;
+	    }*/
+	    
+	   /* @org.eclipse.xtext.service.SingletonBinding(eager=false)
+	    public Class<? extends PlatformURIMapCache> bindPlatformURIMapCache() {
+	        return PlatformURIMapCache.class;
+	    }*/
 
 }

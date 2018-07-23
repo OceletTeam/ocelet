@@ -433,9 +433,7 @@ public class GridGenerator {
 				}else {
 					maxGridCoordFromShp = raster.worldToGrid(maxX, maxY);
 				}
-			}
-			
-			
+			}			
 			
 			double[] maxCoordFromShp = raster.gridToWorld(maxGridCoordFromShp[0], maxGridCoordFromShp[1]);
 			finalMaxX = maxCoordFromShp[0] + xRes / 2;
@@ -544,8 +542,8 @@ public class GridGenerator {
 		Coordinate[] coords = polygon.getCoordinates();
 		double minX = coords[0].x;
 		double minY =  coords[0].y;
-		double maxX =  coords[2].x;
-		double maxY =  coords[2].y;
+		double maxX =  coords[3].x;
+		double maxY =  coords[3].y;
 
 		return squareGridFromShp(name, props,raster, xRes, yRes, minX, minY, maxX, maxY);
 

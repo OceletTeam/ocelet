@@ -19,8 +19,11 @@ Require-Bundle: fr.ocelet,
  org.eclipse.xtext.xbase.ui;visibility:=reexport,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
- org.eclipse.jdt.debug.ui
-Import-Package: org.apache.log4j
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.jdt.core,
+ org.eclipse.xtext
+Import-Package: com.google.common.collect,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: fr.ocelet.ui.internal,
  fr.ocelet.lang.ui.quickfix,

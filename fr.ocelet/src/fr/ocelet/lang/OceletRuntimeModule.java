@@ -31,7 +31,7 @@ import fr.ocelet.lang.scoping.OceletImplicitlyImportedFeatures;
 @SuppressWarnings("restriction")
 public class OceletRuntimeModule extends fr.ocelet.lang.AbstractOceletRuntimeModule {
 
-	public Class<? extends XbaseCompiler> bindXbaseCompiler() {
+	public Class<? extends XbaseCompiler> bindXbaseCompiler() {		
         return OceletCompiler.class;
     }
 

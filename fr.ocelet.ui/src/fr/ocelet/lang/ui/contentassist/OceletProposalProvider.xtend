@@ -9,4 +9,6 @@ package fr.ocelet.lang.ui.contentassist
  * on how to customize the content assistant.
  */
 class OceletProposalProvider extends AbstractOceletProposalProvider {
+	
+	
 }

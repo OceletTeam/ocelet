@@ -100,26 +100,26 @@ class OceletLabelProvider extends XbaseLabelProvider {
 
 	override protected doGetText(Object eln) {
 		switch eln {
-			Agregdef case ((eln.name != null) && (eln.type != null)): eln.name + '() returns ' + eln.type.simpleName
-			ConstructorDef case (eln.name != null): eln.name + '()'
-			Datafacer case (eln.name != null): eln.name
-			Entity case (eln.name != null): eln.name
-			Filterdef case (eln.name != null): eln.name + '()'
-			InteractionDef case (eln.name != null): eln.name + '()'
+			Agregdef case ((eln.name !== null) && (eln.type !== null)): eln.name + '() returns ' + eln.type.simpleName
+			ConstructorDef case (eln.name !== null): eln.name + '()'
+			Datafacer case (eln.name !== null): eln.name
+			Entity case (eln.name !== null): eln.name
+			Filterdef case (eln.name !== null): eln.name + '()'
+			InteractionDef case (eln.name !== null): eln.name + '()'
 			Metadata: 'Metadata'
 			Model: 'Model'
-			Parameter case ((eln.name != null) && (eln.ptype != null)): eln.name + " is " + eln.ptype.simpleName
-			PropertyDef case ((eln.name != null) && (eln.type != null)): eln.name + " is " + eln.type.simpleName
+			Parameter case ((eln.name !== null) && (eln.ptype !== null)): eln.name + " is " + eln.ptype.simpleName
+			PropertyDef case ((eln.name !== null) && (eln.type !== null)): eln.name + " is " + eln.type.simpleName
 			Relation: relText(eln)
-			RelPropertyDef case ((eln.name != null) && (eln.type != null)): eln.name + " is " + eln.type.simpleName
-			Role case (eln.name != null): eln.name
-			Scenario case (eln.name != null): eln.name
-			ServiceDef case ((eln.name != null) && (eln.type != null)): eln.name + '() returns ' + eln.type.simpleName
-			ServiceDef case ((eln.name != null) && (eln.type == null)): eln.name + '()'
-			Strucdef case (eln.name != null): eln.name
-			StrucVarDef case ((eln.name != null) && (eln.type != null)): eln.name + " is " + eln.type.simpleName
-			StrucFuncDef case ((eln.name != null) && (eln.type != null)): eln.name + '() returns ' + eln.type.simpleName
-			StrucFuncDef case ((eln.name != null) && (eln.type == null)): eln.name + '()'
+			RelPropertyDef case ((eln.name !== null) && (eln.type !== null)): eln.name + " is " + eln.type.simpleName
+			Role case (eln.name !== null): eln.name
+			Scenario case (eln.name !== null): eln.name
+			ServiceDef case ((eln.name !== null) && (eln.type !== null)): eln.name + '() returns ' + eln.type.simpleName
+			ServiceDef case ((eln.name !== null) && (eln.type === null)): eln.name + '()'
+			Strucdef case (eln.name !== null): eln.name
+			StrucVarDef case ((eln.name !== null) && (eln.type !== null)): eln.name + " is " + eln.type.simpleName
+			StrucFuncDef case ((eln.name !== null) && (eln.type !== null)): eln.name + '() returns ' + eln.type.simpleName
+			StrucFuncDef case ((eln.name !== null) && (eln.type === null)): eln.name + '()'
 			default: '...'
 		}
 	}

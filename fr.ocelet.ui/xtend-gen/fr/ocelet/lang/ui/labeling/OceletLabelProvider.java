@@ -20,7 +20,6 @@
  */
 package fr.ocelet.lang.ui.labeling;
 
-import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import fr.ocelet.lang.ocelet.Agregdef;
 import fr.ocelet.lang.ocelet.ConstructorDef;
@@ -177,7 +176,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     String _switchResult = null;
     boolean _matched = false;
     if (eln instanceof Agregdef) {
-      if (((!Objects.equal(((Agregdef)eln).getName(), null)) && (!Objects.equal(((Agregdef)eln).getType(), null)))) {
+      if (((((Agregdef)eln).getName() != null) && (((Agregdef)eln).getType() != null))) {
         _matched=true;
         String _name = ((Agregdef)eln).getName();
         String _plus = (_name + "() returns ");
@@ -188,8 +187,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof ConstructorDef) {
         String _name = ((ConstructorDef)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           String _name_1 = ((ConstructorDef)eln).getName();
           _switchResult = (_name_1 + "()");
@@ -199,8 +198,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof Datafacer) {
         String _name = ((Datafacer)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           _switchResult = ((Datafacer)eln).getName();
         }
@@ -209,8 +208,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof Entity) {
         String _name = ((Entity)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           _switchResult = ((Entity)eln).getName();
         }
@@ -219,8 +218,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof Filterdef) {
         String _name = ((Filterdef)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           String _name_1 = ((Filterdef)eln).getName();
           _switchResult = (_name_1 + "()");
@@ -230,8 +229,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof InteractionDef) {
         String _name = ((InteractionDef)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           String _name_1 = ((InteractionDef)eln).getName();
           _switchResult = (_name_1 + "()");
@@ -252,7 +251,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof Parameter) {
-        if (((!Objects.equal(((Parameter)eln).getName(), null)) && (!Objects.equal(((Parameter)eln).getPtype(), null)))) {
+        if (((((Parameter)eln).getName() != null) && (((Parameter)eln).getPtype() != null))) {
           _matched=true;
           String _name = ((Parameter)eln).getName();
           String _plus = (_name + " is ");
@@ -263,7 +262,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof PropertyDef) {
-        if (((!Objects.equal(((PropertyDef)eln).getName(), null)) && (!Objects.equal(((PropertyDef)eln).getType(), null)))) {
+        if (((((PropertyDef)eln).getName() != null) && (((PropertyDef)eln).getType() != null))) {
           _matched=true;
           String _name = ((PropertyDef)eln).getName();
           String _plus = (_name + " is ");
@@ -280,7 +279,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof RelPropertyDef) {
-        if (((!Objects.equal(((RelPropertyDef)eln).getName(), null)) && (!Objects.equal(((RelPropertyDef)eln).getType(), null)))) {
+        if (((((RelPropertyDef)eln).getName() != null) && (((RelPropertyDef)eln).getType() != null))) {
           _matched=true;
           String _name = ((RelPropertyDef)eln).getName();
           String _plus = (_name + " is ");
@@ -292,8 +291,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof Role) {
         String _name = ((Role)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           _switchResult = ((Role)eln).getName();
         }
@@ -302,8 +301,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof Scenario) {
         String _name = ((Scenario)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           _switchResult = ((Scenario)eln).getName();
         }
@@ -311,7 +310,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof ServiceDef) {
-        if (((!Objects.equal(((ServiceDef)eln).getName(), null)) && (!Objects.equal(((ServiceDef)eln).getType(), null)))) {
+        if (((((ServiceDef)eln).getName() != null) && (((ServiceDef)eln).getType() != null))) {
           _matched=true;
           String _name = ((ServiceDef)eln).getName();
           String _plus = (_name + "() returns ");
@@ -322,7 +321,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof ServiceDef) {
-        if (((!Objects.equal(((ServiceDef)eln).getName(), null)) && Objects.equal(((ServiceDef)eln).getType(), null))) {
+        if (((((ServiceDef)eln).getName() != null) && (((ServiceDef)eln).getType() == null))) {
           _matched=true;
           String _name = ((ServiceDef)eln).getName();
           _switchResult = (_name + "()");
@@ -332,8 +331,8 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     if (!_matched) {
       if (eln instanceof Strucdef) {
         String _name = ((Strucdef)eln).getName();
-        boolean _notEquals = (!Objects.equal(_name, null));
-        if (_notEquals) {
+        boolean _tripleNotEquals = (_name != null);
+        if (_tripleNotEquals) {
           _matched=true;
           _switchResult = ((Strucdef)eln).getName();
         }
@@ -341,7 +340,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof StrucVarDef) {
-        if (((!Objects.equal(((StrucVarDef)eln).getName(), null)) && (!Objects.equal(((StrucVarDef)eln).getType(), null)))) {
+        if (((((StrucVarDef)eln).getName() != null) && (((StrucVarDef)eln).getType() != null))) {
           _matched=true;
           String _name = ((StrucVarDef)eln).getName();
           String _plus = (_name + " is ");
@@ -352,7 +351,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof StrucFuncDef) {
-        if (((!Objects.equal(((StrucFuncDef)eln).getName(), null)) && (!Objects.equal(((StrucFuncDef)eln).getType(), null)))) {
+        if (((((StrucFuncDef)eln).getName() != null) && (((StrucFuncDef)eln).getType() != null))) {
           _matched=true;
           String _name = ((StrucFuncDef)eln).getName();
           String _plus = (_name + "() returns ");
@@ -363,7 +362,7 @@ public class OceletLabelProvider extends XbaseLabelProvider {
     }
     if (!_matched) {
       if (eln instanceof StrucFuncDef) {
-        if (((!Objects.equal(((StrucFuncDef)eln).getName(), null)) && Objects.equal(((StrucFuncDef)eln).getType(), null))) {
+        if (((((StrucFuncDef)eln).getName() != null) && (((StrucFuncDef)eln).getType() == null))) {
           _matched=true;
           String _name = ((StrucFuncDef)eln).getName();
           _switchResult = (_name + "()");

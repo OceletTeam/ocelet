@@ -566,4 +566,10 @@
 			type="text">
 		</fileTypes>
 	</extension>
+ <extension
+       point="org.eclipse.xtext.ui.shared.overridingGuiceModule">
+    <module
+          class="fr.ocelet.lang.ui.OceletOverridingModule">
+    </module>
+ </extension>
 </plugin>

@@ -183,6 +183,7 @@ public class RasterFile{
     	
     	if(bounded) {
     	try{
+    		
             raster = new ORaster(FileUtils.applyOutput(directory+"/"+names[index]), bounds);
         	}catch(Exception e){
         		e.printStackTrace();
@@ -253,7 +254,7 @@ public class RasterFile{
 	}
     public void setFileName(String fileName){
     	
-    	
+    	System.out.println("idsDirectory "+isDirectory);
     	if(isDirectory) {
     		int i = 0;
     		for(String name : names) {

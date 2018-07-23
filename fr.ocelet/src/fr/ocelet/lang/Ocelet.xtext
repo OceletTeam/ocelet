@@ -163,10 +163,12 @@ Scenario:
 ;
 
 //------ XBase customization ------
+@Override 
 XVariableDeclaration returns XExpression:
 	{XVariableDeclaration}
 	(writeable?=('create'|'let')|('fix'|'const')) (=>(type=JvmTypeReference name=ValidID) | name=ValidID) ('=' right=XExpression)?;
 
+@Override 
 XMemberFeatureCall returns XExpression:
   XPrimaryExpression
   (=>({XAssignment.assignable=current} ('.'|explicitStatic?="|") feature=[types::JvmIdentifiableElement|FeatureCallID] OpSingleAssign) value=XAssignment
@@ -182,6 +184,7 @@ XMemberFeatureCall returns XExpression:
       memberCallArguments+=XClosure?
     )*;
 
+@Override 
 StaticQualifier:
         (ValidID '|')+
 ;

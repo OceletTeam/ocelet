@@ -56,6 +56,9 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XAssignment
 import java.util.ArrayList
+import org.eclipse.xtext.xbase.XMemberFeatureCall
+import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.impl.XMemberFeatureCallImplCustom
 
 /**
  * Java code inferrer of the Ocelet language
@@ -71,7 +74,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
   @Inject OceletCompiler ocltCompiler
   // Used to wrap primtive types to their corresponding java classes when needed.
   @Inject extension Primitives
-        
+  
   def dispatch void infer(Model modl, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
     val List<Scenario> scens = newArrayList()
     val Metadatastuff md = new Metadatastuff();
@@ -799,6 +802,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	  	  	parameters += reln.toParameter(p.name,p.parameterType)
           	  	  	  }
           	  	  	  body = reln.body
+          	  	  
           	  	  	]
           	  	    if (reln.comitexpressions.size() > 0) {          	  	    	
           	  	    	
@@ -1059,8 +1063,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 
           	  	  InteractionDef : {
           	  	  	
-          	  	  	
-          	  	  	
+ 	
           	  	  	members+= reln.toMethod(reln.name, typeRef(Void::TYPE))[
           	  	  	var params =""
           	  	  		
@@ -1073,11 +1076,81 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
           	  	  	  		params = params + p.name
           	  	  	  	}else{
           	  	  	  		params = params + p.name+","
-          	  	  	  	}
-          	  	  	  }
-          	  	  	  //val finalParams = params
+          	  	  	 	}
+          	  	  	}
+          	  	  	
+          	  	  	
           	  	  	body = reln.body
-          	  
+          	  	  	  //val finalParams = params
+          	  	  
+          	  	 
+          	  	 
+          	  	 /*
+          	  	  * «IF ec instanceof XAssignment»
+          	  	  	 			«ec.actualReceiver»
+          	  	  	 			//assignable
+          	  	  	 			«ec.assignable»
+          	  	  	 			//feature
+          	  	  	 			«ec.feature»
+          	  	  	 			//value
+          	  	  	 			«ec.value»
+          	  	  	 			//Meh
+          	  	  	 		
+          	  	  	 		«IF ec instanceof XMemberFeatureCall»
+          	  	  	 		
+          	  	  	 			«ec.value»
+          	  	  	 			«ec.fullyQualifiedName»
+          	  	  	 			       	  	  	 	    
+          	  	  	 		«ENDIF»
+          	  	  	 			
+          	  	  	 	«ENDIF»
+          	  	  */
+          	  	  	//reln.body.
+          	  	  	
+          	  	  	/*val ArrayList<XExpression> xList = <XExpression>newArrayList()
+          	  	  	val ArrayList<String> sList = <String>newArrayList()
+          	  	  	
+          	  	  val fbo = reln.body
+ 					switch(fbo) {
+ 						
+					  XBlockExpression: {
+					  	
+					   for (ee:fbo.expressions)  {
+							
+						    switch(ee) {
+								
+						     XAssignment: {
+						     	xList.add(ee.actualReceiver)
+						     	xList.add(ee.assignable)
+						     	
+						     	xList.add(ee.value)
+						     	 switch(ee.value) {
+						     	 	  XMemberFeatureCallImplCustom:{
+						     			xList.add(ee.actualReceiver)
+						     			sList.add(ee.concreteSyntaxFeatureName)
+						     	
+						     }
+						     	 }
+						     }
+						     
+						   
+						    }
+						   }
+						  }
+					}
+          	  	  		body = '''
+          	  	  			«FOR exp : xList»
+          	  	  		         «exp»          	  	  		       
+          	  	  		          	  	  	 	
+          	  	  		    «ENDFOR »
+          	  	  		  //sList  
+          	  	  		    «FOR exp : sList»
+          	  	  		         «exp»
+          	  	  		  
+          	  	  		              	  	  		          	  	  	 	
+          	  	  		   «ENDFOR »
+          	  	  	 	
+          	  	  	 '''*/
           	  	  	]
           	  	    if (reln.comitexpressions.size() > 0) {
           	  	      members += reln.toMethod("get_agr_"+reln.name,listype)[
@@ -2067,7 +2140,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 
 				val firstCellList = typeRef('fr.ocelet.runtime.ocltypes.List', firstRoleType)
 				val firstName = firstRole.name
-				val getEntity = "get"+firstRoleType.simpleName+"s"
+				val getEntity = "getAll"+firstRoleType.simpleName
                             
               
               superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType)
