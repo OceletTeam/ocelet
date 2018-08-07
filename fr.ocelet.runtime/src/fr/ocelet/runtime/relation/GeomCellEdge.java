@@ -745,12 +745,11 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	private void setQuadrilateralCells(R2 r2, Polygon polygon,HashMap<Integer, ArrayList<Line>> keyLines)
 	{
-		ArrayList<int[]> pixList = new ArrayList<int[]>();
-		HashMap<Integer, ArrayList<Integer>> coordList = new HashMap<Integer, ArrayList<Integer>>();
-		ArrayList<Integer> xs = new ArrayList<Integer>();
+		
+		
 		int bounds[] = null;
 		if(distance == grid.getXRes() / 2) {
-		bounds = grid.intBounds(polygon);
+			bounds = grid.intBounds(polygon);
 		}else {
 			bounds = grid.intBounds(polygon, distance);
 		}
@@ -1109,7 +1108,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 			if(values != null && !values.isEmpty()){
 
 				if(aggregMap.keySet().contains(name)){
-				
+					
 					Double d;
 					CellAggregOperator cao = aggregMap.get(name);
 					Double value = grid.getDoubleValue(b, currentxKey, currentyKey);
@@ -1219,7 +1218,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		public class ValideNexter extends Nexter{
 			public boolean hasNext() {
 				if(!xHasNext() && !yHasNext() && !roleHasNext()){
-
+					
 					cellSynchronisation();
 					resetIterator();
 					grid.clearGeomTempVal2();
