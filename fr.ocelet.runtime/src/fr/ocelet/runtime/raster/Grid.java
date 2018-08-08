@@ -794,6 +794,33 @@ public class Grid {
 		return bounds;
 	}
 	
+	public Coordinate[] cboundary(Geometry geom){
+		Coordinate bounds[] = new Coordinate[2];
+		double minX = Double.POSITIVE_INFINITY;
+		double minY = Double.POSITIVE_INFINITY;
+		double maxX = Double.NEGATIVE_INFINITY;
+		double maxY = Double.NEGATIVE_INFINITY;
+		Coordinate acoordinate[];
+		int j = (acoordinate = geom.getCoordinates()).length;
+		for(int i = 0; i < j; i++)
+		{
+			Coordinate c = acoordinate[i];
+			if(c.x < minX)
+				minX = c.x;
+			if(c.x > maxX)
+				maxX = c.x;
+			if(c.y < minY)
+				minY = c.y;
+			if(c.y > maxY)
+				maxY = c.y;
+		}
+
+		bounds[0] = new Coordinate(minX, minY);
+		bounds[1] = new Coordinate(maxX, maxY);
+		
+		return bounds;
+	}
+	
 	public Coordinate[] cboundary(Polygon polygon, Double distance){
 		Coordinate bounds[] = new Coordinate[2];
 		double minX = Double.POSITIVE_INFINITY;
@@ -872,48 +899,70 @@ public class Grid {
 	}
 
 	public int[] intBounds(Polygon polygon){
-		int bounds[] = new int[4];
-		Coordinate cBounds[] = cboundary(polygon);
+		
+		int newbounds[] = new int[4];
+		
+		Coordinate[] wCoord = new Coordinate[5];
+		wCoord[0] = new Coordinate(worldBounds[0] + xRes / 2, worldBounds[1] + yRes / 2);
+		wCoord[1] = new Coordinate(worldBounds[0] + xRes / 2, worldBounds[3] - yRes / 2);
+		wCoord[2] = new Coordinate(worldBounds[2] - xRes / 2, worldBounds[3] - yRes / 2);
+		wCoord[3] = new Coordinate(worldBounds[2] - xRes / 2, worldBounds[1] + yRes / 2);
+		wCoord[4] = wCoord[0];
+		CoordinateArraySequence seq = new CoordinateArraySequence(wCoord);
+		LinearRing lr = new LinearRing(seq, SpatialManager.geometryFactory());
+		Polygon wPoly = new Polygon(lr, null, SpatialManager.geometryFactory());
+		
+		Geometry inter = wPoly.intersection(polygon);
+		
+		
+		if(inter == null || inter.isEmpty()) {
+			return null;
+		}
+		
+		Coordinate[] cBounds = cboundary(inter);
+		
 		
 		
 		int[] gridCoord1 = null;
 		int[] gridCoord2 = null;
 		
 		try {
-		gridCoord1 = gridCoordinate(cBounds[0].x, cBounds[1].y);
+			gridCoord1 = gridCoordinate(cBounds[0].x, cBounds[0].y);
+			
 		}catch(Exception e) {
 			
 		}
 		
 		try {
-		gridCoord2 = gridCoordinate(cBounds[1].x, cBounds[0].y);
+		gridCoord2 = gridCoordinate(cBounds[1].x, cBounds[1].y);
+		
 		}catch(Exception e) {
 			
 		}
 		if(gridCoord1 == null){
-			bounds[0] = 0;
-			bounds[1] = 0; 
+			newbounds[0] = 0;
+			newbounds[3] =  height - 1;  
 		}else{
 
-			bounds[0] = gridCoord1[0];
-
-			bounds[1] = gridCoord1[1];
+			newbounds[0] = gridCoord1[0];
+			newbounds[3] = gridCoord1[1];
 		}
 
 		if(gridCoord2 == null){
-			bounds[2] = width - 1;
-			bounds[3] = height - 1; 
+			newbounds[2] = width - 1;
+			newbounds[1] = 0; 
 		}else{
 
 
-			bounds[2] = gridCoord2[0];
-			bounds[3] = gridCoord2[1];
+			newbounds[2] = gridCoord2[0];
+			newbounds[1] = gridCoord2[1];
 		}
+	
 		if(gridCoord1 == null && gridCoord2 == null) {
 			return null;
 		}
 		
-		return bounds;
+		return newbounds;
 	}
 	
 	public int[] intBounds(Polygon polygon, Double distance){

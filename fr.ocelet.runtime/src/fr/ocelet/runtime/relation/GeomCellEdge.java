@@ -787,7 +787,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				CoordinateSequence seq = new CoordinateArraySequence(new Coordinate[]{c});
 				Point p = new Point(seq, SpatialManager.geometryFactory());
 				if(polygon.distance(p) <= distance){
-					
+				
 					add(r2, i, j );
 					index++;
 				}

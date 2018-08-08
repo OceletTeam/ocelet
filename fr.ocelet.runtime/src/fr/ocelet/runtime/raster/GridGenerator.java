@@ -277,14 +277,14 @@ public class GridGenerator {
 	
 		Double[] lowerCorner = new Double[]{raster.getWorldBounds()[0], raster.getWorldBounds()[1]};
 		Double[] upperCorner = new Double[]{raster.getWorldBounds()[2], raster.getWorldBounds()[3]};
-		//System.out.println(lowerCorner[0]+" "+lowerCorner[1] );
+		
 	
 		double nminX = lowerCorner[0];
 		double nminY = lowerCorner[1];
 		double nmaxX = upperCorner[0];
 		double nmaxY = upperCorner[1];
 	
-		/*double finalMinX = minX;
+		double finalMinX = minX;
 		double finalMinY = minY;
 		double finalMaxX = maxX;
 		double finalMaxY = maxY;
@@ -298,13 +298,15 @@ public class GridGenerator {
 
 			double diff = lowerCorner[0] - minX;
 
-			int resDiff = (int)Math.round(diff / xRes);
-			if((diff/xRes - resDiff) < 0.5) {
+			int resDiff = (int)(diff / xRes);
+			if(resDiff < 1) {
 				resDiff = 1;
 			}
 			double rescale = resDiff * xRes;
 			finalMinX = lowerCorner[0] - rescale;
 			testMinX = true;
+		}else {
+			finalMinX = lowerCorner[0];
 		}
 
 
@@ -314,42 +316,52 @@ public class GridGenerator {
 
 			double diff = lowerCorner[1] -minY;
 
-			int resDiff = (int)Math.round(diff / yRes);
-			if((diff/yRes - resDiff) < 0.5) {
+			int resDiff = (int)(diff / yRes);
+			if(resDiff < 1) {
 				resDiff = 1;
 			}
 			double rescale = resDiff * yRes;
 			finalMinY = lowerCorner[1] - rescale;
 		
 			testMinY = true;
+		}else {
+			finalMinY = lowerCorner[1];
 		}
-
+		
+		
 		if(upperCorner[0] < maxX){
-
-			double diff = maxX - upperCorner[0];			
-			int resDiff = (int)Math.round(diff / xRes);
-			if((diff/xRes - resDiff) < 0.5) {
+			
+			
+			double diff = maxX - upperCorner[0];	
+			
+			int resDiff = (int)(diff / xRes);
+			if(resDiff < 1) {
 				resDiff = 1;
 			}
 			double rescale = resDiff * xRes;
 			finalMaxX = upperCorner[0] + rescale;
+			
 			testMaxX = true;
+		}else {
+			finalMaxX = upperCorner[0];
 		}
 
 		if(upperCorner[1] < maxY){
 
 			double diff = maxY - upperCorner[1];
 
-			int resDiff = (int)Math.round(diff / yRes);
-			if((diff/yRes - resDiff) < 0.5) {
+			int resDiff = (int)(diff / yRes);
+			if(resDiff < 1) {
 				resDiff = 1;
 			}
 			double rescale = resDiff * yRes;
 			finalMaxY = upperCorner[1] + rescale;
 			testMaxY = true;
+		}else {
+			finalMaxY = upperCorner[1];
 		}
 
-
+/*
 		//Testing if raster coord is out of shapefile description
 		double precisionScale = 0.01;
     	double precision1 = 1.0 - precisionScale;
@@ -473,12 +485,12 @@ public class GridGenerator {
 			//finalMaxX = maxCoordFromShp[0] + xRes / 2;
 			finalMaxY = maxCoordFromShp[1] + yRes / 2;
 
-		}
+		}*/
 
 		nminX = finalMinX;
 		nminY = finalMinY;
 		nmaxX = finalMaxX;
-		nmaxY = finalMaxY;*/
+		nmaxY = finalMaxY;
 
 		double newMinX = nminX;// - 2*xRes;
 		double newMinY = nminY; // - 2*yRes;
@@ -546,8 +558,8 @@ public class GridGenerator {
 		Coordinate[] coords = polygon.getCoordinates();
 		double minX = coords[0].x;
 		double minY =  coords[0].y;
-		double maxX =  coords[3].x;
-		double maxY =  coords[3].y;
+		double maxX =  coords[2].x;
+		double maxY =  coords[2].y;
 
 		return squareGridFromShp(name, props,raster, xRes, yRes, minX, minY, maxX, maxY);
 

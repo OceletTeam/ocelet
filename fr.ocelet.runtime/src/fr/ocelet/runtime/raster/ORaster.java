@@ -308,10 +308,11 @@ public class ORaster {
     	
     
     
-    	Double minX = bMinX;
-    	Double minY = bMinY;
-    	Double maxX = bMaxX;
-    	Double maxY = bMaxY;
+    	double minX = bMinX;
+    	double minY = bMinY;
+    	double maxX = bMaxX;
+    	double maxY = bMaxY;
+    	
     	
       
        // if(raster != null)
@@ -473,7 +474,7 @@ public class ORaster {
         RenderedImage rendImage = coverage.getRenderedImage(); 
        // System.out.println(rect);
         raster = rendImage.getData(rect);
-        
+      
         return raster;
     }
     public void printWorldBounds() {
