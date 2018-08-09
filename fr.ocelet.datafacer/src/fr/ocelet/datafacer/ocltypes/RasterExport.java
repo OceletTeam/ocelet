@@ -181,7 +181,7 @@ public class RasterExport implements Datafacer{
          catch(IndexOutOfBoundsException ex){
         	 ex.printStackTrace();
          }
-         System.out.println((new StringBuilder("Raster File created in : ")).append(path).toString());
+     
          writer.dispose();
     	
     }
@@ -227,7 +227,7 @@ public class RasterExport implements Datafacer{
          catch(IndexOutOfBoundsException ex){
         	 ex.printStackTrace();
          }
-         System.out.println((new StringBuilder("Raster File created in : ")).append(path).toString());
+       
          writer.dispose();
     }
 
