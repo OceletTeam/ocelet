@@ -709,6 +709,7 @@ public class Grid {
 
 	}
 	
+	
 	public void printGridBounds() {
 		System.out.println(minX+" "+minY+" "+maxX+" "+maxY);
 	}

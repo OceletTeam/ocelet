@@ -308,6 +308,7 @@ public class ORaster {
     	
     
     
+    	
     	double minX = bMinX;
     	double minY = bMinY;
     	double maxX = bMaxX;

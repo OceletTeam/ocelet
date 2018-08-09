@@ -933,6 +933,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 				int y2 = c2[1];
 				bresenhamCut(x, y, x2, y2, r2);
 			}
+			
 		}
 
 	}
