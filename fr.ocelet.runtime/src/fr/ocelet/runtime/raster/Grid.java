@@ -1117,11 +1117,14 @@ public class Grid {
 	public ArrayList<String> getPropertiesName(){
 
 		ArrayList<String> names = new ArrayList<String>();
-
+		for(int i = 0; i < rasterProps.keySet().size(); i ++) {
 		for(String name : rasterProps.keySet()){
-			names.add(name);
+			if(rasterProps.get(name) == i) {
+				names.add(name);
+			}
 
 		}              
+		}
 		return names;
 	}
 

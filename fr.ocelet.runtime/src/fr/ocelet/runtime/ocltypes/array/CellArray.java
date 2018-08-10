@@ -196,6 +196,7 @@ public class CellArray<T> extends ArrayInterface<T> {
 
 	@Override
 	public int size() {
+		
 		if(newInstance == true)
 		return grid.getWidth() * grid.getHeight();
 		

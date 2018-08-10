@@ -109,6 +109,7 @@ public class GridQuadriCellManager extends GridCellManager{
                 
                 List<Double> values = cv.getValues(b);
                 String name = properties.get(b);
+               
                 if(aggregMap.containsKey(name)){
                 
                     if(!values.isEmpty()){
