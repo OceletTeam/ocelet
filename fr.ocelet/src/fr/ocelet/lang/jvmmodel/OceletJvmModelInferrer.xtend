@@ -59,6 +59,7 @@ import java.util.ArrayList
 import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.impl.XMemberFeatureCallImplCustom
+import org.eclipse.xtext.xbase.jvmmodel.JvmAnnotationReferenceBuilder
 
 /**
  * Java code inferrer of the Ocelet language
@@ -69,6 +70,7 @@ import org.eclipse.xtext.xbase.impl.XMemberFeatureCallImplCustom
 class OceletJvmModelInferrer extends AbstractModelInferrer {
 
   @Inject extension JvmTypesBuilder
+  @Inject extension JvmAnnotationReferenceBuilder
 
   @Inject extension IQualifiedNameProvider
   @Inject OceletCompiler ocltCompiler
@@ -2141,7 +2143,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 				val firstCellList = typeRef('fr.ocelet.runtime.ocltypes.List', firstRoleType)
 				val firstName = firstRole.name
 				val getEntity = "getAll"+firstRoleType.simpleName
-                            
+                val getEntity_dep = "get"+firstRoleType.simpleName+"s"             
               
               superTypes += typeRef(graphTypeName, typeRef(edgecname), firstRoleType)
 
@@ -2163,6 +2165,14 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
 					return array;
 				'''
               ]
+              
+              // Deprecated getAll method
+              members+= meln.toMethod(getEntity_dep, firstCellList)[
+				annotations += annotationRef("java.lang.Deprecated");
+				body = '''return «getEntity»();'''
+              ]
+
+              
               // Generate DiGraph overridden methods : connect, getLeftSet, getRightSet
               members+= meln.toMethod("connect",typeRef(Void::TYPE))[
               	parameters += meln.toParameter(firstName, firstCellList)
