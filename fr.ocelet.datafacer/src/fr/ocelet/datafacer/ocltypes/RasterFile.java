@@ -254,7 +254,7 @@ public class RasterFile{
 	}
     public void setFileName(String fileName){
     	
-    	System.out.println("idsDirectory "+isDirectory);
+//    	System.out.println("idsDirectory "+isDirectory);
     	if(isDirectory) {
     		int i = 0;
     		for(String name : names) {
