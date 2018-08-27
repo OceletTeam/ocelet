@@ -253,6 +253,28 @@ public class OceletValidator extends AbstractOceletValidator {
   }
   
   /**
+   * Make sure the given datafacer's name begins with an uppercase letter
+   */
+  @Check
+  public void checkEntityUcase(final Entity en) {
+    boolean _isLowerCase = Character.isLowerCase(en.getName().charAt(0));
+    if (_isLowerCase) {
+      this.error("The name of an entity must not begin with an lower case character. Thank you.", OceletPackage.Literals.ENTITY__NAME);
+    }
+  }
+  
+  /**
+   * Make sure the given datafacer's name begins with an uppercase letter
+   */
+  @Check
+  public void checkDatafacerUcase(final Datafacer df) {
+    boolean _isLowerCase = Character.isLowerCase(df.getName().charAt(0));
+    if (_isLowerCase) {
+      this.error("The name of a datafacer must not begin with an lower case character. Thank you.", OceletPackage.Literals.DATAFACER__NAME);
+    }
+  }
+  
+  /**
    * Property names must not begin with an uppercase letter
    */
   @Check

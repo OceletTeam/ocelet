@@ -165,6 +165,25 @@ def checkDatafacerType(Datafacer df) {
 }
 
 /**
+ * Make sure the given datafacer's name begins with an uppercase letter
+ */
+@Check
+def checkEntityUcase(Entity en) {
+  if (Character.isLowerCase((en.name.charAt(0))))
+   error('The name of an entity must not begin with an lower case character. Thank you.',OceletPackage.Literals.ENTITY__NAME)
+}
+
+
+/**
+ * Make sure the given datafacer's name begins with an uppercase letter
+ */
+@Check
+def checkDatafacerUcase(Datafacer df) {
+  if (Character.isLowerCase((df.name.charAt(0))))
+   error('The name of a datafacer must not begin with an lower case character. Thank you.',OceletPackage.Literals.DATAFACER__NAME)
+}
+
+/**
  * Property names must not begin with an uppercase letter
  */
  @Check
