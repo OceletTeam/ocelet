@@ -24,6 +24,7 @@ package fr.ocelet.runtime.geom;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -98,7 +99,20 @@ public class SpatialManager {
 				// produce a mt.
 
 				CoordinateReferenceSystem destCRS = CRS.decode(epsgCode);
-				if(!destCRS.toString().equals(crs.toString())){
+				
+				boolean crsTest = true;
+				for(ReferenceIdentifier ri : crs.getIdentifiers()) {
+					
+					for(ReferenceIdentifier destri : destCRS.getIdentifiers()) {
+						if(ri.getCodeSpace().equals(destri.getCodeSpace())) {
+							if(!ri.getCode().equals(destri.getCode())) {
+								crsTest = false;
+							}
+						}
+					}
+					
+				}
+				if(!crsTest){
 					mt = CRS.findMathTransform(crs, destCRS, true);
 				}
 			} catch (NoSuchAuthorityCodeException e) {
@@ -133,8 +147,24 @@ public class SpatialManager {
 		if (crs == null){
 			crs = tgcrs;
 		}else{
-			if(!tgcrs.toString().equals(crs.toString()))
+			
+			boolean crsTest = true;
+			for(ReferenceIdentifier ri : crs.getIdentifiers()) {
+				
+				for(ReferenceIdentifier tgri : tgcrs.getIdentifiers()) {
+					if(ri.getCodeSpace().equals(tgri.getCodeSpace())) {
+						if(!ri.getCode().equals(tgri.getCode())) {
+							crsTest = false;
+						}
+					}
+				}
+				
+			}
+			if(!crsTest) {
+				
+			
 			mt = CRS.findMathTransform(crs, tgcrs, true);
+			}
 		}
 			return mt;
 		
