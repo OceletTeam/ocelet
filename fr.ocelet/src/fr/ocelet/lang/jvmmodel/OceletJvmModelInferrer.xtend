@@ -263,7 +263,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  '''
                   	]
                   	
-                  	val hmtype = typeRef('java.util.HashMap',typeRef('java.lang.String'),typeRef('java.lang.String'))
+                  	val hmtype = typeRef('java.util.LinkedHashMap',typeRef('java.lang.String'),typeRef('java.lang.String'))
                   	members += meln.toMethod('getMatchdef',hmtype) [
                   	  body = '''
                   	    «hmtype.simpleName» hm = new «hmtype»();

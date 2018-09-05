@@ -24,6 +24,7 @@ package fr.ocelet.datafacer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.geotools.data.DataStore;
@@ -85,7 +86,7 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	 * @return null here but this method is expected to be overriden by
 	 *         generated code
 	 */
-	protected HashMap<String, String> getMatchdef() {
+	protected LinkedHashMap<String, String> getMatchdef() {
 		return null;
 	}
 
@@ -139,7 +140,7 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 			builder.setName(getName());
 			if (crs != null)
 				builder.setCRS(crs);
-			HashMap<String, String> matchmap = getMatchdef();
+			LinkedHashMap<String, String> matchmap = getMatchdef();
 			if (matchmap != null) {
 				for (String atrName : matchmap.keySet()) {
 					try {

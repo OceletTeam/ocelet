@@ -572,7 +572,7 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             };
                             JvmOperation _method_5 = this._jvmTypesBuilder.toMethod(meln, (("create" + entname) + "FromRecord"), entype, _function_7);
                             this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_5);
-                            final JvmTypeReference hmtype = this._typeReferenceBuilder.typeRef("java.util.HashMap", this._typeReferenceBuilder.typeRef("java.lang.String"), this._typeReferenceBuilder.typeRef("java.lang.String"));
+                            final JvmTypeReference hmtype = this._typeReferenceBuilder.typeRef("java.util.LinkedHashMap", this._typeReferenceBuilder.typeRef("java.lang.String"), this._typeReferenceBuilder.typeRef("java.lang.String"));
                             EList<JvmMember> _members_7 = it.getMembers();
                             final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
                               StringConcatenationClient _client = new StringConcatenationClient() {
