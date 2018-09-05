@@ -73,13 +73,26 @@ public abstract class Shapefile extends GtDatafacer
 	 */
 	protected boolean overwrite;
 
+	public Shapefile(String fileName) {
+		super();
+		overwrite = true;
+		setFileName(fileName);
+		try {
+			SimpleFeatureType sft = datastore.getSchema();
+			CoordinateReferenceSystem ncrs = sft.getCoordinateReferenceSystem();
+			setCrs(ncrs);
+		} catch (IOException e) {
+		}
+		if (crs == null)
+			System.out.println(ERR_HEADER
+					+ "Warning : failed to read the coordinate reference system for the shapefile " + sourceFile);
+	}
+
 	/**
 	 * Constructor initializing the filename and the SRID.
 	 * 
-	 * @param fileName
-	 *            Path and name of a comma separated value file.
-	 * @param crs
-	 *            The coordinate system in text format. Ex: "EPSG:4326"
+	 * @param fileName Path and name of a comma separated value file.
+	 * @param crs      The coordinate system in text format. Ex: "EPSG:4326"
 	 */
 	public Shapefile(String fileName, String epsgcode) {
 		super();
@@ -89,35 +102,18 @@ public abstract class Shapefile extends GtDatafacer
 	}
 
 	/**
-	 * Initialize and prepares the ShapeFile using the file name given in
-	 * argument. The file is not read at this point, but it's availability is
-	 * being checked. An error message is printed in case of initialization
-	 * problem.
+	 * Initialize and prepares the ShapeFile using the file name given in argument.
+	 * The file is not read at this point, but it's availability is being checked.
+	 * An error message is printed in case of initialization problem.
 	 * 
-	 * This same method is used to create a new Shapefile which is created if
-	 * the name given in argument doesn't already exist on the disk.
+	 * This same method is used to create a new Shapefile which is created if the
+	 * name given in argument doesn't already exist on the disk.
 	 * 
-	 * @param shpFileName
-	 *            Name of the .shp file
+	 * @param shpFileName Name of the .shp file
 	 */
 	public void setFileName(String shpFileName) {
 		sourceFile = new File(FileUtils.applyOutput(shpFileName));
 		setDatastore();
-		// try {
-		// // Open a datastore that uses our own geometry factory
-		// datastore = new OcltShapefileDataStore(sourceFile.toURI().toURL());
-		// String typeName = datastore.getTypeNames()[0];
-		// if (sourceFile.exists()) {
-		// FeatureSource source = datastore.getFeatureSource(typeName);
-		// bounds[0] = source.getBounds().getMinX();
-		// bounds[1] = source.getBounds().getMinY();
-		// bounds[2] = source.getBounds().getMaxX();
-		// bounds[3] = source.getBounds().getMaxY();
-		// }
-		// } catch (IOException e) {
-		// System.out.println(ERR_HEADER + "Failed to open the shapefile " +
-		// sourceFile);
-		// }
 	}
 
 	protected void setDatastore() {
@@ -151,8 +147,7 @@ public abstract class Shapefile extends GtDatafacer
 	 * If true, overwrite means that existing files with the same name will be
 	 * overwritten
 	 * 
-	 * @param ov
-	 *            The new overwrite value
+	 * @param ov The new overwrite value
 	 */
 	public void setOverwrite(Boolean ov) {
 		this.overwrite = ov;
@@ -263,11 +258,13 @@ public abstract class Shapefile extends GtDatafacer
 				}
 				sfiterator = featureCollection.features();
 			} catch (IOException e) {
-				System.out.println(ERR_HEADER + "Problem while attempting to read the shapefile: "+getName());
+				System.out.println(ERR_HEADER + "Problem while attempting to read the shapefile: " + getName());
 			}
 		}
-		if (sfiterator != null) return sfiterator.hasNext();
-		else return false;
+		if (sfiterator != null)
+			return sfiterator.hasNext();
+		else
+			return false;
 	}
 
 	/**
@@ -293,7 +290,8 @@ public abstract class Shapefile extends GtDatafacer
 		String rootName = sourceFile.getPath().substring(0, sourceFile.getPath().indexOf(".shp"));
 		if ((Miscutils.isLocked(rootName + ".shx")) || (Miscutils.isLocked(rootName + ".shp"))
 				|| (Miscutils.isLocked(rootName + ".dbf")) || (Miscutils.isLocked(rootName + ".prj")))
-			System.out.println("Warning: the shapefile " + sourceFile + " could not be removed. It may be in use by another program.");
+			System.out.println("Warning: the shapefile " + sourceFile
+					+ " could not be removed. It may be in use by another program.");
 		else {
 			Miscutils.removeFile(rootName + ".prj");
 			Miscutils.removeFile(rootName + ".shx");

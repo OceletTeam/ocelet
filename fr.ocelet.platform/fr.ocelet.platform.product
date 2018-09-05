@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Ocelet Modelling Platform" uid="omp200" id="fr.ocelet.platform.product" application="fr.ocelet.platform.application" version="2.0.8" useFeatures="true" includeLaunchers="true">
+<product name="Ocelet Modelling Platform" uid="omp2" id="fr.ocelet.platform.product" application="fr.ocelet.platform.application" version="2.0.8" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <text>

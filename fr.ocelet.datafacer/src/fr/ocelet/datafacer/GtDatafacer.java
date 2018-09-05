@@ -61,8 +61,7 @@ import fr.ocelet.runtime.geom.ocltypes.Ring;
  * @author Pascal Degenne - Initial contribution
  *
  */
-public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
-		FiltrableDatafacer {
+public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, FiltrableDatafacer {
 
 	protected MathTransform mt;
 	protected CoordinateReferenceSystem crs;
@@ -79,12 +78,12 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	public abstract String getErrHeader();
 
 	/**
-	 * This method is not declared abstract to make sure it always exists. But
-	 * its real behavior is given by the same method in a generated subclass of
-	 * this datafacer
+	 * This method is not declared abstract to make sure it always exists. But its
+	 * real behavior is given by the same method in a generated subclass of this
+	 * datafacer
 	 * 
-	 * @return null here but this method is expected to be overriden by
-	 *         generated code
+	 * @return null here but this method is expected to be overriden by generated
+	 *         code
 	 */
 	protected LinkedHashMap<String, String> getMatchdef() {
 		return null;
@@ -106,12 +105,11 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	public abstract DataStore getDataStore();
 
 	/**
-	 * Creates an initialized GtDataRecord from the properties of the Entity
-	 * given in argument. The conversions from properties to record attributes
-	 * is inferred from a match definition and is realized by a generated
-	 * subclass of this one. The implementation given here is only to make sure
-	 * the method is implemented in case a match is missing in the datafacer
-	 * declaration.
+	 * Creates an initialized GtDataRecord from the properties of the Entity given
+	 * in argument. The conversions from properties to record attributes is inferred
+	 * from a match definition and is realized by a generated subclass of this one.
+	 * The implementation given here is only to make sure the method is implemented
+	 * in case a match is missing in the datafacer declaration.
 	 * 
 	 * @param ety
 	 * @return A GtDataRecord with a feature initialized with a series of
@@ -123,8 +121,8 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 
 	/**
 	 * Obtains a SimpleFeatureType that represents the table schema of this
-	 * datafacer. If that schema is already known, typically after reading from
-	 * a Shapefile or a Postgis database, it is returned. If that schema is not
+	 * datafacer. If that schema is already known, typically after reading from a
+	 * Shapefile or a Postgis database, it is returned. If that schema is not
 	 * already known, when building a table from scratch, then we create one
 	 * inferred from the match definition found in the datafacer's declaration.
 	 * 
@@ -147,10 +145,8 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 						Class atrClass = Class.forName(matchmap.get(atrName));
 						builder.add(atrName, atrClass);
 					} catch (ClassNotFoundException cnfe) {
-						System.out.println(getErrHeader()
-								+ " Failed to add the attribute definition ("
-								+ atrName + ":" + matchmap.get(atrName)
-								+ ") when building the schema.");
+						System.out.println(getErrHeader() + " Failed to add the attribute definition (" + atrName + ":"
+								+ matchmap.get(atrName) + ") when building the schema.");
 					}
 				}
 				sft = builder.buildFeatureType();
@@ -176,11 +172,9 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Creates a new empty feature according to the feature type given in
-	 * argument
+	 * Creates a new empty feature according to the feature type given in argument
 	 * 
-	 * @param ftype
-	 *            A featureType representing the schema of the feature to create
+	 * @param ftype A featureType representing the schema of the feature to create
 	 * @return An empty SimpleFeature
 	 */
 	protected SimpleFeature createFeature(SimpleFeatureType ftype) {
@@ -197,11 +191,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Uses the entity given in argument to create a record and adds that record
-	 * to the list of record to be written at next save call.
+	 * Uses the entity given in argument to create a record and adds that record to
+	 * the list of record to be written at next save call.
 	 * 
-	 * @param ety
-	 *            The entity to add
+	 * @param ety The entity to add
 	 */
 	public void append(Entity ety) {
 		try {
@@ -212,23 +205,19 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 				commitWrite(lfc);
 			}
 		} catch (IOException | IllegalArgumentException e) {
-			System.err
-					.println(getErrHeader()
-							+ " Failed to write an entity to "
-							+ this.toString()
-							+ ". Please check the datafacer's definition in your model.");
+			System.err.println(getErrHeader() + " Failed to write an entity to " + this.toString()
+					+ ". Please check the datafacer's definition in your model.");
 		}
 	}
 
 	/**
 	 * Adds the records given in argument to the table of this datafacer. The
-	 * records will be added to the table, no existing record will be changed.
-	 * This method is called by the append(List <? extends Entity) method from a
+	 * records will be added to the table, no existing record will be changed. This
+	 * method is called by the append(List <? extends Entity) method from a
 	 * generated subclass which is in charge of creating specialized DataRecords
 	 * from a list of Entities.
 	 * 
-	 * @param lety
-	 *            The list of entities to be added
+	 * @param lety The list of entities to be added
 	 */
 	public void append(List<? extends Entity> lrec) {
 		try {
@@ -239,11 +228,8 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 			lfc.addAll(lfeatures);
 			commitWrite(lfc);
 		} catch (IOException | IllegalArgumentException e) {
-			System.err
-					.println(getErrHeader()
-							+ " Failed to write an entity to "
-							+ this.toString()
-							+ ". Please check the datafacer's definition in your model.");
+			System.err.println(getErrHeader() + " Failed to write an entity to " + this.toString()
+					+ ". Please check the datafacer's definition in your model.");
 		}
 	}
 
@@ -256,28 +242,32 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 		t.close();
 	}
 
+	protected void setCrs(CoordinateReferenceSystem ncrs) {
+		try {
+			if (ncrs != null)
+				crs = ncrs;
+			mt = SpatialManager.getTransformCrs(ncrs, getErrHeader());
+		} catch (FactoryException e) {
+			System.out.println(getErrHeader() + "Failed to build the coordinate system.");
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Decodes the EPSG String to obtain the corresponding CRS and obtains a
 	 * MathTransform if the model's CRS is different.
 	 * 
-	 * @param epsg
-	 *            The coordinate system in text format. Ex: "EPSG:4326"
+	 * @param epsg The coordinate system in text format. Ex: "EPSG:4326"
 	 */
 	protected void setCrs(String epsgCode) {
 		try {
-			crs = CRS.decode(epsgCode);
-			Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, 
-					Boolean.TRUE);
-			
-
-			mt = SpatialManager.getTransformCrs(crs, getErrHeader());
-			
+			CoordinateReferenceSystem ncrs = CRS.decode(epsgCode);
+			Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+			setCrs(ncrs);
 		} catch (NoSuchAuthorityCodeException e) {
-			System.out.println(getErrHeader() + "Unknown EPSG code : "
-					+ epsgCode);
+			System.out.println(getErrHeader() + "Unknown EPSG code : " + epsgCode);
 		} catch (FactoryException e) {
-			System.out.println(getErrHeader()
-					+ "Failed to build the coordinate system :" + epsgCode);
+			System.out.println(getErrHeader() + "Failed to build the coordinate system :" + epsgCode);
 			e.printStackTrace();
 		}
 	}
@@ -377,11 +367,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column number.
+	 * Obtains the value from one column of the last read record using the column
+	 * number.
 	 * 
-	 * @param colNumber
-	 *            Index of the column to read (first is #0)
+	 * @param colNumber Index of the column to read (first is #0)
 	 * @return The value of the column as a String value
 	 */
 	public String readString(int colNumber) {
@@ -389,11 +378,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column number.
+	 * Obtains the value from one column of the last read record using the column
+	 * number.
 	 * 
-	 * @param colNumber
-	 *            Index of the column to read (first is #0)
+	 * @param colNumber Index of the column to read (first is #0)
 	 * @return The value of the column as an Integer value
 	 */
 	public Integer readInteger(int colNumber) {
@@ -401,11 +389,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column number.
+	 * Obtains the value from one column of the last read record using the column
+	 * number.
 	 * 
-	 * @param colNumber
-	 *            Index of the column to read (first is #0)
+	 * @param colNumber Index of the column to read (first is #0)
 	 * @return The value of the column as a Long integer value
 	 */
 	public Long readLong(int colNumber) {
@@ -413,11 +400,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column number.
+	 * Obtains the value from one column of the last read record using the column
+	 * number.
 	 * 
-	 * @param colNumber
-	 *            Index of the column to read (first is #0)
+	 * @param colNumber Index of the column to read (first is #0)
 	 * @return The value of the column as a Doule value
 	 */
 	public Double readDouble(int colNumber) {
@@ -425,11 +411,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column number.
+	 * Obtains the value from one column of the last read record using the column
+	 * number.
 	 * 
-	 * @param colNumber
-	 *            Index of the column to read (first is #0)
+	 * @param colNumber Index of the column to read (first is #0)
 	 * @return The value of the column as a Boolean value
 	 */
 	public Boolean readBoolean(int colNumber) {
@@ -437,11 +422,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column name.
+	 * Obtains the value from one column of the last read record using the column
+	 * name.
 	 * 
-	 * @param colName
-	 *            Name of the column to read (case sensitive)
+	 * @param colName Name of the column to read (case sensitive)
 	 * @return The value of the column as a String value
 	 */
 	public String readString(String colName) {
@@ -449,11 +433,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column name.
+	 * Obtains the value from one column of the last read record using the column
+	 * name.
 	 * 
-	 * @param colName
-	 *            Name of the column to read (case sensitive)
+	 * @param colName Name of the column to read (case sensitive)
 	 * @return The value of the column as an Integer value
 	 */
 	public Integer readInteger(String colName) {
@@ -461,11 +444,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column name.
+	 * Obtains the value from one column of the last read record using the column
+	 * name.
 	 * 
-	 * @param colName
-	 *            Name of the column to read (case sensitive)
+	 * @param colName Name of the column to read (case sensitive)
 	 * @return The value of the column as a Long Integer value
 	 */
 	public Long readLong(String colName) {
@@ -473,11 +455,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column name.
+	 * Obtains the value from one column of the last read record using the column
+	 * name.
 	 * 
-	 * @param colName
-	 *            Name of the column to read (case sensitive)
+	 * @param colName Name of the column to read (case sensitive)
 	 * @return The value of the column as a Doule value
 	 */
 	public Double readDouble(String colName) {
@@ -485,11 +466,10 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer,
 	}
 
 	/**
-	 * Obtains the value from one column of the last read record using the
-	 * column name.
+	 * Obtains the value from one column of the last read record using the column
+	 * name.
 	 * 
-	 * @param colName
-	 *            Name of the column to read (case sensitive)
+	 * @param colName Name of the column to read (case sensitive)
 	 * @return The value of the column as a Boolean value
 	 */
 	public Boolean readBoolean(String colName) {
