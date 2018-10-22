@@ -93,7 +93,7 @@ public class Grid {
 	protected Double[] worldBounds;
 	private String name;
 	public Envelope2D env;
-
+	private int propertySize;
 	private TypeSetter ts;
 	private TempSetter tempSetter = new TempSetter();
 	private NormSetter normSetter = new NormSetter();
@@ -127,6 +127,7 @@ public class Grid {
 				index++;
 			}
 		}      
+		propertySize = rasterProps.keySet().size();
 	}
 
 	public void setCRS(CoordinateReferenceSystem crs) {
@@ -138,6 +139,9 @@ public class Grid {
 	}
 	public int getPropBand(String name){
 		return ((Integer)rasterProps.get(name)).intValue();
+	}
+	public int getPropertysize() {
+		return propertySize;
 	}
 
 	public Grid(String name,int width, int height, GridGeometry2D gridGeometry){
@@ -1206,6 +1210,8 @@ public class Grid {
 	public void clearGeomTemVal2(int band){
 		geomTempVal2.get(band).clear();
 	}
+	
+	
 	public Set<Integer> getTempBand(){
 		return geomTempVal2.keySet();
 	}
@@ -1217,6 +1223,14 @@ public class Grid {
 		for(Integer band : geomTempVal2.keySet()){
 			geomTempVal2.get(band).clear();
 		}    
+
+	}
+	
+	public void clearGeomTempVal2(int band){
+
+		
+			geomTempVal2.get(band).clear();
+		    
 
 	}
 
@@ -1330,6 +1344,13 @@ public class Grid {
 				List<Double> values = new List<Double>();
 				values.add(value);
 				geomTempVal.put(name, values);
+			}
+		}*/
+		/*public GeomSetter() {
+			for(int i = 0; i < rasterProps.keySet().size(); i ++) {
+				List<Double> values = new List<Double>();
+				
+				geomTempVal2.put(i, values);
 			}
 		}*/
 		

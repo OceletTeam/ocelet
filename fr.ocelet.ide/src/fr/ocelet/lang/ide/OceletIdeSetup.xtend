@@ -11,6 +11,7 @@ import org.eclipse.xtext.util.Modules2
 /**
  * Initialization support for running Xtext languages as language servers.
  */
+
 class OceletIdeSetup extends OceletStandaloneSetup {
 
 	override createInjector() {

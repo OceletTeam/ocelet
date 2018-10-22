@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EReference
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
  * on how and when to use it.
  */
-
+@SuppressWarnings("restriction")
 class OceletScopeProvider extends AbstractOceletScopeProvider {
 
 	/*override IScope getScope(EObject context, EReference reference){

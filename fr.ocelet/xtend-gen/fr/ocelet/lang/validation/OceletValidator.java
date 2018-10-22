@@ -55,7 +55,7 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
  * 
  * @author Pascal Degenne - Initial contribution
  */
-@SuppressWarnings("all")
+@SuppressWarnings("restriction")
 public class OceletValidator extends AbstractOceletValidator {
   @Check
   public void checkDuplicateEntity(final Entity ent) {

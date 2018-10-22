@@ -64,7 +64,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	private HashMap<String, CellAggregOperator> aggregMap = new HashMap<String, CellAggregOperator>();
 
-	private LinkedHashMap<Integer, LinkedHashMap<Integer, ArrayList<GeomContainer>>> matrice = new LinkedHashMap<Integer, LinkedHashMap<Integer,ArrayList<GeomContainer>>>();
+	private HashMap<Integer, HashMap<Integer, ArrayList<GeomContainer>>> matrice = new HashMap<Integer, HashMap<Integer,ArrayList<GeomContainer>>>();
 
 	private List<R2> geomEntities;	//List of non cells entities to synchronize at the end    
 	protected Grid grid; // the grid	    
@@ -78,16 +78,17 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 	private String cellShapeType = "QUADRILATERAL";	    
 	private HashMap<R2, ArrayList<Integer[]>> added = new HashMap<R2, ArrayList<Integer[]>>();
 	private HashMap<Integer, ArrayList<Integer>> cellMap; // cellmap contained specific cells
-	
+	private HashMap<Integer, String> propertyMap = new HashMap<Integer, String>();
 	private Nexter nexter;
 	private CellIterator<R1> cellIterator = new CellIterator<R1>();
-	
+	private int propertySize;
 	private Double distance = 0.0;
 	
 	private int[] aggregIndex = null;
 	private int[] notAggregIndex = null;
 	
 	private ArrayList<String> gridProperties;
+	
 
 	public String getCellType(){
 		return grid.getCellShapeType();
@@ -202,7 +203,12 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		
 		this.grid = cell.getGrid();
 		gridProperties = grid.getPropertiesName();
-		
+		propertySize = gridProperties.size();
+		int index = 0;
+		for(String name : gridProperties) {
+			propertyMap.put(index, name);
+			index++;
+		}
 		
 		this.distance = grid.getXRes() / 2;
 		initEdgeProperty();
@@ -218,7 +224,12 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 		
 		this.grid = cell.getGrid();
 		gridProperties = grid.getPropertiesName();
-		
+		propertySize = gridProperties.size();
+		int index = 0;
+		for(String name : gridProperties) {
+			propertyMap.put(index, name);
+			index++;
+		}
 		initEdgeProperty();
 		fill(this.geomEntities);
 
@@ -262,7 +273,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 				ArrayList<GeomContainer> newList = new ArrayList<GeomContainer>();
 				newList.add(gc);
-				LinkedHashMap<Integer, ArrayList<GeomContainer>> yHash = new LinkedHashMap<Integer, ArrayList<GeomContainer>>();
+				HashMap<Integer, ArrayList<GeomContainer>> yHash = new HashMap<Integer, ArrayList<GeomContainer>>();
 				yHash.put(y, newList);
 				matrice.put(x, yHash);
 
@@ -1101,11 +1112,12 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	public void cellSynchronisation(){
 
-		for(int b = 0; b < grid.getPropertiesName().size(); b ++){
+		for(int b = 0; b < propertySize; b ++){
 		
-			String name = grid.getPropertiesName().get(b);
-
+			String name = propertyMap.get(b);
+			
 			List<Double> values = grid.getGeomTemp2Values(b);
+			
 			if(values != null && !values.isEmpty()){
 
 				if(aggregMap.keySet().contains(name)){
@@ -1131,10 +1143,11 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 					}
 
 				}
+				grid.clearGeomTempVal2(b);
 			}
-
+		
 		}
-		grid.clearGeomTempVal2();
+		
 
 	}
 	
@@ -1202,7 +1215,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 			cellSynchronisation();
 			resetIterator();
-			grid.clearGeomTempVal();
+			grid.clearGeomTempVal2();
 			grid.setMode(1);
 			return false;
 		}
@@ -1262,6 +1275,23 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 		public void next() {
 			nexter.next();
+			/*if(roleHasNext()){
+
+				roleNext();
+			}else{
+				cellSynchronisation();
+
+				if(yHasNext()){
+
+					yNext();
+				}else{
+
+					xNext();
+				}
+			}
+			update();*/
+		
+			
 		}
 	public List<R2> getGeomEntities()
 	{
@@ -1540,7 +1570,7 @@ public abstract class GeomCellEdge<R1 extends OcltRole, R2 extends OcltRole> ext
 
 	}
 	public void disconnectAll(){
-		matrice = new LinkedHashMap<Integer, LinkedHashMap<Integer,ArrayList<GeomContainer>>>();
+		matrice = new HashMap<Integer, HashMap<Integer,ArrayList<GeomContainer>>>();
 	}
 	public void disconnect(R1 cell, R2 role){
 

@@ -45,6 +45,7 @@ import org.eclipse.xtext.validation.Check
  * 
  * @author Pascal Degenne - Initial contribution
  */
+@SuppressWarnings("restriction")
 class OceletValidator extends AbstractOceletValidator {
 
 @Check
