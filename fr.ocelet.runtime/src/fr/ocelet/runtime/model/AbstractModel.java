@@ -29,7 +29,6 @@ import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
@@ -37,6 +36,7 @@ import fr.ocelet.runtime.styling.Gradient;
 
 /**
  * Defines everything that a good Ocelet model should have !
+ * 
  * @author Pascal Degenne - Initial contribution
  */
 public abstract class AbstractModel implements OceletModel {
@@ -50,6 +50,7 @@ public abstract class AbstractModel implements OceletModel {
 	protected Double minProgress;
 	protected Double progressRange;
 	protected KeyMap<String, Gradient> gradients;
+	protected String[] model_args; // args from a 'java -jar model.jar ...' call from a cmd line
 
 	public static String getBasedir() {
 		return modBasedir;
@@ -62,8 +63,8 @@ public abstract class AbstractModel implements OceletModel {
 		modBasedir = ".";
 		Logger globalLogger = Logger.getLogger("global");
 		Handler[] handlers = globalLogger.getHandlers();
-		for(Handler handler : handlers) {
-		    globalLogger.removeHandler(handler);
+		for (Handler handler : handlers) {
+			globalLogger.removeHandler(handler);
 		}
 		LogManager.getLogManager().reset();
 		System.setProperty("com.sun.media.jai.disableMediaLib", "true");
@@ -92,6 +93,52 @@ public abstract class AbstractModel implements OceletModel {
 		simlisteners.add(sl);
 	}
 
+	public HashMap<String, Object> parseParams(String[] args) {
+		HashMap<String, Object> pmap = new HashMap<String, Object>();
+		for (int i = 0; i < args.length; i++) {
+			Parameter p = modParams.get(i);
+			Object dv = p.getDefaultValue();
+			String ptype = "an Object";
+			try {
+				if (dv instanceof Integer) {
+					ptype = "an Integer";
+					Integer argval = new Integer(args[i]);
+					pmap.put(p.getName(), argval);
+				} else if (dv instanceof Double) {
+					ptype = "a Double";
+					Double argval = new Double(args[i]);
+					pmap.put(p.getName(), argval);
+				} else if (dv instanceof String) {
+					pmap.put(p.getName(), args[i]);
+				} else if (dv instanceof Boolean) {
+					ptype = "a Boolean";
+					Boolean argval = new Boolean(args[i]);
+					pmap.put(p.getName(), argval);
+				} else if (dv instanceof Float) {
+					ptype = "a Float";
+					Float argval = new Float(args[i]);
+					pmap.put(p.getName(), argval);
+				} else if (dv instanceof Long) {
+					ptype = "a Long";
+					Long argval = new Long(args[i]);
+					pmap.put(p.getName(), argval);
+				} else if (dv instanceof Short) {
+					ptype = "a Short";
+					Short argval = new Short(args[i]);
+					pmap.put(p.getName(), argval);
+				} else if (dv instanceof Byte) {
+					ptype = "a Byte";
+					Byte argval = new Byte(args[i]);
+					pmap.put(p.getName(), argval);
+				}
+			} catch (NumberFormatException fne) {
+				System.err.println("Warning: could not convert the argument \"" + args[i] + "\" into " + ptype
+						+ " value for the parameter " + p.getName() + ". The default value will be used instead.");
+			}
+		}
+		return pmap;
+	}
+
 	public void removeSimulationListener(SimulationListener sl) {
 		simlisteners.remove(sl);
 	}
@@ -101,6 +148,28 @@ public abstract class AbstractModel implements OceletModel {
 		this.modBasedir = basedir;
 	}
 
+	/**
+	 * @since 2.1.0
+     * When one launch a simulation using a jar version of an Ocelet
+     * model, it is possible to provide a series of arguments on the
+     * command line such as :   java -jar mymodel.jar arg1 arg2 arg3
+     * This function returns the list of arguments read from the
+     * command line in the form of a list of String. From this example,
+     * the result would be a List ("arg1","arg2","arg3").
+	 * @return The command line arguments in a List of String
+	 */
+	public List<String> getCmdLineArgs() {
+		List<String> la = new List<String>();
+        for(String arg : model_args) {
+          la.add(arg);
+        }
+		return la;
+	}
+
+	protected void setCmdLineArgs(String[] args) {
+		model_args = args;
+	}
+
 	protected void addParameter(Parameter param) {
 		modParams.add(param);
 	}
@@ -108,10 +177,8 @@ public abstract class AbstractModel implements OceletModel {
 	/**
 	 * Initiate a series of progress event to be caught by SimulationListeners
 	 * 
-	 * @param min_value
-	 *            The lowest value of the progress bar
-	 * @param max_value
-	 *            The highest value of the progress bar
+	 * @param min_value The lowest value of the progress bar
+	 * @param max_value The highest value of the progress bar
 	 */
 	public void startProgress(Double min_value, Double max_value) {
 		minProgress = min_value;
@@ -122,10 +189,8 @@ public abstract class AbstractModel implements OceletModel {
 	/**
 	 * Initiate a series of progress event to be caught by SimulationListeners
 	 * 
-	 * @param min_value
-	 *            The lowest value of the progress bar
-	 * @param max_value
-	 *            The highest value of the progress bar
+	 * @param min_value The lowest value of the progress bar
+	 * @param max_value The highest value of the progress bar
 	 */
 	public void startProgress(Integer min_value, Integer max_value) {
 		minProgress = min_value.doubleValue();
@@ -136,8 +201,7 @@ public abstract class AbstractModel implements OceletModel {
 	/**
 	 * Sends a progress event to simulationListeners
 	 * 
-	 * @param new_value
-	 *            The actual position of the progress.
+	 * @param new_value The actual position of the progress.
 	 */
 	public void updateProgress(Integer new_value) {
 		updateProgress(new_value.doubleValue());
@@ -146,8 +210,7 @@ public abstract class AbstractModel implements OceletModel {
 	/**
 	 * Sends a progress event to simulationListeners
 	 * 
-	 * @param new_value
-	 *            The actual position of the progress.
+	 * @param new_value The actual position of the progress.
 	 */
 	public void updateProgress(Double new_value) {
 		Double progress = (new_value - minProgress) / progressRange;
@@ -167,12 +230,10 @@ public abstract class AbstractModel implements OceletModel {
 	/**
 	 * Produces a list of Colors from a Gradient
 	 * 
-	 * @param nbClasses
-	 *            Number of colors
-	 * @param gradientName
-	 *            Name of the source color gradient
-	 * @return A List of initialized colors or null if no gradient matches the
-	 *         given name
+	 * @param nbClasses    Number of colors
+	 * @param gradientName Name of the source color gradient
+	 * @return A List of initialized colors or null if no gradient matches the given
+	 *         name
 	 */
 	public List<Color> colorRange(int nbClasses, String gradientName) {
 		return colorRange(nbClasses, gradientName, false);
@@ -181,34 +242,27 @@ public abstract class AbstractModel implements OceletModel {
 	/**
 	 * Produces a list of Colors from a Gradient taken backward
 	 * 
-	 * @param nbClasses
-	 *            Number of colors
-	 * @param gradientName
-	 *            Name of the source color gradient
-	 * @return A List of initialized colors or null if no gradient matches the
-	 *         given name
+	 * @param nbClasses    Number of colors
+	 * @param gradientName Name of the source color gradient
+	 * @return A List of initialized colors or null if no gradient matches the given
+	 *         name
 	 */
-	public List<Color> colorRange(int nbClasses, String gradientName,
-			boolean backward) {
+	public List<Color> colorRange(int nbClasses, String gradientName, boolean backward) {
 		if (gradients == null) {
 			gradients = new KeyMap<String, Gradient>();
 			try {
 				Gradient.readGradients(gradients, "config/gradients.ocg");
 			} catch (IOException ioe) {
-				System.out
-						.println("Warning : failed to read the color gradient definition file (config/gradient.ocg");
+				System.out.println("Warning : failed to read the color gradient definition file (config/gradient.ocg");
 				System.out.println("System message: " + ioe.getMessage());
 			}
 		}
 		List<Color> lc = null;
 		Gradient gd = gradients.get(gradientName);
 		if (gd != null)
-			lc = backward ? gd.toReversedColorList(nbClasses) : gd
-					.toColorList(nbClasses);
+			lc = backward ? gd.toReversedColorList(nbClasses) : gd.toColorList(nbClasses);
 		else
-			System.out
-					.println("Warning : could not find the color gradient named "
-							+ gradientName + ".");
+			System.out.println("Warning : could not find the color gradient named " + gradientName + ".");
 		return lc;
 	}
 

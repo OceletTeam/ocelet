@@ -6232,8 +6232,27 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                   _builder.newLineIfNotEmpty();
                   _builder.append("model_");
                   _builder.append(modlName);
-                  _builder.append(".run_");
+                  _builder.append(".setCmdLineArgs(args);");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("if ((args.length > 0) && (args.length == model_");
                   _builder.append(modlName);
+                  _builder.append(".modParams.size())) {");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("   \t");
+                  _builder.append("HashMap<String,Object> parmap = model_");
+                  _builder.append(modlName, "   \t");
+                  _builder.append(".parseParams(args);");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("   \t");
+                  _builder.append("model_");
+                  _builder.append(modlName, "   \t");
+                  _builder.append(".simulate(parmap);");
+                  _builder.newLineIfNotEmpty();
+                  _builder.append("   ");
+                  _builder.append("} else model_");
+                  _builder.append(modlName, "   ");
+                  _builder.append(".run_");
+                  _builder.append(modlName, "   ");
                   _builder.append("();");
                 }
               };

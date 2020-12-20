@@ -2726,7 +2726,11 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
               	 setStatic(true)
                  body = '''
                  «modlName» model_«modlName» = new «modlName»();
-                 model_«modlName».run_«modlName»();'''
+                 model_«modlName».setCmdLineArgs(args);
+                 if ((args.length > 0) && (args.length == model_«modlName».modParams.size())) {
+                    	HashMap<String,Object> parmap = model_«modlName».parseParams(args);
+                    	model_«modlName».simulate(parmap);
+                    } else model_«modlName».run_«modlName»();'''
               ]
               members += modl.toMethod("run_"+modlName,typeRef(Void.TYPE)) [
               	body = scen.body

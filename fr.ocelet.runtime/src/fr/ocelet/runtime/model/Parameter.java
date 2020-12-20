@@ -34,5 +34,4 @@ public interface Parameter<T> {
 	public boolean isOptionnal();
 	public T getDefaultValue();
 	public String getUnit();
-
 }
