@@ -50,12 +50,19 @@ public class Miscutils {
 	private static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("en"));
 
 	/**
+	 * Check if a file does exists or not
+	 * @param path Path to the file to check
+	 * @return true if the given path points to an existing file
+	 */
+	public static boolean fileExists(String path) {
+		return (new File(path)).exists();
+	}
+
+	/**
 	 * Number formatter
 	 * 
-	 * @param n
-	 *            Number to be formatted
-	 * @param pattern
-	 *            The formatting pattern
+	 * @param n       Number to be formatted
+	 * @param pattern The formatting pattern
 	 * @return A formatted String representation of number n, depending on the given
 	 *         pattern
 	 */
@@ -73,12 +80,9 @@ public class Miscutils {
 	/**
 	 * /** Number formatter
 	 * 
-	 * @param n
-	 *            Number to be formatted
-	 * @param pattern
-	 *            The formatting pattern
-	 * @param lang
-	 *            Lowercase two-letter ISO-639 code representing a langage.
+	 * @param n       Number to be formatted
+	 * @param pattern The formatting pattern
+	 * @param lang    Lowercase two-letter ISO-639 code representing a langage.
 	 * @return A formatted String representation of number n, depending on the given
 	 *         pattern
 	 */
@@ -90,12 +94,9 @@ public class Miscutils {
 	/**
 	 * Creates a shade of colors between two colors given in argument
 	 * 
-	 * @param nbSteps
-	 *            Number of colors (minimum is 2)
-	 * @param c1
-	 *            First Color
-	 * @param c2
-	 *            Last Color
+	 * @param nbSteps Number of colors (minimum is 2)
+	 * @param c1      First Color
+	 * @param c2      Last Color
 	 * @return A List<Color> containing the color range
 	 */
 	public static List<Color> colorRange(int nbSteps, Color c1, Color c2) {
@@ -105,12 +106,9 @@ public class Miscutils {
 	/**
 	 * Creates a shade of colors between two colors given in argument
 	 * 
-	 * @param nbSteps
-	 *            Number of colors (minimum is 2)
-	 * @param sc1
-	 *            First Color in String format
-	 * @param sc2
-	 *            Last Color in String format
+	 * @param nbSteps Number of colors (minimum is 2)
+	 * @param sc1     First Color in String format
+	 * @param sc2     Last Color in String format
 	 * @return A List<Color> containing the color range
 	 */
 	public static List<Color> colorRange(int nbSteps, String sc1, String sc2) {
@@ -137,8 +135,7 @@ public class Miscutils {
 	/**
 	 * Deletes a directory and all its content. Without warning. Use with caution.
 	 * 
-	 * @param dirpath
-	 *            Path of the directory to be removed
+	 * @param dirpath Path of the directory to be removed
 	 */
 	public static void removeDir(String dirpath) {
 		Path dir = Paths.get(dirpath);
@@ -165,8 +162,7 @@ public class Miscutils {
 	/**
 	 * Deletes a file. Without warning. Use with caution.
 	 * 
-	 * @param filepath
-	 *            The file to be removed
+	 * @param filepath The file to be removed
 	 */
 	public static void removeFile(String filepath) {
 		File f = new File(filepath);
@@ -199,8 +195,7 @@ public class Miscutils {
 	 * A utility function that transforms an amount of milliseconds into a textual
 	 * representation of time in hours, minutes, seconds and ms
 	 * 
-	 * @param ms
-	 *            Number of milliseconds
+	 * @param ms Number of milliseconds
 	 * @return A String representing the same time range in hours, minutes, seconds
 	 *         and milliseconds
 	 */
@@ -225,11 +220,11 @@ public class Miscutils {
 			sb.append(ms + "ms");
 		return sb.toString();
 	}
-	
+
 	public static Double nextGaussian() {
 		Random r = new Random();
 		Double gaussian = r.nextGaussian();
-		while(gaussian < - 1 || gaussian > 1) {
+		while (gaussian < -1 || gaussian > 1) {
 			gaussian = r.nextGaussian();
 		}
 		return gaussian;
