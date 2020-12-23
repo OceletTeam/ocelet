@@ -50,7 +50,7 @@ public class Miscutils {
 	private static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("en"));
 
 	/**
-	 * Check if a file does exists or not
+	 * Check if a file does exists or not. It can be either a file or a directory.
 	 * @param path Path to the file to check
 	 * @return true if the given path points to an existing file
 	 */
@@ -179,6 +179,24 @@ public class Miscutils {
 		}
 	}
 
+	/**
+	 * Check if a path does exists and is a directory or not
+	 * @param path Path to the directory to check
+	 * @return true if the given path points to an existing directory
+	 */
+	public static boolean isDir(String path) {
+		return (new File(path)).isDirectory();
+	}
+
+	/**
+	 * Check if a path does exists and is a file or not
+	 * @param path Path to the file to check
+	 * @return true if the given path points to an existing file
+	 */
+	public static boolean isFile(String path) {
+		return (new File(path)).isFile();
+	}
+		
 	/**
 	 * Checks if a file is locked If the file does not exist, we consider is it not
 	 * locked
