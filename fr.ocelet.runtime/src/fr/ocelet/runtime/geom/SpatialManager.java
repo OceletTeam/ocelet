@@ -39,9 +39,8 @@ import fr.ocelet.runtime.geom.ocltypes.Point;
 import fr.ocelet.runtime.geom.ocltypes.Polygon;
 
 /**
- * A class that keep track of the coordinate reference system
- * in use in an Ocelet projet and that also provides the crs
- * transformation functions.
+ * A class that keep track of the coordinate reference system in use in an
+ * Ocelet projet and that also provides the crs transformation functions.
  * 
  * @author Pascal Degenne - Initial contribution
  *
@@ -58,37 +57,33 @@ public class SpatialManager {
 	}
 
 	/**
-	 * @return The coordinate system of this model, if there is one. Null if
-	 *         none was defined.
+	 * @return The coordinate system of this model, if there is one. Null if none
+	 *         was defined.
 	 */
 	public static CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
 
 	/**
-	 * Creates a transformation operation from the coordinate system of the
-	 * model and the other coordinate system given in argument. If no coordinate
-	 * system has been defined for the model yet, the one given in argument
-	 * becomes the main coordinate system of the model and no MathTransform is
-	 * returned (returns null).
+	 * Creates a transformation operation from the coordinate system of the model
+	 * and the other coordinate system given in argument. If no coordinate system
+	 * has been defined for the model yet, the one given in argument becomes the
+	 * main coordinate system of the model and no MathTransform is returned (returns
+	 * null).
 	 * 
-	 * @param dstCrs
-	 *            Target Crs in textual form "EPSG:num" ex : "EPSG:4326"
-	 * @return MathTransform A ready to use transformation. Or null if the model
-	 *         did not have a coordinate system yet.
+	 * @param dstCrs Target Crs in textual form "EPSG:num" ex : "EPSG:4326"
+	 * @return MathTransform A ready to use transformation. Or null if the model did
+	 *         not have a coordinate system yet.
 	 */
-	public static MathTransform getTransformCrs(String epsgCode,
-			String ERR_HEADER) {
+	public static MathTransform getTransformCrs(String epsgCode, String ERR_HEADER) {
 		MathTransform mt = null;
 		if (crs == null)
 			try {
 				crs = CRS.decode(epsgCode);
 			} catch (NoSuchAuthorityCodeException e) {
-				System.out.println(ERR_HEADER + "Unknown EPSG code : "
-						+ epsgCode);
+				System.out.println(ERR_HEADER + "Unknown EPSG code : " + epsgCode);
 			} catch (FactoryException e) {
-				System.out.println(ERR_HEADER
-						+ "Failed to build the coordinate system :" + epsgCode);
+				System.out.println(ERR_HEADER + "Failed to build the coordinate system :" + epsgCode);
 				e.printStackTrace();
 			}
 		else
@@ -99,134 +94,132 @@ public class SpatialManager {
 				// produce a mt.
 
 				CoordinateReferenceSystem destCRS = CRS.decode(epsgCode);
-				
+
 				boolean crsTest = true;
-				for(ReferenceIdentifier ri : crs.getIdentifiers()) {
-					
-					for(ReferenceIdentifier destri : destCRS.getIdentifiers()) {
-						if(ri.getCodeSpace().equals(destri.getCodeSpace())) {
-							if(!ri.getCode().equals(destri.getCode())) {
+				for (ReferenceIdentifier ri : crs.getIdentifiers()) {
+
+					for (ReferenceIdentifier destri : destCRS.getIdentifiers()) {
+						if (ri.getCodeSpace().equals(destri.getCodeSpace())) {
+							if (!ri.getCode().equals(destri.getCode())) {
 								crsTest = false;
 							}
 						}
 					}
-					
+
 				}
-				if(!crsTest){
+				if (!crsTest) {
 					mt = CRS.findMathTransform(crs, destCRS, true);
 				}
 			} catch (NoSuchAuthorityCodeException e) {
 				// e.printStackTrace();
-				System.out.println(ERR_HEADER
-						+ "Unrecognized coordinate system :" + epsgCode);
+				System.out.println(ERR_HEADER + "Unrecognized coordinate system :" + epsgCode);
 			} catch (FactoryException e) {
 				// e.printStackTrace();
-				System.out.println(ERR_HEADER
-						+ "Failed to build the coordinate system " + epsgCode);
+				System.out.println(ERR_HEADER + "Failed to build the coordinate system " + epsgCode);
 			}
 		return mt;
 	}
 
 	/**
-	 * Creates a transformation operation from the coordinate system of the
-	 * model and the other coordinate system given in argument. If no coordinate
-	 * system has been defined for the model yet, the one given in argument
-	 * becomes the main coordinate system of the model and no MathTransform is
-	 * returned (returns null).
+	 * Creates a transformation operation from the coordinate system of the model
+	 * and the other coordinate system given in argument. If no coordinate system
+	 * has been defined for the model yet, the one given in argument becomes the
+	 * main coordinate system of the model and no MathTransform is returned (returns
+	 * null).
 	 * 
-	 * @param dstCrs
-	 *            Target Crs
-	 * @return MathTransform A ready to use transformation. Or null if the model
-	 *         did not have a coordinate system yet.
+	 * @param dstCrs Target Crs
+	 * @return MathTransform A ready to use transformation. Or null if the model did
+	 *         not have a coordinate system yet.
 	 * @throws FactoryException
 	 */
-	public static MathTransform getTransformCrs(
-			CoordinateReferenceSystem tgcrs, String ERR_HEADER)
+	public static MathTransform getTransformCrs(CoordinateReferenceSystem tgcrs, String ERR_HEADER)
 			throws FactoryException {
 		MathTransform mt = null;
-		if (crs == null){
+		if (crs == null) {
 			crs = tgcrs;
-		}else{
-			
+		} else {
+
 			boolean crsTest = true;
-			for(ReferenceIdentifier ri : crs.getIdentifiers()) {
-				
-				for(ReferenceIdentifier tgri : tgcrs.getIdentifiers()) {
-					if(ri.getCodeSpace().equals(tgri.getCodeSpace())) {
-						if(!ri.getCode().equals(tgri.getCode())) {
+			for (ReferenceIdentifier ri : crs.getIdentifiers()) {
+
+				for (ReferenceIdentifier tgri : tgcrs.getIdentifiers()) {
+					if (ri.getCodeSpace().equals(tgri.getCodeSpace())) {
+						if (!ri.getCode().equals(tgri.getCode())) {
 							crsTest = false;
 						}
 					}
 				}
-				
+
 			}
-			if(!crsTest) {
-				
-			
-			mt = CRS.findMathTransform(crs, tgcrs, true);
+			if (!crsTest) {
+
+				mt = CRS.findMathTransform(crs, tgcrs, true);
 			}
 		}
-			return mt;
-		
+		return mt;
+
 	}
-	
-public static Line lineTransform(Geometry geometry){
-		
-		if(geometry instanceof Line){
-			return (Line)geometry;
+
+	public static Line lineTransform(Geometry geometry) {
+
+		if (geometry instanceof Line) {
+			return (Line) geometry;
 		}
 		return null;
 	}
-    public static MultiLine multiLineTransform(Geometry geometry){
-		
-		if(geometry instanceof MultiLine){
-			return (MultiLine)geometry;
+
+	public static MultiLine multiLineTransform(Geometry geometry) {
+
+		if (geometry instanceof MultiLine) {
+			return (MultiLine) geometry;
 		}
-		if(geometry instanceof Line){
+		if (geometry instanceof Line) {
 			Line[] ls = new Line[1];
-			ls[0] = (Line)geometry;
+			ls[0] = (Line) geometry;
 			MultiLine ml = new MultiLine(ls, SpatialManager.geometryFactory());
 			return ml;
 		}
 		return null;
-	}	
-    
-public static Point pointTransform(Geometry geometry){
-		
-		if(geometry instanceof Point){
-			return (Point)geometry;
+	}
+
+	public static Point pointTransform(Geometry geometry) {
+
+		if (geometry instanceof Point) {
+			return (Point) geometry;
 		}
 		return null;
 	}
-    public static MultiPoint multiPointTransform(Geometry geometry){
-		
-		if(geometry instanceof MultiPoint){
-			return (MultiPoint)geometry;
+
+	public static MultiPoint multiPointTransform(Geometry geometry) {
+
+		if (geometry instanceof MultiPoint) {
+			return (MultiPoint) geometry;
 		}
-		if(geometry instanceof Point){
+		if (geometry instanceof Point) {
 			Point[] ps = new Point[1];
-			ps[0] = (Point)geometry;
+			ps[0] = (Point) geometry;
 			MultiPoint mp = new MultiPoint(ps, SpatialManager.geometryFactory());
 			return mp;
 		}
 		return null;
 	}
-    
-public static Polygon polygonTransform(Geometry geometry){
-		
-		if(geometry instanceof Polygon){
-			return (Polygon)geometry;
+
+	public static Polygon polygonTransform(Geometry geometry) {
+
+		if (geometry instanceof Polygon) {
+			return (Polygon) geometry;
 		}
 		return null;
 	}
-    public static MultiPolygon multiPolygonTransform(Geometry geometry){
-		
-		if(geometry instanceof MultiPolygon){
-			return (MultiPolygon)geometry;
+
+	public static MultiPolygon multiPolygonTransform(Geometry geometry) {
+
+		if (geometry instanceof MultiPolygon) {
+			return (MultiPolygon) geometry;
 		}
-		if(geometry instanceof Polygon){
+		if (geometry instanceof Polygon) {
 			Polygon[] ps = new Polygon[1];
-			ps[0] = (Polygon)geometry;
+			ps[0] = (Polygon) geometry;
 			MultiPolygon mp = new MultiPolygon(ps, SpatialManager.geometryFactory());
 			return mp;
 		}

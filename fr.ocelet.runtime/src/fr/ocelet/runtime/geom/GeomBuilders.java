@@ -31,6 +31,7 @@ import fr.ocelet.runtime.geom.ocltypes.Ring;
 
 /**
  * Static builders of diverse geometries
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  */
@@ -38,32 +39,27 @@ public class GeomBuilders {
 
 	// --------- Line builders --------
 
-	public static Line segment(com.vividsolutions.jts.geom.Point p1,
-			com.vividsolutions.jts.geom.Point p2) {
+	public static Line segment(com.vividsolutions.jts.geom.Point p1, com.vividsolutions.jts.geom.Point p2) {
 		Coordinate[] coords = new Coordinate[2];
 		coords[0] = p1.getCoordinate();
 		coords[1] = p2.getCoordinate();
-		CoordinateSequence cs = SpatialManager.geometryFactory()
-				.getCoordinateSequenceFactory().create(coords);
+		CoordinateSequence cs = SpatialManager.geometryFactory().getCoordinateSequenceFactory().create(coords);
 		return new Line(cs, SpatialManager.geometryFactory());
 	}
 
-	public static Line path(
-			AbstractList<com.vividsolutions.jts.geom.Point> cpoints) {
+	public static Line path(AbstractList<com.vividsolutions.jts.geom.Point> cpoints) {
 		Coordinate[] coords = new Coordinate[cpoints.size()];
 		int px = 0;
 		for (com.vividsolutions.jts.geom.Point p : cpoints) {
 			coords[px] = p.getCoordinate();
 		}
-		CoordinateSequence cs = SpatialManager.geometryFactory()
-				.getCoordinateSequenceFactory().create(coords);
+		CoordinateSequence cs = SpatialManager.geometryFactory().getCoordinateSequenceFactory().create(coords);
 		return new Line(cs, SpatialManager.geometryFactory());
 	}
 
 	// -------- Polygon builders --------
 
-	public static Polygon closedpath(
-			AbstractList<com.vividsolutions.jts.geom.Point> cpoints) {
+	public static Polygon closedpath(AbstractList<com.vividsolutions.jts.geom.Point> cpoints) {
 		int pathsz = cpoints.size();
 		com.vividsolutions.jts.geom.Point first = cpoints.get(0);
 		com.vividsolutions.jts.geom.Point last = cpoints.get(pathsz - 1);
@@ -78,8 +74,7 @@ public class GeomBuilders {
 		}
 		if (pathsz > cpoints.size())
 			coords[px] = cpoints.get(0).getCoordinate();
-		CoordinateSequence cs = SpatialManager.geometryFactory()
-				.getCoordinateSequenceFactory().create(coords);
+		CoordinateSequence cs = SpatialManager.geometryFactory().getCoordinateSequenceFactory().create(coords);
 		Ring shell = new Ring(cs, SpatialManager.geometryFactory());
 		return new Polygon(shell, null, SpatialManager.geometryFactory());
 	}

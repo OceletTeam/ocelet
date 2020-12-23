@@ -42,11 +42,12 @@ import fr.ocelet.runtime.ocltypes.List;
 
 /**
  * Simple Ring geometry
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  */
 @SuppressWarnings("serial")
-public class Ring extends LinearRing implements SpatialType{
+public class Ring extends LinearRing implements SpatialType {
 
 	static final String ERR_HEADER = "Ring : ";
 
@@ -63,13 +64,11 @@ public class Ring extends LinearRing implements SpatialType{
 			try {
 				return (Ring) JTS.transform(this, mt);
 			} catch (MismatchedDimensionException e) {
-				System.out
-						.println(ERR_HEADER
-								+ "Mismatched dimensions when trying to transform coordinates to a new coordinates system.");
+				System.out.println(ERR_HEADER
+						+ "Mismatched dimensions when trying to transform coordinates to a new coordinates system.");
 			} catch (TransformException e) {
-				System.out
-						.println(ERR_HEADER
-								+ "Transformation error when trying to transform coordinates to a new coordinates system.");
+				System.out.println(ERR_HEADER
+						+ "Transformation error when trying to transform coordinates to a new coordinates system.");
 			}
 		return this;
 	}
@@ -78,8 +77,7 @@ public class Ring extends LinearRing implements SpatialType{
 	 * Static constructor to build a Ring from a series of Points. The Ring will
 	 * automatically be closed if it's necessary.
 	 * 
-	 * @param pts
-	 *            A series of Points
+	 * @param pts A series of Points
 	 * @return A new initialized Ring
 	 */
 	@SuppressWarnings("unchecked")
@@ -88,9 +86,7 @@ public class Ring extends LinearRing implements SpatialType{
 		for (int i = 0; i < pts.length; i++)
 			cl.add(pts[i].getCoordinate());
 		cl.closeRing(); // Let's make sure the ring is closed.
-		Ring ring = new Ring(
-				new CoordinateArraySequence(cl.toCoordinateArray()),
-				SpatialManager.geometryFactory());
+		Ring ring = new Ring(new CoordinateArraySequence(cl.toCoordinateArray()), SpatialManager.geometryFactory());
 		return ring;
 	}
 
@@ -98,8 +94,7 @@ public class Ring extends LinearRing implements SpatialType{
 	 * Static constructor to build a Ring from a List of Points. The Ring will
 	 * automatically be closed if it's necessary.
 	 * 
-	 * @param lp
-	 *            A List of Points
+	 * @param lp A List of Points
 	 * @return A new initialized Ring
 	 */
 	@SuppressWarnings("unchecked")
@@ -108,9 +103,7 @@ public class Ring extends LinearRing implements SpatialType{
 		for (int i = 0; i < lp.size(); i++)
 			cl.add(lp.get(i).getCoordinate());
 		cl.closeRing(); // Let's make sure the ring is closed.
-		Ring ring = new Ring(
-				new CoordinateArraySequence(cl.toCoordinateArray()),
-				SpatialManager.geometryFactory());
+		Ring ring = new Ring(new CoordinateArraySequence(cl.toCoordinateArray()), SpatialManager.geometryFactory());
 		return ring;
 	}
 
@@ -122,25 +115,26 @@ public class Ring extends LinearRing implements SpatialType{
 	 * @return A Ring moved to a new position
 	 */
 	public Ring move(double dx, double dy) {
-		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx,dy);
+		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx, dy);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
-	 * Rotates this Ring given an angle and the coordinates of an anchor rotation point.
+	 * Rotates this Ring given an angle and the coordinates of an anchor rotation
+	 * point.
 	 * 
-	 * @param angle Rotation angle in radian
+	 * @param angle   Rotation angle in radian
 	 * @param anchorx x coordinate of the anchor rotation point
 	 * @param anchory y coordinate of the anchor rotation point
 	 * @return A Ring rotated around the anchor location
 	 */
 	public Ring rotate(double angle, double anchorx, double anchory) {
-		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle,anchorx,anchory);
+		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle, anchorx, anchory);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
 	 * Scales this Ring by the given factors along x and y axis.
 	 * 
@@ -153,247 +147,249 @@ public class Ring extends LinearRing implements SpatialType{
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
-	 * Gives access to every coordinate forming this Ring into the form of a list of Points
+	 * Gives access to every coordinate forming this Ring into the form of a list of
+	 * Points
+	 * 
 	 * @return An ordered list of Point
 	 */
 	public List<Point> asListOfPoints() {
 		List<Point> lp = new List<Point>();
 		for (Coordinate coord : this.getCoordinates()) {
-		  Point newp = Point.xy(coord.x,coord.y);
-		  lp.add(newp);
+			Point newp = Point.xy(coord.x, coord.y);
+			lp.add(newp);
 		}
 		return lp;
 	}
-	
+
+	@Override
+	public Point getCentroid() {
+		Geometry g = super.getCentroid();
+		Point p = SpatialManager.pointTransform(g);
+		return p;
+	}
+
+	@Override
+	public Point getInteriorPoint() {
+		Geometry g = super.getInteriorPoint();
+		Point p = SpatialManager.pointTransform(g);
+		return p;
+	}
+
 	/********************************************************/
-	/***********************  UNION *************************/
+	/*********************** UNION *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public Point pointUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.pointTransform(geometry);
-	}	
+	}
 
+	public MultiPoint multiPointUnion(Geometry g) {
 
-	public MultiPoint multiPointUnion(Geometry g){
-	
-		Geometry geometry = this.union(g);		
+		Geometry geometry = this.union(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
-	
+
 	/***************** LINES *******************************/
-	
-	public Line lineUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public Line lineUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.lineTransform(geometry);
 	}
-	
-	public MultiLine multiLineUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public MultiLine multiLineUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
-	public Polygon polygonUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public Polygon polygonUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
-	
-	
-	public MultiPolygon multiPolygonUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public MultiPolygon multiPolygonUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.multiPolygonTransform(geometry);
 	}
-	
-	
-	
-	
+
 	/********************************************************/
-	/***************** DIFFERENCE *************************/	
+	/***************** DIFFERENCE *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointDifference(Geometry g){
-		
-		Geometry geometry = this.difference(g);	
+
+	public Point pointDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.pointTransform(geometry);
 	}
 
-	public MultiPoint multiPointDifference(Geometry g){
-		
+	public MultiPoint multiPointDifference(Geometry g) {
+
 		Geometry geometry = this.difference(g);
 		return SpatialManager.multiPointTransform(geometry);
-	}	
-		
+	}
+
 	/***************** LINES *******************************/
-	
-	public Line lineDifference(Geometry g){
-		
-		Geometry geometry = this.difference(g);		
+
+	public Line lineDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.lineTransform(geometry);
 	}
 
-	public MultiLine multiLineDifference(Geometry g){
-	
-		Geometry geometry = this.difference(g);	
+	public MultiLine multiLineDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
+
 	/***************** POLYGONS *******************************/
 
+	public Polygon polygonDifference(Geometry g) {
 
-	public Polygon polygonDifference(Geometry g){
-	
-		Geometry geometry = this.difference(g);	
+		Geometry geometry = this.difference(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
-	
-	public MultiPoint multiPolygonDifference(Geometry g){
-		
-		Geometry geometry = this.difference(g);	
+
+	public MultiPoint multiPolygonDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
 
 	/********************************************************/
-	/***************** SYM DIFFERENCE *************************/	
+	/***************** SYM DIFFERENCE *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointSymDifference(Geometry g){
-		
-		Geometry geometry = this.symDifference(g);	
+
+	public Point pointSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.pointTransform(geometry);
 	}
 
-	public MultiPoint multiPointSymDifference(Geometry g){
-		
+	public MultiPoint multiPointSymDifference(Geometry g) {
+
 		Geometry geometry = this.symDifference(g);
 		return SpatialManager.multiPointTransform(geometry);
-	}	
-		
+	}
+
 	/***************** LINES *******************************/
-	
-	public Line lineSymDifference(Geometry g){
-		
-		Geometry geometry = this.symDifference(g);		
+
+	public Line lineSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.lineTransform(geometry);
 	}
 
-	public MultiLine multiLineSymDifference(Geometry g){
-	
-		Geometry geometry = this.symDifference(g);	
+	public MultiLine multiLineSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
+
 	/***************** POLYGONS *******************************/
 
+	public Polygon polygonSymDifference(Geometry g) {
 
-	public Polygon polygonSymDifference(Geometry g){
-	
-		Geometry geometry = this.symDifference(g);	
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
-	
-	public MultiPoint multiPolygonSymDifference(Geometry g){
-		
-		Geometry geometry = this.symDifference(g);	
+
+	public MultiPoint multiPolygonSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
-
-	
 
 	/********************************************************/
 	/***************** INTERSECTION *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointIntersection(Geometry g){
-		
-		Geometry geometry = this.intersection(g);	
+
+	public Point pointIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.pointTransform(geometry);
 	}
 
-	public MultiPoint multiPointIntersection(Geometry g){
-		
+	public MultiPoint multiPointIntersection(Geometry g) {
+
 		Geometry geometry = this.intersection(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
-	
+
 	/**************** LINES *******************************/
-	
-	public Line lineIntersection(Geometry g){
-	
-		Geometry geometry = this.intersection(g);	
+
+	public Line lineIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.lineTransform(geometry);
 	}
 
-	public MultiLine multiLineIntersection(Geometry g){
-		
-		Geometry geometry = this.intersection(g);	
+	public MultiLine multiLineIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
-	
+
 	/**************** POLYGONS *******************************/
-	public Polygon polygonIntersection(Geometry g){
-	
-		Geometry geometry = this.intersection(g);	
+	public Polygon polygonIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
 
-	public MultiPolygon multiPolygonIntersection(Geometry g){
-	
+	public MultiPolygon multiPolygonIntersection(Geometry g) {
+
 		Geometry geometry = this.intersection(g);
 		return SpatialManager.multiPolygonTransform(geometry);
 	}
 
-
 	/**************** BUFFER *******************************/
-	
 
-	public Polygon polygonBuffer(Double distance){
-	
-		Geometry geometry = this.buffer(distance);	
+	public Polygon polygonBuffer(Double distance) {
+
+		Geometry geometry = this.buffer(distance);
 		return SpatialManager.polygonTransform(geometry);
 	}
 
-	public MultiPolygon multiPolygonBuffer(Double distance){
-	
-		Geometry geometry = this.buffer(distance);	
+	public MultiPolygon multiPolygonBuffer(Double distance) {
+
+		Geometry geometry = this.buffer(distance);
 		return SpatialManager.multiPolygonTransform(geometry);
 	}
-	
-	
-	public String getGeometricOperationType(String operation, Geometry g, Double distance){
-		
-		if(operation.equals("difference")){
+
+	public String getGeometricOperationType(String operation, Geometry g, Double distance) {
+
+		if (operation.equals("difference")) {
 			return this.difference(g).getClass().getSimpleName();
 		}
-		if(operation.equals("symDifference")){
+		if (operation.equals("symDifference")) {
 			return this.symDifference(g).getClass().getSimpleName();
 		}
-		if(operation.equals("union")){
+		if (operation.equals("union")) {
 			return this.union(g).getClass().getSimpleName();
 		}
-		if(operation.equals("intersection")){
+		if (operation.equals("intersection")) {
 			return this.intersection(g).getClass().getSimpleName();
 		}
-		if(operation.equals("buffer")){
+		if (operation.equals("buffer")) {
 			return this.buffer(distance).getClass().getSimpleName();
 		}
 		return null;
 	}
-
 
 }

@@ -165,6 +165,21 @@ public class Line extends LineString implements SpatialType{
 		return lp;
 	}
 	
+	@Override
+	public Point getCentroid() {
+		Geometry g = super.getCentroid();
+		Point p = SpatialManager.pointTransform(g);
+		return p;
+	}
+
+	@Override
+	public Point getInteriorPoint() {
+		Geometry g = super.getInteriorPoint();
+		Point p = SpatialManager.pointTransform(g);
+		return p;
+	}
+	
+	
 	/********************************************************/
 	/***********************  UNION *************************/
 	/********************************************************/

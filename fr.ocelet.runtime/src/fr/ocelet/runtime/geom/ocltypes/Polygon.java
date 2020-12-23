@@ -41,11 +41,12 @@ import fr.ocelet.runtime.ocltypes.List;
 
 /**
  * Simple polygonal geometry
+ * 
  * @author Pascal Degenne - Initial contribution
  *
  */
 @SuppressWarnings("serial")
-public class Polygon extends com.vividsolutions.jts.geom.Polygon implements SpatialType{
+public class Polygon extends com.vividsolutions.jts.geom.Polygon implements SpatialType {
 
 	static final String ERR_HEADER = "Polygon : ";
 
@@ -69,23 +70,20 @@ public class Polygon extends com.vividsolutions.jts.geom.Polygon implements Spat
 			try {
 				return (Polygon) JTS.transform(this, mt);
 			} catch (MismatchedDimensionException e) {
-				System.out
-						.println(ERR_HEADER
-								+ "Mismatched dimensions when trying to transform coordinates to a new coordinates system.");
+				System.out.println(ERR_HEADER
+						+ "Mismatched dimensions when trying to transform coordinates to a new coordinates system.");
 			} catch (TransformException e) {
-				System.out
-						.println(ERR_HEADER
-								+ "Transformation error when trying to transform coordinates to a new coordinates system.");
+				System.out.println(ERR_HEADER
+						+ "Transformation error when trying to transform coordinates to a new coordinates system.");
 			}
 		return this;
 	}
 
 	/**
-	 * Static constructor to build a Polygon from a series of Points. The
-	 * Polygon will automatically be closed if it's necessary.
+	 * Static constructor to build a Polygon from a series of Points. The Polygon
+	 * will automatically be closed if it's necessary.
 	 * 
-	 * @param pts
-	 *            A series of Points
+	 * @param pts A series of Points
 	 * @return A new initialized Polygon
 	 */
 	public static Polygon points(com.vividsolutions.jts.geom.Point... pts) {
@@ -94,11 +92,10 @@ public class Polygon extends com.vividsolutions.jts.geom.Polygon implements Spat
 	}
 
 	/**
-	 * Static constructor to build a Polygon from a List of Points. The Polygon
-	 * will automatically be closed if it's necessary.
+	 * Static constructor to build a Polygon from a List of Points. The Polygon will
+	 * automatically be closed if it's necessary.
 	 * 
-	 * @param lp
-	 *            A List of Points
+	 * @param lp A List of Points
 	 * @return A new initialized Polygon
 	 */
 	public static Polygon points(List<com.vividsolutions.jts.geom.Point> lp) {
@@ -106,7 +103,6 @@ public class Polygon extends com.vividsolutions.jts.geom.Polygon implements Spat
 		return new Polygon(shell, null, SpatialManager.geometryFactory());
 	}
 
-	
 	/**
 	 * Moves this Polygon to a new position given a distance along x and y axis.
 	 * 
@@ -115,25 +111,26 @@ public class Polygon extends com.vividsolutions.jts.geom.Polygon implements Spat
 	 * @return A Polygon moved to a new position
 	 */
 	public Polygon move(double dx, double dy) {
-		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx,dy);
+		AffineTransform affineTransform = AffineTransform.getTranslateInstance(dx, dy);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
-	 * Rotates this Polygon given an angle and the coordinates of an anchor rotation point.
+	 * Rotates this Polygon given an angle and the coordinates of an anchor rotation
+	 * point.
 	 * 
-	 * @param angle Rotation angle in radian
+	 * @param angle   Rotation angle in radian
 	 * @param anchorx x coordinate of the anchor rotation point
 	 * @param anchory y coordinate of the anchor rotation point
 	 * @return A Polygon rotated around the anchor location
 	 */
 	public Polygon rotate(double angle, double anchorx, double anchory) {
-		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle,anchorx,anchory);
+		AffineTransform affineTransform = AffineTransform.getRotateInstance(angle, anchorx, anchory);
 		MathTransform mt = new AffineTransform2D(affineTransform);
 		return transform(mt);
 	}
-	
+
 	/**
 	 * Scales this Polygon by the given factors along x and y axis.
 	 * 
@@ -148,277 +145,282 @@ public class Polygon extends com.vividsolutions.jts.geom.Polygon implements Spat
 	}
 
 	/**
-	 * Gives access to every coordinate forming this Polygon's shell into the form of a list of Points
+	 * Gives access to every coordinate forming this Polygon's shell into the form
+	 * of a list of Points
+	 * 
 	 * @return An ordered list of Point
 	 */
 	public List<Point> asListOfPoints() {
 		List<Point> lp = new List<Point>();
 		for (Coordinate coord : this.shell.getCoordinates()) {
-		  Point newp = Point.xy(coord.x,coord.y);
-		  lp.add(newp);
+			Point newp = Point.xy(coord.x, coord.y);
+			lp.add(newp);
 		}
 		return lp;
 	}
-public List<Line> toSegments(){
-		
+
+	public List<Line> toSegments() {
+
 		List<Line> lines = new List<Line>();
-		
+
 		Coordinate[] coordinates = this.getExteriorRing().getCoordinates();
-							
-			for(int j = 0; j < coordinates.length - 1; j ++){
-					
+
+		for (int j = 0; j < coordinates.length - 1; j++) {
+
+			Coordinate[] coords = new Coordinate[2];
+			coords[0] = coordinates[j];
+			coords[1] = coordinates[j + 1];
+			CoordinateSequence cs = new CoordinateArraySequence(coords);
+			Line l = new Line(cs, this.getFactory());
+			lines.add(l);
+
+		}
+
+		for (int i = 0; i < this.getNumInteriorRing(); i++) {
+
+			Coordinate[] innerCoordinates = this.getInteriorRingN(i).getCoordinates();
+			for (int j = 0; j < innerCoordinates.length - 1; j++) {
+
 				Coordinate[] coords = new Coordinate[2];
-				coords[0] = coordinates[j];
-				coords[1] = coordinates[j + 1];
+				coords[0] = innerCoordinates[j];
+				coords[1] = innerCoordinates[j + 1];
 				CoordinateSequence cs = new CoordinateArraySequence(coords);
 				Line l = new Line(cs, this.getFactory());
 				lines.add(l);
-					
+
 			}
-				
-			for(int i = 0 ; i < this.getNumInteriorRing(); i ++){
-					
-				Coordinate[] innerCoordinates = this.getInteriorRingN(i).getCoordinates();
-				for(int j = 0; j < innerCoordinates.length - 1; j ++){
-						
-					Coordinate[] coords = new Coordinate[2];
-					coords[0] = innerCoordinates[j];
-					coords[1] = innerCoordinates[j + 1];
-					CoordinateSequence cs = new CoordinateArraySequence(coords);
-					Line l = new Line(cs, this.getFactory());
-					lines.add(l);
-						
-				}
-			}			
-		
-		return lines;		
-	}	
+		}
+
+		return lines;
+	}
+
+	@Override
+	public Point getCentroid() {
+		Geometry g = super.getCentroid();
+		Point p = SpatialManager.pointTransform(g);
+		return p;
+	}
+
+	@Override
+	public Point getInteriorPoint() {
+		Geometry g = super.getInteriorPoint();
+		Point p = SpatialManager.pointTransform(g);
+		return p;
+	}
+
 	/********************************************************/
-	/***********************  UNION *************************/
+	/*********************** UNION *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public Point pointUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.pointTransform(geometry);
-	}	
+	}
 
+	public MultiPoint multiPointUnion(Geometry g) {
 
-	public MultiPoint multiPointUnion(Geometry g){
-	
-		Geometry geometry = this.union(g);		
+		Geometry geometry = this.union(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
-	
+
 	/***************** LINES *******************************/
-	
-	public Line lineUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public Line lineUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.lineTransform(geometry);
 	}
-	
-	public MultiLine multiLineUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public MultiLine multiLineUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
-	public Polygon polygonUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public Polygon polygonUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
-	
-	
-	public MultiPolygon multiPolygonUnion(Geometry g){
-		
-		Geometry geometry = this.union(g);		
+
+	public MultiPolygon multiPolygonUnion(Geometry g) {
+
+		Geometry geometry = this.union(g);
 		return SpatialManager.multiPolygonTransform(geometry);
 	}
-	
-	
-	
-	
+
 	/********************************************************/
-	/***************** DIFFERENCE *************************/	
+	/***************** DIFFERENCE *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointDifference(Geometry g){
-		
-		Geometry geometry = this.difference(g);	
+
+	public Point pointDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.pointTransform(geometry);
 	}
 
-	public MultiPoint multiPointDifference(Geometry g){
-		
+	public MultiPoint multiPointDifference(Geometry g) {
+
 		Geometry geometry = this.difference(g);
 		return SpatialManager.multiPointTransform(geometry);
-	}	
-		
+	}
+
 	/***************** LINES *******************************/
-	
-	public Line lineDifference(Geometry g){
-		
-		Geometry geometry = this.difference(g);		
+
+	public Line lineDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.lineTransform(geometry);
 	}
 
-	public MultiLine multiLineDifference(Geometry g){
-	
-		Geometry geometry = this.difference(g);	
+	public MultiLine multiLineDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
+
 	/***************** POLYGONS *******************************/
 
+	public Polygon polygonDifference(Geometry g) {
 
-	public Polygon polygonDifference(Geometry g){
-	
-		Geometry geometry = this.difference(g);	
+		Geometry geometry = this.difference(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
-	
-	public MultiPoint multiPolygonDifference(Geometry g){
-		
-		Geometry geometry = this.difference(g);	
+
+	public MultiPoint multiPolygonDifference(Geometry g) {
+
+		Geometry geometry = this.difference(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
 
 	/********************************************************/
-	/***************** SYM DIFFERENCE *************************/	
+	/***************** SYM DIFFERENCE *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointSymDifference(Geometry g){
-		
-		Geometry geometry = this.symDifference(g);	
+
+	public Point pointSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.pointTransform(geometry);
 	}
 
-	public MultiPoint multiPointSymDifference(Geometry g){
-		
+	public MultiPoint multiPointSymDifference(Geometry g) {
+
 		Geometry geometry = this.symDifference(g);
 		return SpatialManager.multiPointTransform(geometry);
-	}	
-		
+	}
+
 	/***************** LINES *******************************/
-	
-	public Line lineSymDifference(Geometry g){
-		
-		Geometry geometry = this.symDifference(g);		
+
+	public Line lineSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.lineTransform(geometry);
 	}
 
-	public MultiLine multiLineSymDifference(Geometry g){
-	
-		Geometry geometry = this.symDifference(g);	
+	public MultiLine multiLineSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
+
 	/***************** POLYGONS *******************************/
 
+	public Polygon polygonSymDifference(Geometry g) {
 
-	public Polygon polygonSymDifference(Geometry g){
-	
-		Geometry geometry = this.symDifference(g);	
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
-	
-	public MultiPoint multiPolygonSymDifference(Geometry g){
-		
-		Geometry geometry = this.symDifference(g);	
+
+	public MultiPoint multiPolygonSymDifference(Geometry g) {
+
+		Geometry geometry = this.symDifference(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
-
-	
 
 	/********************************************************/
 	/***************** INTERSECTION *************************/
 	/********************************************************/
-	
+
 	/***************** POINTS *******************************/
-	
-	public Point pointIntersection(Geometry g){
-		
-		Geometry geometry = this.intersection(g);	
+
+	public Point pointIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.pointTransform(geometry);
 	}
 
-	public MultiPoint multiPointIntersection(Geometry g){
-		
+	public MultiPoint multiPointIntersection(Geometry g) {
+
 		Geometry geometry = this.intersection(g);
 		return SpatialManager.multiPointTransform(geometry);
 	}
-	
+
 	/**************** LINES *******************************/
-	
-	public Line lineIntersection(Geometry g){
-	
-		Geometry geometry = this.intersection(g);	
+
+	public Line lineIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.lineTransform(geometry);
 	}
 
-	public MultiLine multiLineIntersection(Geometry g){
-		
-		Geometry geometry = this.intersection(g);	
+	public MultiLine multiLineIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.multiLineTransform(geometry);
 	}
-	
-	
+
 	/**************** POLYGONS *******************************/
-	public Polygon polygonIntersection(Geometry g){
-	
-		Geometry geometry = this.intersection(g);	
+	public Polygon polygonIntersection(Geometry g) {
+
+		Geometry geometry = this.intersection(g);
 		return SpatialManager.polygonTransform(geometry);
 	}
 
-	public MultiPolygon multiPolygonIntersection(Geometry g){
-	
+	public MultiPolygon multiPolygonIntersection(Geometry g) {
+
 		Geometry geometry = this.intersection(g);
 		return SpatialManager.multiPolygonTransform(geometry);
 	}
 
-
 	/**************** BUFFER *******************************/
-	
 
-	public Polygon polygonBuffer(Double distance){
-	
-		Geometry geometry = this.buffer(distance);	
+	public Polygon polygonBuffer(Double distance) {
+
+		Geometry geometry = this.buffer(distance);
 		return SpatialManager.polygonTransform(geometry);
 	}
 
-	public MultiPolygon multiPolygonBuffer(Double distance){
-	
-		Geometry geometry = this.buffer(distance);	
+	public MultiPolygon multiPolygonBuffer(Double distance) {
+
+		Geometry geometry = this.buffer(distance);
 		return SpatialManager.multiPolygonTransform(geometry);
 	}
-	
-	public String getGeometricOperationType(String operation, Geometry g, Double distance){
-		
-		if(operation.equals("difference")){
+
+	public String getGeometricOperationType(String operation, Geometry g, Double distance) {
+
+		if (operation.equals("difference")) {
 			return this.difference(g).getClass().getSimpleName();
 		}
-		if(operation.equals("symDifference")){
+		if (operation.equals("symDifference")) {
 			return this.symDifference(g).getClass().getSimpleName();
 		}
-		if(operation.equals("union")){
+		if (operation.equals("union")) {
 			return this.union(g).getClass().getSimpleName();
 		}
-		if(operation.equals("intersection")){
+		if (operation.equals("intersection")) {
 			return this.intersection(g).getClass().getSimpleName();
 		}
-		if(operation.equals("buffer")){
+		if (operation.equals("buffer")) {
 			return this.buffer(distance).getClass().getSimpleName();
 		}
 		return null;
 	}
-	
-	
+
 }

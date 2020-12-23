@@ -9,3 +9,4 @@ doc/gfx/
 xtend-gen/
 **/*.xtendbin
 **/*._trace
+.recommenders/
