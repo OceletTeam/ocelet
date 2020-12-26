@@ -20,11 +20,13 @@
 */
 package fr.ocelet.runtime.ocltypes;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 /**
  * An immutable date and time manipulation class
@@ -206,6 +208,36 @@ public final class DateTime {
 		}
 	}
 
+    public Long yearsDifference(DateTime d) {
+    	return ChronoUnit.YEARS.between(ldt.toLocalDate(), d.ldt.toLocalDate());
+    }
+
+    public Long monthsDifference(DateTime d) {
+    	return ChronoUnit.MONTHS.between(ldt.toLocalDate(), d.ldt.toLocalDate());
+    }
+	
+    public Long daysDifference(DateTime d) {
+    	return ChronoUnit.DAYS.between(ldt.toLocalDate(), d.ldt.toLocalDate());
+    }
+	
+	public Long hoursDifference(DateTime d) {
+		return Duration.between(ldt, d.ldt).toHours();
+	}
+
+	public Long minutesDifference(DateTime d) {
+    	return Duration.between(ldt, d.ldt).toMinutes();
+	}
+	
+	public Long secondsDifference(DateTime d) {
+    	return Duration.between(ldt, d.ldt).getSeconds();
+	}
+	
+	public Long millisecondsDifference(DateTime d) {
+    	return Duration.between(ldt, d.ldt).toMillis();
+	}
+
+	
+	
 	public String toString() {
 		return dtf.format(ldt);
 	}
@@ -252,8 +284,7 @@ public final class DateTime {
 	}
 
 	/**
-	 * @param m
-	 *            1 is January, 12 is December
+	 * @param m    1 is January, 12 is December
 	 */
 	public DateTime withMonth(int m) {
 		return new DateTime(ldt.withMonth((m % 12 == 0) ? 12 : m % 12), dtf);
