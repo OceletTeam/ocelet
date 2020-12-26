@@ -2705,7 +2705,7 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
             «val genptype = typeRef('fr.ocelet.runtime.model.Parameter',pstuff.getType)»
             «IF(pstuff.numericType)»
               «val implptype = typeRef('fr.ocelet.runtime.model.NumericParameterImpl',pstuff.getType)»
-              «genptype» par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»,«pstuff.getDvalueString»«IF (pstuff.getMinvalue === null)»,null«ELSE»,«pstuff.getMinvalue»«ENDIF»«IF (pstuff.getMaxvalue === null)»,null«ELSE»,«pstuff.getMaxvalue»«ENDIF»«IF (pstuff.getUnit === null)»,null«ELSE»,«pstuff.getUnit»«ENDIF»);
+              «genptype» par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»,«pstuff.getDvalueString»«IF (pstuff.getMinvalue === null)»,null«ELSE»,«pstuff.getMinvalue»«ENDIF»«IF (pstuff.getMaxvalue === null)»,null«ELSE»,«pstuff.getMaxvalue»«ENDIF»«IF (pstuff.getUnit === null)»,null«ELSE»,"«pstuff.getUnit»"«ENDIF»);
             «ELSE»
               «val implptype = typeRef('fr.ocelet.runtime.model.ParameterImpl',pstuff.getType)»
               «genptype» par_«pstuff.getName» = new «implptype»("«pstuff.getName»","«pstuff.getDescription»",«pstuff.getOptionnal»,«pstuff.getDvalueString»«IF (pstuff.getUnit === null)»,null«ELSE»,"«pstuff.getUnit»"«ENDIF»);

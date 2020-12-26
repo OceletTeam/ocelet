@@ -6139,9 +6139,10 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             if (_tripleEquals_2) {
                               _builder.append(",null");
                             } else {
-                              _builder.append(",");
+                              _builder.append(",\"");
                               String _unit_1 = pstuff.getUnit();
                               _builder.append(_unit_1);
+                              _builder.append("\"");
                             }
                           }
                           _builder.append(");");
