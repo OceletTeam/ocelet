@@ -35,6 +35,13 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Random;
 
+import org.geotools.factory.Hints;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.List;
 
@@ -237,6 +244,19 @@ public class Miscutils {
 		if (ms > 0)
 			sb.append(ms + "ms");
 		return sb.toString();
+	}
+	
+	public static void setModelCRS(String epsgCode) {
+		try {
+			CoordinateReferenceSystem ncrs = CRS.decode(epsgCode);
+			Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+			SpatialManager.updateCrs(ncrs);
+		} catch (NoSuchAuthorityCodeException e) {
+			System.out.println("setModelCrs(): Unknown EPSG code : " + epsgCode);
+		} catch (FactoryException e) {
+			System.out.println("setModelCrs(): Failed to build the coordinate system :" + epsgCode);
+			e.printStackTrace();
+		}		
 	}
 
 	public static Double nextGaussian() {

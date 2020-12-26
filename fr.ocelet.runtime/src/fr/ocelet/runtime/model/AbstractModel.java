@@ -29,6 +29,14 @@ import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.geotools.factory.Hints;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+
+import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.ocltypes.Color;
 import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
@@ -227,6 +235,7 @@ public abstract class AbstractModel implements OceletModel {
 		this.modelWebPage = mwp;
 	}
 
+	
 	/**
 	 * Produces a list of Colors from a Gradient
 	 * 

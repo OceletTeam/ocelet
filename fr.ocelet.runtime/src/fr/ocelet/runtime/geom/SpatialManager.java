@@ -64,6 +64,11 @@ public class SpatialManager {
 		return crs;
 	}
 
+	public static void updateCrs(CoordinateReferenceSystem ucrs) {
+		crs = ucrs;
+	}
+	
+	
 	/**
 	 * Creates a transformation operation from the coordinate system of the model
 	 * and the other coordinate system given in argument. If no coordinate system
