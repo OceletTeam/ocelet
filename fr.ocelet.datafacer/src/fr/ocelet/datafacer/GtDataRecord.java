@@ -59,11 +59,9 @@ public abstract class GtDataRecord implements InputDataRecord, OutputDataRecord 
 	/**
 	 * Sets the value of one attribute in this record.
 	 * 
-	 * @param atrName
-	 *            Name of the attribute to set. If it is a geometry attributen
-	 *            the name is not used.
-	 * @param value
-	 *            Attribute value
+	 * @param atrName Name of the attribute to set. If it is a geometry attributen
+	 *                the name is not used.
+	 * @param value   Attribute value
 	 */
 	@Override
 	public void setAttribute(String atrName, Object value) {
@@ -79,8 +77,8 @@ public abstract class GtDataRecord implements InputDataRecord, OutputDataRecord 
 		try {
 			lv = ((Number) feature.getAttribute(colNumber)).longValue();
 			if ((lv > Integer.MAX_VALUE) || (lv < Integer.MIN_VALUE))
-				System.out
-						.println("Warning : attempt to convert a Long (64bit) value into an Integer (32) and the result will be truncated.");
+				System.out.println(
+						"Warning : attempt to convert a Long (64bit) value into an Integer (32) and the result will be truncated.");
 		} catch (NullPointerException e) {
 			lv = 0L;
 		}
@@ -99,7 +97,10 @@ public abstract class GtDataRecord implements InputDataRecord, OutputDataRecord 
 	@Override
 	public String readString(int colNumber) {
 		try {
-			return (String) feature.getAttribute(colNumber);
+			String v = (String) feature.getAttribute(colNumber);
+			if (v == null)
+				v = "";
+			return v;
 		} catch (NullPointerException e) {
 			return "no data";
 		}
@@ -128,8 +129,8 @@ public abstract class GtDataRecord implements InputDataRecord, OutputDataRecord 
 		try {
 			Long lv = ((Number) feature.getAttribute(colName)).longValue();
 			if ((lv > Integer.MAX_VALUE) || (lv < Integer.MIN_VALUE))
-				System.out
-						.println("Warning : attempt to convert a Long (64bit) value into an Integer (32bit) and the result will be truncated.");
+				System.out.println(
+						"Warning : attempt to convert a Long (64bit) value into an Integer (32bit) and the result will be truncated.");
 			return lv.intValue();
 		} catch (NullPointerException e) {
 			return 0;
@@ -148,7 +149,10 @@ public abstract class GtDataRecord implements InputDataRecord, OutputDataRecord 
 	@Override
 	public String readString(String colName) {
 		try {
-			return (String) feature.getAttribute(colName);
+			String v = (String) feature.getAttribute(colName);
+			if (v == null)
+				v = "";
+			return v;
 		} catch (NullPointerException e) {
 			return "no data";
 		}
