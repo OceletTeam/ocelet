@@ -233,6 +233,7 @@ public abstract class GtDatafacer implements InputDatafacer, OutputDatafacer, Fi
 		}
 	}
 
+
 	private void commitWrite(ListFeatureCollection lfc) throws IOException {
 		SimpleFeatureSource sfs = getFeatureSource();
 		FeatureStore newFeatureStore = (FeatureStore) sfs;

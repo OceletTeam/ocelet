@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import java.sql.*;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.postgis.PostgisNGDataStoreFactory;
@@ -51,8 +53,8 @@ import fr.ocelet.runtime.geom.OceletGeomFactory;
  * 
  * @author Pascal Degenne, Initial contribution
  */
-public abstract class Postgis extends GtDatafacer implements InputDatafacer,
-		OutputDatafacer, Iterator<InputDataRecord> {
+public abstract class Postgis extends GtDatafacer
+		implements InputDatafacer, OutputDatafacer, Iterator<InputDataRecord> {
 
 	private final String ERR_HEADER = "Datafacer Postgis: ";
 
@@ -60,16 +62,19 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 	protected String schema;
 	protected String base;
 	protected String table;
+	protected String host;
+	protected String port;
+	private String user;
+	private String pwd;
 
 	/**
-	 * Constructor initializing the SGBD connection details, schema, table and
-	 * the SRID.
+	 * Constructor initializing the SGBD connection details, schema, table and the
+	 * SRID.
 	 * 
-	 * @param epsgcode
-	 *            The coordinate system in text format. Ex: "EPSG:4326"
+	 * @param epsgcode The coordinate system in text format. Ex: "EPSG:4326"
 	 */
-	public Postgis(String host, String port, String base, String schema,
-			String table, String user, String pwd, String epsgcode) {
+	public Postgis(String host, String port, String base, String schema, String table, String user, String pwd,
+			String epsgcode) {
 		super();
 		if (datastore == null) {
 			PostgisNGDataStoreFactory pgFactory = new PostgisNGDataStoreFactory();
@@ -83,13 +88,16 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 			jdbcparams.put(PostgisNGDataStoreFactory.PASSWD.key, pwd);
 			try {
 				datastore = pgFactory.createDataStore(jdbcparams);
+				this.host = host;
+				this.port = port;
 				this.base = base;
 				this.schema = schema;
 				this.table = table;
+				this.user = user;
+				this.pwd = pwd;
 			} catch (IOException e) {
-				System.out
-						.println(ERR_HEADER
-								+ "Failed to initialize the datafacer, please check the database connection parameters.");
+				System.out.println(ERR_HEADER
+						+ "Failed to initialize the datafacer, please check the database connection parameters.");
 			}
 		}
 		datastore.setGeometryFactory(new OceletGeomFactory());
@@ -122,9 +130,8 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 		try {
 			odr = new PostgisDataRec(createFeature(getSimpleFeatureType()));
 		} catch (IOException e) {
-			System.out
-					.println(getErrHeader()
-							+ " Failed to create a record before writing to the datafacer. Please check the datafacer declaration.");
+			System.out.println(getErrHeader()
+					+ " Failed to create a record before writing to the datafacer. Please check the datafacer declaration.");
 			return null;
 		}
 		return odr;
@@ -146,33 +153,27 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 		try {
 			SimpleFeatureType sft = datastore.getSchema(table);
 			sb.append("Table : " + sft.getTypeName() + "\n");
-			sb.append("  Contains " + getFeatureSource().getCount(new Query())
-					+ " records. \n");
+			sb.append("  Contains " + getFeatureSource().getCount(new Query()) + " records. \n");
 			CoordinateReferenceSystem crs = sft.getCoordinateReferenceSystem();
 			if (crs != null)
-				sb.append("  Coordinate reference system : " + crs.getName()
-						+ "\n");
+				sb.append("  Coordinate reference system : " + crs.getName() + "\n");
 			ReferencedEnvelope bounds = getFeatureSource().getBounds();
-			sb.append("  Bounds : " + bounds.getMinX() + " " + bounds.getMinY()
-					+ " , " + bounds.getMaxX() + " " + bounds.getMaxY() + " \n");
+			sb.append("  Bounds : " + bounds.getMinX() + " " + bounds.getMinY() + " , " + bounds.getMaxX() + " "
+					+ bounds.getMaxY() + " \n");
 			int nbat = sft.getAttributeCount();
 			if (nbat == 1)
 				sb.append("  Description of the only attribute :" + "\n");
 			else
-				sb.append("  Description of the " + nbat + " attributes :"
-						+ "\n");
+				sb.append("  Description of the " + nbat + " attributes :" + "\n");
 			int adx = 0;
 			for (AttributeDescriptor ad : sft.getAttributeDescriptors())
-				sb.append("   [" + (1 + adx++) + "] : " + ad.getName()
-						+ " : \t" + ad.getType().getBinding().getSimpleName()
-						+ "\n");
+				sb.append("   [" + (1 + adx++) + "] : " + ad.getName() + " : \t"
+						+ ad.getType().getBinding().getSimpleName() + "\n");
 		} catch (IOException e) {
-			System.out.println(ERR_HEADER + "Failed to access to "
-					+ this.toString());
+			System.out.println(ERR_HEADER + "Failed to access to " + this.toString());
 			System.out.println("Caused by : " + e.getMessage());
 		} catch (NullPointerException e) {
-			System.out.println(ERR_HEADER + "Failed to access to "
-					+ this.toString());
+			System.out.println(ERR_HEADER + "Failed to access to " + this.toString());
 			System.out.println("Caused by : " + e.getMessage());
 		}
 		return sb.toString();
@@ -201,9 +202,7 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 				}
 				sfiterator = featureCollection.features();
 			} catch (IOException e) {
-				System.out
-						.println(ERR_HEADER
-								+ "Problem while attempting to read the table's content.");
+				System.out.println(ERR_HEADER + "Problem while attempting to read the table's content.");
 				return false;
 			}
 		}
@@ -214,6 +213,21 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 			sfiterator = null;
 		}
 		return res;
+	}
+
+	@Override
+	public void remove() {
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+			conn = DriverManager.getConnection("jdbc:postgresql://" + host + ":" + port + "/" + base, user, pwd);
+			stmt = conn.createStatement();
+			stmt.executeUpdate("DROP TABLE \"" + table + "\"");
+			stmt.close();
+			conn.close();
+		} catch (ClassNotFoundException | SQLException e) {
+		}
 	}
 
 	/**
@@ -229,10 +243,6 @@ public abstract class Postgis extends GtDatafacer implements InputDatafacer,
 			lastRead = nextRecord;
 		}
 		return nextRecord;
-	}
-
-	@Override
-	public void remove() {
 	}
 
 	@Override
