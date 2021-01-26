@@ -249,6 +249,20 @@ class OceletJvmModelInferrer extends AbstractModelInferrer {
                   	  ]
                   	}
                   	
+                  	members += meln.toMethod('readToKeyMap',typeRef('fr.ocelet.runtime.ocltypes.KeyMap',typeRef('java.lang.Object'), entype)) [
+                  		parameters += meln.toParameter('keyproperty',typeRef('java.lang.String'))
+                  		body = '''
+                  		  KeyMap<Object,«entype»> _edf_km = new KeyMap<Object,«entype»>();
+                  		  for («inputRecordType» _record : this) {
+                  		  	«entname» _en_ti_ty = create«entname»FromRecord(_record);
+                  		  	Object _the_key_ = _en_ti_ty.getProperty(keyproperty);
+                  		    _edf_km.put(_the_key_,_en_ti_ty);
+                  		  }
+                  		  resetIterator();
+                  		  return _edf_km;
+                  		 '''
+                  	]
+                  	
                   	members += meln.toMethod('create'+entname+'FromRecord',entype) [
                   	  parameters += meln.toParameter('_rec', typeRef('fr.ocelet.datafacer.InputDataRecord'))
                   	  body = '''

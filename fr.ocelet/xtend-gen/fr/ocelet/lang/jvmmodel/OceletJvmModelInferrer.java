@@ -526,6 +526,48 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                             EList<JvmMember> _members_6 = it.getMembers();
                             final Procedure1<JvmOperation> _function_7 = (JvmOperation it_1) -> {
                               EList<JvmFormalParameter> _parameters = it_1.getParameters();
+                              JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(meln, "keyproperty", this._typeReferenceBuilder.typeRef("java.lang.String"));
+                              this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
+                              StringConcatenationClient _client = new StringConcatenationClient() {
+                                @Override
+                                protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
+                                  _builder.append("KeyMap<Object,");
+                                  _builder.append(entype);
+                                  _builder.append("> _edf_km = new KeyMap<Object,");
+                                  _builder.append(entype);
+                                  _builder.append(">();");
+                                  _builder.newLineIfNotEmpty();
+                                  _builder.append("for (");
+                                  _builder.append(inputRecordType);
+                                  _builder.append(" _record : this) {");
+                                  _builder.newLineIfNotEmpty();
+                                  _builder.append("\t");
+                                  _builder.append(entname, "\t");
+                                  _builder.append(" _en_ti_ty = create");
+                                  _builder.append(entname, "\t");
+                                  _builder.append("FromRecord(_record);");
+                                  _builder.newLineIfNotEmpty();
+                                  _builder.append("\t");
+                                  _builder.append("Object _the_key_ = _en_ti_ty.getProperty(keyproperty);");
+                                  _builder.newLine();
+                                  _builder.append("  ");
+                                  _builder.append("_edf_km.put(_the_key_,_en_ti_ty);");
+                                  _builder.newLine();
+                                  _builder.append("}");
+                                  _builder.newLine();
+                                  _builder.append("resetIterator();");
+                                  _builder.newLine();
+                                  _builder.append("return _edf_km;");
+                                  _builder.newLine();
+                                }
+                              };
+                              this._jvmTypesBuilder.setBody(it_1, _client);
+                            };
+                            JvmOperation _method_5 = this._jvmTypesBuilder.toMethod(meln, "readToKeyMap", this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.ocltypes.KeyMap", this._typeReferenceBuilder.typeRef("java.lang.Object"), entype), _function_7);
+                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_5);
+                            EList<JvmMember> _members_7 = it.getMembers();
+                            final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
+                              EList<JvmFormalParameter> _parameters = it_1.getParameters();
                               JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(meln, "_rec", this._typeReferenceBuilder.typeRef("fr.ocelet.datafacer.InputDataRecord"));
                               this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
                               StringConcatenationClient _client = new StringConcatenationClient() {
@@ -570,11 +612,11 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client);
                             };
-                            JvmOperation _method_5 = this._jvmTypesBuilder.toMethod(meln, (("create" + entname) + "FromRecord"), entype, _function_7);
-                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_6, _method_5);
+                            JvmOperation _method_6 = this._jvmTypesBuilder.toMethod(meln, (("create" + entname) + "FromRecord"), entype, _function_8);
+                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method_6);
                             final JvmTypeReference hmtype = this._typeReferenceBuilder.typeRef("java.util.LinkedHashMap", this._typeReferenceBuilder.typeRef("java.lang.String"), this._typeReferenceBuilder.typeRef("java.lang.String"));
-                            EList<JvmMember> _members_7 = it.getMembers();
-                            final Procedure1<JvmOperation> _function_8 = (JvmOperation it_1) -> {
+                            EList<JvmMember> _members_8 = it.getMembers();
+                            final Procedure1<JvmOperation> _function_9 = (JvmOperation it_1) -> {
                               StringConcatenationClient _client = new StringConcatenationClient() {
                                 @Override
                                 protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
@@ -615,15 +657,15 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client);
                             };
-                            JvmOperation _method_6 = this._jvmTypesBuilder.toMethod(meln, "getMatchdef", hmtype, _function_8);
-                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_7, _method_6);
+                            JvmOperation _method_7 = this._jvmTypesBuilder.toMethod(meln, "getMatchdef", hmtype, _function_9);
+                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_8, _method_7);
                           }
                           String _storetype_3 = ((Datafacer)meln).getStoretype();
                           String _plus_4 = ("fr.ocelet.datafacer.ocltypes." + _storetype_3);
                           boolean _isAssignableFrom_1 = Class.forName("fr.ocelet.datafacer.FiltrableDatafacer").isAssignableFrom(Class.forName(_plus_4));
                           if (_isAssignableFrom_1) {
-                            EList<JvmMember> _members_8 = it.getMembers();
-                            final Procedure1<JvmOperation> _function_9 = (JvmOperation it_1) -> {
+                            EList<JvmMember> _members_9 = it.getMembers();
+                            final Procedure1<JvmOperation> _function_10 = (JvmOperation it_1) -> {
                               EList<JvmFormalParameter> _parameters = it_1.getParameters();
                               JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(meln, "_filt", this._typeReferenceBuilder.typeRef("java.lang.String"));
                               this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -640,15 +682,15 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client);
                             };
-                            JvmOperation _method_7 = this._jvmTypesBuilder.toMethod(meln, ("readFiltered" + entname), listype, _function_9);
-                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_8, _method_7);
+                            JvmOperation _method_8 = this._jvmTypesBuilder.toMethod(meln, ("readFiltered" + entname), listype, _function_10);
+                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_9, _method_8);
                           }
                           String _storetype_4 = ((Datafacer)meln).getStoretype();
                           String _plus_5 = ("fr.ocelet.datafacer.ocltypes." + _storetype_4);
                           boolean _isAssignableFrom_2 = Class.forName("fr.ocelet.datafacer.OutputDatafacer").isAssignableFrom(Class.forName(_plus_5));
                           if (_isAssignableFrom_2) {
-                            EList<JvmMember> _members_9 = it.getMembers();
-                            final Procedure1<JvmOperation> _function_10 = (JvmOperation it_1) -> {
+                            EList<JvmMember> _members_10 = it.getMembers();
+                            final Procedure1<JvmOperation> _function_11 = (JvmOperation it_1) -> {
                               EList<JvmFormalParameter> _parameters = it_1.getParameters();
                               JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(meln, "ety", this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.entity.Entity"));
                               this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -688,15 +730,15 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client);
                             };
-                            JvmOperation _method_8 = this._jvmTypesBuilder.toMethod(meln, "createRecord", this._typeReferenceBuilder.typeRef("fr.ocelet.datafacer.OutputDataRecord"), _function_10);
-                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_9, _method_8);
+                            JvmOperation _method_9 = this._jvmTypesBuilder.toMethod(meln, "createRecord", this._typeReferenceBuilder.typeRef("fr.ocelet.datafacer.OutputDataRecord"), _function_11);
+                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_10, _method_9);
                           }
                           String _storetype_5 = ((Datafacer)meln).getStoretype();
                           String _plus_6 = ("fr.ocelet.datafacer.ocltypes." + _storetype_5);
                           boolean _isAssignableFrom_3 = Class.forName("fr.ocelet.datafacer.ocltypes.Csvfile").isAssignableFrom(Class.forName(_plus_6));
                           if (_isAssignableFrom_3) {
-                            EList<JvmMember> _members_10 = it.getMembers();
-                            final Procedure1<JvmOperation> _function_11 = (JvmOperation it_1) -> {
+                            EList<JvmMember> _members_11 = it.getMembers();
+                            final Procedure1<JvmOperation> _function_12 = (JvmOperation it_1) -> {
                               StringConcatenationClient _client = new StringConcatenationClient() {
                                 @Override
                                 protected void appendTo(StringConcatenationClient.TargetStringConcatenation _builder) {
@@ -729,10 +771,10 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client);
                             };
-                            JvmOperation _method_9 = this._jvmTypesBuilder.toMethod(meln, "headerString", this._typeReferenceBuilder.typeRef("java.lang.String"), _function_11);
-                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_10, _method_9);
-                            EList<JvmMember> _members_11 = it.getMembers();
-                            final Procedure1<JvmOperation> _function_12 = (JvmOperation it_1) -> {
+                            JvmOperation _method_10 = this._jvmTypesBuilder.toMethod(meln, "headerString", this._typeReferenceBuilder.typeRef("java.lang.String"), _function_12);
+                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_11, _method_10);
+                            EList<JvmMember> _members_12 = it.getMembers();
+                            final Procedure1<JvmOperation> _function_13 = (JvmOperation it_1) -> {
                               EList<JvmFormalParameter> _parameters = it_1.getParameters();
                               JvmFormalParameter _parameter = this._jvmTypesBuilder.toParameter(meln, "_entity", this._typeReferenceBuilder.typeRef("fr.ocelet.runtime.entity.Entity"));
                               this._jvmTypesBuilder.<JvmFormalParameter>operator_add(_parameters, _parameter);
@@ -768,8 +810,8 @@ public class OceletJvmModelInferrer extends AbstractModelInferrer {
                               };
                               this._jvmTypesBuilder.setBody(it_1, _client);
                             };
-                            JvmOperation _method_10 = this._jvmTypesBuilder.toMethod(meln, "propsString", this._typeReferenceBuilder.typeRef("java.lang.String"), _function_12);
-                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_11, _method_10);
+                            JvmOperation _method_11 = this._jvmTypesBuilder.toMethod(meln, "propsString", this._typeReferenceBuilder.typeRef("java.lang.String"), _function_13);
+                            this._jvmTypesBuilder.<JvmOperation>operator_add(_members_12, _method_11);
                           }
                         }
                       }
