@@ -43,7 +43,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import fr.ocelet.runtime.geom.SpatialManager;
 import fr.ocelet.runtime.ocltypes.Color;
+import fr.ocelet.runtime.ocltypes.KeyMap;
 import fr.ocelet.runtime.ocltypes.List;
+import fr.ocelet.runtime.styling.Gradient;
 
 /**
  * A series of utility static functions that are directly available from any
@@ -54,6 +56,9 @@ import fr.ocelet.runtime.ocltypes.List;
  */
 public class Miscutils {
 
+	protected static KeyMap<String, Gradient> gradients;
+
+	
 	private static DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("en"));
 
 	/**
@@ -124,6 +129,46 @@ public class Miscutils {
 		return c1.colorRange(nbSteps, c2);
 	}
 
+	/**
+	 * Produces a list of Colors from a Gradient
+	 * 
+	 * @param nbClasses    Number of colors
+	 * @param gradientName Name of the source color gradient
+	 * @return A List of initialized colors or null if no gradient matches the given
+	 *         name
+	 */
+	public static List<Color> colorRange(int nbClasses, String gradientName) {
+		return colorRange(nbClasses, gradientName, false);
+	}
+
+	/**
+	 * Produces a list of Colors from a Gradient taken backward
+	 * 
+	 * @param nbClasses    Number of colors
+	 * @param gradientName Name of the source color gradient
+	 * @return A List of initialized colors or null if no gradient matches the given
+	 *         name
+	 */
+	public static List<Color> colorRange(int nbClasses, String gradientName, boolean backward) {
+		if (gradients == null) {
+			gradients = new KeyMap<String, Gradient>();
+			try {
+				Gradient.readGradients(gradients, "config/gradients.ocg");
+			} catch (IOException ioe) {
+				System.out.println("Warning : failed to read the color gradient definition file (config/gradient.ocg");
+				System.out.println("System message: " + ioe.getMessage());
+			}
+		}
+		List<Color> lc = null;
+		Gradient gd = gradients.get(gradientName);
+		if (gd != null)
+			lc = backward ? gd.toReversedColorList(nbClasses) : gd.toColorList(nbClasses);
+		else
+			System.out.println("Warning : could not find the color gradient named " + gradientName + ".");
+		return lc;
+	}
+	
+	
 	/**
 	 * Creates a new dir
 	 * 
